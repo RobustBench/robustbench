@@ -1,5 +1,3 @@
-"""Based on code from https://github.com/yaodongyu/TRADES"""
-
 import math
 import torch
 import torch.nn as nn
@@ -50,7 +48,8 @@ class NetworkBlock(nn.Module):
 
 
 class WideResNet(nn.Module):
-    def __init__(self, depth=34, num_classes=10, widen_factor=10, dropRate=0.0):
+    """ Based on code from https://github.com/yaodongyu/TRADES """
+    def __init__(self, depth=28, num_classes=10, widen_factor=10, dropRate=0.0):
         super(WideResNet, self).__init__()
         nChannels = [16, 16 * widen_factor, 32 * widen_factor, 64 * widen_factor]
         assert ((depth - 4) % 6 == 0)
@@ -96,3 +95,15 @@ class WideResNet(nn.Module):
         else:
             return self.fc(out)
 
+
+class CarmonEtAl2019Net(WideResNet):
+    def __init__(self, depth, widen_factor):
+        super(CarmonEtAl2019Net, self).__init__(depth=depth, widen_factor=widen_factor)
+
+
+model_dicts = {
+    'carmon_et_al_2019': {
+        'model': CarmonEtAl2019Net(28, 10),
+        'gdrive_id': '1jVIlwc1394bghR-yjvhlwzjEpV1UPWHb'
+    }
+}
