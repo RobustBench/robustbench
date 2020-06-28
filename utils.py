@@ -58,7 +58,7 @@ def load_model(model_name, model_dir):
         download_gdrive(model_dicts[model_name]['gdrive_id'], model_path)
     checkpoint = torch.load(model_path)
 
-    # needed for `carmon_et_al_2019`
+    # needed for the model of `carmon2019unlabeled`
     state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
 
     model.load_state_dict(state_dict)
