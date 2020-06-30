@@ -2,6 +2,7 @@ import argparse
 import torch
 from utils import load_model
 from data import load_cifar10
+from model_zoo.model_utils import *
 
 
 def parse_args():
@@ -23,7 +24,8 @@ if __name__ == '__main__':
     x_test, y_test = load_cifar10(args.data_dir, args.n_ex, args.batch_size)
 
     # TODO: make the predict function in batches
-    acc = torch.mean((model(x_test).argmax(1) == y_test).float())
+    #acc = torch.mean((model(x_test).argmax(1) == y_test).float())
+    acc = clean_accuracy(model, x_test, y_test, bs=128)
     print('clean accuracy: {:.2%}'.format(acc))
     # TODO: add AutoAttack
 

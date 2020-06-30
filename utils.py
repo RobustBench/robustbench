@@ -50,17 +50,21 @@ def rm_substr_from_state_dict(state_dict, substr):
 
 
 def load_model(model_name, model_dir):
-    model_path = '{}/{}.pt'.format(model_dir, model_name)
+    model_path = '{}/{}.{}'.format(model_dir, model_name,
+        model_dicts[model_name]['ckpt_ext'])
     model = model_dicts[model_name]['model']
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
     if not os.path.isfile(model_path):
         download_gdrive(model_dicts[model_name]['gdrive_id'], model_path)
-    checkpoint = torch.load(model_path)
+    checkpoint = torch.load(model_path, map_location='cuda:0')
 
     # needed for the model of `carmon2019unlabeled`
-    state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
-
+    try:
+        state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
+    except:
+        state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
+    
     model.load_state_dict(state_dict)
     return model.cuda().eval()
 
