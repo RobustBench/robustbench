@@ -1,0 +1,1 @@
+{"link": "https://arxiv.org/abs/1904.00887", "additional_data": false, "dataset": "cifar10", "architecture": "", "eps": "8/255", "clean_acc": "89.16", "reported": "32.32", "AA": "0.55", "AA+": "0.20"}
