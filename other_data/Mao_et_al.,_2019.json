@@ -1,1 +1,0 @@
-{"link": "http://papers.nips.cc/paper/8339-metric-learning-for-adversarial-robustness", "additional_data": false, "dataset": "cifar10", "architecture": "", "eps": "8/255", "clean_acc": "86.21", "reported": "50.03", "AA": "47.66", "AA+": "47.34"}

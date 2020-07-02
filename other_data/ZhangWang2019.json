@@ -1,0 +1,13 @@
+{
+  "link": "http://papers.nips.cc/paper/8459-defense-against-adversarial-attacks-using-feature-scattering-based-adversarial-training",
+  "name": "Defense Against Adversarial Attacks Using Feature Scattering-based Adversarial Training",
+  "authors": "Haichao Zhang, Jianyu Wang",
+  "additional_data": false,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "8/255",
+  "clean_acc": "89.98",
+  "reported": "60.6",
+  "AA": "38.78",
+  "AA+": "36.42"
+}

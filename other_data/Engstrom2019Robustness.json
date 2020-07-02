@@ -1,0 +1,13 @@
+{
+  "link": "https://github.com/MadryLab/robustness",
+  "name": "Robustness library",
+  "authors": "Logan Engstrom, Andrew Ilyas, Shibani Santurkar, Dimitris Tsipras",
+  "additional_data": false,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "8/255",
+  "clean_acc": "87.03",
+  "reported": "53.29",
+  "AA": "49.58",
+  "AA+": "49.20"
+}

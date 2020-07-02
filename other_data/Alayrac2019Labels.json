@@ -1,0 +1,13 @@
+{
+  "link": "https://arxiv.org/abs/1905.13725",
+  "name": "Are Labels Required for Improving Adversarial Robustness?",
+  "authors": "Jonathan Uesato, Jean-Baptiste Alayrac, Po-Sen Huang, Robert Stanforth, Alhussein Fawzi, Pushmeet Kohli",
+  "additional_data": true,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "8/255",
+  "clean_acc": "86.46",
+  "reported": "56.30",
+  "AA": "56.92",
+  "AA+": "56.01"
+}

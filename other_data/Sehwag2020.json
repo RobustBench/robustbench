@@ -1,0 +1,13 @@
+{
+  "link": "https://arxiv.org/abs/2002.10509",
+  "name": "HYDRA: Pruning Adversarially Robust Neural Networks",
+  "authors": "Vikash Sehwag, Shiqi Wang, Prateek Mittal, Suman Jana",
+  "additional_data": true,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "8/255",
+  "clean_acc": "57.24",
+  "reported": "-",
+  "AA": "57.11",
+  "AA+": "|"
+}

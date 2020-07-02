@@ -1,0 +1,13 @@
+{
+  "link": "https://arxiv.org/abs/1904.12843",
+  "name": "Adversarial Training for Free!",
+  "authors": "Ali Shafahi, Mahyar Najibi, Amin Ghiasi, Zheng Xu, John Dickerson, Christoph Studer, Larry S. Davis, Gavin Taylor, Tom Goldstein",
+  "additional_data": false,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "8/255",
+  "clean_acc": "86.11",
+  "reported": "46.19",
+  "AA": "41.58",
+  "AA+": "41.37"
+}

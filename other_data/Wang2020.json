@@ -1,0 +1,11 @@
+{
+  "link": "https://openreview.net/forum?id=rklOg6EFwS",
+  "additional_data": true,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "8/255",
+  "clean_acc": "87.50",
+  "reported": "65.04",
+  "AA": "56.69",
+  "AA+": "56.26"
+}

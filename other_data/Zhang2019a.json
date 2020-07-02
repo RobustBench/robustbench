@@ -1,0 +1,13 @@
+{
+  "link": "https://arxiv.org/abs/1905.00877",
+  "name": "You Only Propagate Once: Accelerating Adversarial Training via Maximal Principle",
+  "authors": "Dinghuai Zhang, Tianyuan Zhang, Yiping Lu, Zhanxing Zhu, Bin Dong",
+  "additional_data": false,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "8/255",
+  "clean_acc": "87.20",
+  "reported": "47.98",
+  "AA": "45.06",
+  "AA+": "44.78"
+}

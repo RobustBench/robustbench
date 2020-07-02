@@ -1,0 +1,13 @@
+{
+  "link": "https://arxiv.org/abs/1901.08573",
+  "name": "Theoretically Principled Trade-off between Robustness and Accuracy",
+  "authors": "Hongyang Zhang, Yaodong Yu, Jiantao Jiao, Eric P. Xing, Laurent El Ghaoui, Michael I. Jordan",
+  "additional_data": false,
+  "dataset": "cifar10",
+  "architecture": "",
+  "eps": "0.031",
+  "clean_acc": "84.92",
+  "reported": "56.43",
+  "AA": "53.18",
+  "AA+": "53.04"
+}
