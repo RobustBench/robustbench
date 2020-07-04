@@ -33,9 +33,9 @@ class Rice2020OverfittingNet(WideResNet):
         super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
     def forward(self, x, return_prelogit=False):
-        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
-        x = (x - self.mu) / self.sigma
+        mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
+        sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+        x = (x - mu) / sigma
         return super(Rice2020OverfittingNet, self).forward(x)
 
 
@@ -53,36 +53,29 @@ model_dicts = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet(28, 10),
         'gdrive_id': '15tUx-gkZMYx7BfEOw1GY5OKC-jECIsPQ',
-        'ckpt_ext': 'pt'
     }),
     ('Sehwag2020Hydra', {
         'model': Sehwag2020PruningNet(28, 10),
         'gdrive_id': '1pi8GHwAVkxVH41hEnf0IAJb_7y-Q8a2Y',
-        'ckpt_ext': 'tar'
     }),
     ('Wang2020Improving', {
         'model': Wang2020ImprovingNet(28, 10),
         'gdrive_id': '1T939mU4kXYt5bbvM55aT4fLBvRhyzjiQ',
-        'ckpt_ext': 'pt'
     }),
     ('Hendrycks2019Using', {
         'model': Hendrycks2019UsingNet(28, 10),
         'gdrive_id': '1-DcJsYw2dNEOyF9epks2QS7r9nqBDEsw',
-        'ckpt_ext': 'pt'
     }),
     ('Rice2020Overfitting', {
         'model': Rice2020OverfittingNet(34, 20),
         'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
-        'ckpt_ext': 'pth'
     }),
     ('Zhang2019Theoretically', {
         'model': Zhang2019TheoreticallyNet(34, 10),
         'gdrive_id': '1hPz9QQwyM7QSuWu-ANG_uXR-29xtL8t_',
-        'ckpt_ext': 'pt'
     }),
     ('Engstrom2019Robustness', {
         'model': Engstrom2019RobustnessNet(),
         'gdrive_id': '1etqmQsksNIWBvBQ4r8ZFk_3FJlLWr8Rr',
-        'ckpt_ext': 'pt'
     }),
 ])
