@@ -1,5 +1,7 @@
 {
   "link": "https://openreview.net/forum?id=rklOg6EFwS",
+  "name": "Improving Adversarial Robustness Requires Revisiting Misclassified Examples",
+  "authors": "Yisen Wang, Difan Zou, Jinfeng Yi, James Bailey, Xingjun Ma, Quanquan Gu",
   "additional_data": true,
   "dataset": "cifar10",
   "architecture": "",
