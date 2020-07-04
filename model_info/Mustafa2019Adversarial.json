@@ -3,6 +3,7 @@
   "name": "Adversarial Defense by Restricting the Hidden Space of Deep Neural Networks",
   "authors": "Aamir Mustafa, Salman Khan, Munawar Hayat, Roland Goecke, Jianbing Shen, Ling Shao",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

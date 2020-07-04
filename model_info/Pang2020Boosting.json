@@ -3,6 +3,7 @@
   "name": "Boosting Adversarial Training with Hypersphere Embedding",
   "authors": "Tianyu Pang, Xiao Yang, Yinpeng Dong, Kun Xu, Hang Su, Jun Zhu",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "0.031",

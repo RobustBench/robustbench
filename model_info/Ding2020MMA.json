@@ -3,6 +3,7 @@
   "name": "MMA Training: Direct Input Space Margin Maximization through Adversarial Training",
   "authors": "Gavin Weiguang Ding, Yash Sharma, Kry Yik Chau Lui, Ruitong Huang",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

@@ -3,6 +3,7 @@
   "name": "Adversarial Training for Free!",
   "authors": "Ali Shafahi, Mahyar Najibi, Amin Ghiasi, Zheng Xu, John Dickerson, Christoph Studer, Larry S. Davis, Gavin Taylor, Tom Goldstein",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

@@ -3,6 +3,7 @@
   "name": "Overfitting in adversarially robust deep learning",
   "authors": "Leslie Rice, Eric Wong, J. Zico Kolter",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

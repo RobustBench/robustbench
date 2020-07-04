@@ -3,6 +3,7 @@
   "name": "Robustness via Curvature Regularization, and Vice Versa",
   "authors": "Seyed-Mohsen Moosavi-Dezfooli, Alhussein Fawzi, Jonathan Uesato, Pascal Frossard",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

@@ -3,6 +3,7 @@
   "name": "Using Pre-Training Can Improve Model Robustness and Uncertainty",
   "authors": "Dan Hendrycks, Kimin Lee, Mantas Mazeika",
   "additional_data": true,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

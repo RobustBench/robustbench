@@ -3,6 +3,7 @@
   "name": "Fast is better than free: Revisiting adversarial training",
   "authors": "Eric Wong, Leslie Rice, J. Zico Kolter",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

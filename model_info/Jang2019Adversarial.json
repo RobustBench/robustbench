@@ -3,6 +3,7 @@
   "name": "Adversarial Defense via Learning to Generate Diverse Attacks",
   "authors": "Yunseok Jang, Tianchen Zhao, Seunghoon Hong, Honglak Lee",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

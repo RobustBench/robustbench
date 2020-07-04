@@ -3,6 +3,7 @@
   "name": "Manifold Regularization for Adversarial Robustness",
   "authors": "Charles Jin, Martin Rinard",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

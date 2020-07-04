@@ -3,6 +3,7 @@
   "name": "Harnessing the Vulnerability of Latent Layers in Adversarially Trained Models",
   "authors": "Mayank Singh, Abhishek Sinha, Nupur Kumari, Harshitha Machiraju, Balaji Krishnamurthy, Vineeth N Balasubramanian",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

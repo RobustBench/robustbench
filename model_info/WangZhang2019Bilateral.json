@@ -3,6 +3,7 @@
   "name": "Bilateral Adversarial Training: Towards Fast Training of More Robust Models Against Adversarial Attacks",
   "authors": "Jianyu Wang, Haichao Zhang",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

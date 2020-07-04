@@ -3,6 +3,7 @@
   "name": "Jacobian Adversarially Regularized Networks for Robustness",
   "authors": "Alvin Chan, Yi Tay, Yew Soon Ong, Jie Fu",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

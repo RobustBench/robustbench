@@ -3,6 +3,7 @@
   "name": "Adversarial Interpolation Training: A Simple Approach for Improving Model Robustness",
   "authors": "Haichao Zhang, Wei Xu",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

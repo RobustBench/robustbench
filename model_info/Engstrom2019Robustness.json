@@ -3,6 +3,7 @@
   "name": "Robustness library",
   "authors": "Logan Engstrom, Andrew Ilyas, Shibani Santurkar, Dimitris Tsipras",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

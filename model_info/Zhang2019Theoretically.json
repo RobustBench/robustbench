@@ -3,6 +3,7 @@
   "name": "Theoretically Principled Trade-off between Robustness and Accuracy",
   "authors": "Hongyang Zhang, Yaodong Yu, Jiantao Jiao, Eric P. Xing, Laurent El Ghaoui, Michael I. Jordan",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "0.031",

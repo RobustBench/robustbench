@@ -3,6 +3,7 @@
   "name": "Enhancing Adversarial Defense by k-Winners-Take-All",
   "authors": "Chang Xiao, Peilin Zhong, Changxi Zheng",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "0.031",

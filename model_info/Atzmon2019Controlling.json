@@ -3,6 +3,7 @@
   "name": "Controlling Neural Level Sets",
   "authors": "Matan Atzmon, Niv Haim, Lior Yariv, Ofer Israelov, Haggai Maron, Yaron Lipman",
   "additional_data": false,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "0.031",

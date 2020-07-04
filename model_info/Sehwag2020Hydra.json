@@ -3,6 +3,7 @@
   "name": "HYDRA: Pruning Adversarially Robust Neural Networks",
   "authors": "Vikash Sehwag, Shiqi Wang, Prateek Mittal, Suman Jana",
   "additional_data": true,
+  "multiple_forward_passes": false,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",

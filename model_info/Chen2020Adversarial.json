@@ -3,6 +3,7 @@
   "name": "Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning",
   "authors": "Tianlong Chen, Sijia Liu, Shiyu Chang, Yu Cheng, Lisa Amini, Zhangyang Wang",
   "additional_data": false,
+  "multiple_forward_passes": true,
   "dataset": "cifar10",
   "architecture": "",
   "eps": "8/255",
