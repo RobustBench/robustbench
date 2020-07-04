@@ -1,7 +1,5 @@
 import math
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 
 def clean_accuracy(model, x, y, bs=100):
@@ -15,4 +13,4 @@ def clean_accuracy(model, x, y, bs=100):
             output = model(x_curr)
             acc += (output.max(1)[1] == y_curr).float().sum()
         
-    return acc / x.shape[0]
+    return acc.item() / x.shape[0]
