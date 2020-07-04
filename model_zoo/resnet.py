@@ -12,16 +12,18 @@ class FakeReLU(torch.autograd.Function):
     def backward(ctx, grad_output):
         return grad_output
 
+
 class SequentialWithArgs(torch.nn.Sequential):
     def forward(self, input, *args, **kwargs):
         vs = list(self._modules.values())
         l = len(vs)
         for i in range(l):
-            if i == l-1:
+            if i == l - 1:
                 input = vs[i](input, *args, **kwargs)
             else:
                 input = vs[i](input)
         return input
+
 
 class BasicBlock(nn.Module):
     expansion = 1
@@ -47,6 +49,7 @@ class BasicBlock(nn.Module):
         out = F.relu(out)
         return out
 
+
 class BasicBlock(nn.Module):
     expansion = 1
 
@@ -60,11 +63,11 @@ class BasicBlock(nn.Module):
         self.bn2 = nn.BatchNorm2d(planes)
 
         self.shortcut = nn.Sequential()
-        if stride != 1 or in_planes != self.expansion*planes:
+        if stride != 1 or in_planes != self.expansion * planes:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes, self.expansion*planes, kernel_size=1,
+                nn.Conv2d(in_planes, self.expansion * planes, kernel_size=1,
                           stride=stride, bias=False),
-                nn.BatchNorm2d(self.expansion*planes))
+                nn.BatchNorm2d(self.expansion * planes))
 
     def forward(self, x, fake_relu=False):
         out = F.relu(self.bn1(self.conv1(x)))
@@ -85,14 +88,14 @@ class Bottleneck(nn.Module):
         self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
                                padding=1, bias=False)
         self.bn2 = nn.BatchNorm2d(planes)
-        self.conv3 = nn.Conv2d(planes, self.expansion*planes, kernel_size=1, bias=False)
-        self.bn3 = nn.BatchNorm2d(self.expansion*planes)
+        self.conv3 = nn.Conv2d(planes, self.expansion * planes, kernel_size=1, bias=False)
+        self.bn3 = nn.BatchNorm2d(self.expansion * planes)
 
         self.shortcut = nn.Sequential()
-        if stride != 1 or in_planes != self.expansion*planes:
+        if stride != 1 or in_planes != self.expansion * planes:
             self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes, self.expansion*planes, kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(self.expansion*planes)
+                nn.Conv2d(in_planes, self.expansion * planes, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(self.expansion * planes)
             )
 
     def forward(self, x, fake_relu=False):
@@ -121,13 +124,13 @@ class ResNet(nn.Module):
         self.layer2 = self._make_layer(block, widths[1], num_blocks[1], stride=2)
         self.layer3 = self._make_layer(block, widths[2], num_blocks[2], stride=2)
         self.layer4 = self._make_layer(block, widths[3], num_blocks[3], stride=2)
-        self.linear = nn.Linear(feat_scale*widths[3]*block.expansion, num_classes)
+        self.linear = nn.Linear(feat_scale * widths[3] * block.expansion, num_classes)
 
         self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
         self.sigma = torch.Tensor([0.2023, 0.1994, 0.2010]).float().view(3, 1, 1).cuda()
-    
+
     def _make_layer(self, block, planes, num_blocks, stride):
-        strides = [stride] + [1]*(num_blocks-1)
+        strides = [stride] + [1] * (num_blocks - 1)
         layers = []
         for stride in strides:
             layers.append(block(self.in_planes, planes, stride))
@@ -135,7 +138,7 @@ class ResNet(nn.Module):
         return SequentialWithArgs(*layers)
 
     def forward(self, x, with_latent=False, fake_relu=False, no_relu=False):
-        assert (not no_relu),  \
+        assert (not no_relu), \
             "no_relu not yet supported for this architecture"
         out = torch.clamp(x, 0., 1.)
         out = (out - self.mu) / self.sigma
@@ -151,24 +154,30 @@ class ResNet(nn.Module):
             return final, pre_out
         return final
 
+
 def ResNet18(**kwargs):
-    return ResNet(BasicBlock, [2,2,2,2], **kwargs)
+    return ResNet(BasicBlock, [2, 2, 2, 2], **kwargs)
+
 
 def ResNet18Wide(**kwargs):
-    return ResNet(BasicBlock, [2,2,2,2], wd=1.5, **kwargs)
+    return ResNet(BasicBlock, [2, 2, 2, 2], wd=1.5, **kwargs)
+
 
 def ResNet18Thin(**kwargs):
-    return ResNet(BasicBlock, [2,2,2,2], wd=.75, **kwargs)
+    return ResNet(BasicBlock, [2, 2, 2, 2], wd=.75, **kwargs)
+
 
 def ResNet34(**kwargs):
-    return ResNet(BasicBlock, [3,4,6,3], **kwargs)
+    return ResNet(BasicBlock, [3, 4, 6, 3], **kwargs)
+
 
 def ResNet50(**kwargs):
-    return ResNet(Bottleneck, [3,4,6,3], **kwargs)
+    return ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
+
 
 def ResNet101(**kwargs):
-    return ResNet(Bottleneck, [3,4,23,3], **kwargs)
+    return ResNet(Bottleneck, [3, 4, 23, 3], **kwargs)
+
 
 def ResNet152(**kwargs):
-    return ResNet(Bottleneck, [3,8,36,3], **kwargs)
-
+    return ResNet(Bottleneck, [3, 8, 36, 3], **kwargs)
