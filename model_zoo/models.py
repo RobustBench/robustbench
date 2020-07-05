@@ -23,7 +23,7 @@ class Hendrycks2019UsingNet(WideResNet):
     def __init__(self, depth, widen_factor):
         super(Hendrycks2019UsingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
-    def forward(self, x, return_prelogit=False):
+    def forward(self, x):
         x = 2. * x - 1.
         return super(Hendrycks2019UsingNet, self).forward(x)
 
@@ -32,7 +32,7 @@ class Rice2020OverfittingNet(WideResNet):
     def __init__(self, depth, widen_factor):
         super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
-    def forward(self, x, return_prelogit=False):
+    def forward(self, x):
         mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
         sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
         x = (x - mu) / sigma
@@ -46,7 +46,13 @@ class Zhang2019TheoreticallyNet(WideResNet):
 
 class Engstrom2019RobustnessNet(ResNet):
     def __init__(self):
-        super(Engstrom2019RobustnessNet, self).__init__(Bottleneck, [3, 4, 6, 3])  # ResNet-50
+        super(Engstrom2019RobustnessNet, self).__init__(Bottleneck, [3, 4, 6, 3])
+
+    def forward(self, x):
+        mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
+        sigma = torch.Tensor([0.2023, 0.1994, 0.2010]).float().view(3, 1, 1).cuda()
+        x = (x - mu) / sigma
+        return super(Engstrom2019RobustnessNet, self).forward(x)
 
 
 model_dicts = OrderedDict([

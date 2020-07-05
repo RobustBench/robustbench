@@ -1,5 +1,5 @@
 import sys
-sys.path.append('.')
+sys.path.append('..')
 from tests.config import parse_args
 from utils import load_model
 from data import load_cifar10
