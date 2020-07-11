@@ -124,6 +124,6 @@ model_dicts = OrderedDict([
     }),
     ('Huang2020Self', {
         'model': Huang2020SelfNet(34, 10),
-        'gdrive_id': 't',
+        'gdrive_id': '1nInDeIyZe2G-mJFxQJ3UoclQNomWjMgm',
     }),
 ])
