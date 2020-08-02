@@ -1,6 +1,7 @@
 # AdvBench
 
 
+
 ## Main idea
 The goal of `AdvBench` is to systematically benchmark adversarial robustness to be able to track the real progress in 
 the field. 
@@ -14,20 +15,40 @@ security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpana
 We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
 
 `AdvBench` consists from two parts: a website with the leaderboard, and a collection of robust models **Model Zoo**.
-The tutorial below shows what one can do with the `model_zoo`.
+The tutorial below shows how one can use the **Model Zoo**.
 
 
 
 ## AdvBench tutorial
+First install `AdvBench`:
+```bash
+pip install -r requirements.txt
+git clone https://github.com/fra31/advbench && cd advbench
+```
+TODO: currently the repo is not publicly visible. TODO: and pip would be better.
 
+Main points:
+```python
+from data import load_cifar10
+from utils import load_model, clean_accuracy
+
+x_test, y_test = load_cifar10(n_examples=100)
+model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
+
+acc = clean_accuracy(model=model, x=x_test, y=y_test, batch_size=128)
+print('Clean accuracy: {:.2%}'.format(acc))
+
+# TODO: add AutoAttack eval (the old version is fine for now)
+```
 
 
 
 ## Adding a new model
 In order to add a new model, submit a pull request where you specify the claim, model definition, and model checkpoint:
+
 - **Claim**: `model_claims/<Name><Year><FirstWordOfTheTitle>.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
 Here is an example from `model_info/Rice2020Overfitting.json`:
-```python
+```json
 {
   "link": "https://arxiv.org/abs/2002.11569",
   "name": "Overfitting in adversarially robust deep learning",
@@ -44,6 +65,7 @@ Here is an example from `model_info/Rice2020Overfitting.json`:
   "AA+": "53.35"
 }
 ```
+
 - **Model definition**: `model_zoo/models.py`: add your model definition as a new class. For standard architectures like `WideResNet` consider
  inheriting the class defined in `wide_resnet.py`, `resnet.py`, `resnetv2.py`. For example:
 ```python
@@ -57,8 +79,9 @@ class Rice2020OverfittingNet(WideResNet):
         x = (x - self.mu) / self.sigma
         return super(Rice2020OverfittingNet, self).forward(x)
 ```
-- **Model checkpoint**: `model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain the **gdrive-id** with your pytorch model so that it can
-be downloaded automatically:
+
+- **Model checkpoint**: `model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain 
+the *Google Drive ID* with your pytorch model so that it can be downloaded automatically:
 ```
     ('Rice2020Overfitting', {
         'model': Rice2020OverfittingNet(34, 20),
@@ -70,8 +93,12 @@ be downloaded automatically:
 
 ## Testing
 Run the following scripts to test the existing models from the **Model Zoo**:
-- `python tests/test_clean_acc_fast.py`: fast testing
-- `python tests/test_clean_acc_jsons.py`: 
+- `python tests/test_clean_acc_fast.py`: fast testing on 200 examples that clean accuracy exceeds some threshold.
+- `python tests/test_clean_acc_jsons.py`: testing on 10'000 examples that clean accuracy of the models matches the one 
+mentioned in the `model_info` jsons.
+
+Note that you can specify some configurations like `batch_size`, `data_dir`, `model_dir` in `config.py` either as 
+default parameters or as parameters from the command line.
 
 
 ## Citation

@@ -1,4 +1,5 @@
 import os
+import math
 import requests
 import torch
 from collections import OrderedDict
@@ -49,7 +50,7 @@ def rm_substr_from_state_dict(state_dict, substr):
     return new_state_dict
 
 
-def load_model(model_name, model_dir):
+def load_model(model_name, model_dir='./models'):
     if not isinstance(model_dicts[model_name]['gdrive_id'], list):
         model_path = '{}/{}.pt'.format(model_dir, model_name)
         model = model_dicts[model_name]['model']
@@ -85,4 +86,17 @@ def load_model(model_name, model_dir):
             model.models[i].cuda().eval()
         return model
 
+
+def clean_accuracy(model, x, y, batch_size=100):
+    acc = 0.
+    n_batches = math.ceil(x.shape[0] / batch_size)
+    with torch.no_grad():
+        for counter in range(n_batches):
+            x_curr = x[counter * batch_size:(counter + 1) * batch_size].cuda()
+            y_curr = y[counter * batch_size:(counter + 1) * batch_size].cuda()
+
+            output = model(x_curr)
+            acc += (output.max(1)[1] == y_curr).float().sum()
+
+    return acc.item() / x.shape[0]
 

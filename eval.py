@@ -1,7 +1,6 @@
 import argparse
-from utils import load_model
+from utils import load_model, clean_accuracy
 from data import load_cifar10
-from model_zoo.model_utils import *
 
 
 def parse_args():
@@ -19,10 +18,10 @@ def parse_args():
 if __name__ == '__main__':
     args = parse_args()
 
+    x_test, y_test = load_cifar10(args.n_ex, args.data_dir)
     model = load_model(args.model_name, args.model_dir).cuda().eval()
-    x_test, y_test = load_cifar10(args.data_dir, args.n_ex, args.batch_size)
 
-    acc = clean_accuracy(model, x_test, y_test, bs=128)
-    print('clean accuracy: {:.2%}'.format(acc))
+    acc = clean_accuracy(model, x_test, y_test, batch_size=args.batch_size)
+    print('Clean accuracy: {:.2%}'.format(acc))
     # TODO: add AutoAttack
 
