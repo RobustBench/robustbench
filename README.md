@@ -3,19 +3,37 @@
 
 
 ## Main idea
-The goal of `AdvBench` is to systematically benchmark adversarial robustness to be able to track the real progress in 
-the field. 
-
+The goal of `AdvBench` is to systematically track the *real* progress in adversarial robustness. 
+There are already [more than 2'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
+on this topic, but it is still unclear which approaches *really* work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
 We start from benchmarking the Linf-robustness since it is the most studied setting in the literature. 
-There are numerous interesting applications of Linf-robustness that span 
+We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
+
+`AdvBench` consists of two parts: 
+- a website with the leaderboard, and a collection of the most robust models, **Model Zoo**
+- which are very easy to use for any application. The tutorial below shows how one can use the **Model Zoo**.
+
+
+## FAQ
+**Q**: Wait, how is it different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
+**A**: [robust-ml.org](https://www.robust-ml.org/) focuses on adaptive evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
+are great but very time consuming.
+
+**Q**: How is it different from `foolbox` / `cleverhans` / `advertorch`? 🤔 \
+**A**: `AdvBench` is totally complementary! Besides the standardized benchmark, we also provide a repository of models. So you can start using the
+robust models in one line of code (see the tutorial below 👇) and use them for *anything*.
+So `AdvBench` is also something like HuggingFace but for adversarial robustness.
+
+**Q**: I've heard that Lp-robustness is boring. Why would you even evaluate Lp-robustness in 2020? 🤔 \
+**A**: There are numerous interesting applications of Linf-robustness that span 
 transfer learning ([Salman et al. (2020)](https://arxiv.org/abs/2007.08489), [Utrera et al. (2020)](https://arxiv.org/abs/2007.05869)), 
 interpretability ([Tsipras et al. (2018)](https://arxiv.org/abs/1805.12152), [Kaur et al. (2019)](https://arxiv.org/abs/1910.08640), [Engstrom et al. (2019)](https://arxiv.org/abs/1906.00945))
 generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et al. (2019)](https://arxiv.org/abs/1909.11764), [Bochkovskiy et al. (2020)](https://arxiv.org/abs/2004.10934)), 
 security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpanah et al. (2019)](https://arxiv.org/abs/1906.07153)). 
-We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
+See also [this twitter thread](https://twitter.com/SebastienBubeck/status/1284287915837624320) for a more detailed discussion.
 
-`AdvBench` consists from two parts: a website with the leaderboard, and a collection of robust models **Model Zoo**.
-The tutorial below shows how one can use the **Model Zoo**.
+**Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
+**A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized evaluation.
 
 
 
@@ -25,10 +43,12 @@ First install `AdvBench`:
 pip install -r requirements.txt
 git clone https://github.com/fra31/advbench && cd advbench
 ```
-TODO: currently the repo is not publicly visible. TODO: and pip would be better.
+TODO: currently the repo is not publicly visible -- so maybe passing credentials would be necessary? TODO: and pip would be better.
 
 Main points:
 ```python
+!pip install -q git+https://github.com/fra31/advbench
+!pip install -q -r torch==1.4.0 requests
 from data import load_cifar10
 from utils import load_model, clean_accuracy
 
@@ -38,8 +58,22 @@ model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 acc = clean_accuracy(model=model, x=x_test, y=y_test, batch_size=128)
 print('Clean accuracy: {:.2%}'.format(acc))
 
+
+# TODO: set eps
 # TODO: add AutoAttack eval (the old version is fine for now)
+
+# Foolbox
+!pip install -q foolbox
+
+import foolbox as fb
+fmodel = fb.PyTorchModel(model, bounds=(0, 1))
+
+_, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255])
+
 ```
+
+
+
 
 
 
@@ -102,5 +136,5 @@ default parameters or as parameters from the command line.
 
 
 ## Citation
-Our white paper about `AdvBench` is in preparation. Stay tuned!
+Our white paper about `AdvBench` is currently in preparation. Stay tuned!
 
