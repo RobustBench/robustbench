@@ -16,14 +16,15 @@ We plan to extend the benchmark to other threat models in the future: first to o
 
 ## FAQ
 **Q**: Wait, how is it different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
-**A**: [robust-ml.org](https://www.robust-ml.org/) focuses on adaptive evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
-are great but very time consuming.
+**A**: [robust-ml.org](https://www.robust-ml.org/) focuses on *adaptive* evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
+are great but very time consuming and not standardized.
 
 **Q**: How is it related to libraries like `foolbox` / `cleverhans` / `advertorch`? 🤔 \
-**A**: These libraries maintain implementations of different attacks. Besides the standardized benchmark, **`AdvBench`** 
-additionally provides a repository of models. So you can start using the
-robust models in one line of code (see the tutorial below 👇) and use them for *anything*.
-So our **Model Zoo** is something like [🤗 Transformers](https://github.com/huggingface/transformers) but for adversarial robustness.
+**A**: These libraries provide implementations of different *attacks*. Besides the standardized benchmark, **`AdvBench`** 
+additionally provides a repository of the most robust models. So you can start using the
+robust models in one line of code (see the tutorial below 👇).
+In other words, our **Model Zoo** is like [🤗 Transformers](https://github.com/huggingface/transformers) but 
+for adversarial robustness.
 
 **Q**: I've heard that Lp-robustness is boring. Why would you even evaluate Lp-robustness in 2020? 🤔 \
 **A**: There are numerous interesting applications of Lp-robustness that span 
@@ -53,7 +54,12 @@ TODO: install should be done with pip ideally
 !pip install -q -r torch==1.4.0 requests 
 -->
 
-Main points:
+First, let's see how many models are there:
+```python
+
+```
+
+Now
 ```python
 from data import load_cifar10
 from utils import load_model, clean_accuracy
@@ -65,7 +71,7 @@ acc = clean_accuracy(model=model, x=x_test, y=y_test, batch_size=128)
 print('Clean accuracy: {:.2%}'.format(acc))
 ```
 
-The clean accuracy is alright. Great, then we have restored the model successfully!
+The clean accuracy is alright. Great, then we have restored the model successfully! \
 Now let's try to evaluate its robustness with [AutoAttack](https://arxiv.org/abs/2003.01690) from ICML'20 which we use
 for our standardized evaluation of Linf-robustness:
 ```python
@@ -87,7 +93,7 @@ _, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255]
 
 ```
 
-TODO: add also advertorch
+TODO: add also advertorch if it's not too long
 
 
 
@@ -99,7 +105,7 @@ Contributions to **`AdvBench`** are very welcome! Here is how you can help us:
 
 
 
-## Adding a new model
+## Adding a new model to AdvBench
 In order to add a new model, submit a pull request where you specify the claim, model definition, and model checkpoint:
 
 - **Claim**: `model_claims/<Name><Year><FirstWordOfTheTitle>.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
@@ -148,7 +154,7 @@ the *Google Drive ID* with your pytorch model so that it can be downloaded autom
 
 
 
-## Testing
+## Model Zoo: automatic tests
 Run the following scripts to test the existing models from the **Model Zoo**:
 - `python tests/test_clean_acc_fast.py`: fast testing on 200 examples that clean accuracy exceeds some threshold.
 - `python tests/test_clean_acc_jsons.py`: testing on 10'000 examples that clean accuracy of the models matches the one 
