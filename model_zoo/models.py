@@ -1,8 +1,7 @@
 import torch
 from collections import OrderedDict
 from model_zoo.wide_resnet import WideResNet
-from model_zoo.resnet import ResNet, Bottleneck
-from model_zoo.resnetv2 import ResNet as ResNetv2, Bottleneck as Bottleneckv2
+from model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet
 
 
 class Carmon2019UnlabeledNet(WideResNet):
@@ -59,9 +58,9 @@ class Engstrom2019RobustnessNet(ResNet):
 class Chen2020AdversarialNet(torch.nn.Module):
     def __init__(self):
         super(Chen2020AdversarialNet, self).__init__()
-        self.branch1 = ResNetv2(Bottleneckv2, [3, 4, 6, 3])
-        self.branch2 = ResNetv2(Bottleneckv2, [3, 4, 6, 3])
-        self.branch3 = ResNetv2(Bottleneckv2, [3, 4, 6, 3])
+        self.branch1 = ResNet(BottleneckChen2020AdversarialNet, [3, 4, 6, 3])
+        self.branch2 = ResNet(BottleneckChen2020AdversarialNet, [3, 4, 6, 3])
+        self.branch3 = ResNet(BottleneckChen2020AdversarialNet, [3, 4, 6, 3])
 
         self.models = [self.branch1, self.branch2, self.branch3]
 
@@ -75,11 +74,11 @@ class Chen2020AdversarialNet(torch.nn.Module):
         out2 = self.branch2(out)
         out3 = self.branch3(out)
 
-        logit1 = torch.softmax(out1, dim=1)
-        logit2 = torch.softmax(out2, dim=1)
-        logit3 = torch.softmax(out3, dim=1)
+        prob1 = torch.softmax(out1, dim=1)
+        prob2 = torch.softmax(out2, dim=1)
+        prob3 = torch.softmax(out3, dim=1)
 
-        return (logit1 + logit2 + logit3) / 3
+        return (prob1 + prob2 + prob3) / 3
 
 
 class Huang2020SelfNet(WideResNet):

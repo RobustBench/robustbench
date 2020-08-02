@@ -23,5 +23,5 @@ if __name__ == '__main__':
 
     acc = clean_accuracy(model, x_test, y_test, batch_size=args.batch_size)
     print('Clean accuracy: {:.2%}'.format(acc))
-    # TODO: add AutoAttack
+    # TODO: add AutoAttack, use args.eps
 

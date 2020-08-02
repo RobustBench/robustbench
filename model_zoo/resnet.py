@@ -55,6 +55,36 @@ class Bottleneck(nn.Module):
         return out
 
 
+class BottleneckChen2020AdversarialNet(nn.Module):
+    expansion = 4
+
+    def __init__(self, in_planes, planes, stride=1):
+        super(BottleneckChen2020AdversarialNet, self).__init__()
+        self.bn0 = nn.BatchNorm2d(in_planes)
+        self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(planes)
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.conv3 = nn.Conv2d(planes, self.expansion * planes, kernel_size=1, bias=False)
+        self.shortcut = nn.Sequential()
+        if stride != 1 or in_planes != self.expansion * planes:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_planes, self.expansion * planes, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(self.expansion * planes)
+            )
+
+    def forward(self, x):
+        pre = F.relu(self.bn0(x))
+        out = F.relu(self.bn1(self.conv1(pre)))
+        out = F.relu(self.bn2(self.conv2(out)))
+        out = self.conv3(out)
+        if len(self.shortcut) == 0:
+            out += self.shortcut(x)
+        else:
+            out += self.shortcut(pre)
+        return out
+
+
 class ResNet(nn.Module):
     def __init__(self, block, num_blocks, num_classes=10):
         super(ResNet, self).__init__()
