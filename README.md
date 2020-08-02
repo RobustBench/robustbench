@@ -1,17 +1,17 @@
-# AdvBench
+# AdvBench: tracking the progress in adversarial robustness.
 
 
 
 ## Main idea
-The goal of `AdvBench` is to systematically track the *real* progress in adversarial robustness. 
+The goal of **`AdvBench`** is to systematically track the *real* progress in adversarial robustness. 
 There are already [more than 2'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
 on this topic, but it is still unclear which approaches *really* work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
 We start from benchmarking the Linf-robustness since it is the most studied setting in the literature. 
 We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
 
-`AdvBench` consists of two parts: 
-- a website with the leaderboard, and a collection of the most robust models, **Model Zoo**
-- which are very easy to use for any application. The tutorial below shows how one can use the **Model Zoo**.
+**`AdvBench`** consists of two parts: 
+- a website with the leaderboard
+- a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below 👇)
 
 
 ## FAQ
@@ -19,13 +19,14 @@ We plan to extend the benchmark to other threat models in the future: first to o
 **A**: [robust-ml.org](https://www.robust-ml.org/) focuses on adaptive evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
 are great but very time consuming.
 
-**Q**: How is it different from `foolbox` / `cleverhans` / `advertorch`? 🤔 \
-**A**: `AdvBench` is totally complementary! Besides the standardized benchmark, we also provide a repository of models. So you can start using the
+**Q**: How is it related to libraries like `foolbox` / `cleverhans` / `advertorch`? 🤔 \
+**A**: These libraries maintain implementations of different attacks. Besides the standardized benchmark, **`AdvBench`** 
+additionally provides a repository of models. So you can start using the
 robust models in one line of code (see the tutorial below 👇) and use them for *anything*.
-So `AdvBench` is also something like HuggingFace but for adversarial robustness.
+So our **Model Zoo** is something like [🤗 Transformers](https://github.com/huggingface/transformers) but for adversarial robustness.
 
 **Q**: I've heard that Lp-robustness is boring. Why would you even evaluate Lp-robustness in 2020? 🤔 \
-**A**: There are numerous interesting applications of Linf-robustness that span 
+**A**: There are numerous interesting applications of Lp-robustness that span 
 transfer learning ([Salman et al. (2020)](https://arxiv.org/abs/2007.08489), [Utrera et al. (2020)](https://arxiv.org/abs/2007.05869)), 
 interpretability ([Tsipras et al. (2018)](https://arxiv.org/abs/1805.12152), [Kaur et al. (2019)](https://arxiv.org/abs/1910.08640), [Engstrom et al. (2019)](https://arxiv.org/abs/1906.00945))
 generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et al. (2019)](https://arxiv.org/abs/1909.11764), [Bochkovskiy et al. (2020)](https://arxiv.org/abs/2004.10934)), 
@@ -33,12 +34,14 @@ security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpana
 See also [this twitter thread](https://twitter.com/SebastienBubeck/status/1284287915837624320) for a more detailed discussion.
 
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
-**A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized evaluation.
+**A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
 
 
 
-## AdvBench tutorial
-First install `AdvBench`:
+## Model Zoo: quick tour
+The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible.
+
+First install **`AdvBench`**:
 ```bash
 pip install -r requirements.txt
 git clone https://github.com/fra31/advbench && cd advbench
@@ -74,6 +77,11 @@ _, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255]
 
 
 
+## How to contribute
+Contributions to **`AdvBench`** are very welcome! Here is how you can help us:
+- Do you know some interesting paper that is not listed in the leaderboard? Consider adding new models (see the instructions below 👇).
+- Do you have in mind some better *standardized* attack? Do you want to extend **`AdvBench`** to other threat models? We'll be glad to discuss that!
+- Do you have an idea how to make the existing codebase better? Just open a pull request or create an issue and we'll be happy to discuss potential changes. 
 
 
 
@@ -125,6 +133,7 @@ the *Google Drive ID* with your pytorch model so that it can be downloaded autom
 
 
 
+
 ## Testing
 Run the following scripts to test the existing models from the **Model Zoo**:
 - `python tests/test_clean_acc_fast.py`: fast testing on 200 examples that clean accuracy exceeds some threshold.
@@ -135,6 +144,7 @@ Note that you can specify some configurations like `batch_size`, `data_dir`, `mo
 default parameters or as parameters from the command line.
 
 
+
 ## Citation
-Our white paper about `AdvBench` is currently in preparation. Stay tuned!
+Our white paper about **`AdvBench`** is currently in preparation. Stay tuned!
 
