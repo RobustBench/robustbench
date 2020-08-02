@@ -11,9 +11,9 @@ transfer learning ([Salman et al. (2020)](https://arxiv.org/abs/2007.08489), [Ut
 interpretability ([Tsipras et al. (2018)](https://arxiv.org/abs/1805.12152), [Kaur et al. (2019)](https://arxiv.org/abs/1910.08640), [Engstrom et al. (2019)](https://arxiv.org/abs/1906.00945))
 generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et al. (2019)](https://arxiv.org/abs/1909.11764), [Bochkovskiy et al. (2020)](https://arxiv.org/abs/2004.10934)), 
 security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpanah et al. (2019)](https://arxiv.org/abs/1906.07153)). 
-We plan to extend the benchmark to other threat models in the future going beyond Lp-bounded perturbations.
+We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
 
-`AdvBench` consists from two parts: a website with the leaderboard, and a collection of robust models `model zoo`
+`AdvBench` consists from two parts: a website with the leaderboard, and a collection of robust models **Model Zoo**.
 The tutorial below shows what one can do with the `model_zoo`.
 
 
@@ -22,9 +22,10 @@ The tutorial below shows what one can do with the `model_zoo`.
 
 
 
+
 ## Adding a new model
-In order to add a new model, submit a pull request where you specify the following:
-- `model_claims/NameYearFirst-word-of-the-title.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
+In order to add a new model, submit a pull request where you specify the claim, model definition, and model checkpoint:
+- **Claim**: `model_claims/<Name><Year><FirstWordOfTheTitle>.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
 Here is an example from `model_info/Rice2020Overfitting.json`:
 ```python
 {
@@ -43,7 +44,8 @@ Here is an example from `model_info/Rice2020Overfitting.json`:
   "AA+": "53.35"
 }
 ```
-- `model_zoo/models.py`: add your model definition as a new class, for example:
+- **Model definition**: `model_zoo/models.py`: add your model definition as a new class. For standard architectures like `WideResNet` consider
+ inheriting the class defined in `wide_resnet.py`, `resnet.py`, `resnetv2.py`. For example:
 ```python
 class Rice2020OverfittingNet(WideResNet):
     def __init__(self, depth, widen_factor):
@@ -55,7 +57,8 @@ class Rice2020OverfittingNet(WideResNet):
         x = (x - self.mu) / self.sigma
         return super(Rice2020OverfittingNet, self).forward(x)
 ```
-And also add your gdrive-id:
+- **Model checkpoint**: `model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain the **gdrive-id** with your pytorch model so that it can
+be downloaded automatically:
 ```
     ('Rice2020Overfitting', {
         'model': Rice2020OverfittingNet(34, 20),
@@ -66,8 +69,11 @@ And also add your gdrive-id:
 
 
 ## Testing
-Run the following scripts to test the existing models
-- `python tests/test_clean_acc_fast.py`
-- `python tests/test_clean_acc_jsons.py`
+Run the following scripts to test the existing models from the **Model Zoo**:
+- `python tests/test_clean_acc_fast.py`: fast testing
+- `python tests/test_clean_acc_jsons.py`: 
 
+
+## Citation
+Our white paper about `AdvBench` is in preparation. Stay tuned!
 
