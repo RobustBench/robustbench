@@ -43,15 +43,18 @@ The goal of our **Model Zoo** is to simplify the usage of robust models as much 
 
 First install **`AdvBench`**:
 ```bash
-pip install -r requirements.txt
 git clone https://github.com/fra31/advbench && cd advbench
+pip install -r requirements.txt
 ```
-TODO: currently the repo is not publicly visible -- so maybe passing credentials would be necessary? TODO: and pip would be better.
+TODO: install should be done with pip ideally
+
+<!-- 
+!pip install -q git+https://github.com/fra31/advbench
+!pip install -q -r torch==1.4.0 requests 
+-->
 
 Main points:
 ```python
-!pip install -q git+https://github.com/fra31/advbench
-!pip install -q -r torch==1.4.0 requests
 from data import load_cifar10
 from utils import load_model, clean_accuracy
 
@@ -60,20 +63,31 @@ model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 
 acc = clean_accuracy(model=model, x=x_test, y=y_test, batch_size=128)
 print('Clean accuracy: {:.2%}'.format(acc))
+```
 
+The clean accuracy is alright. Great, then we have restored the model successfully!
+Now let's try to evaluate its robustness with [AutoAttack](https://arxiv.org/abs/2003.01690) from ICML'20 which we use
+for our standardized evaluation of Linf-robustness:
+```python
+from attacks import AutoAttack
+adversary = AutoAttack(forward_pass, norm='Linf', eps=epsilon, plus=False)
+x_adv = adversary.run_standard_evaluation(images, labels, bs=batch_size)
+```
 
-# TODO: set eps
-# TODO: add AutoAttack eval (the old version is fine for now)
+You can also easily plug in any existing library with adversarial attacks such as [FoolBox](https://github.com/bethgelab/foolbox):
+<!-- 
+!pip install -q foolbox 
+-->
 
-# Foolbox
-!pip install -q foolbox
-
+```python
 import foolbox as fb
 fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 
 _, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255])
 
 ```
+
+TODO: add also advertorch
 
 
 
@@ -146,5 +160,6 @@ default parameters or as parameters from the command line.
 
 
 ## Citation
-Our white paper about **`AdvBench`** is currently in preparation. Stay tuned!
+Would you like to refer to the **`AdvBench`** leaderboard? Or are you using models from the **Model Zoo*? \
+Then consider citing our white paper about **`AdvBench`** (currently in preparation, stay tuned).
 
