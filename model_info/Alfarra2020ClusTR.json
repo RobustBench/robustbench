@@ -1,7 +1,7 @@
 {
   "link": "https://arxiv.org/abs/2006.07682",
   "name": "ClusTR: Clustering Training for Robustness\n",
-  "authors": "Motasem Alfarra, Juan C. Pérez, Adel Bibi, Ali Thabet, Pablo Arbeláez, Bernard Ghanem",
+  "authors": "Motasem Alfarra, Juan C. Perez, Adel Bibi, Ali Thabet, Pablo Arbelaez, Bernard Ghanem",
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
