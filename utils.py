@@ -117,8 +117,8 @@ def list_available_models():
 
     json_dicts = sorted(json_dicts, key=lambda d: -d['AA+'])
     for json_dict in json_dicts:
-        print('- **[{}]({})**: {}, {}, robust accuracy {:.2%}'.format(
-            json_dict['model_name'], json_dict['link'], json_dict['name'], json_dict['venue'], json_dict['AA+']))
+        print('- **[{}]({})**: robust accuracy {:.2%}, {}, {}, {}'.format(
+            json_dict['model_name'], json_dict['link'], json_dict['AA+'], json_dict['venue'], json_dict['name'], json_dict['authors']))
 
 
 if __name__ == '__main__':

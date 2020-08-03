@@ -54,16 +54,7 @@ pip install -r requirements.txt
 ```
 TODO: [later] install should be done with pip ideally
 
-Now let's see how many models are available in the **Model Zoo**:
-```python
-from model_zoo.models import model_dicts
-models = model_dicts.keys()
-print('In total {} models: {}'.format(len(models), models))
--------
->>> In total 9 models: odict_keys(['Carmon2019Unlabeled', 'Sehwag2020Hydra', 'Wang2020Improving', 'Hendrycks2019Using', 'Rice2020Overfitting', 'Zhang2019Theoretically', 'Engstrom2019Robustness', 'Chen2020Adversarial', 'Huang2020Self'])
-```
-
-Let's try now to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
+Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
 that achieves 59.50% robust accuracy evaluated with AA+ under eps=8/255:
 ```python
 from data import load_cifar10
@@ -108,15 +99,15 @@ TODO: add also advertorch if it's not too long
 
 ## Model Zoo: list of models
 You can find the model definitions for all these models in `model_zoo/models.py`.
-- **[Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)**: Unlabeled Data Improves Adversarial Robustness, NeurIPS 2019, robust accuracy 59.50%
-- **[Sehwag2020Hydra](https://arxiv.org/abs/2002.10509)**: HYDRA: Pruning Adversarially Robust Neural Networks, Unpublished, robust accuracy 57.11%
-- **[Wang2020Improving](https://openreview.net/forum?id=rklOg6EFwS)**: Improving Adversarial Robustness Requires Revisiting Misclassified Examples, ICLR 2020, robust accuracy 56.26%
-- **[Hendrycks2019Using](https://arxiv.org/abs/1901.09960)**: Using Pre-Training Can Improve Model Robustness and Uncertainty, ICML 2019, robust accuracy 54.86%
-- **[Rice2020Overfitting](https://arxiv.org/abs/2002.11569)**: Overfitting in adversarially robust deep learning, ICML 2020, robust accuracy 53.35%
-- **[Huang2020Self](https://arxiv.org/abs/2002.10319)**: Self-Adaptive Training: beyond Empirical Risk Minimization, Unpublished, robust accuracy 53.29%
-- **[Zhang2019Theoretically](https://arxiv.org/abs/1901.08573)**: Theoretically Principled Trade-off between Robustness and Accuracy, ICML 2019, robust accuracy 53.04%
-- **[Chen2020Adversarial](https://arxiv.org/abs/2003.12862)**: Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning, CVPR 2020, robust accuracy 51.55%
-- **[Engstrom2019Robustness](https://github.com/MadryLab/robustness)**: Robustness library, Unpublished, robust accuracy 49.20%
+- **[Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)**: robust accuracy 59.50%, NeurIPS 2019, Unlabeled Data Improves Adversarial Robustness, Yair Carmon, Aditi Raghunathan, Ludwig Schmidt, Percy Liang, John C. Duchi
+- **[Sehwag2020Hydra](https://arxiv.org/abs/2002.10509)**: robust accuracy 57.11%, Unpublished, HYDRA: Pruning Adversarially Robust Neural Networks, Vikash Sehwag, Shiqi Wang, Prateek Mittal, Suman Jana
+- **[Wang2020Improving](https://openreview.net/forum?id=rklOg6EFwS)**: robust accuracy 56.26%, ICLR 2020, Improving Adversarial Robustness Requires Revisiting Misclassified Examples, Yisen Wang, Difan Zou, Jinfeng Yi, James Bailey, Xingjun Ma, Quanquan Gu
+- **[Hendrycks2019Using](https://arxiv.org/abs/1901.09960)**: robust accuracy 54.86%, ICML 2019, Using Pre-Training Can Improve Model Robustness and Uncertainty, Dan Hendrycks, Kimin Lee, Mantas Mazeika
+- **[Rice2020Overfitting](https://arxiv.org/abs/2002.11569)**: robust accuracy 53.35%, ICML 2020, Overfitting in adversarially robust deep learning, Leslie Rice, Eric Wong, J. Zico Kolter
+- **[Huang2020Self](https://arxiv.org/abs/2002.10319)**: robust accuracy 53.29%, Unpublished, Self-Adaptive Training: beyond Empirical Risk Minimization, Lang Huang, Chao Zhang, Hongyang Zhang
+- **[Zhang2019Theoretically](https://arxiv.org/abs/1901.08573)**: robust accuracy 53.04%, ICML 2019, Theoretically Principled Trade-off between Robustness and Accuracy, Hongyang Zhang, Yaodong Yu, Jiantao Jiao, Eric P. Xing, Laurent El Ghaoui, Michael I. Jordan
+- **[Chen2020Adversarial](https://arxiv.org/abs/2003.12862)**: robust accuracy 51.55%, CVPR 2020, Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning, Tianlong Chen, Sijia Liu, Shiyu Chang, Yu Cheng, Lisa Amini, Zhangyang Wang
+- **[Engstrom2019Robustness](https://github.com/MadryLab/robustness)**: robust accuracy 49.20%, Unpublished, Robustness library, Logan Engstrom, Andrew Ilyas, Shibani Santurkar, Dimitris Tsipras
 
 
 
