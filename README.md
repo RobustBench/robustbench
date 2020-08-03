@@ -89,6 +89,15 @@ adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False)
 adversary.cheap()
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
 ```
+```
+>>> initial accuracy: 92.00%
+>>> apgd-ce - 1/1 - 19 out of 46 successfully perturbed
+>>> robust accuracy after APGD-CE: 54.00% (total time 10.3 s)
+>>> apgd-dlr - 1/1 - 1 out of 27 successfully perturbed
+>>> robust accuracy after APGD-DLR: 52.00% (total time 17.0 s)
+>>> max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
+>>> robust accuracy: 52.00%
+```
 
 You can also easily plug in any existing library with adversarial attacks such as [FoolBox](https://github.com/bethgelab/foolbox):
 ```python
@@ -98,7 +107,7 @@ fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 _, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255])
 ```
 
-TODO: test the foolbox part (python 3.7 is needed for this)
+TODO: test the foolbox part (python 3.7 is needed for this), insert its output
 
 TODO: add also advertorch if it's not too long
 
