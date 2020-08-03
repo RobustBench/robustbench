@@ -13,7 +13,7 @@ We plan to extend the benchmark to other threat models in the future: first to o
 - a website with the leaderboard based on many recent papers (plots below 👇)
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
 
-<p align="center"><img src="images/aa_robustness_vs_venues.png" height="280">  <img src="images/aa_robustness_vs_years.png" height="260"></p>
+<p align="center"><img src="images/aa_robustness_vs_venues.png" height="260">  <img src="images/aa_robustness_vs_years.png" height="260"></p>
 <p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_clean.png" height="260"></p>
 
 
@@ -96,8 +96,9 @@ import foolbox as fb
 fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 
 _, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255])
-
 ```
+
+TODO: test the foolbox part (python 3.7 is needed for this)
 
 TODO: add also advertorch if it's not too long
 
