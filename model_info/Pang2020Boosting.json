@@ -6,10 +6,11 @@
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "",
-  "architecture": "WideResNet-34-10",
-  "eps": "0.031",
-  "clean_acc": "84.42",
-  "reported": "60.48",
-  "AA": "52.38",
-  "AA+": "52.14"
+  "architecture": "WideResNet-34-20",
+  "eps": "8/255",
+  "clean_acc": "85.14",
+  "reported": "",
+  "AA": "",
+  "AA+": "",
+  "AA_new": "53.74"
 }

@@ -1,4 +1,6 @@
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from collections import OrderedDict
 from model_zoo.wide_resnet import WideResNet
 from model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet
@@ -86,6 +88,30 @@ class Huang2020SelfNet(WideResNet):
         super(Huang2020SelfNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
+class Pang2020BoostingNet(WideResNet):
+    def __init__(self, depth=34, widen_factor=20):
+        super(Pang2020BoostingNet, self).__init__(depth=depth, widen_factor=widen_factor,
+            sub_block1=True, bias_last=False)
+        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
+        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        out = self.conv1(x)
+        out = self.block1(out)
+        out = self.block2(out)
+        out = self.block3(out)
+        out = self.relu(self.bn1(out))
+        out = F.avg_pool2d(out, 8)
+        out = out.view(-1, self.nChannels)
+        out = F.normalize(out, p=2, dim=1)
+        for _, module in self.fc.named_modules():
+            if isinstance(module, nn.Linear):
+                module.weight.data = F.normalize(module.weight, p=2, dim=1)
+        return self.fc(out)
+
+
+
 model_dicts = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -124,5 +150,9 @@ model_dicts = OrderedDict([
     ('Huang2020Self', {
         'model': Huang2020SelfNet,
         'gdrive_id': '1nInDeIyZe2G-mJFxQJ3UoclQNomWjMgm',
+    }),
+    ('Pang2020Boosting', {
+        'model': Pang2020BoostingNet,
+        'gdrive_id': '',
     }),
 ])

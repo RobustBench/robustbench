@@ -49,7 +49,7 @@ class NetworkBlock(nn.Module):
 
 class WideResNet(nn.Module):
     """ Based on code from https://github.com/yaodongyu/TRADES """
-    def __init__(self, depth=28, num_classes=10, widen_factor=10, sub_block1=False, dropRate=0.0):
+    def __init__(self, depth=28, num_classes=10, widen_factor=10, sub_block1=False, dropRate=0.0, bias_last=True):
         super(WideResNet, self).__init__()
         nChannels = [16, 16 * widen_factor, 32 * widen_factor, 64 * widen_factor]
         assert ((depth - 4) % 6 == 0)
@@ -70,7 +70,7 @@ class WideResNet(nn.Module):
         # global average pooling and classifier
         self.bn1 = nn.BatchNorm2d(nChannels[3])
         self.relu = nn.ReLU(inplace=True)
-        self.fc = nn.Linear(nChannels[3], num_classes)
+        self.fc = nn.Linear(nChannels[3], num_classes, bias=bias_last)
         self.nChannels = nChannels[3]
 
         for m in self.modules():
@@ -80,7 +80,7 @@ class WideResNet(nn.Module):
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()
-            elif isinstance(m, nn.Linear):
+            elif isinstance(m, nn.Linear) and not m.bias is None:
                 m.bias.data.zero_()
 
     def forward(self, x):
