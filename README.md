@@ -1,4 +1,4 @@
-# AdvBench: tracking the progress in adversarial robustness.
+# AdvBench: tracking the progress in adversarial robustness
 
 
 
@@ -12,6 +12,7 @@ We plan to extend the benchmark to other threat models in the future: first to o
 **`AdvBench`** consists of two parts: 
 - a website with the leaderboard
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below 👇)
+
 
 
 ## FAQ
@@ -47,19 +48,17 @@ First install **`AdvBench`**:
 git clone https://github.com/fra31/advbench && cd advbench
 pip install -r requirements.txt
 ```
-TODO: install should be done with pip ideally
-
-<!-- 
-!pip install -q git+https://github.com/fra31/advbench
-!pip install -q -r torch==1.4.0 requests 
--->
+TODO: [later] install should be done with pip ideally
 
 First, let's see how many models are there:
 ```python
-
+from model_zoo.models import model_dicts
+models = model_dicts.keys()
+print(models)
+>>> odict_keys(['Carmon2019Unlabeled', 'Sehwag2020Hydra', 'Wang2020Improving', 'Hendrycks2019Using', 'Rice2020Overfitting', 'Zhang2019Theoretically', 'Engstrom2019Robustness', 'Chen2020Adversarial', 'Huang2020Self'])
 ```
 
-Now
+Now let's try to restore the most robust model in the **Model Zoo**:
 ```python
 from data import load_cifar10
 from utils import load_model, clean_accuracy
@@ -69,7 +68,9 @@ model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 
 acc = clean_accuracy(model=model, x=x_test, y=y_test, batch_size=128)
 print('Clean accuracy: {:.2%}'.format(acc))
+>>> 
 ```
+TODO: finish (also fill in the notebook in parallel)
 
 The clean accuracy is alright. Great, then we have restored the model successfully! \
 Now let's try to evaluate its robustness with [AutoAttack](https://arxiv.org/abs/2003.01690) from ICML'20 which we use
@@ -169,3 +170,7 @@ default parameters or as parameters from the command line.
 Would you like to refer to the **`AdvBench`** leaderboard? Or are you using models from the **Model Zoo*? \
 Then consider citing our white paper about **`AdvBench`** (currently in preparation, stay tuned).
 
+
+## Contact 
+Feel free to contact us about anything related to **`AdvBench`** by creating an issue, a pull request or 
+by email at `adversarial.benchmark@gmail.com`.
