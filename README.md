@@ -10,11 +10,11 @@ We start from benchmarking the Linf-robustness since it is the most studied sett
 We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
 
 **`AdvBench`** consists of two parts: 
-- a website with the leaderboard based on many recent papers (plot below 👇)
+- a website with the leaderboard based on many recent papers (plots below 👇)
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
 
-<p align="center"><img src="images/aa_robustness_vs_venues.png" height="260">  <img src="images/aa_robustness_vs_years.png" height="260"></p>
-<p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">    <img src="images/aa_robustness_vs_clean.png" height="260"></p>
+<p align="center"><img src="images/aa_robustness_vs_venues.png" height="280">  <img src="images/aa_robustness_vs_years.png" height="260"></p>
+<p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_clean.png" height="260"></p>
 
 
 
