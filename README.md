@@ -10,10 +10,10 @@ We start from benchmarking the Linf-robustness since it is the most studied sett
 We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
 
 **`AdvBench`** consists of two parts: 
-- a website with the leaderboard based on many recent papers
-- a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below 👇)
+- a website with the leaderboard based on many recent papers (plot below 👇)
+- a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
 
-<p align="center"><img src="images/aa_robustness_vs_venues.png" width="450"></p>
+<p align="center"><img src="images/aa_robustness_vs_venues.png" width="350"></p><p align="center"><img src="images/aa_robustness_vs_venues.png" width="350"></p>
 
 
 
@@ -42,7 +42,6 @@ See also [this twitter thread](https://twitter.com/SebastienBubeck/status/128428
 
 
 
-
 ## Model Zoo: quick tour
 The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible.
 Check out our notebook here 👉 `notebooks/quick_start.ipynb` for a quick start. It is also summarized below 👇.
@@ -64,31 +63,33 @@ print('In total {} models: {}'.format(len(models), models))
 >>> In total 9 models: odict_keys(['Carmon2019Unlabeled', 'Sehwag2020Hydra', 'Wang2020Improving', 'Hendrycks2019Using', 'Rice2020Overfitting', 'Zhang2019Theoretically', 'Engstrom2019Robustness', 'Chen2020Adversarial', 'Huang2020Self'])
 ```
 
-Now let's try to restore the most robust model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.50% evaluated with AA+:
+Let's try now to restore the most robust model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.50% evaluated with AA+:
 ```python
 from data import load_cifar10
 from utils import load_model, clean_accuracy
 
-x_test, y_test = load_cifar10(n_examples=100)
+x_test, y_test = load_cifar10(n_examples=50)
 model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 
-acc = clean_accuracy(model=model, x=x_test, y=y_test, batch_size=128)
+acc = clean_accuracy(model=model, x=x_test, y=y_test)
 print('Clean accuracy: {:.2%}'.format(acc))
 ```
 ```
 >>> Clean accuracy: 89.00%
 ```
-89% clean accuracy is quite reasonable which means that we have restored the model successfully! \
-Now let's try to evaluate its robustness with [AutoAttack](https://arxiv.org/abs/2003.01690) from ICML'20 which we use
-for our standardized evaluation of Linf-robustness:
+
+92% clean accuracy is quite reasonable which means that we have restored the model successfully!
+
+Now let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from 
+ICML'20 (we use the full version of AutoAttack for our standardized evaluation of Linf-robustness):
 ```python
 from attacks.autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False)
+adversary.cheap()
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
 ```
 
 You can also easily plug in any existing library with adversarial attacks such as [FoolBox](https://github.com/bethgelab/foolbox):
-
 ```python
 import foolbox as fb
 fmodel = fb.PyTorchModel(model, bounds=(0, 1))
