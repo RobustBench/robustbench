@@ -11,8 +11,9 @@ We plan to extend the benchmark to other threat models in the future: first to o
 
 **`AdvBench`** consists of two parts: 
 - a website with the leaderboard based on many recent papers
-<p align="center"><img src="images/aa_robustness_vs_venues.png" width="450"></p>
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below 👇)
+
+<p align="center"><img src="images/aa_robustness_vs_venues.png" width="300"></p>
 
 
 ## FAQ
@@ -37,6 +38,7 @@ See also [this twitter thread](https://twitter.com/SebastienBubeck/status/128428
 
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
 **A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
+
 
 
 
