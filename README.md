@@ -59,8 +59,8 @@ Now let's see how many models are available in the **Model Zoo**:
 from model_zoo.models import model_dicts
 models = model_dicts.keys()
 print('In total {} models: {}'.format(len(models), models))
->>> In total 9 models: odict_keys(['Carmon2019Unlabeled', 'Sehwag2020Hydra', 'Wang2020Improving', 'Hendrycks2019Using', 'Rice2020Overfitting', 'Zhang2019Theoretically', 'Engstrom2019Robustness', 'Chen2020Adversarial', 'Huang2020Self'])
-```
+``` 
+`>>> In total 9 models: odict_keys(['Carmon2019Unlabeled', 'Sehwag2020Hydra', 'Wang2020Improving', 'Hendrycks2019Using', 'Rice2020Overfitting', 'Zhang2019Theoretically', 'Engstrom2019Robustness', 'Chen2020Adversarial', 'Huang2020Self'])`
 
 Let's try now to restore the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.50% evaluated with AA+:
 ```python
@@ -72,8 +72,8 @@ model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 
 acc = clean_accuracy(model=model, x=x_test, y=y_test)
 print('Clean accuracy: {:.2%}'.format(acc))
->>> Clean accuracy: 89.00%
 ```
+`>>> Clean accuracy: 89.00%`
 
 92% clean accuracy is quite reasonable which means that we have restored the model successfully!
 
@@ -84,14 +84,15 @@ from attacks.autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False, attacks_to_run=['apgd-ce', 'apgd-dlr'])
 adversary.cheap()
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
->>> initial accuracy: 92.00%
->>> apgd-ce - 1/1 - 19 out of 46 successfully perturbed
->>> robust accuracy after APGD-CE: 54.00% (total time 10.3 s)
->>> apgd-dlr - 1/1 - 1 out of 27 successfully perturbed
->>> robust accuracy after APGD-DLR: 52.00% (total time 17.0 s)
->>> max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
->>> robust accuracy: 52.00%
 ```
+`>>> initial accuracy: 92.00%`\
+`>>> apgd-ce - 1/1 - 19 out of 46 successfully perturbed`\
+`>>> robust accuracy after APGD-CE: 54.00% (total time 10.3 s)`\
+`>>> apgd-dlr - 1/1 - 1 out of 27 successfully perturbed`\
+`>>> robust accuracy after APGD-DLR: 52.00% (total time 17.0 s)`\
+`>>> max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000`\
+`>>> robust accuracy: 52.00%`
+
 Note that for our standardized evaluation of Linf-robustness we use the *full* version of AutoAttack which is slower but 
 more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False)`).
 
