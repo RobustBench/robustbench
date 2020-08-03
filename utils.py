@@ -1,4 +1,5 @@
 import os
+import json
 import math
 import requests
 import torch
@@ -53,7 +54,7 @@ def rm_substr_from_state_dict(state_dict, substr):
 def load_model(model_name, model_dir='./models'):
     if not isinstance(model_dicts[model_name]['gdrive_id'], list):
         model_path = '{}/{}.pt'.format(model_dir, model_name)
-        model = model_dicts[model_name]['model']
+        model = model_dicts[model_name]['model']()
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
         if not os.path.isfile(model_path):
@@ -69,9 +70,10 @@ def load_model(model_name, model_dir='./models'):
         model.load_state_dict(state_dict)
         return model.cuda().eval()
 
+    # If we have an ensemble of models (e.g., Chen2020Adversarial)
     else:
         model_path = '{}/{}'.format(model_dir, model_name)
-        model = model_dicts[model_name]['model']
+        model = model_dicts[model_name]['model']()
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
         for i, gid in enumerate(model_dicts[model_name]['gdrive_id']):
@@ -99,4 +101,26 @@ def clean_accuracy(model, x, y, batch_size=100):
             acc += (output.max(1)[1] == y_curr).float().sum()
 
     return acc.item() / x.shape[0]
+
+
+def list_available_models():
+    models = model_dicts.keys()
+
+    json_dicts = []
+    for model_name in models:
+        with open('./model_info/{}.json'.format(model_name), 'r') as model_info:
+            json_dict = json.load(model_info)
+        json_dict['model_name'] = model_name
+        json_dict['venue'] = 'Unpublished' if json_dict['venue'] == '' else json_dict['venue']
+        json_dict['AA+'] = float(json_dict['AA+']) / 100
+        json_dicts.append(json_dict)
+
+    json_dicts = sorted(json_dicts, key=lambda d: -d['AA+'])
+    for json_dict in json_dicts:
+        print('- **[{}]({})**: {}, {}, robust accuracy {:.2%}'.format(
+            json_dict['model_name'], json_dict['link'], json_dict['name'], json_dict['venue'], json_dict['AA+']))
+
+
+if __name__ == '__main__':
+    list_available_models()
 

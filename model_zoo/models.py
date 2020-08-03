@@ -5,22 +5,22 @@ from model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNe
 
 
 class Carmon2019UnlabeledNet(WideResNet):
-    def __init__(self, depth, widen_factor):
+    def __init__(self, depth=28, widen_factor=10):
         super(Carmon2019UnlabeledNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
 class Sehwag2020PruningNet(WideResNet):
-    def __init__(self, depth, widen_factor):
+    def __init__(self, depth=28, widen_factor=10):
         super(Sehwag2020PruningNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
 class Wang2020ImprovingNet(WideResNet):
-    def __init__(self, depth, widen_factor):
+    def __init__(self, depth=28, widen_factor=10):
         super(Wang2020ImprovingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
 class Hendrycks2019UsingNet(WideResNet):
-    def __init__(self, depth, widen_factor):
+    def __init__(self, depth=28, widen_factor=10):
         super(Hendrycks2019UsingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
     def forward(self, x):
@@ -29,7 +29,7 @@ class Hendrycks2019UsingNet(WideResNet):
 
 
 class Rice2020OverfittingNet(WideResNet):
-    def __init__(self, depth, widen_factor):
+    def __init__(self, depth=34, widen_factor=20):
         super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
         self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
         self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
@@ -40,7 +40,7 @@ class Rice2020OverfittingNet(WideResNet):
 
 
 class Zhang2019TheoreticallyNet(WideResNet):
-    def __init__(self, depth, widen_factor):
+    def __init__(self, depth=34, widen_factor=10):
         super(Zhang2019TheoreticallyNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
@@ -82,47 +82,47 @@ class Chen2020AdversarialNet(torch.nn.Module):
 
 
 class Huang2020SelfNet(WideResNet):
-    def __init__(self, depth, widen_factor):
+    def __init__(self, depth=34, widen_factor=10):
         super(Huang2020SelfNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
 model_dicts = OrderedDict([
     ('Carmon2019Unlabeled', {
-        'model': Carmon2019UnlabeledNet(28, 10),
+        'model': Carmon2019UnlabeledNet,
         'gdrive_id': '15tUx-gkZMYx7BfEOw1GY5OKC-jECIsPQ',
     }),
     ('Sehwag2020Hydra', {
-        'model': Sehwag2020PruningNet(28, 10),
+        'model': Sehwag2020PruningNet,
         'gdrive_id': '1pi8GHwAVkxVH41hEnf0IAJb_7y-Q8a2Y',
     }),
     ('Wang2020Improving', {
-        'model': Wang2020ImprovingNet(28, 10),
+        'model': Wang2020ImprovingNet,
         'gdrive_id': '1T939mU4kXYt5bbvM55aT4fLBvRhyzjiQ',
     }),
     ('Hendrycks2019Using', {
-        'model': Hendrycks2019UsingNet(28, 10),
+        'model': Hendrycks2019UsingNet,
         'gdrive_id': '1-DcJsYw2dNEOyF9epks2QS7r9nqBDEsw',
     }),
     ('Rice2020Overfitting', {
-        'model': Rice2020OverfittingNet(34, 20),
+        'model': Rice2020OverfittingNet,
         'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
     }),
     ('Zhang2019Theoretically', {
-        'model': Zhang2019TheoreticallyNet(34, 10),
+        'model': Zhang2019TheoreticallyNet,
         'gdrive_id': '1hPz9QQwyM7QSuWu-ANG_uXR-29xtL8t_',
     }),
     ('Engstrom2019Robustness', {
-        'model': Engstrom2019RobustnessNet(),
+        'model': Engstrom2019RobustnessNet,
         'gdrive_id': '1etqmQsksNIWBvBQ4r8ZFk_3FJlLWr8Rr',
     }),
     ('Chen2020Adversarial', {
-        'model': Chen2020AdversarialNet(),
+        'model': Chen2020AdversarialNet,
         'gdrive_id': ['1HrG22y_A9F0hKHhh2cLLvKxsQTJTLE_y',
                       '1DB2ymt0rMnsMk5hTuUzoMTpMKEKWpExd',
                       '1GfgzNZcC190-IrT7056IZFDB6LfMUL9m'],
     }),
     ('Huang2020Self', {
-        'model': Huang2020SelfNet(34, 10),
+        'model': Huang2020SelfNet,
         'gdrive_id': '1nInDeIyZe2G-mJFxQJ3UoclQNomWjMgm',
     }),
 ])

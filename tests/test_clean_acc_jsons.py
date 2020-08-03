@@ -20,9 +20,9 @@ if __name__ == '__main__':
 
         acc = clean_accuracy(model, x_test, y_test, batch_size=args.batch_size)
         with open('./model_info/{}.json'.format(model_name), 'r') as model_info:
-            data = json.load(model_info)
+            json_dict = json.load(model_info)
 
-        success = round(acc * 100., 2) == float(data['clean_acc'])
+        success = round(acc * 100., 2) == float(json_dict['clean_acc'])
         n_tests_passed += success
         print('{}: clean accuracy {:.2%}, test passed: {}'.format(model_name, acc, success))
 

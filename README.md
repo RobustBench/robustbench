@@ -63,21 +63,15 @@ print('In total {} models: {}'.format(len(models), models))
 >>> In total 9 models: odict_keys(['Carmon2019Unlabeled', 'Sehwag2020Hydra', 'Wang2020Improving', 'Hendrycks2019Using', 'Rice2020Overfitting', 'Zhang2019Theoretically', 'Engstrom2019Robustness', 'Chen2020Adversarial', 'Huang2020Self'])
 ```
 
-Let's try now to restore the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.50% evaluated with AA+:
+Let's try now to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
+that achieves 59.50% robust accuracy evaluated with AA+ under eps=8/255:
 ```python
 from data import load_cifar10
-from utils import load_model, clean_accuracy
-
 x_test, y_test = load_cifar10(n_examples=50)
+
+from utils import load_model
 model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
-
-acc = clean_accuracy(model=model, x=x_test, y=y_test)
-print('Clean accuracy: {:.2%}'.format(acc))
--------
->>> Clean accuracy: 89.00%
 ```
-
-92% clean accuracy is quite reasonable which means that we have restored the model successfully!
 
 Now let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from 
 ICML'20 with 2/4 attacks (only A-PGD-CE and A-PGD-DLR):
@@ -109,6 +103,20 @@ _, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255]
 TODO: test the foolbox part (python 3.7 is needed for this), insert its output
 
 TODO: add also advertorch if it's not too long
+
+
+
+## Model Zoo: list of models
+You can find the model definitions for all these models in `model_zoo/models.py`.
+- **[Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)**: Unlabeled Data Improves Adversarial Robustness, NeurIPS 2019, robust accuracy 59.50%
+- **[Sehwag2020Hydra](https://arxiv.org/abs/2002.10509)**: HYDRA: Pruning Adversarially Robust Neural Networks, Unpublished, robust accuracy 57.11%
+- **[Wang2020Improving](https://openreview.net/forum?id=rklOg6EFwS)**: Improving Adversarial Robustness Requires Revisiting Misclassified Examples, ICLR 2020, robust accuracy 56.26%
+- **[Hendrycks2019Using](https://arxiv.org/abs/1901.09960)**: Using Pre-Training Can Improve Model Robustness and Uncertainty, ICML 2019, robust accuracy 54.86%
+- **[Rice2020Overfitting](https://arxiv.org/abs/2002.11569)**: Overfitting in adversarially robust deep learning, ICML 2020, robust accuracy 53.35%
+- **[Huang2020Self](https://arxiv.org/abs/2002.10319)**: Self-Adaptive Training: beyond Empirical Risk Minimization, Unpublished, robust accuracy 53.29%
+- **[Zhang2019Theoretically](https://arxiv.org/abs/1901.08573)**: Theoretically Principled Trade-off between Robustness and Accuracy, ICML 2019, robust accuracy 53.04%
+- **[Chen2020Adversarial](https://arxiv.org/abs/2003.12862)**: Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning, CVPR 2020, robust accuracy 51.55%
+- **[Engstrom2019Robustness](https://github.com/MadryLab/robustness)**: Robustness library, Unpublished, robust accuracy 49.20%
 
 
 
