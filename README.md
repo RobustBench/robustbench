@@ -13,7 +13,7 @@ We plan to extend the benchmark to other threat models in the future: first to o
 - a website with the leaderboard based on many recent papers (plot below 👇)
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
 
-<p align="center"><img src="images/aa_robustness_vs_venues.png" width="350"></p><p align="center"><img src="images/aa_robustness_vs_venues.png" width="350"></p>
+<p align="center"><img src="images/aa_robustness_vs_venues.png" width="350"><img src="images/aa_robustness_vs_venues.png" width="350"></p>
 
 
 
