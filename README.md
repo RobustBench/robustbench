@@ -13,7 +13,7 @@ We plan to extend the benchmark to other threat models in the future: first to o
 - a website with the leaderboard based on many recent papers (plots below 👇)
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
 
-<p align="center"><img src="images/aa_robustness_vs_venues.png" height="260">  <img src="images/aa_robustness_vs_years.png" height="260"></p>
+<p align="center"><img src="images/aa_robustness_vs_venues.png" height="275">  <img src="images/aa_robustness_vs_years.png" height="275"></p>
 <p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_clean.png" height="260"></p>
 
 
@@ -135,8 +135,8 @@ Here is an example from `model_info/Rice2020Overfitting.json`:
 }
 ```
 
-- **Model definition**: `model_zoo/models.py`: add your model definition as a new class. For standard architectures like `WideResNet` consider
- inheriting the class defined in `wide_resnet.py`, `resnet.py`, `resnetv2.py`. For example:
+- **Model definition**: `model_zoo/models.py`: add your model definition as a new class. For standard architectures (e.g., `WideResNet`) consider
+ inheriting the class defined in `wide_resnet.py` or `resnet.py`. For example:
 ```python
 class Rice2020OverfittingNet(WideResNet):
     def __init__(self, depth, widen_factor):
@@ -150,7 +150,7 @@ class Rice2020OverfittingNet(WideResNet):
 ```
 
 - **Model checkpoint**: `model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain 
-the *Google Drive ID* with your pytorch model so that it can be downloaded automatically:
+the *Google Drive ID* with your pytorch model so that it can be downloaded automatically from Google Drive:
 ```
     ('Rice2020Overfitting', {
         'model': Rice2020OverfittingNet(34, 20),
