@@ -59,12 +59,10 @@ Now let's see how many models are available in the **Model Zoo**:
 from model_zoo.models import model_dicts
 models = model_dicts.keys()
 print('In total {} models: {}'.format(len(models), models))
-```
-```
 >>> In total 9 models: odict_keys(['Carmon2019Unlabeled', 'Sehwag2020Hydra', 'Wang2020Improving', 'Hendrycks2019Using', 'Rice2020Overfitting', 'Zhang2019Theoretically', 'Engstrom2019Robustness', 'Chen2020Adversarial', 'Huang2020Self'])
 ```
 
-Let's try now to restore the most robust model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.50% evaluated with AA+:
+Let's try now to restore the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.50% evaluated with AA+:
 ```python
 from data import load_cifar10
 from utils import load_model, clean_accuracy
@@ -74,8 +72,6 @@ model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 
 acc = clean_accuracy(model=model, x=x_test, y=y_test)
 print('Clean accuracy: {:.2%}'.format(acc))
-```
-```
 >>> Clean accuracy: 89.00%
 ```
 
@@ -88,8 +84,6 @@ from attacks.autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False, attacks_to_run=['apgd-ce', 'apgd-dlr'])
 adversary.cheap()
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
-```
-```
 >>> initial accuracy: 92.00%
 >>> apgd-ce - 1/1 - 19 out of 46 successfully perturbed
 >>> robust accuracy after APGD-CE: 54.00% (total time 10.3 s)
