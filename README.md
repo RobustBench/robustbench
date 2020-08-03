@@ -1,4 +1,4 @@
-# AdvBench: tracking the progress in adversarial robustness
+# 📈AdvBench: tracking the progress in adversarial robustness
 
 
 
@@ -68,7 +68,7 @@ model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 
 acc = clean_accuracy(model=model, x=x_test, y=y_test, batch_size=128)
 print('Clean accuracy: {:.2%}'.format(acc))
->>> 
+>>> Clean accuracy: 89.00%
 ```
 TODO: finish (also fill in the notebook in parallel)
 
