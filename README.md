@@ -82,10 +82,10 @@ print('Clean accuracy: {:.2%}'.format(acc))
 92% clean accuracy is quite reasonable which means that we have restored the model successfully!
 
 Now let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from 
-ICML'20 (we use the full version of AutoAttack for our standardized evaluation of Linf-robustness):
+ICML'20 with 2/4 attacks (only A-PGD-CE and A-PGD-DLR):
 ```python
 from attacks.autoattack import AutoAttack
-adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False)
+adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False, attacks_to_run=['apgd-ce', 'apgd-dlr'])
 adversary.cheap()
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
 ```
@@ -98,6 +98,8 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)
 >>> max Linf perturbation: 0.03137, nan in tensor: 0, max: 1.00000, min: 0.00000
 >>> robust accuracy: 52.00%
 ```
+Note that for our standardized evaluation of Linf-robustness we use the *full* version of AutoAttack which is slower but 
+more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255, plus=False)`).
 
 You can also easily plug in any existing library with adversarial attacks such as [FoolBox](https://github.com/bethgelab/foolbox):
 ```python
