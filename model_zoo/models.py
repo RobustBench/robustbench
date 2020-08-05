@@ -153,6 +153,6 @@ model_dicts = OrderedDict([
     }),
     ('Pang2020Boosting', {
         'model': Pang2020BoostingNet,
-        'gdrive_id': '',
+        'gdrive_id': '1iNWOj3MP7kGe8yTAS4XnDaDXDLt0mwqw',
     }),
 ])
