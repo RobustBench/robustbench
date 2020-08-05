@@ -1,5 +1,5 @@
 import argparse
-from attacks.autoattack import AutoAttack
+#from attacks.autoattack import AutoAttack
 from utils import load_model, clean_accuracy
 from data import load_cifar10
 
@@ -25,5 +25,5 @@ if __name__ == '__main__':
     acc = clean_accuracy(model, x_test, y_test, batch_size=args.batch_size)
     print('Clean accuracy: {:.2%}'.format(acc))
 
-    adversary = AutoAttack(model, norm='Linf', eps=8 / 255, plus=False)
+    adversary = AutoAttack(model, norm='Linf', eps=8 / 255, version='standard')
     x_adv = adversary.run_standard_evaluation(x_test, y_test)

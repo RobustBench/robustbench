@@ -5,60 +5,61 @@ from torch.autograd import Variable
 import numpy as np
 import argparse
 import time
-import attacks.other_utils as utils
+import other_utils as utils
 
 class AutoAttack():
     def __init__(self, model, norm='Linf', eps=.3, seed=None, verbose=True,
-                 attacks_to_run=['apgd-ce', 'apgd-dlr', 'fab', 'square'],
-                 plus=False, is_tf_model=False, device='cuda', log_path=None):
+                 attacks_to_run=[], version='standard', is_tf_model=False,
+                 device='cuda', log_path=None):
         self.model = model
         self.norm = norm
         assert norm in ['Linf', 'L2']
         self.epsilon = eps
         self.seed = seed
         self.verbose = verbose
-        if plus:
-            attacks_to_run.extend(['apgd-t', 'fab-t'])
         self.attacks_to_run = attacks_to_run
-        self.plus = plus
+        self.version = version
         self.is_tf_model = is_tf_model
         self.device = device
         self.logger = utils.Logger(log_path)
         
         if not self.is_tf_model:
-            from attacks.autopgd_pt import APGDAttack
+            from autopgd_pt import APGDAttack
             self.apgd = APGDAttack(self.model, n_restarts=5, n_iter=100, verbose=False,
                 eps=self.epsilon, norm=self.norm, eot_iter=1, rho=.75, seed=self.seed, device=self.device)
             
-            from attacks.fab_pt import FABAttack
+            from fab_pt import FABAttack
             self.fab = FABAttack(self.model, n_restarts=5, n_iter=100, eps=self.epsilon, seed=self.seed,
                 norm=self.norm, verbose=False, device=self.device)
         
-            from attacks.square import SquareAttack
+            from square import SquareAttack
             self.square = SquareAttack(self.model, p_init=.8, n_queries=5000, eps=self.epsilon, norm=self.norm,
                 n_restarts=1, seed=self.seed, verbose=False, device=self.device, resc_schedule=False)
                 
-            from attacks.autopgd_pt import APGDAttack_targeted
+            from autopgd_pt import APGDAttack_targeted
             self.apgd_targeted = APGDAttack_targeted(self.model, n_restarts=1, n_iter=100, verbose=False,
                 eps=self.epsilon, norm=self.norm, eot_iter=1, rho=.75, seed=self.seed, device=self.device)
     
         else:
-            from attacks.autopgd_tf import APGDAttack
+            from autopgd_tf import APGDAttack
             self.apgd = APGDAttack(self.model, n_restarts=5, n_iter=100, verbose=False,
                 eps=self.epsilon, norm=self.norm, eot_iter=1, rho=.75, seed=self.seed, device=self.device)
             
-            from attacks.fab_tf import FABAttack
+            from fab_tf import FABAttack
             self.fab = FABAttack(self.model, n_restarts=5, n_iter=100, eps=self.epsilon, seed=self.seed,
                 norm=self.norm, verbose=False, device=self.device)
         
-            from attacks.square import SquareAttack
+            from square import SquareAttack
             self.square = SquareAttack(self.model.predict, p_init=.8, n_queries=5000, eps=self.epsilon, norm=self.norm,
                 n_restarts=1, seed=self.seed, verbose=False, device=self.device, resc_schedule=False)
                 
-            from attacks.autopgd_tf import APGDAttack_targeted
+            from autopgd_tf import APGDAttack_targeted
             self.apgd_targeted = APGDAttack_targeted(self.model, n_restarts=1, n_iter=100, verbose=False,
                 eps=self.epsilon, norm=self.norm, eot_iter=1, rho=.75, seed=self.seed, device=self.device)
     
+        if version in ['standard', 'plus']:
+            self.set_version(version)
+        
     def get_logits(self, x):
         if not self.is_tf_model:
             return self.model(x)
@@ -69,12 +70,9 @@ class AutoAttack():
         return time.time() if self.seed is None else self.seed
     
     def run_standard_evaluation(self, x_orig, y_orig, bs=250):
-        # update attacks list if plus activated or after initialization
-        if self.plus:
-            if not 'apgd-t' in self.attacks_to_run:
-                self.attacks_to_run.extend(['apgd-t'])
-            if not 'fab-t' in self.attacks_to_run:
-                self.attacks_to_run.extend(['fab-t'])
+        if self.verbose:
+            print('using {} version including {}'.format(self.version,
+                ', '.join(self.attacks_to_run)))
         
         with torch.no_grad():
             # calculate accuracy
@@ -207,16 +205,12 @@ class AutoAttack():
         return acc.item() / x_orig.shape[0]
         
     def run_standard_evaluation_individual(self, x_orig, y_orig, bs=250):
-        # update attacks list if plus activated after initialization
-        if self.plus:
-            if not 'apgd-t' in self.attacks_to_run:
-                self.attacks_to_run.extend(['apgd-t'])
-            if not 'fab-t' in self.attacks_to_run:
-                self.attacks_to_run.extend(['fab-t'])
+        if self.verbose:
+            print('using {} version including {}'.format(self.version,
+                ', '.join(self.attacks_to_run)))
         
         l_attacks = self.attacks_to_run
         adv = {}
-        self.plus = False
         verbose_indiv = self.verbose
         self.verbose = False
         
@@ -232,11 +226,22 @@ class AutoAttack():
         
         return adv
         
-    def cheap(self):
-        self.apgd.n_restarts = 1
-        self.fab.n_restarts = 1
-        self.apgd_targeted.n_restarts = 1
-        self.square.n_queries = 1000
-        self.square.resc_schedule = True
-        self.plus = False
+    def set_version(self, version='standard'):
+        if version == 'standard':
+            self.attacks_to_run = ['apgd-ce', 'apgd-t', 'fab-t', 'square']
+            self.apgd.n_restarts = 1
+            self.fab.n_restarts = 1
+            self.apgd_targeted.n_restarts = 1
+            self.fab.n_target_classes = 9
+            self.apgd_targeted.n_target_classes = 9
+            self.square.n_queries = 5000
+        
+        elif version == 'plus':
+            self.attacks_to_run = ['apgd-ce', 'apgd-dlr', 'fab', 'square', 'apgd-t', 'fab-t']
+            self.apgd.n_restarts = 5
+            self.fab.n_restarts = 5
+            self.apgd_targeted.n_restarts = 1
+            self.fab.n_target_classes = 9
+            self.apgd_targeted.n_target_classes = 9
+            self.square.n_queries = 5000
 

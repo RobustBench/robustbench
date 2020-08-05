@@ -100,6 +100,22 @@ class ModelAdapter():
 
         return logits, dlr_target, grad_target
     
+    @tf.function
+    @tf.autograph.experimental.do_not_convert
+    def __get_grad_diff_logits_target(self, x, la, la_target):
+        with tf.GradientTape(watch_accessed_variables=False) as g:
+            g.watch(x)
+            logits = self.__get_logits(x)
+            l = [None] * x.shape[0]
+            for c in range(x.shape[0]):
+                l[c] = logits[c, la_target[c]] - logits[c, la[c]]
+            
+            difflogits = tf.stack(l)
+    
+        g2 = g.gradient(difflogits, x)
+        
+        return difflogits, g2
+    
     def predict(self, x):
 
         x2 = tf.convert_to_tensor(x.cpu().numpy(), dtype=tf.float32)
@@ -128,15 +144,8 @@ class ModelAdapter():
         la = y.cpu().numpy()
         la_target = y_target.cpu().numpy()
         
-        with tf.GradientTape(watch_accessed_variables=False) as g:
-            g.watch(x2)
-            logits = self.__get_logits(x2)
-            l = [None] * x2.shape[0]
-            for c in range(x2.shape[0]):
-                l[c] = logits[c, la_target[c]] - logits[c, la[c]]
-            difflogits = tf.stack(l)
+        difflogits, g2 = self.__get_grad_diff_logits_target(x2, la, la_target)
             
-        g2 = g.gradient(difflogits, x2)
         if self.data_format == 'channels_last':
             g2 = tf.transpose(g2, perm=[0, 3, 1, 2])
         
