@@ -7,7 +7,8 @@ The goal of **`AdvBench`** is to systematically track the *real* progress in adv
 There are already [more than 2'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
 on this topic, but it is still unclear which approaches *really* work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
 We start from benchmarking the Linf-robustness since it is the most studied setting in the literature. 
-We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets.
+We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets 
+(Wasserstein perturbations, common corruptions, etc).
 
 **`AdvBench`** consists of two parts: 
 - a website with the leaderboard based on many recent papers (plots below 👇)
@@ -15,6 +16,10 @@ We plan to extend the benchmark to other threat models in the future: first to o
 
 <p align="center"><img src="images/aa_robustness_vs_venues.png" height="275">  <img src="images/aa_robustness_vs_years.png" height="275"></p>
 <p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_clean.png" height="260"></p>
+
+Robustness evaluation *in general* is not straightforward and requires adaptive attacks [Tramer et al., 2020](https://arxiv.org/abs/2002.08347).
+Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
+**In particular, we accept only defenses that do not contain (1) randomness and (2) an optimization loop during the forward pass.**
 
 
 
@@ -27,8 +32,6 @@ are great but very time consuming and not standardized.
 **A**: These libraries provide implementations of different *attacks*. Besides the standardized benchmark, **`AdvBench`** 
 additionally provides a repository of the most robust models. So you can start using the
 robust models in one line of code (see the tutorial below 👇).
-In other words, our **Model Zoo** is like [🤗 Transformers](https://github.com/huggingface/transformers) but 
-for adversarial robustness.
 
 **Q**: I've heard that Lp-robustness is boring. Why would you even evaluate Lp-robustness in 2020? 🤔 \
 **A**: There are numerous interesting applications of Lp-robustness that span 
