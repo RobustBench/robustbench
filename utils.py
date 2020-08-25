@@ -120,7 +120,7 @@ def list_available_models():
     print('| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |')
     print('|:---:|---|---|:---:|:---:|:---:|:---:|')
     for i, json_dict in enumerate(json_dicts):
-        print('| **{}** | **{}** | *[{}]({})* | {:.2%} | {:.2%} | {} | {} |'.format(
+        print('| **{}** | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | {:.2%} | {:.2%} | <sub>{}</sub> | <sub>{}</sub> |'.format(
             i+1, json_dict['model_name'], json_dict['name'], json_dict['link'], json_dict['clean_acc'], json_dict['AA'],
             json_dict['architecture'], json_dict['venue']))
 

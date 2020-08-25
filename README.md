@@ -120,16 +120,16 @@ You can find the model IDs in the table below:
 
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
-| **1** | **Carmon2019Unlabeled** | *[Unlabeled Data Improves Adversarial Robustness](https://arxiv.org/abs/1905.13736)* | 89.69% | 59.53% | WideResNet-28-10 | NeurIPS 2019 |
-| **2** | **Sehwag2020Hydra** | *[HYDRA: Pruning Adversarially Robust Neural Networks](https://arxiv.org/abs/2002.10509)* | 88.98% | 57.14% | WideResNet-28-10 | Unpublished |
-| **3** | **Wang2020Improving** | *[Improving Adversarial Robustness Requires Revisiting Misclassified Examples](https://openreview.net/forum?id=rklOg6EFwS)* | 87.50% | 56.29% | WideResNet-28-10 | ICLR 2020 |
-| **4** | **Hendrycks2019Using** | *[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)* | 87.11% | 54.92% | WideResNet-28-10 | ICML 2019 |
-| **5** | **Pang2020Boosting** | *[Boosting Adversarial Training with Hypersphere Embedding](https://arxiv.org/abs/2002.08619)* | 85.14% | 53.74% | WideResNet-34-20 | Unpublished |
-| **6** | **Rice2020Overfitting** | *[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)* | 85.34% | 53.42% | WideResNet-34-20 | ICML 2020 |
-| **7** | **Huang2020Self** | *[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)* | 83.48% | 53.34% | WideResNet-34-10 | Unpublished |
-| **8** | **Zhang2019Theoretically** | *[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)* | 84.92% | 53.08% | WideResNet-34-10 | ICML 2019 |
-| **9** | **Chen2020Adversarial** | *[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)* | 86.04% | 51.56% | ResNet-50 | CVPR 2020 |
-| **10** | **Engstrom2019Robustness** | *[Robustness library](https://github.com/MadryLab/robustness)* | 87.03% | 49.25% | ResNet-50 | Unpublished |
+| **1** | <sub>**Carmon2019Unlabeled**</sub> | <sub>*[Unlabeled Data Improves Adversarial Robustness](https://arxiv.org/abs/1905.13736)*</sub> | 89.69% | 59.53% | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2019</sub> |
+| **2** | <sub>**Sehwag2020Hydra**</sub> | <sub>*[HYDRA: Pruning Adversarially Robust Neural Networks](https://arxiv.org/abs/2002.10509)*</sub> | 88.98% | 57.14% | <sub>WideResNet-28-10</sub> | <sub>Unpublished</sub> |
+| **3** | <sub>**Wang2020Improving**</sub> | <sub>*[Improving Adversarial Robustness Requires Revisiting Misclassified Examples](https://openreview.net/forum?id=rklOg6EFwS)*</sub> | 87.50% | 56.29% | <sub>WideResNet-28-10</sub> | <sub>ICLR 2020</sub> |
+| **4** | <sub>**Hendrycks2019Using**</sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | 87.11% | 54.92% | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
+| **5** | <sub>**Pang2020Boosting**</sub> | <sub>*[Boosting Adversarial Training with Hypersphere Embedding](https://arxiv.org/abs/2002.08619)*</sub> | 85.14% | 53.74% | <sub>WideResNet-34-20</sub> | <sub>Unpublished</sub> |
+| **6** | <sub>**Rice2020Overfitting**</sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | 85.34% | 53.42% | <sub>WideResNet-34-20</sub> | <sub>ICML 2020</sub> |
+| **7** | <sub>**Huang2020Self**</sub> | <sub>*[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)*</sub> | 83.48% | 53.34% | <sub>WideResNet-34-10</sub> | <sub>Unpublished</sub> |
+| **8** | <sub>**Zhang2019Theoretically**</sub> | <sub>*[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)*</sub> | 84.92% | 53.08% | <sub>WideResNet-34-10</sub> | <sub>ICML 2019</sub> |
+| **9** | <sub>**Chen2020Adversarial**</sub> | <sub>*[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)*</sub> | 86.04% | 51.56% | <sub>ResNet-50</sub> | <sub>CVPR 2020</sub> |
+| **10** | <sub>**Engstrom2019Robustness**</sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | 87.03% | 49.25% | <sub>ResNet-50</sub> | <sub>Unpublished</sub> |
 
 
 
