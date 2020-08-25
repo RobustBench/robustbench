@@ -10,6 +10,14 @@ We start from benchmarking the Linf-robustness since it is the most studied sett
 We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets 
 (Wasserstein perturbations, common corruptions, etc).
 
+Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., 2020](https://arxiv.org/abs/2002.08347)).
+Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
+In particular, **we accept only defenses that are 
+1. differentiable (almost everywhere),
+2. have a fully determinstic forward pass (i.e. no randomness) that
+3. does not have an optimization loop.** Usually, defenses that rely on these 3 mechanisms make gradient-based attacks 
+harder but do not substantially improve robustness ([Carlini et al., 2019](https://arxiv.org/abs/1902.06705).
+
 **`AdvBench`** consists of two parts: 
 - a website with the leaderboard based on many recent papers (plots below 👇)
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
@@ -17,9 +25,6 @@ We plan to extend the benchmark to other threat models in the future: first to o
 <p align="center"><img src="images/aa_robustness_vs_venues.png" height="275">  <img src="images/aa_robustness_vs_years.png" height="275"></p>
 <p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_clean.png" height="260"></p>
 
-Robustness evaluation *in general* is not straightforward and requires adaptive attacks [Tramer et al., 2020](https://arxiv.org/abs/2002.08347).
-Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
-**In particular, we accept only defenses that do not contain (1) randomness and (2) an optimization loop during the forward pass.**
 
 
 
@@ -44,6 +49,10 @@ See also [this twitter thread](https://twitter.com/SebastienBubeck/status/128428
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
 **A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
 
+TODO: add QA whether our restrictions on the defenses are significant? answer: not really, the attacks based on randomness 
+(except, those with provable guarantees []() TODO: a few links) or an optimization loop just make the attack much harder to 
+perform, e.g. by increasing the variance of the gradients.
+
 
 
 ## Model Zoo: quick tour
@@ -66,6 +75,7 @@ x_test, y_test = load_cifar10(n_examples=50)
 from utils import load_model
 model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
 ```
+TODO: maybe do cuda() and eval() automatically?
 
 Now let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from 
 ICML'20 with 2/4 attacks (only APGD-CE and APGD-DLR):
@@ -101,16 +111,25 @@ TODO: add also advertorch if it's not too long
 
 
 ## Model Zoo: list of models
-You can find the model definitions for all these models in `model_zoo/models.py`.
-- **[Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)**: robust accuracy 59.50%, NeurIPS 2019, Unlabeled Data Improves Adversarial Robustness, Yair Carmon, Aditi Raghunathan, Ludwig Schmidt, Percy Liang, John C. Duchi
-- **[Sehwag2020Hydra](https://arxiv.org/abs/2002.10509)**: robust accuracy 57.11%, Unpublished, HYDRA: Pruning Adversarially Robust Neural Networks, Vikash Sehwag, Shiqi Wang, Prateek Mittal, Suman Jana
-- **[Wang2020Improving](https://openreview.net/forum?id=rklOg6EFwS)**: robust accuracy 56.26%, ICLR 2020, Improving Adversarial Robustness Requires Revisiting Misclassified Examples, Yisen Wang, Difan Zou, Jinfeng Yi, James Bailey, Xingjun Ma, Quanquan Gu
-- **[Hendrycks2019Using](https://arxiv.org/abs/1901.09960)**: robust accuracy 54.86%, ICML 2019, Using Pre-Training Can Improve Model Robustness and Uncertainty, Dan Hendrycks, Kimin Lee, Mantas Mazeika
-- **[Rice2020Overfitting](https://arxiv.org/abs/2002.11569)**: robust accuracy 53.35%, ICML 2020, Overfitting in adversarially robust deep learning, Leslie Rice, Eric Wong, J. Zico Kolter
-- **[Huang2020Self](https://arxiv.org/abs/2002.10319)**: robust accuracy 53.29%, Unpublished, Self-Adaptive Training: beyond Empirical Risk Minimization, Lang Huang, Chao Zhang, Hongyang Zhang
-- **[Zhang2019Theoretically](https://arxiv.org/abs/1901.08573)**: robust accuracy 53.04%, ICML 2019, Theoretically Principled Trade-off between Robustness and Accuracy, Hongyang Zhang, Yaodong Yu, Jiantao Jiao, Eric P. Xing, Laurent El Ghaoui, Michael I. Jordan
-- **[Chen2020Adversarial](https://arxiv.org/abs/2003.12862)**: robust accuracy 51.55%, CVPR 2020, Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning, Tianlong Chen, Sijia Liu, Shiyu Chang, Yu Cheng, Lisa Amini, Zhangyang Wang
-- **[Engstrom2019Robustness](https://github.com/MadryLab/robustness)**: robust accuracy 49.20%, Unpublished, Robustness library, Logan Engstrom, Andrew Ilyas, Shibani Santurkar, Dimitris Tsipras
+In order to use a model, you just need to know its ID, e.g. **Carmon2019Unlabeled**, and to run: 
+```python 
+model = load_model(model_name='Carmon2019Unlabeled')
+```
+which automatically downloads the model (all models are defined in `model_zoo/models.py`).
+You can find the model IDs in the table below: 
+
+| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| **1** | **Carmon2019Unlabeled** | *[Unlabeled Data Improves Adversarial Robustness](https://arxiv.org/abs/1905.13736)* | 89.69% | 59.53% | WideResNet-28-10 | NeurIPS 2019 |
+| **2** | **Sehwag2020Hydra** | *[HYDRA: Pruning Adversarially Robust Neural Networks](https://arxiv.org/abs/2002.10509)* | 88.98% | 57.14% | WideResNet-28-10 | Unpublished |
+| **3** | **Wang2020Improving** | *[Improving Adversarial Robustness Requires Revisiting Misclassified Examples](https://openreview.net/forum?id=rklOg6EFwS)* | 87.50% | 56.29% | WideResNet-28-10 | ICLR 2020 |
+| **4** | **Hendrycks2019Using** | *[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)* | 87.11% | 54.92% | WideResNet-28-10 | ICML 2019 |
+| **5** | **Pang2020Boosting** | *[Boosting Adversarial Training with Hypersphere Embedding](https://arxiv.org/abs/2002.08619)* | 85.14% | 53.74% | WideResNet-34-20 | Unpublished |
+| **6** | **Rice2020Overfitting** | *[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)* | 85.34% | 53.42% | WideResNet-34-20 | ICML 2020 |
+| **7** | **Huang2020Self** | *[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)* | 83.48% | 53.34% | WideResNet-34-10 | Unpublished |
+| **8** | **Zhang2019Theoretically** | *[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)* | 84.92% | 53.08% | WideResNet-34-10 | ICML 2019 |
+| **9** | **Chen2020Adversarial** | *[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)* | 86.04% | 51.56% | ResNet-50 | CVPR 2020 |
+| **10** | **Engstrom2019Robustness** | *[Robustness library](https://github.com/MadryLab/robustness)* | 87.03% | 49.25% | ResNet-50 | Unpublished |
 
 
 

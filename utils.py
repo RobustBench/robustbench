@@ -112,13 +112,17 @@ def list_available_models():
             json_dict = json.load(model_info)
         json_dict['model_name'] = model_name
         json_dict['venue'] = 'Unpublished' if json_dict['venue'] == '' else json_dict['venue']
-        json_dict['AA+'] = float(json_dict['AA+']) / 100
+        json_dict['AA'] = float(json_dict['AA']) / 100
+        json_dict['clean_acc'] = float(json_dict['clean_acc']) / 100
         json_dicts.append(json_dict)
 
-    json_dicts = sorted(json_dicts, key=lambda d: -d['AA+'])
-    for json_dict in json_dicts:
-        print('- **[{}]({})**: robust accuracy {:.2%}, {}, {}, {}'.format(
-            json_dict['model_name'], json_dict['link'], json_dict['AA+'], json_dict['venue'], json_dict['name'], json_dict['authors']))
+    json_dicts = sorted(json_dicts, key=lambda d: -d['AA'])
+    print('| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |')
+    print('|:---:|---|---|:---:|:---:|:---:|:---:|')
+    for i, json_dict in enumerate(json_dicts):
+        print('| **{}** | **{}** | *[{}]({})* | {:.2%} | {:.2%} | {} | {} |'.format(
+            i+1, json_dict['model_name'], json_dict['name'], json_dict['link'], json_dict['clean_acc'], json_dict['AA'],
+            json_dict['architecture'], json_dict['venue']))
 
 
 if __name__ == '__main__':
