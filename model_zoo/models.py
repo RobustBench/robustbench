@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import OrderedDict
 from model_zoo.wide_resnet import WideResNet
-from model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet
+from model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, PreActResNet
 
 
 class Carmon2019UnlabeledNet(WideResNet):
@@ -111,6 +111,27 @@ class Pang2020BoostingNet(WideResNet):
         return self.fc(out)
 
 
+class Wong2020FastNet(PreActResNet):
+    def __init__(self):
+        super(Wong2020FastNet, self).__init__(PreActBlock, [2, 2, 2, 2])
+        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
+        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super(Wong2020FastNet, self).forward(x)
+
+
+class Ding2020MMANet(WideResNet):
+    def __init__(self, depth=28, widen_factor=4):
+        super(Ding2020MMANet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+
+    def forward(self, x):
+        mu = x.mean(dim=(1, 2, 3), keepdim=True)
+        std = x.std(dim=(1, 2, 3), keepdim=True)
+        std_min = torch.ones_like(std) / (x.shape[1] * x.shape[2] * x.shape[3]) ** .5
+        x = (x - mu) / torch.max(std, std_min)
+        return super(Ding2020MMANet, self).forward(x)
 
 model_dicts = OrderedDict([
     ('Carmon2019Unlabeled', {
@@ -154,5 +175,13 @@ model_dicts = OrderedDict([
     ('Pang2020Boosting', {
         'model': Pang2020BoostingNet,
         'gdrive_id': '1iNWOj3MP7kGe8yTAS4XnDaDXDLt0mwqw',
+    }),
+    ('Wong2020Fast', {
+        'model': Wong2020FastNet,
+        'gdrive_id': '1Re--_lf3jCEw9bnQqGkjw3J7v2tSZKrv',
+    }),
+    ('Ding2020MMA', {
+        'model': Ding2020MMANet,
+        'gdrive_id': '9Q_rIIHXsYzxZ0WcZdqT-N2OD7MfgoZ0',
     }),
 ])
