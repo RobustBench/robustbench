@@ -12,10 +12,8 @@ We plan to extend the benchmark to other threat models in the future: first to o
 
 Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., 2020](https://arxiv.org/abs/2002.08347)).
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
-In particular, **we accept only defenses that are 
-1. differentiable (almost everywhere),
-2. have a fully determinstic forward pass (i.e. no randomness) that
-3. does not have an optimization loop.** Usually, defenses that rely on these 3 mechanisms make gradient-based attacks 
+In particular, **we accept only defenses that are (1) differentiable, (2) have a fully determinstic forward pass (i.e. no randomness) that
+(3) does not have an optimization loop.** Usually, defenses that rely on these 3 mechanisms make gradient-based attacks 
 harder but do not substantially improve robustness ([Carlini et al., 2019](https://arxiv.org/abs/1902.06705).
 
 **`AdvBench`** consists of two parts: 
@@ -108,6 +106,7 @@ TODO: test the foolbox part (python 3.7 is needed for this), insert its output
 
 TODO: add also advertorch if it's not too long
 
+TODO: write somewhere that we are not too "AA-centered", but open to other attacks if they show a better performance than AA on Linf/L2.
 
 
 ## Model Zoo: list of models
@@ -116,7 +115,7 @@ In order to use a model, you just need to know its ID, e.g. **Carmon2019Unlabele
 model = load_model(model_name='Carmon2019Unlabeled')
 ```
 which automatically downloads the model (all models are defined in `model_zoo/models.py`).
-You can find the model IDs in the table below: 
+You can find all available model IDs in the table below: 
 
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
