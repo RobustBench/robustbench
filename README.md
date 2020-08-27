@@ -45,7 +45,10 @@ generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et a
 robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Kang et al. (2019)](https://arxiv.org/abs/1905.01034)),
 stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
 See also [this twitter thread](https://twitter.com/SebastienBubeck/status/1284287915837624320) for a more detailed discussion.
-In the future, we plan to extend the benchmark with other perturbations sets beyond Lp-balls.
+
+**Q**: Is this benchmark only focused on Lp-robustness?
+**A**: Not at all! Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
+to extend the benchmark to other perturbations sets beyond Lp-balls.
 
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
 **A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
