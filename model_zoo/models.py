@@ -133,6 +133,11 @@ class Ding2020MMANet(WideResNet):
         x = (x - mu) / torch.max(std, std_min)
         return super(Ding2020MMANet, self).forward(x)
 
+
+class Zhang2019YouNet(WideResNet):
+    def __init__(self, depth=34, widen_factor=10):
+        super(Zhang2019YouNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+
 model_dicts = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -184,4 +189,8 @@ model_dicts = OrderedDict([
         'model': Ding2020MMANet,
         'gdrive_id': '9Q_rIIHXsYzxZ0WcZdqT-N2OD7MfgoZ0',
     }),
+    ('Zhang2019You', {
+        'model': Zhang2019YouNet,
+        'gdrive_id': '1kB2qqPQ8qUNmK8VKuTOhT1X4GT46kAoA',
+    })
 ])
