@@ -29,7 +29,7 @@ harder but do not substantially improve robustness ([Carlini et al., 2019](https
 ## FAQ
 **Q**: Wait, how is it different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
 **A**: [robust-ml.org](https://www.robust-ml.org/) focuses on *adaptive* evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
-are great but very time consuming and not standardized.
+are great (e.g., see [Tramer et al., 2020](https://arxiv.org/abs/2002.08347)) but very time consuming and not standardized.
 
 **Q**: How is it related to libraries like `foolbox` / `cleverhans` / `advertorch`? 🤔 \
 **A**: These libraries provide implementations of different *attacks*. Besides the standardized benchmark, **`AdvBench`** 
@@ -39,10 +39,13 @@ robust models in one line of code (see the tutorial below 👇).
 **Q**: I've heard that Lp-robustness is boring. Why would you even evaluate Lp-robustness in 2020? 🤔 \
 **A**: There are numerous interesting applications of Lp-robustness that span 
 transfer learning ([Salman et al. (2020)](https://arxiv.org/abs/2007.08489), [Utrera et al. (2020)](https://arxiv.org/abs/2007.05869)), 
-interpretability ([Tsipras et al. (2018)](https://arxiv.org/abs/1805.12152), [Kaur et al. (2019)](https://arxiv.org/abs/1910.08640), [Engstrom et al. (2019)](https://arxiv.org/abs/1906.00945))
+interpretability ([Tsipras et al. (2018)](https://arxiv.org/abs/1805.12152), [Kaur et al. (2019)](https://arxiv.org/abs/1910.08640), [Engstrom et al. (2019)](https://arxiv.org/abs/1906.00945)),
+security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpanah et al. (2019)](https://arxiv.org/abs/1906.07153)),
 generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et al. (2019)](https://arxiv.org/abs/1909.11764), [Bochkovskiy et al. (2020)](https://arxiv.org/abs/2004.10934)), 
-security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpanah et al. (2019)](https://arxiv.org/abs/1906.07153)). 
+robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Kang et al. (2019)](https://arxiv.org/abs/1905.01034)),
+stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
 See also [this twitter thread](https://twitter.com/SebastienBubeck/status/1284287915837624320) for a more detailed discussion.
+In the future, we plan to extend the benchmark with other perturbations sets beyond Lp-balls.
 
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
 **A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
