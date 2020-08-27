@@ -63,9 +63,8 @@ Check out our notebook here 👉 `notebooks/quick_start.ipynb` for a quick start
 
 First, install **`AdvBench`**:
 ```bash
-pip install git+https://github.com/fra31/auto-attack
+pip install git+https://github.com/AdvBench/advbench
 ```
-TODO: set up pip install directly from the repo. Then `pip install git+https://github.com/fra31/auto-attack` is not necessary?
 
 Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
 that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
@@ -77,7 +76,21 @@ from utils import load_model
 model = load_model(model_name='Carmon2019Unlabeled')
 ```
 
-Now let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from 
+Let's try to evaluate the robustness of this model. We can use any favourite library for this. For example, [FoolBox](https://github.com/bethgelab/foolbox)
+(install it via `pip install foolbox`) implements many different attacks. We can start from a simple PGD attack:
+```python
+import foolbox as fb
+fmodel = fb.PyTorchModel(model, bounds=(0, 1))
+
+_, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255])
+print('Robust accuracy: {:.1%}'.format(1 - success.float().mean()))
+------
+>>> Robust accuracy: 58.0%
+```
+Wonderful! 58.0% robust accuracy. Can we do better with a more accurate attack?
+
+Let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) 
+(install it via `pip install git+https://github.com/fra31/auto-attack`) from 
 ICML'20 with 2/4 attacks (only APGD-CE and APGD-DLR):
 ```python
 from autoattack import AutoAttack
@@ -96,15 +109,6 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)
 Note that for our standardized evaluation of Linf-robustness we use the *full* version of AutoAttack which is slower but 
 more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255)`).
 
-You can also easily plug in any existing library with adversarial attacks such as [FoolBox](https://github.com/bethgelab/foolbox):
-```python
-import foolbox as fb
-fmodel = fb.PyTorchModel(model, bounds=(0, 1))
-
-_, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255])
-```
-
-TODO: test the foolbox part (python 3.7 is needed for this), insert its output
 
 
 
