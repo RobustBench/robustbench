@@ -1,7 +1,7 @@
 import argparse
 #from attacks.autoattack import AutoAttack
-from utils import load_model, clean_accuracy
-from data import load_cifar10
+from advbench.utils import load_model, clean_accuracy
+from advbench.data import load_cifar10
 
 
 def parse_args():

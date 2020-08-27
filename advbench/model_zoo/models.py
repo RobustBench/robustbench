@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from collections import OrderedDict
-from model_zoo.wide_resnet import WideResNet
-from model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, PreActResNet
+from advbench.model_zoo.wide_resnet import WideResNet
+from advbench.model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, PreActResNet
 
 
 class Carmon2019UnlabeledNet(WideResNet):

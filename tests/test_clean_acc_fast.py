@@ -1,9 +1,9 @@
 import sys
 sys.path.append('.')
 from tests.config import parse_args
-from utils import load_model, clean_accuracy
-from data import load_cifar10
-from model_zoo.models import model_dicts
+from advbench.utils import load_model, clean_accuracy
+from advbench.data import load_cifar10
+from advbench.model_zoo.models import model_dicts
 
 
 if __name__ == '__main__':

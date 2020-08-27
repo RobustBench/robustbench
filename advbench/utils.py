@@ -4,7 +4,7 @@ import math
 import requests
 import torch
 from collections import OrderedDict
-from model_zoo.models import model_dicts
+from advbench.model_zoo.models import model_dicts
 
 
 def download_gdrive(gdrive_id, fname_save):
