@@ -1,1 +1,1 @@
-from advbench import data, eval, utils
+from .advbench import data, eval, utils
