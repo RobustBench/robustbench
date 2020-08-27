@@ -1,1 +1,1 @@
-from .model_zoo import models
+from .models import model_dicts
