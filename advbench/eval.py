@@ -1,5 +1,4 @@
 import argparse
-#from attacks.autoattack import AutoAttack
 from advbench.utils import load_model, clean_accuracy
 from advbench.data import load_cifar10
 
