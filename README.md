@@ -69,10 +69,10 @@ pip install git+https://github.com/AdvBench/advbench
 Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
 that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
 ```python
-from data import load_cifar10
+from advbench.data import load_cifar10
 x_test, y_test = load_cifar10(n_examples=50)
 
-from utils import load_model
+from advbench.utils import load_model
 model = load_model(model_name='Carmon2019Unlabeled')
 ```
 
