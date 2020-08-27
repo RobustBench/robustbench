@@ -63,26 +63,24 @@ Check out our notebook here 👉 `notebooks/quick_start.ipynb` for a quick start
 
 First, install **`AdvBench`**:
 ```bash
-git clone https://github.com/fra31/advbench && cd advbench
-pip install -r requirements.txt
+pip install git+https://github.com/fra31/auto-attack
 ```
-TODO: [later] install should be done with pip ideally
+TODO: set up pip install directly from the repo. Then `pip install git+https://github.com/fra31/auto-attack` is not necessary?
 
 Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
-that achieves 59.50% robust accuracy evaluated with AA under eps=8/255:
+that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
 ```python
 from data import load_cifar10
 x_test, y_test = load_cifar10(n_examples=50)
 
 from utils import load_model
-model = load_model(model_name='Carmon2019Unlabeled').cuda().eval()
+model = load_model(model_name='Carmon2019Unlabeled')
 ```
-TODO: maybe do cuda() and eval() automatically?
 
 Now let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from 
 ICML'20 with 2/4 attacks (only APGD-CE and APGD-DLR):
 ```python
-from attacks.autoattack import AutoAttack
+from autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, version='custom', attacks_to_run=['apgd-ce', 'apgd-dlr'])
 adversary.apgd.n_restarts = 1
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
@@ -96,7 +94,7 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)
 >>> robust accuracy: 52.00%
 ```
 Note that for our standardized evaluation of Linf-robustness we use the *full* version of AutoAttack which is slower but 
-more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255, version='standard')`).
+more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255)`).
 
 You can also easily plug in any existing library with adversarial attacks such as [FoolBox](https://github.com/bethgelab/foolbox):
 ```python
@@ -108,9 +106,7 @@ _, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255]
 
 TODO: test the foolbox part (python 3.7 is needed for this), insert its output
 
-TODO: add also advertorch if it's not too long
 
-TODO: write somewhere that we are not too "AA-centered", but open to other attacks if they show a better performance than AA on Linf/L2.
 
 
 ## Model Zoo: list of models

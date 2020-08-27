@@ -86,7 +86,7 @@ def load_model(model_name, model_dir='./models'):
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
             model.models[i].load_state_dict(state_dict)
             model.models[i].cuda().eval()
-        return model
+        return model.cuda().eval()
 
 
 def clean_accuracy(model, x, y, batch_size=100):
