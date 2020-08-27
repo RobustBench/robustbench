@@ -14,7 +14,7 @@ Robustness evaluation *in general* is not straightforward and requires adaptive 
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
 In particular, **we accept only defenses that are (1) differentiable, (2) have a fully determinstic forward pass (i.e. no randomness) that
 (3) does not have an optimization loop.** Usually, defenses that rely on these 3 mechanisms make gradient-based attacks 
-harder but do not substantially improve robustness ([Carlini et al., 2019](https://arxiv.org/abs/1902.06705).
+harder but do not substantially improve robustness ([Carlini et al., 2019](https://arxiv.org/abs/1902.06705)).
 
 **`AdvBench`** consists of two parts: 
 - a website with the leaderboard based on many recent papers (plots below 👇)
@@ -129,7 +129,9 @@ You can find all available model IDs in the table below:
 | <sub>**8**</sub> | <sub>**Zhang2019Theoretically**</sub> | <sub>*[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)*</sub> | <sub>84.92%</sub> | <sub>53.08%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2019</sub> |
 | <sub>**9**</sub> | <sub>**Chen2020Adversarial**</sub> | <sub>*[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)*</sub> | <sub>86.04%</sub> | <sub>51.56%</sub> | <sub>ResNet-50</sub> | <sub>CVPR 2020</sub> |
 | <sub>**10**</sub> | <sub>**Engstrom2019Robustness**</sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>87.03%</sub> | <sub>49.25%</sub> | <sub>ResNet-50</sub> | <sub>Unpublished</sub> |
-
+| <sub>**11**</sub> | <sub>**Zhang2019You**</sub> | <sub>*[You Only Propagate Once: Accelerating Adversarial Training via Maximal Principle](https://arxiv.org/abs/1905.00877)*</sub> | <sub>87.20%</sub> | <sub>44.83%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2019</sub> |
+| <sub>**12**</sub> | <sub>**Wong2020Fast**</sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>83.34%</sub> | <sub>43.21%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
+| <sub>**13**</sub> | <sub>**Ding2020MMA**</sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 
 
 ## How to contribute
