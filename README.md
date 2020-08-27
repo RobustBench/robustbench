@@ -115,7 +115,8 @@ In order to use a model, you just need to know its ID, e.g. **Carmon2019Unlabele
 model = load_model(model_name='Carmon2019Unlabeled')
 ```
 which automatically downloads the model (all models are defined in `model_zoo/models.py`).
-You can find all available model IDs in the table below: 
+
+You can find all available model IDs in the table below (note that the full leaderboard contains more models): 
 
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
