@@ -13,8 +13,9 @@ We plan to extend the benchmark to other threat models in the future: first to o
 Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., 2020](https://arxiv.org/abs/2002.08347)).
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
 In particular, **we accept only defenses that are (1) differentiable, (2) have a fully determinstic forward pass (i.e. no randomness) that
-(3) does not have an optimization loop.** Usually, defenses that rely on these 3 mechanisms make gradient-based attacks 
-harder but do not substantially improve robustness ([Carlini et al., 2019](https://arxiv.org/abs/1902.06705)).
+(3) does not have an optimization loop.** Usually, defenses that violate these 3 principles only make gradient-based attacks 
+harder but do not substantially improve robustness ([Carlini et al., 2019](https://arxiv.org/abs/1902.06705)) except those
+based on provable guarantees (e.g. [Cohen et al., 2019](https://arxiv.org/abs/1902.02918)).
 
 **`AdvBench`** consists of two parts: 
 - a website with the leaderboard based on many recent papers (plots below 👇)
@@ -46,16 +47,13 @@ robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/19
 stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
 See also [this twitter thread](https://twitter.com/SebastienBubeck/status/1284287915837624320) for a more detailed discussion.
 
-**Q**: Is this benchmark only focused on Lp-robustness?
+**Q**: Is this benchmark only focused on Lp-robustness? 🤔 \
 **A**: Not at all! Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
 to extend the benchmark to other perturbations sets beyond Lp-balls.
 
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
 **A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
 
-TODO: add QA whether our restrictions on the defenses are significant? answer: not really, the attacks based on randomness 
-(except, those with provable guarantees []() TODO: a few links) or an optimization loop just make the attack much harder to 
-perform, e.g. by increasing the variance of the gradients.
 
 
 
