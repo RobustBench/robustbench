@@ -8,10 +8,10 @@ setuptools.setup(
     version="0.1",
     author="Francesco Croce, Maksym Andriushchenko, Vikash Sehwag",
     author_email="adversarial.benchmark@gmail.com",
-    description="This package provides the implementation of AdvBench.",
+    description="This package provides the data for AdvBench together with the model zoo.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/fra31/advbench",
+    url="https://github.com/AdvBench/advbench",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
