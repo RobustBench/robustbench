@@ -87,11 +87,11 @@ print('Robust accuracy: {:.1%}'.format(1 - success.float().mean()))
 ------
 >>> Robust accuracy: 58.0%
 ```
-Wonderful! 58.0% robust accuracy. Can we do better with a more accurate attack?
+Wonderful! Can we do better with a more accurate attack?
 
 Let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) 
 (install it via `pip install git+https://github.com/fra31/auto-attack`) from 
-ICML'20 with 2/4 attacks (only APGD-CE and APGD-DLR):
+ICML 2020 with 2/4 attacks (only APGD-CE and APGD-DLR):
 ```python
 from autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, version='custom', attacks_to_run=['apgd-ce', 'apgd-dlr'])

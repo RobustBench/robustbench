@@ -4,7 +4,6 @@ import math
 import requests
 import torch
 from collections import OrderedDict
-from .model_zoo.models import model_dicts
 
 
 def download_gdrive(gdrive_id, fname_save):
@@ -52,6 +51,7 @@ def rm_substr_from_state_dict(state_dict, substr):
 
 
 def load_model(model_name, model_dir='./models'):
+    from .model_zoo.models import model_dicts
     if not isinstance(model_dicts[model_name]['gdrive_id'], list):
         model_path = '{}/{}.pt'.format(model_dir, model_name)
         model = model_dicts[model_name]['model']()
@@ -104,6 +104,7 @@ def clean_accuracy(model, x, y, batch_size=100):
 
 
 def list_available_models():
+    from .model_zoo.models import model_dicts
     models = model_dicts.keys()
 
     json_dicts = []
