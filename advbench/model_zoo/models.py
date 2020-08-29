@@ -37,6 +37,9 @@ class Rice2020OverfittingNet(WideResNet):
         self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
 
     def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Rice2020OverfittingNet, self).forward(x)
 
@@ -53,6 +56,9 @@ class Engstrom2019RobustnessNet(ResNet):
         self.sigma = torch.Tensor([0.2023, 0.1994, 0.2010]).float().view(3, 1, 1).cuda()
 
     def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Engstrom2019RobustnessNet, self).forward(x)
 
@@ -70,6 +76,9 @@ class Chen2020AdversarialNet(torch.nn.Module):
         self.sigma = torch.Tensor([0.229, 0.224, 0.225]).float().view(1, 3, 1, 1).cuda()
 
     def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
         out = (x - self.mu) / self.sigma
 
         out1 = self.branch1(out)
@@ -96,6 +105,9 @@ class Pang2020BoostingNet(WideResNet):
         self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
 
     def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         out = self.conv1(x)
         out = self.block1(out)
@@ -118,6 +130,9 @@ class Wong2020FastNet(PreActResNet):
         self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
 
     def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Wong2020FastNet, self).forward(x)
 
@@ -137,6 +152,12 @@ class Ding2020MMANet(WideResNet):
 class Zhang2019YouNet(WideResNet):
     def __init__(self, depth=34, widen_factor=10):
         super(Zhang2019YouNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+
+
+class NaturalNet(WideResNet):
+    def __init__(self, depth=28, widen_factor=10):
+        super(NaturalNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+
 
 model_dicts = OrderedDict([
     ('Carmon2019Unlabeled', {
@@ -192,5 +213,9 @@ model_dicts = OrderedDict([
     ('Zhang2019You', {
         'model': Zhang2019YouNet,
         'gdrive_id': '1kB2qqPQ8qUNmK8VKuTOhT1X4GT46kAoA',
+    }),
+    ('Natural', {
+        'model': NaturalNet,
+        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     })
 ])
