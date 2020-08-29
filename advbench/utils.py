@@ -123,11 +123,17 @@ def list_available_models():
     for i, json_dict in enumerate(json_dicts):
         if json_dict['model_name'] == 'Chen2020Adversarial':
             json_dict['architecture'] = json_dict['architecture'] + ' <br/> (3x ensemble)'
-        print('| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
-            i+1, json_dict['model_name'], json_dict['name'], json_dict['link'], json_dict['clean_acc'], json_dict['AA'],
-            json_dict['architecture'], json_dict['venue']))
+        if json_dict['model_name'] != 'Natural':
+            print('| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
+                i+1, json_dict['model_name'], json_dict['name'], json_dict['link'], json_dict['clean_acc'], json_dict['AA'],
+                json_dict['architecture'], json_dict['venue']))
+        else:
+            print('| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
+                i + 1, json_dict['model_name'], json_dict['name'], json_dict['clean_acc'],
+                json_dict['AA'], json_dict['architecture'], json_dict['venue']))
 
 
 if __name__ == '__main__':
+    # from advbench.utils import list_available_models
     list_available_models()
 
