@@ -27,7 +27,7 @@ def load_cifar10(n_examples, data_dir='./data'):
 
 
 def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
-                  perturbations=('shot_noise', 'motion_blur', 'snow', 'pixelate', 'gaussian_noise', 'defocus_blur',
+                  corruptions=('shot_noise', 'motion_blur', 'snow', 'pixelate', 'gaussian_noise', 'defocus_blur',
                                  'brightness', 'fog', 'zoom_blur', 'frost', 'glass_blur', 'impulse_noise', 'contrast',
                                  'jpeg_compression', 'elastic_transform')):
     assert 1 <= severity <= 5
@@ -61,8 +61,8 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
     labels = np.load(labels_path)
 
     x_test_list, y_test_list = [], []
-    n_pert = len(perturbations)
-    for corruption in perturbations:
+    n_pert = len(corruptions)
+    for corruption in corruptions:
         corruption_file_path = data_dir + '/' + corruption + '.npy'
         if not os.path.isfile(corruption_file_path):
             download_gdrive(dict_gdrive_ids[corruption], corruption_file_path)
@@ -86,5 +86,5 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
 
 
 if __name__ == '__main__':
-    x_test, y_test = load_cifar10c(100, perturbations=['fog'])
+    x_test, y_test = load_cifar10c(100, corruptions=['fog'])
 
