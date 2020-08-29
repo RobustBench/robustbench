@@ -82,7 +82,7 @@ Let's try to evaluate the robustness of this model. We can use any favourite lib
 import foolbox as fb
 fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 
-_, advs, success = fb.attacks.LinfPGD()(fmodel, images, labels, epsilons=[8/255])
+_, advs, success = fb.attacks.LinfPGD()(fmodel, x_test, y_test, epsilons=[8/255])
 print('Robust accuracy: {:.1%}'.format(1 - success.float().mean()))
 ------
 >>> Robust accuracy: 58.0%
