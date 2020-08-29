@@ -74,6 +74,7 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
         rand_idx = np.random.permutation(np.arange(len(x_test)))
         x_test, y_test = x_test[rand_idx], y_test[rand_idx]
 
+    x_test = np.transpose(x_test, (0, 3, 1, 2))  # to make it in the pytorch format
     x_test = torch.tensor(x_test)[:n_examples]
     y_test = torch.tensor(y_test)[:n_examples]
 
