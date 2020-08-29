@@ -68,9 +68,9 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
             download_gdrive(dict_gdrive_ids[corruption], corruption_file_path)
         images_all = np.load(corruption_file_path)
         images = images_all[(severity-1)*n_total_cifar : severity*n_total_cifar]
-        images = images[:int(np.ceil(n_examples/n_pert))]
-        x_test_list.append(images)
-        y_test_list.append(labels)  # we need to duplicate the same labels potentially multiple times
+        n_img = int(np.ceil(n_examples/n_pert))
+        x_test_list.append(images[:n_img])
+        y_test_list.append(labels[:n_img])  # we need to duplicate the same labels potentially multiple times
 
     x_test, y_test = np.concatenate(x_test_list), np.concatenate(y_test_list)
     if shuffle:
