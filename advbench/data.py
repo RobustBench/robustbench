@@ -4,7 +4,7 @@ import torch
 import torchvision.datasets as datasets
 import torch.utils.data as data
 import torchvision.transforms as transforms
-from advbench.utils import download_gdrive, clean_accuracy
+from advbench.utils import download_gdrive
 
 
 def load_cifar10(n_examples, data_dir='./data'):
@@ -30,6 +30,7 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
                   perturbations=('shot_noise', 'motion_blur', 'snow', 'pixelate', 'gaussian_noise', 'defocus_blur',
                                  'brightness', 'fog', 'zoom_blur', 'frost', 'glass_blur', 'impulse_noise', 'contrast',
                                  'jpeg_compression', 'elastic_transform')):
+    assert 1 <= severity <= 5
     n_total_cifar = 10000
     labels_gdrive_id = '1wW8vnLfPXVJyElQBGmCx1bfUz7QKALxp'
     dict_gdrive_ids = {
@@ -60,12 +61,14 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
     labels = np.load(labels_path)
 
     x_test_list, y_test_list = [], []
+    n_pert = len(perturbations)
     for corruption in perturbations:
         corruption_file_path = data_dir + '/' + corruption + '.npy'
         if not os.path.isfile(corruption_file_path):
             download_gdrive(dict_gdrive_ids[corruption], corruption_file_path)
         images_all = np.load(corruption_file_path)
         images = images_all[(severity-1)*n_total_cifar : severity*n_total_cifar]
+        images = images[:int(np.ceil(n_examples/n_pert))]
         x_test_list.append(images)
         y_test_list.append(labels)  # we need to duplicate the same labels potentially multiple times
 
@@ -76,7 +79,7 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
 
     x_test = np.transpose(x_test, (0, 3, 1, 2))  # to make it in the pytorch format
     x_test = x_test.astype(np.float32) / 255  # to be compatible with our models
-    x_test = torch.tensor(x_test)[:n_examples]
+    x_test = torch.tensor(x_test)[:n_examples]  # to make sure that we get exactly n_examples but not a few samples more
     y_test = torch.tensor(y_test)[:n_examples]
 
     return x_test.cuda(), y_test.cuda()
