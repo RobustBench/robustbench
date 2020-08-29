@@ -4,7 +4,7 @@ import torch
 import torchvision.datasets as datasets
 import torch.utils.data as data
 import torchvision.transforms as transforms
-from advbench.utils import download_gdrive
+from advbench.utils import download_gdrive, clean_accuracy
 
 
 def load_cifar10(n_examples, data_dir='./data'):
@@ -75,7 +75,7 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
         x_test, y_test = x_test[rand_idx], y_test[rand_idx]
 
     x_test = np.transpose(x_test, (0, 3, 1, 2))  # to make it in the pytorch format
-    x_test = x_test.astype(float) / 255  # to be compatible with our models
+    x_test = x_test.astype(np.float32) / 255  # to be compatible with our models
     x_test = torch.tensor(x_test)[:n_examples]
     y_test = torch.tensor(y_test)[:n_examples]
 
@@ -83,4 +83,5 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
 
 
 if __name__ == '__main__':
-    x_test, y_test = load_cifar10c(100, perturbations=('fog', 'snow'))
+    x_test, y_test = load_cifar10c(100, perturbations=['fog'])
+
