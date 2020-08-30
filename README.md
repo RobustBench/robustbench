@@ -15,7 +15,7 @@ Thus, in order to establish a reliable *standardized* benchmark, we need to impo
 In particular, **we accept only defenses that are (1) differentiable, (2) have a fully determinstic forward pass (i.e. no randomness) that
 (3) does not have an optimization loop.** Usually, defenses that violate these 3 principles only make gradient-based attacks 
 harder but do not substantially improve robustness ([Carlini et al., (2019)](https://arxiv.org/abs/1902.06705)) except those
-based on provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
+that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
 
 **`AdvBench`** consists of two parts: 
 - a website with the leaderboard based on many recent papers (plots below 👇)
@@ -76,8 +76,9 @@ model = load_model(model_name='Carmon2019Unlabeled')
 ```
 
 Let's try to evaluate the robustness of this model. We can use any favourite library for this. For example, [FoolBox](https://github.com/bethgelab/foolbox)
-(install it via `pip install foolbox`) implements many different attacks. We can start from a simple PGD attack:
+implements many different attacks. We can start from a simple PGD attack:
 ```python
+!pip install -q foolbox
 import foolbox as fb
 fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 
@@ -89,10 +90,9 @@ print('Robust accuracy: {:.1%}'.format(1 - success.float().mean()))
 ```
 Wonderful! Can we do better with a more accurate attack?
 
-Let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) 
-(install it via `pip install git+https://github.com/fra31/auto-attack`) from 
-ICML 2020 with 2/4 attacks (only APGD-CE and APGD-DLR):
+Let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from ICML 2020 with 2/4 attacks (only APGD-CE and APGD-DLR):
 ```python
+!pip install -q git+https://github.com/fra31/auto-attack
 from autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, version='custom', attacks_to_run=['apgd-ce', 'apgd-dlr'])
 adversary.apgd.n_restarts = 1
@@ -124,7 +124,7 @@ for model_name in ['Natural', 'Engstrom2019Robustness', 'Rice2020Overfitting', '
   model = load_model(model_name)
   acc = clean_accuracy(model, x_test, y_test)
   print('Model: {}, CIFAR-10-C accuracy: {:.1%}'.format(model_name, acc))
-```
+``` 
 ```
 >>> Model: Natural, CIFAR-10-C accuracy: 74.4%
 >>> Model: Engstrom2019Robustness, CIFAR-10-C accuracy: 38.8%
