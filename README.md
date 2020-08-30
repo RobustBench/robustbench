@@ -12,7 +12,7 @@ We plan to extend the benchmark to other threat models in the future: first to o
 
 Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., (2020)](https://arxiv.org/abs/2002.08347)).
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
-In particular, **we accept only defenses that are (1) differentiable, (2) have a fully determinstic forward pass (i.e. no randomness) that
+In particular, **we accept only defenses that are (1) (sub-)differentiable, (2) have a fully determinstic forward pass (i.e. no randomness) that
 (3) does not have an optimization loop.** Usually, defenses that violate these 3 principles only make gradient-based attacks 
 harder but do not substantially improve robustness ([Carlini et al., (2019)](https://arxiv.org/abs/1902.06705)) except those
 that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
@@ -171,9 +171,9 @@ You can find all available model IDs in the table below (note that the full lead
 
 ## Notebooks
 We host all the notebooks at Google Colab:
-- [AdvBench: quick start](https://colab.research.google.com/drive/1JrOOMSkwszNE31VgcHD94htxizFOam7C): a quick tutorial 
+- [AdvBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV): a quick tutorial 
 to get started that illustrates the main features of **`AdvBench`**.
-- [AdvBench: json stats](https://colab.research.google.com/drive/1454qlpLexiZrC0MM-oHN02Nxj749iyST): various plots based 
+- [AdvBench: json stats](https://colab.research.google.com/drive/19tgblr13SvaCpG8hoOTv6QCULVJbCec6): various plots based 
 on the jsons from `model_info` (robustness over venues, robustness vs accuracy, etc).
 
 Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from `model_info`. We are very interested in
