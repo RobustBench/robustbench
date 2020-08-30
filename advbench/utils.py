@@ -36,6 +36,7 @@ def download_gdrive(gdrive_id, fname_save):
         response = session.get(url_base, params=params, stream=True)
 
     save_response_content(response, fname_save)
+    session.close()
     print('Download finished: path={} (gdrive_id={})'.format(fname_save, gdrive_id))
 
 
@@ -59,7 +60,7 @@ def load_model(model_name, model_dir='./models'):
             os.makedirs(model_dir)
         if not os.path.isfile(model_path):
             download_gdrive(model_dicts[model_name]['gdrive_id'], model_path)
-        checkpoint = torch.load(model_path, map_location='cuda:0')
+        checkpoint = torch.load(model_path, map_location='cuda')
     
         # needed for the model of `Carmon2019Unlabeled`
         try:
@@ -79,7 +80,7 @@ def load_model(model_name, model_dir='./models'):
         for i, gid in enumerate(model_dicts[model_name]['gdrive_id']):
             if not os.path.isfile('{}_m{}.pt'.format(model_path, i)):
                 download_gdrive(gid, '{}_m{}.pt'.format(model_path, i))
-            checkpoint = torch.load('{}_m{}.pt'.format(model_path, i), map_location='cuda:0')
+            checkpoint = torch.load('{}_m{}.pt'.format(model_path, i), map_location='cuda')
             try:
                 state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
             except:
@@ -131,9 +132,4 @@ def list_available_models():
             print('| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
                 i + 1, json_dict['model_name'], json_dict['name'], json_dict['clean_acc'],
                 json_dict['AA'], json_dict['architecture'], json_dict['venue']))
-
-
-if __name__ == '__main__':
-    # from advbench.utils import list_available_models
-    list_available_models()
 

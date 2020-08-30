@@ -237,14 +237,17 @@ the *Google Drive ID* with your pytorch model so that it can be downloaded autom
 
 
 
-## Model Zoo: automatic tests
-Run the following scripts to test the existing models from the **Model Zoo**:
-- `python tests/test_clean_acc_fast.py`: fast testing on 200 examples that clean accuracy exceeds some threshold.
-- `python tests/test_clean_acc_jsons.py`: testing on 10'000 examples that clean accuracy of the models matches the one 
-mentioned in the `model_info` jsons.
+## Automatic tests
+In order to run the tests, run:
+- `python -m unittest discover tests -t . -v` for fast testing
+- `RUN_SLOW=true python -m unittest discover tests -t . -v` for slower testing
 
-Note that you can specify some configurations like `batch_size`, `data_dir`, `model_dir` in `config.py` either as 
-default parameters or as parameters from the command line.
+For example, one can test if the clean accuracy on 200 examples exceeds some threshold (70%) or if clean accuracy on 
+10'000 examples for each model matches the ones from the jsons located at `advbench/model_info`.
+
+Note that one can specify some configurations like `batch_size`, `data_dir`, `model_dir` in `tests/config.py` for 
+running the tests.
+
 
 
 

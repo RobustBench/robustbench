@@ -119,7 +119,7 @@ class ResNet(nn.Module):
 
 
 class PreActBlock(nn.Module):
-    '''Pre-activation version of the BasicBlock.'''
+    """Pre-activation version of the BasicBlock."""
     expansion = 1
 
     def __init__(self, in_planes, planes, stride=1):
@@ -144,7 +144,7 @@ class PreActBlock(nn.Module):
 
 
 class PreActBottleneck(nn.Module):
-    '''Pre-activation version of the original Bottleneck module.'''
+    """Pre-activation version of the original Bottleneck module."""
     expansion = 4
 
     def __init__(self, in_planes, planes, stride=1):
@@ -225,4 +225,4 @@ def ResNet152():
 
 def PreActResNet18():
     return PreActResNet(PreActBlock, [2, 2, 2, 2])
-    
+
