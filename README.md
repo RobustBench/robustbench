@@ -45,7 +45,6 @@ security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpana
 generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et al. (2019)](https://arxiv.org/abs/1909.11764), [Bochkovskiy et al. (2020)](https://arxiv.org/abs/2004.10934)), 
 robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Kang et al. (2019)](https://arxiv.org/abs/1905.01034)),
 stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
-See also [this twitter thread](https://twitter.com/SebastienBubeck/status/1284287915837624320) for a more detailed discussion.
 
 **Q**: Is this benchmark only focused on Lp-robustness? 🤔 \
 **A**: Not at all! Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
@@ -84,7 +83,8 @@ fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 
 _, advs, success = fb.attacks.LinfPGD()(fmodel, x_test, y_test, epsilons=[8/255])
 print('Robust accuracy: {:.1%}'.format(1 - success.float().mean()))
-------
+```
+```
 >>> Robust accuracy: 58.0%
 ```
 Wonderful! Can we do better with a more accurate attack?
@@ -97,7 +97,8 @@ from autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, version='custom', attacks_to_run=['apgd-ce', 'apgd-dlr'])
 adversary.apgd.n_restarts = 1
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
--------
+```
+```
 >>> initial accuracy: 92.00%
 >>> apgd-ce - 1/1 - 19 out of 46 successfully perturbed
 >>> robust accuracy after APGD-CE: 54.00% (total time 10.3 s)
@@ -109,7 +110,33 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)
 Note that for our standardized evaluation of Linf-robustness we use the *full* version of AutoAttack which is slower but 
 more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255)`).
 
+What about other types of perturbations? Is Lp-robustness useful there? We can evaluate the available models on more general perturbations. 
+For example, let's take images corrupted by fog perturbations from CIFAR-10-C with the highest level of severity (5). 
+Are different Linf robust models perform better on them?
+```python
+from advbench.data import load_cifar10c
+from advbench.utils import clean_accuracy
 
+corruptions = ['fog']
+x_test, y_test = load_cifar10c(n_examples=1000, corruptions=corruptions, severity=5)   
+
+for model_name in ['Natural', 'Engstrom2019Robustness', 'Rice2020Overfitting', 'Carmon2019Unlabeled']:
+  model = load_model(model_name)
+  acc = clean_accuracy(model, x_test, y_test)
+  print('Model: {}, CIFAR-10-C accuracy: {:.1%}'.format(model_name, acc))
+```
+```
+>>> Model: Natural, CIFAR-10-C accuracy: 74.4%
+>>> Model: Engstrom2019Robustness, CIFAR-10-C accuracy: 38.8%
+>>> Model: Rice2020Overfitting, CIFAR-10-C accuracy: 22.0%
+>>> Model: Carmon2019Unlabeled, CIFAR-10-C accuracy: 31.1%
+```
+As we can see, **all** these Linf robust models perform considerably worse than the natural model on this type of corruptions. 
+This curious phenomenon was first noticed in [Adversarial Examples Are a Natural Consequence of Test Error in Noise](https://arxiv.org/abs/1901.10513) 
+and explained from the frequency perspective in [A Fourier Perspective on Model Robustness in Computer Vision](https://arxiv.org/abs/1906.08988). 
+
+However, on average adversarial training *does* help on CIFAR-10-C. One can check this easily by loading all types of corruptions 
+via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on them.
 
 
 
