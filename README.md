@@ -58,7 +58,8 @@ to extend the benchmark to other perturbations sets beyond Lp-balls.
 
 ## Model Zoo: quick tour
 The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible.
-Check out our notebook here 👉 `notebooks/quick_start.ipynb` for a quick start. It is also summarized below 👇.
+Check out our Colab notebook here 👉 [AdvBench: quick start](https://colab.research.google.com/drive/1JrOOMSkwszNE31VgcHD94htxizFOam7C) 
+for a quick introduction. It is also summarized below 👇.
 
 First, install **`AdvBench`**:
 ```bash
@@ -140,7 +141,7 @@ via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on th
 
 
 
-## Model Zoo: list of models
+## Model Zoo
 In order to use a model, you just need to know its ID, e.g. **Carmon2019Unlabeled**, and to run: 
 ```python 
 model = load_model(model_name='Carmon2019Unlabeled')
@@ -165,6 +166,19 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**12**</sub> | <sub>**Wong2020Fast**</sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>83.34%</sub> | <sub>43.21%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
 | <sub>**13**</sub> | <sub>**Ding2020MMA**</sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**14**</sub> | <sub>**Natural**</sub> | <sub>*Naturally trained model*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>Unpublished</sub> |
+
+
+
+## Notebooks
+We host all the notebooks at Google Colab:
+- [AdvBench: quick start](https://colab.research.google.com/drive/1JrOOMSkwszNE31VgcHD94htxizFOam7C): a quick tutorial 
+to get started that illustrates the main features of **`AdvBench`**.
+- [AdvBench: json stats](https://colab.research.google.com/drive/1454qlpLexiZrC0MM-oHN02Nxj749iyST): various plots based 
+on the jsons from `model_info` (robustness over venues, robustness vs accuracy, etc).
+
+Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from `model_info`. We are very interested in
+collecting new insights about benefits and tradeoffs between different perturbation types.
+
 
 
 ## How to contribute
