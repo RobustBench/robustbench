@@ -192,7 +192,7 @@ Contributions to **`AdvBench`** are very welcome! Here is how you can help us:
 ## Adding a new model to AdvBench
 In order to add a new model, submit a pull request where you specify the claim, model definition, and model checkpoint:
 
-- **Claim**: `model_claims/<Name><Year><FirstWordOfTheTitle>.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
+- **Claim**: `model_info/<Name><Year><FirstWordOfTheTitle>.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
 Here is an example from `model_info/Rice2020Overfitting.json`:
 ```json
 {
@@ -207,12 +207,11 @@ Here is an example from `model_info/Rice2020Overfitting.json`:
   "eps": "8/255",
   "clean_acc": "85.34",
   "reported": "58",
-  "AA": "53.60",
-  "AA+": "53.35"
+  "AA": "53.42"
 }
 ```
 
-- **Model definition**: `model_zoo/models.py`: add your model definition as a new class. For standard architectures (e.g., `WideResNet`) consider
+- **Model definition**: `advbench/model_zoo/models.py`: add your model definition as a new class. For standard architectures (e.g., `WideResNet`) consider
  inheriting the class defined in `wide_resnet.py` or `resnet.py`. For example:
 ```python
 class Rice2020OverfittingNet(WideResNet):
@@ -226,7 +225,7 @@ class Rice2020OverfittingNet(WideResNet):
         return super(Rice2020OverfittingNet, self).forward(x)
 ```
 
-- **Model checkpoint**: `model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain 
+- **Model checkpoint**: `advbench/model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain 
 the *Google Drive ID* with your pytorch model so that it can be downloaded automatically from Google Drive:
 ```
     ('Rice2020Overfitting', {
@@ -252,6 +251,7 @@ default parameters or as parameters from the command line.
 ## Citation
 Would you like to refer to the **`AdvBench`** leaderboard? Or are you using models from the **Model Zoo*? \
 Then consider citing our white paper about **`AdvBench`** (currently in preparation, stay tuned).
+
 
 
 ## Contact 
