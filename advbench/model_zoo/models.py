@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import OrderedDict
 from advbench.model_zoo.wide_resnet import WideResNet
+# import ipdb;ipdb.set_trace()
 from advbench.model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, PreActResNet
 
 
@@ -208,7 +209,7 @@ model_dicts = OrderedDict([
     }),
     ('Ding2020MMA', {
         'model': Ding2020MMANet,
-        'gdrive_id': '9Q_rIIHXsYzxZ0WcZdqT-N2OD7MfgoZ0',
+        'gdrive_id': '19Q_rIIHXsYzxZ0WcZdqT-N2OD7MfgoZ0',
     }),
     ('Zhang2019You', {
         'model': Zhang2019YouNet,
