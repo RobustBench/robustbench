@@ -2,7 +2,7 @@
   "link": "",
   "name": "Naturally trained model",
   "authors": "",
-  "additional_data": true,
+  "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "",
