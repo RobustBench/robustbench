@@ -12,7 +12,7 @@ We plan to extend the benchmark to other threat models in the future: first to o
 
 Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., (2020)](https://arxiv.org/abs/2002.08347)).
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
-In particular, **we accept only defenses that are (1) have non-zero gradient almost everywhere wrt the inputs, (2) have a fully determinstic forward pass (i.e. no randomness) that
+In particular, **we accept only defenses that are (1) have non-zero gradient almost everywhere wrt the inputs, (2) have a fully deterministic forward pass (i.e. no randomness) that
 (3) does not have an optimization loop.** Usually, defenses that violate these 3 principles only make gradient-based attacks 
 harder but do not substantially improve robustness ([Carlini et al., (2019)](https://arxiv.org/abs/1902.06705)) except those
 that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
