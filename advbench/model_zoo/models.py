@@ -160,6 +160,11 @@ class NaturalNet(WideResNet):
         super(NaturalNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
 
+class Zhang2020AttacksNet(WideResNet):
+    def __init__(self, depth=34, widen_factor=10):
+        super(Zhang2020AttacksNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+
+
 model_dicts = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -218,5 +223,9 @@ model_dicts = OrderedDict([
     ('Natural', {
         'model': NaturalNet,
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
+    })
+    ('Zhang2020Attacks', {
+        'model': Zhang2020AttacksNet,
+        'gdrive_id': '1lBVvLG6JLXJgQP2gbsTxNHl6s3YAopqk',
     })
 ])
