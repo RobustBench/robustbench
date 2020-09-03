@@ -51,10 +51,11 @@ def rm_substr_from_state_dict(state_dict, substr):
     return new_state_dict
 
 
-def load_model(model_name, model_dir='./models'):
-    from .model_zoo.models import model_dicts
+def load_model(model_name, model_dir='./models', norm='Linf'):
+    from .model_zoo.models import model_dicts as all_models
+    model_dicts = all_models[norm]
     if not isinstance(model_dicts[model_name]['gdrive_id'], list):
-        model_path = '{}/{}.pt'.format(model_dir, model_name)
+        model_path = '{}/{}/{}.pt'.format(model_dir, norm, model_name)
         model = model_dicts[model_name]['model']()
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
@@ -73,7 +74,7 @@ def load_model(model_name, model_dir='./models'):
 
     # If we have an ensemble of models (e.g., Chen2020Adversarial)
     else:
-        model_path = '{}/{}'.format(model_dir, model_name)
+        model_path = '{}/{}/{}'.format(model_dir, norm, model_name)
         model = model_dicts[model_name]['model']()
         if not os.path.exists(model_dir):
             os.makedirs(model_dir)
@@ -104,9 +105,9 @@ def clean_accuracy(model, x, y, batch_size=100):
     return acc.item() / x.shape[0]
 
 
-def list_available_models():
+def list_available_models(norm='Linf'):
     from .model_zoo.models import model_dicts
-    models = model_dicts.keys()
+    models = model_dicts[norm].keys()
 
     json_dicts = []
     for model_name in models:

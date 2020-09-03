@@ -6,6 +6,7 @@ from advbench.data import load_cifar10
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_name', type=str, default='Carmon2019Unlabeled')
+    parser.add_argument('--norm', type=str, default='Linf')
     parser.add_argument('--eps', type=float, default=8/255)
     parser.add_argument('--n_ex', type=int, default=100, help='number of examples to evaluate on')
     parser.add_argument('--batch_size', type=int, default=500, help='batch size for evaluation')
@@ -19,10 +20,10 @@ if __name__ == '__main__':
     args = parse_args()
 
     x_test, y_test = load_cifar10(args.n_ex, args.data_dir)
-    model = load_model(args.model_name, args.model_dir).cuda().eval()
+    model = load_model(args.model_name, args.model_dir, args.norm).cuda().eval()
 
     acc = clean_accuracy(model, x_test, y_test, batch_size=args.batch_size)
     print('Clean accuracy: {:.2%}'.format(acc))
 
-    adversary = AutoAttack(model, norm='Linf', eps=8 / 255, version='standard')
-    x_adv = adversary.run_standard_evaluation(x_test, y_test)
+    #adversary = AutoAttack(model, norm=args.norm, eps=args.eps, version='standard')
+    #x_adv = adversary.run_standard_evaluation(x_test, y_test)

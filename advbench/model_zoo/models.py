@@ -4,7 +4,7 @@ import torch.nn.functional as F
 from collections import OrderedDict
 from advbench.model_zoo.wide_resnet import WideResNet
 # import ipdb;ipdb.set_trace()
-from advbench.model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, PreActResNet
+from advbench.model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, PreActResNet, PreActBlockV2
 
 
 class Carmon2019UnlabeledNet(WideResNet):
@@ -165,7 +165,49 @@ class Zhang2020AttacksNet(WideResNet):
         super(Zhang2020AttacksNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
-model_dicts = OrderedDict([
+class Augustin2020AdversarialNet(ResNet):
+    def __init__(self):
+        super(Augustin2020AdversarialNet, self).__init__(Bottleneck, [3, 4, 6, 3])
+        self.mu = torch.Tensor([0.4913997551666284, 0.48215855929893703, 0.4465309133731618]).float().view(3, 1, 1).cuda()
+        self.sigma = torch.Tensor([0.24703225141799082, 0.24348516474564, 0.26158783926049628]).float().view(3, 1, 1).cuda()
+
+    def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
+        x = (x - self.mu) / self.sigma
+        return super(Augustin2020AdversarialNet, self).forward(x)
+
+
+class Rice2020OverfittingNetL2(PreActResNet):
+    def __init__(self):
+        super(Rice2020OverfittingNetL2, self).__init__(PreActBlockV2, [2, 2, 2, 2], bn_before_fc=True)
+        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
+        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+
+    def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
+        x = (x - self.mu) / self.sigma
+        return super(Rice2020OverfittingNetL2, self).forward(x)
+
+
+class Rony2019DecouplingNet(WideResNet):
+    def __init__(self, depth=28, widen_factor=10):
+        super(Rony2019DecouplingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        self.mu = torch.tensor([0.491, 0.482, 0.447]).view(3, 1, 1).cuda()
+        self.sigma = torch.tensor([0.247, 0.243, 0.262]).view(3, 1, 1).cuda()
+
+    def forward(self, x):
+        if x.device != self.mu.device:
+            self.mu = self.mu.to(x.device)
+            self.sigma = self.sigma.to(x.device)
+        x = (x - self.mu) / self.sigma
+        return super(Rony2019DecouplingNet, self).forward(x)
+
+
+models_Linf = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
         'gdrive_id': '15tUx-gkZMYx7BfEOw1GY5OKC-jECIsPQ',
@@ -223,9 +265,37 @@ model_dicts = OrderedDict([
     ('Natural', {
         'model': NaturalNet,
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
-    })
+    }),
     ('Zhang2020Attacks', {
         'model': Zhang2020AttacksNet,
         'gdrive_id': '1lBVvLG6JLXJgQP2gbsTxNHl6s3YAopqk',
     })
 ])
+
+
+models_L2 = OrderedDict([
+    ('Augustin2020Adversarial', {
+        'model': Augustin2020AdversarialNet,
+        'gdrive_id': '1oDghrzNfkStC2wr5Fq8T896yNV4wVG4d',
+    }),
+    ('Engstrom2019Robustness', {
+        'model': Engstrom2019RobustnessNet,
+        'gdrive_id': '1O8rGa6xOUIRwQ-M4ESrCjzknby8TM2ZE',
+    }),
+    ('Rice2020Overfitting', {
+        'model': Rice2020OverfittingNetL2,
+        'gdrive_id': '1jo-31utiYNBVzLM0NxUEWz0teo3Z0xa7',
+    }),
+    ('Rony2019Decoupling', {
+        'model': Rony2019DecouplingNet,
+        'gdrive_id': '1Oua2ZYSxNvoDrtlY9vTtRzyBWHziE4Uy',
+    }),
+    ('Natural', {
+        'model': NaturalNet,
+        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
+    }),
+])
+
+
+model_dicts = {'Linf': models_Linf, 'L2': models_L2}
+
