@@ -111,7 +111,7 @@ def list_available_models(norm='Linf'):
 
     json_dicts = []
     for model_name in models:
-        with open('./model_info/{}.json'.format(model_name), 'r') as model_info:
+        with open('./model_info/{}/{}.json'.format(norm, model_name), 'r') as model_info:
             json_dict = json.load(model_info)
         json_dict['model_name'] = model_name
         json_dict['venue'] = 'Unpublished' if json_dict['venue'] == '' else json_dict['venue']
