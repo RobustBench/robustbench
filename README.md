@@ -144,7 +144,7 @@ via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on th
 ## Model Zoo
 In order to use a model, you just need to know its ID, e.g. **Carmon2019Unlabeled**, and to run: 
 ```python 
-model = load_model(model_name='Carmon2019Unlabeled', norm='Linf)
+model = load_model(model_name='Carmon2019Unlabeled', norm='Linf')
 ```
 which automatically downloads the model (all models are defined in `model_zoo/models.py`).
 
