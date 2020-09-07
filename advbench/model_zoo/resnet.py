@@ -144,7 +144,7 @@ class PreActBlock(nn.Module):
 
 
 class PreActBlockV2(nn.Module):
-    '''Pre-activation version of the BasicBlock (other forward pass)'''
+    '''Pre-activation version of the BasicBlock (slightly different forward pass)'''
     expansion = 1
 
     def __init__(self, in_planes, planes, stride=1):

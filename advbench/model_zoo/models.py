@@ -3,8 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from collections import OrderedDict
 from advbench.model_zoo.wide_resnet import WideResNet
-# import ipdb;ipdb.set_trace()
-from advbench.model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, PreActResNet, PreActBlockV2
+from advbench.model_zoo.resnet import ResNet, Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, \
+    PreActBlockV2, PreActResNet
 
 
 class Carmon2019UnlabeledNet(WideResNet):
@@ -207,7 +207,7 @@ class Rony2019DecouplingNet(WideResNet):
         return super(Rony2019DecouplingNet, self).forward(x)
 
 
-models_Linf = OrderedDict([
+models_linf = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
         'gdrive_id': '15tUx-gkZMYx7BfEOw1GY5OKC-jECIsPQ',
@@ -272,8 +272,7 @@ models_Linf = OrderedDict([
     })
 ])
 
-
-models_L2 = OrderedDict([
+models_l2 = OrderedDict([
     ('Augustin2020Adversarial', {
         'model': Augustin2020AdversarialNet,
         'gdrive_id': '1oDghrzNfkStC2wr5Fq8T896yNV4wVG4d',
@@ -296,6 +295,8 @@ models_L2 = OrderedDict([
     }),
 ])
 
-
-model_dicts = {'Linf': models_Linf, 'L2': models_L2}
+model_dicts = OrderedDict([
+    ('Linf', models_linf),
+    ('L2', models_l2),
+])
 
