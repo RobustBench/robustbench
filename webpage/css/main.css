@@ -1,0 +1,352 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0 auto;
+  font-family: Optima, "Helvetica Neue", Helvetica;
+  font-size: 16px;
+  line-height: 20px;
+  max-width: 950px;
+  /* background-color: rgba(170, 170, 170, 0.21); */
+  background-color: white;
+}
+
+section,
+p,
+nav,
+header {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: #f4720d;
+}
+
+/* .content,
+body,
+footer {
+  max-width: 950px;
+} */
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+nav ul,
+nav ul li {
+  display: inline-block;
+}
+
+nav {
+  padding: 0px 0px;
+  font-size: 1.3em;
+  /* background-color: khaki; */
+}
+nav::after {
+  /* Clearfix */
+  content: "";
+  display: table;
+  clear: both;
+}
+nav a {
+  color: inherit;
+  text-decoration: none;
+}
+nav li {
+  margin-right: 50px;
+}
+
+nav .left {
+  /* font-size: 1.5em; */
+  margin-top: 15px;
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+nav .right {
+  float: right;
+  margin-top: 21px;
+}
+
+.majorrule {
+  margin: 0px 0px;
+  border: 0;
+  height: 20px;
+  background: #f58025;
+}
+
+header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
+  width: 50%;
+  margin: 10px auto 30px auto;
+  grid-column-gap: 0px;
+  grid-row-gap: 10px;
+}
+
+.logo {
+  text-align: right;
+  margin-right: 50px;
+}
+.logo img {
+  width: 80px;
+}
+.title {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 4em;
+  color: #f58025;
+  font-weight: bolder;
+  font-variant: small-caps;
+  text-align: left;
+  margin: auto 50px auto 0px;
+  padding: 20px 0px;
+}
+
+.description {
+  grid-column: 1/3;
+  grid-row: 2;
+  font-size: 1.3em;
+  line-height: 1.5em;
+}
+
+.flexbox-container {
+  display: flex;
+  width: 80%;
+  margin: 30px auto 20px auto;
+  justify-content: space-between;
+}
+
+.flexbox-container .element {
+  display: inline-flex;
+}
+
+.element p {
+  margin-left: 20px;
+  font-size: 1.2em;
+  margin: auto 10px auto 20px;
+}
+
+.element img {
+  width: 60px;
+  margin: auto 0px;
+}
+
+.title-rule {
+  height: 12px;
+  border: 0;
+  box-shadow: inset 0 12px 12px -12px rgba(0, 0, 0, 0.5);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  text-align: center;
+  column-gap: 50px;
+  width: 100%;
+}
+
+.box p {
+  font-size: 1.5em;
+  margin: 5px 0px 20px 0px;
+}
+
+.box img {
+  width: 70%;
+}
+
+.details .images {
+  text-align: center;
+}
+
+.codeblock {
+  text-align: left;
+  padding: 0px 0px;
+}
+
+pre,
+code {
+  font-size: 12px;
+  border: 1px solid #e8e8e8;
+  border-radius: 3px;
+  background-color: #eef;
+}
+
+code {
+  padding: 1px 5px;
+}
+
+pre {
+  padding: 5px 10px;
+  overflow-x: auto;
+}
+pre > code {
+  border: 0;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.divider hr {
+  border: 0;
+  height: 1px;
+  opacity: 0.8;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0)
+  );
+}
+
+.scroller {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+/* .scroller {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+} */
+
+.scroller img {
+  flex: 0 0 auto;
+  margin: 5px 10px 5px 10px;
+}
+
+.vspace {
+  margin-bottom: 30px;
+}
+section .heading {
+  font-size: 1.8em;
+  font-weight: normal;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  text-align: center;
+}
+
+.toprule {
+  margin: 0px 0px;
+  border: 0;
+  height: 4px;
+  background: #e87722;
+}
+
+.datatable {
+  overflow-x: scroll;
+  font-size: 0.8em;
+  text-align: center;
+  clear: both;
+  border-collapse: collapse;
+  table-layout: fixed;
+  word-wrap: break-word;
+}
+
+.datatable thead,
+.datatable th {
+  text-align: center;
+}
+
+.datatable th {
+  /* padding-left: 10px; */
+  font-family: monospace;
+}
+
+.datatable td {
+  text-align: center;
+  padding-right: 20px;
+}
+
+/* .table-content {
+  height: 500px;
+  overflow-x: auto;
+  margin-top: 0px;
+} */
+
+/* th {
+  padding: 10px 0px;
+  text-align: center;
+  font-weight: normal;
+  font-family: monospace;
+  background-color: whitesmoke;
+}
+
+/* Leaderboard table css */
+table .arch {
+  width: 15%;
+}
+
+table .venue {
+  width: 12%;
+}
+table .rank {
+  width: 7%;
+}
+table .method {
+  width: 30%;
+}
+table .extra-data {
+  width: 8%;
+}
+table .aa {
+  width: 12%;
+}
+table .ca {
+  width: 10%;
+}
+
+table .aatd,
+.catd,
+.methoddt {
+  font-size: 1.1em;
+}
+
+table .datatd {
+  font-size: 2em;
+}
+
+table .catd,
+.aatd {
+  font-family: monospace;
+}
+
+.box2 {
+  text-align: left;
+}
+
+.box2 p {
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.box2 ul {
+  list-style: none;
+  font-size: 1.05em;
+  line-height: 1.4em;
+}
+
+.box2 ul li::before {
+  content: "➥";
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.box2 li i {
+  color: black;
+}
+
+footer {
+  text-align: center;
+}
