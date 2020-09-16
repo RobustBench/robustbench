@@ -293,6 +293,10 @@ models_l2 = OrderedDict([
         'model': NaturalNet,
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     }),
+    ('Ding2020MMA', {
+        'model': Ding2020MMANet,
+        'gdrive_id': '13wgY0Q_eor52ltZ0PkfJx5BCZ8cLM52E',
+    }),
 ])
 
 model_dicts = OrderedDict([
