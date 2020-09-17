@@ -58,7 +58,7 @@ to extend the benchmark to other perturbations sets beyond Lp-balls.
 
 ## Model Zoo: quick tour
 The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible.
-Check out our Colab notebook here 👉 [AdvBench: quick start](https://colab.research.google.com/drive/1JrOOMSkwszNE31VgcHD94htxizFOam7C) 
+Check out our Colab notebook here 👉 [AdvBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV) 
 for a quick introduction. It is also summarized below 👇.
 
 First, install **`AdvBench`**:
