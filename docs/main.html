@@ -66,6 +66,7 @@
       });
     });
   </script>
+
   <link rel="stylesheet" href="./css/main.css" />
 </head>
 
@@ -73,7 +74,7 @@
   <!-- <hr class="majorrule" /> -->
   <nav id="navbar">
     <ul class="left">
-      <li>AdvBench</li>
+      <li><a href="#">AdvBench</a></li>
     </ul>
     <ul class="right">
       <li><a href="#leaderboard">Leaderboard</a></li>
@@ -87,7 +88,9 @@
   <header>
     <div class="logo"><img src="./images/logo.png" alt="logo" /></div>
     <div class="title">AdvBench</div>
-    <div class="description">A standardized benchmark for adversarial robustness</div>
+    <div class="description">
+      A standardized benchmark for adversarial robustness
+    </div>
   </header>
   <!-- <hr class="toprule" /> -->
 
@@ -105,8 +108,8 @@
           on this topic, but it is still unclear which approaches
           <em>really</em> work and which only lead to
           <a href="https://arxiv.org/abs/1802.00420">overestimated robustness</a
-          >. We start from benchmarking the Linf- and L2-robustness since these are
-          the most studied settings in the literature. We plan to extend the
+          >. We start from benchmarking the Linf- and L2-robustness since these
+          are the most studied settings in the literature. We plan to extend the
           benchmark to other threat models in the future: first to other
           Lp-norms and then to more general perturbation sets.
           <strong>AdvBench</strong> provides two key modules:
@@ -118,7 +121,10 @@
                 src="https://img.icons8.com/wired/100/000000/leaderboard.png"
               />
             </div>
-            <p>Up-to-date leaderboard based <br/> on 30+ recent papers</p>
+            <p>
+              Up-to-date leaderboard based <br />
+              on 30+ recent papers
+            </p>
           </div>
           <div class="element">
             <div class="icon">
@@ -126,7 +132,10 @@
                 src="https://img.icons8.com/ios-glyphs/80/000000/user-credentials.png"
               />
             </div>
-            <p>Unified access to 20+ state-of-the-art <br/>robust models via Model Zoo</p>
+            <p>
+              Unified access to 20+ state-of-the-art <br />robust models via
+              Model Zoo
+            </p>
           </div>
         </div>
       </div>
@@ -134,26 +143,40 @@
         <div class="box usage">
           <p>Model Zoo</p>
           <div class="divider"><hr /></div>
-          Check out our <a
-           href="https://github.com/AdvBench/advbench#notebooks">Colab tutorials</a
-          > for a quick start.
+          Check out our
+          <a href="https://github.com/AdvBench/advbench#notebooks"
+            >Colab tutorials</a
+          >
+          for a quick start.
           <div class="codeblock">
-          <div class="vspace10"></div>
-<!--            <pre><code></code>-->
-<!--!pip install git+https://github.com/AdvBench/advbench-->
+            <div class="vspace10"></div>
+            <!--            <pre><code></code>-->
+            <!--!pip install git+https://github.com/AdvBench/advbench-->
 
-<!--from advbench.utils import load_model-->
-<!--model = load_model(model_name='Carmon2019Unlabeled')-->
+            <!--from advbench.utils import load_model-->
+            <!--model = load_model(model_name='Carmon2019Unlabeled')-->
 
-<!--from advbench.data import load_cifar10-->
-<!--x_test, y_test = load_cifar10(n_examples=100)-->
+            <!--from advbench.data import load_cifar10-->
+            <!--x_test, y_test = load_cifar10(n_examples=100)-->
 
-<!--!pip install -q git+https://github.com/fra31/auto-attack-->
-<!--from autoattack import AutoAttack-->
-<!--adversary = AutoAttack(model, norm='Linf', eps=8/255)-->
-<!--x_adv = adversary.run_standard_evaluation(x_test, y_test)-->
-              <!-- HTML generated using hilite.me -->
-            <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.0em .0em .0em .0em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #888888">!pip install git+https://github.com/AdvBench/advbench</span>
+            <!--!pip install -q git+https://github.com/fra31/auto-attack-->
+            <!--from autoattack import AutoAttack-->
+            <!--adversary = AutoAttack(model, norm='Linf', eps=8/255)-->
+            <!--x_adv = adversary.run_standard_evaluation(x_test, y_test)-->
+            <!-- HTML generated using hilite.me -->
+            <div
+              style="
+                background: #ffffff;
+                overflow: auto;
+                width: auto;
+                border: solid gray;
+                border-width: 0em 0em 0em 0em;
+                padding: 0.2em 0.6em;
+              "
+            >
+              <pre
+                style="margin: 0; line-height: 125%"
+              ><span style="color: #888888">!pip install git+https://github.com/AdvBench/advbench</span>
 
 <span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">advbench.utils</span> <span style="color: #008800; font-weight: bold">import</span> load_model
 model <span style="color: #333333">=</span> load_model(model_name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Carmon2019Unlabeled&#39;</span>)
@@ -172,16 +195,17 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
         <div class="box images">
           <p>Analysis</p>
           <div class="divider"><hr /></div>
-          Check out the <a href="#">complete report</a> with a detailed analysis.
+          Check out the <a href="#">complete report</a> with a detailed
+          analysis.
           <div class="scroller analysis-images">
             <img
               src="./images/aa_robustness_vs_venues.png"
               alt="robustness_vs_venues"
             />
-<!--            <img-->
-<!--              src="./images/aa_robustness_vs_clean.png"-->
-<!--              alt="robustness_vs_clean"-->
-<!--            />-->
+            <!--            <img-->
+            <!--              src="./images/aa_robustness_vs_clean.png"-->
+            <!--              alt="robustness_vs_clean"-->
+            <!--            />-->
           </div>
         </div>
       </div>
@@ -192,9 +216,7 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
       <div class="heading">
         <p>
           Leaderboard:
-          <span class="heading-math"
-            >CIFAR-10, \( \ell_\infty = 8/255 \)</span
-          >
+          <span class="heading-math">CIFAR-10, \( \ell_\infty = 8/255 \)</span>
         </p>
       </div>
       <table id="leaderboard1" class="datatable" style="width: 100%">
@@ -682,9 +704,7 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
       <div class="heading">
         <p>
           Leaderboard:
-          <span class="heading-math"
-            >CIFAR-10, \( \ell_2 = 0.5 \)</span
-          >
+          <span class="heading-math">CIFAR-10, \( \ell_2 = 0.5 \)</span>
         </p>
       </div>
       <table id="leaderboard2" class="datatable" style="width: 100%">
@@ -849,14 +869,16 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
     <small
       >&copy; 2020, AdvBench;
       <a href="https://icons8.com/icon/100413/access"
-        >Access icon by Icons8</a
+        >Icons from Icons8</a
       ></small
     >
   </footer>
 
   <script>
     // When the user scrolls the page, execute myFunction
-    window.onscroll = function() {myFunction()};
+    window.onscroll = function () {
+      myFunction();
+    };
     // Get the navbar
     var navbar = document.getElementById("navbar");
     // Get the offset position of the navbar
@@ -864,7 +886,7 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
     // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
     function myFunction() {
       if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky")
+        navbar.classList.add("sticky");
       } else {
         navbar.classList.remove("sticky");
       }

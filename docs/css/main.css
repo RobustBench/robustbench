@@ -1,5 +1,3 @@
-@import url('https://fonts.cdnfonts.com/css/optima');
-
 * {
   box-sizing: border-box;
 }
@@ -12,6 +10,7 @@ body {
   /* background-color: rgba(170, 170, 170, 0.21); */
   background-color: white;
 }
+
 section,
 p,
 nav,
@@ -19,7 +18,7 @@ header {
   font-size: inherit;
   line-height: inherit;
 }
-.doublealign{
+.doublealign {
   text-align: justify;
 }
 
@@ -181,7 +180,7 @@ header {
 
 .details {
   display: grid;
-  grid-template-columns: 1.0fr 1.0fr;
+  grid-template-columns: 1fr 1fr;
   text-align: center;
   column-gap: 50px;
   width: 100%;
