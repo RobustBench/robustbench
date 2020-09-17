@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/optima');
+
 * {
   box-sizing: border-box;
 }
@@ -10,7 +12,6 @@ body {
   /* background-color: rgba(170, 170, 170, 0.21); */
   background-color: white;
 }
-
 section,
 p,
 nav,
