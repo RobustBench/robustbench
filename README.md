@@ -1,4 +1,4 @@
-# 📊 AdvBench: tracking the progress in adversarial robustness
+# 📊 AdvBench: a standardized adversarial robustness benchmark
 
 
 
