@@ -163,7 +163,7 @@ header {
 }
 
 .box img {
-  width: 60%;
+  width: 75%;
 }
 
 .details .images {
@@ -210,7 +210,7 @@ pre > code {
 }
 
 .scroller {
-  display: flex;
+  /*display: flex;*/
   flex-wrap: nowrap;
   overflow-x: auto;
 }
@@ -226,7 +226,10 @@ pre > code {
   margin: 5px 10px 5px 10px;
 }
 
-.vspace {
+.vspace10 {
+  margin-bottom: 10px;
+}
+.vspace30 {
   margin-bottom: 30px;
 }
 section .heading {

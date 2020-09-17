@@ -127,7 +127,7 @@
                 src="https://img.icons8.com/ios-glyphs/80/000000/user-credentials.png"
               />
             </div>
-            <p>Unified access to state-of-the-art <br />adversarial defenses</p>
+            <p>Unified access to 20+ state-of-the-art <br />robust models via Model Zoo</p>
           </div>
         </div>
       </div>
@@ -135,45 +135,66 @@
         <div class="box usage">
           <p>Model Zoo</p>
           <div class="divider"><hr /></div>
+          Check out our <a
+           href="https://github.com/AdvBench/advbench#notebooks">Colab tutorials</a
+          > for a quick start.
           <div class="codeblock">
-            <pre><code></code>!pip install git+https://github.com/AdvBench/advbench
+          <div class="vspace10"></div>
+<!--            <pre><code></code>-->
+<!--!pip install git+https://github.com/AdvBench/advbench-->
 
-from advbench.utils import load_model
-model = load_model(model_name='Carmon2019Unlabeled')
+<!--from advbench.utils import load_model-->
+<!--model = load_model(model_name='Carmon2019Unlabeled')-->
 
-from advbench.data import load_cifar10
-x_test, y_test = load_cifar10(n_examples=100)
+<!--from advbench.data import load_cifar10-->
+<!--x_test, y_test = load_cifar10(n_examples=100)-->
 
-from autoattack import AutoAttack
-adversary = AutoAttack(model, norm='Linf', eps=8/255)
-x_adv = adversary.run_standard_evaluation(x_test, y_test)</pre>
+<!--!pip install -q git+https://github.com/fra31/auto-attack-->
+<!--from autoattack import AutoAttack-->
+<!--adversary = AutoAttack(model, norm='Linf', eps=8/255)-->
+<!--x_adv = adversary.run_standard_evaluation(x_test, y_test)-->
+              <!-- HTML generated using hilite.me -->
+            <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.0em .0em .0em .0em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #888888">!pip install git+https://github.com/AdvBench/advbench</span>
+
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">advbench.utils</span> <span style="color: #008800; font-weight: bold">import</span> load_model
+model <span style="color: #333333">=</span> load_model(model_name<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Carmon2019Unlabeled&#39;</span>)
+
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">advbench.data</span> <span style="color: #008800; font-weight: bold">import</span> load_cifar10
+x_test, y_test <span style="color: #333333">=</span> load_cifar10(n_examples<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">100</span>)
+
+<span style="color: #888888">!pip install git+https://github.com/fra31/auto-attack</span>
+<span style="color: #008800; font-weight: bold">from</span> <span style="color: #0e84b5; font-weight: bold">autoattack</span> <span style="color: #008800; font-weight: bold">import</span> AutoAttack
+adversary <span style="color: #333333">=</span> AutoAttack(model, norm<span style="color: #333333">=</span><span style="background-color: #fff0f0">&#39;Linf&#39;</span>, eps<span style="color: #333333">=</span><span style="color: #0000DD; font-weight: bold">8</span><span style="color: #333333">/</span><span style="color: #0000DD; font-weight: bold">255</span>)
+x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333">.</span>run_standard_evaluation(x_test, y_test)
+</pre>
+            </div>
           </div>
         </div>
         <div class="box images">
           <p>Analysis</p>
           <div class="divider"><hr /></div>
-          Check out the complete report <a href="#">here</a>.
+          Check out the <a href="#">complete report</a> with a detailed analysis.
           <div class="scroller analysis-images">
             <img
               src="./images/aa_robustness_vs_venues.png"
               alt="robustness_vs_venues"
             />
-            <img
-              src="./images/aa_robustness_vs_clean.png"
-              alt="robustness_vs_clean"
-            />
+<!--            <img-->
+<!--              src="./images/aa_robustness_vs_clean.png"-->
+<!--              alt="robustness_vs_clean"-->
+<!--            />-->
           </div>
         </div>
       </div>
-      <div class="vspace"></div>
+      <div class="vspace30"></div>
     </section>
 
     <section>
       <div class="heading">
         <p>
-          Leaderboard
+          Leaderboard:
           <span class="heading-math"
-            >\(\left (\varepsilon_{\infty} = 8/255 \right )\)</span
+            >CIFAR-10, \( \ell_\infty = 8/255 \)</span
           >
         </p>
       </div>
@@ -296,7 +317,7 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)</pre>
                 >Self-Adaptive Training: beyond Empirical Risk Minimization</a
               >
               <br /><span class="td-footer"
-                >Uses \(\varepsilon_{\infty} \) = 0.031 ≈ 7.9/255 instead of 8/255.
+                >Uses \(\ell_{\infty} \) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">83.48</td>
@@ -313,7 +334,7 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)</pre>
                 Accuracy</a
               >
               <br /><span class="td-footer"
-                >Uses \(\varepsilon_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
+                >Uses \(\ell_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">84.92</td>
@@ -481,7 +502,7 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)</pre>
               >
               <br />
               <span class="td-footer"
-                >Uses \(\varepsilon_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
+                >Uses \(\ell_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">81.30</td>
@@ -583,7 +604,7 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)</pre>
                 >Enhancing Adversarial Defense by k-Winners-Take-All</a
               >
               <br /><span class="td-footer">
-                Uses \(\varepsilon_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
+                Uses \(\ell_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">79.28</td>
@@ -661,9 +682,9 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)</pre>
     <section>
       <div class="heading">
         <p>
-          Leaderboard
+          Leaderboard:
           <span class="heading-math"
-            >\(\left (\varepsilon_{2} = 0.5 \right )\)</span
+            >CIFAR-10, \( \ell_2 = 0.5 \)</span
           >
         </p>
       </div>
