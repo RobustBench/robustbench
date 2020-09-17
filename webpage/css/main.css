@@ -180,7 +180,7 @@ header {
 
 .details {
   display: grid;
-  grid-template-columns: 1.0fr 2.0fr;
+  grid-template-columns: 1.0fr 1.0fr;
   text-align: center;
   column-gap: 50px;
   width: 100%;
@@ -367,14 +367,14 @@ table .catd,
 }
 
 .box2 p {
-  font-size: 1.2em;
+  font-size: 1.5em;
   text-align: center;
 }
 
 .box2 ul {
   list-style: none;
   font-size: 1.05em;
-  line-height: 1.4em;
+  line-height: 1.5em;
 }
 
 .box2 ul li::before {
