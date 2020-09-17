@@ -237,6 +237,10 @@ section .heading {
   text-align: center;
 }
 
+.heading-math {
+  font-size: 0.9em;
+}
+
 .toprule {
   margin: 0px 0px;
   border: 0;
@@ -269,6 +273,10 @@ section .heading {
   padding-right: 20px;
 }
 
+.td-footer {
+  font-style: italic;
+  font-size: 0.7em;
+}
 /* .table-content {
   height: 500px;
   overflow-x: auto;

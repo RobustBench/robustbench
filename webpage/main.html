@@ -22,6 +22,12 @@
     rel="stylesheet"
     href="https://cdn.rawgit.com/jpswalsh/academicons/master/css/academicons.min.css"
   />
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
   <script
     src="https://kit.fontawesome.com/b939870cfb.js"
     crossorigin="anonymous"
@@ -51,6 +57,11 @@
   <script>
     $(document).ready(function () {
       $("#leaderboard").DataTable({
+        lengthMenu: [15, 25, 50, 75, 100],
+      });
+    });
+    $(document).ready(function () {
+      $("#leaderboard2").DataTable({
         lengthMenu: [15, 25, 50, 75, 100],
       });
     });
@@ -157,7 +168,14 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
     </section>
 
     <section>
-      <div class="heading"><p>Leaderboard</p></div>
+      <div class="heading">
+        <p>
+          Leaderboard
+          <span class="heading-math"
+            >\(\left (\|\epsilon\|_{\infty} = 8 \right )\)</span
+          >
+        </p>
+      </div>
       <table id="leaderboard" class="datatable" style="width: 100%">
         <thead>
           <tr>
@@ -276,6 +294,9 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
               <a href="https://arxiv.org/abs/2002.10319"
                 >Self-Adaptive Training: beyond Empirical Risk Minimization</a
               >
+              <br /><span class="td-footer"
+                >Uses \(\|\epsilon\|_{\infty}\) = 7.9 instead of 8.
+              </span>
             </td>
             <td class="catd">83.48</td>
             <td class="aatd">53.34</td>
@@ -290,6 +311,9 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
                 >Theoretically Principled Trade-off between Robustness and
                 Accuracy</a
               >
+              <br /><span class="td-footer"
+                >Uses \(\|\epsilon\|_{\infty}\) = 7.9 instead of 8.
+              </span>
             </td>
             <td class="catd">84.92</td>
             <td class="aatd">53.08</td>
@@ -317,6 +341,7 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
                 >Adversarial Robustness: From Self-Supervised Pre-Training to
                 Fine-Tuning</a
               >
+              <br /><span class="td-footer">Uses ensembles of 3-models</span>
             </td>
             <td class="catd">86.04</td>
             <td class="aatd">51.56</td>
@@ -453,6 +478,10 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
               <a href="https://arxiv.org/abs/1905.11911"
                 >Controlling Neural Level Sets</a
               >
+              <br />
+              <span class="td-footer"
+                >Uses \(\|\epsilon\|_{\infty}\) = 7.9 instead of 8.
+              </span>
             </td>
             <td class="catd">81.30</td>
             <td class="aatd">40.22</td>
@@ -552,6 +581,9 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
               <a href="https://arxiv.org/abs/1905.10510"
                 >Enhancing Adversarial Defense by k-Winners-Take-All</a
               >
+              <br /><span class="td-footer">
+                Uses \(\|\epsilon\|_{\infty}\) = 7.9 instead of 8.
+              </span>
             </td>
             <td class="catd">79.28</td>
             <td class="aatd">18.50</td>
@@ -615,6 +647,119 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
           <tr>
             <td class="ranktd">33</td>
             <td class="methoddt"><a href="">Naturally trained model</a></td>
+            <td class="catd">94.78</td>
+            <td class="aatd">0.0</td>
+            <td class="datatd">&#9746;</td>
+            <td class="archtd">WideResNet-28-10</td>
+            <td class="venuetd">N/A</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="heading">
+        <p>
+          Leaderboard
+          <span class="heading-math"
+            >\(\left (\|\epsilon\|_{2} = 0.5 \right )\)</span
+          >
+        </p>
+      </div>
+      <table id="leaderboard2" class="datatable" style="width: 100%">
+        <thead>
+          <tr>
+            <th class="rank">Rank</th>
+            <th class="method">Method</th>
+            <th class="ca">
+              Clean <br />
+              accuracy
+            </th>
+            <th class="aa">
+              Adversarial <br />
+              accuracy
+            </th>
+            <th class="extra-data">Extra <br />data</th>
+            <th class="arch">Architecture</th>
+            <th class="venue">Venue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ranktd">1</td>
+            <td class="methoddt">
+              <a href="https://arxiv.org/abs/2003.09461" target="_blank"
+                >Adversarial Robustness on In- and Out-Distribution Improves
+                Explainability</a
+              >
+            </td>
+            <td class="catd">91.08</td>
+            <td class="aatd">72.91</td>
+            <td class="datatd">&#9745;</td>
+            <td class="archtd">ResNet-50</td>
+            <td class="venuetd">ECCV 2020</td>
+          </tr>
+          <tr>
+            <td class="ranktd">2</td>
+            <td class="methoddt">
+              <a href="https://github.com/MadryLab/robustness" target="_blank"
+                >Robustness library</a
+              >
+            </td>
+            <td class="catd">90.83</td>
+            <td class="aatd">69.24</td>
+            <td class="datatd">&#9746;</td>
+            <td class="archtd">ResNet-50</td>
+            <td class="venuetd">N/A</td>
+          </tr>
+          <tr>
+            <td class="ranktd">3</td>
+            <td class="methoddt">
+              <a href="https://arxiv.org/abs/2002.11569" target="_blank"
+                >Overfitting in adversarially robust deep learning</a
+              >
+            </td>
+            <td class="catd">88.67</td>
+            <td class="aatd">67.68</td>
+            <td class="datatd">&#9746;</td>
+            <td class="archtd">ResNet-18</td>
+            <td class="venuetd">ICML 2020</td>
+          </tr>
+          <tr>
+            <td class="ranktd">4</td>
+            <td class="methoddt">
+              <a href="https://arxiv.org/abs/1811.09600" target="_blank"
+                >Decoupling Direction and Norm for Efficient Gradient-Based L2
+                Adversarial Attacks and Defenses</a
+              >
+            </td>
+            <td class="catd">89.05</td>
+            <td class="aatd">66.44</td>
+            <td class="datatd">&#9746;</td>
+            <td class="archtd">WideResNet-28-10</td>
+            <td class="venuetd">CVPR 2019</td>
+          </tr>
+          <tr>
+            <td class="ranktd">5</td>
+            <td class="methoddt">
+              <a
+                href="https://openreview.net/forum?id=HkeryxBtPB"
+                target="_blank"
+                >MMA Training: Direct Input Space Margin Maximization through
+                Adversarial Training</a
+              >
+            </td>
+            <td class="catd">88.02</td>
+            <td class="aatd">66.09</td>
+            <td class="datatd">&#9746;</td>
+            <td class="archtd">WideResNet-28-4</td>
+            <td class="venuetd">ICLR 2020</td>
+          </tr>
+          <tr>
+            <td class="ranktd">6</td>
+            <td class="methoddt">
+              <a href="" target="_blank">Naturally trained model</a>
+            </td>
             <td class="catd">94.78</td>
             <td class="aatd">0.0</td>
             <td class="datatd">&#9746;</td>
