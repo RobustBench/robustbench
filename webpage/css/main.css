@@ -49,11 +49,6 @@ nav ul li {
   display: inline-block;
 }
 
-nav {
-  padding: 0px 0px;
-  font-size: 1.3em;
-  /* background-color: khaki; */
-}
 nav::after {
   /* Clearfix */
   content: "";
@@ -80,6 +75,37 @@ nav .right {
   float: right;
   margin-top: 21px;
 }
+nav {
+  padding: 0px 0px;
+  font-size: 1.3em;
+  /*position: fixed;*/
+  /* background-color: khaki; */
+}
+
+/*#navbar {*/
+/*  overflow: hidden;*/
+/*}*/
+/*!* Navbar links *!*/
+/*#navbar a{*/
+/*  float: left;*/
+/*  display: block;*/
+/*  text-align: center;*/
+/*  padding: 14px;*/
+/*  text-decoration: none;*/
+/*}*/
+
+/* Page content */
+/*.content {*/
+/*  padding: 0px;*/
+/*}*/
+/*.sticky {*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  !*width: 100%;*!*/
+/*}*/
+/*.sticky + .content {*/
+/*  padding-top: 20px;*/
+/*}*/
 
 .majorrule {
   margin: 0px 0px;

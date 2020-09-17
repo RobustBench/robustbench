@@ -56,7 +56,7 @@
   ></script>
   <script>
     $(document).ready(function () {
-      $("#leaderboard").DataTable({
+      $("#leaderboard1").DataTable({
         lengthMenu: [15, 25, 50, 75, 100],
       });
     });
@@ -66,20 +66,19 @@
       });
     });
   </script>
-
   <link rel="stylesheet" href="./css/main.css" />
 </head>
 
 <body>
   <!-- <hr class="majorrule" /> -->
-  <nav>
+  <nav id="navbar">
     <ul class="left">
       <li>AdvBench</li>
     </ul>
     <ul class="right">
       <li><a href="#leaderboard">Leaderboard</a></li>
-      <li><a href="#leaderboard">Library</a></li>
-      <li><a href="#">Analysis</a></li>
+      <li><a href="#contribute">Contribute</a></li>
+      <li><a href="https://github.com/AdvBench/advbench">Model Zoo 🚀</a></li>
     </ul>
   </nav>
 
@@ -119,7 +118,7 @@
                 src="https://img.icons8.com/wired/100/000000/leaderboard.png"
               />
             </div>
-            <p>Well-maintained leaderboard</p>
+            <p>Up-to-date leaderboard based <br/> on 30+ recent papers</p>
           </div>
           <div class="element">
             <div class="icon">
@@ -127,7 +126,7 @@
                 src="https://img.icons8.com/ios-glyphs/80/000000/user-credentials.png"
               />
             </div>
-            <p>Unified access to 20+ state-of-the-art <br />robust models via Model Zoo</p>
+            <p>Unified access to 20+ state-of-the-art <br/>robust models via Model Zoo</p>
           </div>
         </div>
       </div>
@@ -189,7 +188,7 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
       <div class="vspace30"></div>
     </section>
 
-    <section>
+    <section id="leaderboard">
       <div class="heading">
         <p>
           Leaderboard:
@@ -198,7 +197,7 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
           >
         </p>
       </div>
-      <table id="leaderboard" class="datatable" style="width: 100%">
+      <table id="leaderboard1" class="datatable" style="width: 100%">
         <thead>
           <tr>
             <th class="rank">Rank</th>
@@ -792,7 +791,7 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
       </table>
     </section>
 
-    <section id="contributors">
+    <section id="contribute">
       <div class="heading"><p>Contributions</p></div>
       <hr />
       <p class="doublealign">
@@ -807,7 +806,7 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
 
 
       <div class="vspace30"></div>
-      
+
       <div class="details">
         <div class="box2">
           <p>Submit a new model</p>
@@ -850,4 +849,21 @@ x_adv <span style="color: #333333">=</span> adversary<span style="color: #333333
       ></small
     >
   </footer>
+
+  <script>
+    // When the user scrolls the page, execute myFunction
+    window.onscroll = function() {myFunction()};
+    // Get the navbar
+    var navbar = document.getElementById("navbar");
+    // Get the offset position of the navbar
+    var sticky = navbar.offsetTop;
+    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+    function myFunction() {
+      if (window.pageYOffset >= sticky) {
+        navbar.classList.add("sticky")
+      } else {
+        navbar.classList.remove("sticky");
+      }
+    }
+  </script>
 </body>
