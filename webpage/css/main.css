@@ -18,6 +18,9 @@ header {
   font-size: inherit;
   line-height: inherit;
 }
+.doublealign{
+  text-align: justify;
+}
 
 a {
   text-decoration: none;
