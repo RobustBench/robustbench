@@ -88,7 +88,7 @@
   <header>
     <div class="logo"><img src="./images/logo.png" alt="logo" /></div>
     <div class="title">AdvBench</div>
-    <div class="description">A shared benchmark for adversarial robustness</div>
+    <div class="description">A standardized benchmark for adversarial robustness</div>
   </header>
   <!-- <hr class="toprule" /> -->
 
@@ -133,19 +133,20 @@
       </div>
       <div class="details">
         <div class="box usage">
-          <p>Usage</p>
+          <p>Model Zoo</p>
           <div class="divider"><hr /></div>
           <div class="codeblock">
-            <pre><code></code>from model_zoo.models import model_dicts 
-from utils import load_model 
-from attacks import AutoAttack 
+            <pre><code></code>!pip install git+https://github.com/AdvBench/advbench
 
-# create model with robustly trained checkpoints 
-model = load_model(model_name='Carmon2019Unlabeled') 
+from advbench.utils import load_model
+model = load_model(model_name='Carmon2019Unlabeled')
 
-# Adversarial robustness
-adversary = AutoAttack(model, norm='Linf', eps=epsilon, plus=False) 
-x_adv = adversary.run_standard_evaluation(images, labels)</pre>
+from advbench.data import load_cifar10
+x_test, y_test = load_cifar10(n_examples=100)
+
+from autoattack import AutoAttack
+adversary = AutoAttack(model, norm='Linf', eps=8/255)
+x_adv = adversary.run_standard_evaluation(x_test, y_test)</pre>
           </div>
         </div>
         <div class="box images">
@@ -154,12 +155,12 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
           Check out the complete report <a href="#">here</a>.
           <div class="scroller analysis-images">
             <img
-              src="./images/aa_robustness_vs_clean.png"
-              alt="robustness_vs_clean"
-            />
-            <img
               src="./images/aa_robustness_vs_venues.png"
               alt="robustness_vs_venues"
+            />
+            <img
+              src="./images/aa_robustness_vs_clean.png"
+              alt="robustness_vs_clean"
             />
           </div>
         </div>
@@ -295,7 +296,7 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
                 >Self-Adaptive Training: beyond Empirical Risk Minimization</a
               >
               <br /><span class="td-footer"
-                >Uses \(\|\epsilon\|_{\infty} \) = 0.031 ≈ 7.9/255 instead of 8/255.
+                >Uses \(\|\varepsilon\|_{\infty} \) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">83.48</td>
@@ -312,7 +313,7 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
                 Accuracy</a
               >
               <br /><span class="td-footer"
-                >Uses \(\|\epsilon\|_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
+                >Uses \(\|\varepsilon\|_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">84.92</td>
@@ -480,7 +481,7 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
               >
               <br />
               <span class="td-footer"
-                >Uses \(\|\epsilon\|_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
+                >Uses \(\|\varepsilon\|_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">81.30</td>
@@ -582,7 +583,7 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
                 >Enhancing Adversarial Defense by k-Winners-Take-All</a
               >
               <br /><span class="td-footer">
-                Uses \(\|\epsilon\|_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
+                Uses \(\|\varepsilon\|_{\infty}\) = 0.031 ≈ 7.9/255 instead of 8/255.
               </span>
             </td>
             <td class="catd">79.28</td>
@@ -662,7 +663,7 @@ x_adv = adversary.run_standard_evaluation(images, labels)</pre>
         <p>
           Leaderboard
           <span class="heading-math"
-            >\(\left (\|\epsilon\|_{2} = 0.5 \right )\)</span
+            >\(\left (\|\varepsilon\|_{2} = 0.5 \right )\)</span
           >
         </p>
       </div>

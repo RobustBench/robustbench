@@ -151,7 +151,7 @@ header {
 
 .details {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
+  grid-template-columns: 1.0fr 2.0fr;
   text-align: center;
   column-gap: 50px;
   width: 100%;
@@ -163,7 +163,7 @@ header {
 }
 
 .box img {
-  width: 70%;
+  width: 60%;
 }
 
 .details .images {
