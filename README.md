@@ -1,4 +1,4 @@
-# 📊 AdvBench: a standardized adversarial robustness benchmark
+# AdvBench: a standardized adversarial robustness benchmark
 
 
 
