@@ -50,6 +50,12 @@ stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.
 **A**: Not at all! Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
 to extend the benchmark to other perturbations sets beyond Lp-balls.
 
+**Q**: What about verified adversarial robustness? 🤔 \
+**A**: We specifically focus on defenses which improve empirical robustness, given the lack of clarity regarding 
+which approaches really improve robustness and which only make some particular attacks unsuccessful.
+For methods targeting verified robustness, we encourage the readers to check out [Salman et al. (2019)](https://arxiv.org/abs/1902.08722) 
+and [Li et al. (2020)](https://arxiv.org/abs/2009.04131).
+
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
 **A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
 
