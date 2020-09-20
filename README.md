@@ -31,7 +31,7 @@ that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https
 
 <!-- <p align="center"><img src="images/aa_robustness_vs_venues.png" height="275">  <img src="images/aa_robustness_vs_years.png" height="275"></p> -->
 <!-- <p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_standard.png" height="260"></p> -->
-<p align="center"><img src="images/plots_analysis_jsons.png" height="800"></p>
+<p align="center"><img src="images/plots_analysis_jsons.png" width="800"></p>
 
 
 
