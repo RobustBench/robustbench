@@ -1,11 +1,19 @@
 # AdvBench: a standardized adversarial robustness benchmark
 
 
+**Paper**: [to be added soon]
+
+**Leaderboard**: https://advbench.github.io/
+
+<p align="center"><img src="images/leaderboard_screenshot_linf.png" width="700">
+<p align="center"><img src="images/leaderboard_screenshot_l2.png" width="700">
+
 
 ## Main idea
+  
 The goal of **`AdvBench`** is to systematically track the *real* progress in adversarial robustness. 
 There are already [more than 2'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
-on this topic, but it is still unclear which approaches *really* work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
+on this topic, but it is still unclear which approaches really work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
 We start from benchmarking the Linf-robustness since it is the most studied setting in the literature. 
 We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets 
 (Wasserstein perturbations, common corruptions, etc).
@@ -13,12 +21,12 @@ We plan to extend the benchmark to other threat models in the future: first to o
 Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., (2020)](https://arxiv.org/abs/2002.08347)).
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
 In particular, **we accept only defenses that are (1) have non-zero gradient almost everywhere wrt the inputs, (2) have a fully deterministic forward pass (i.e. no randomness) that
-(3) does not have an optimization loop.** Usually, defenses that violate these 3 principles only make gradient-based attacks 
+(3) does not have an optimization loop.** Often, defenses that violate these 3 principles only make gradient-based attacks 
 harder but do not substantially improve robustness ([Carlini et al., (2019)](https://arxiv.org/abs/1902.06705)) except those
 that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
 
 **`AdvBench`** consists of two parts: 
-- a website with the leaderboard based on many recent papers (plots below 👇)
+- a website https://advbench.github.io/ with the leaderboard based on many recent papers (plots below 👇)
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
 
 <p align="center"><img src="images/aa_robustness_vs_venues.png" height="275">  <img src="images/aa_robustness_vs_years.png" height="275"></p>
