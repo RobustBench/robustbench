@@ -158,9 +158,9 @@ class Zhang2019YouNet(WideResNet):
         super(Zhang2019YouNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
-class NaturalNet(WideResNet):
+class StandardNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
-        super(NaturalNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(StandardNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
 
 class Zhang2020AttacksNet(WideResNet):
@@ -265,8 +265,8 @@ models_linf = OrderedDict([
         'model': Zhang2019YouNet,
         'gdrive_id': '1kB2qqPQ8qUNmK8VKuTOhT1X4GT46kAoA',
     }),
-    ('Natural', {
-        'model': NaturalNet,
+    ('Standard', {
+        'model': StandardNet,
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     }),
     ('Zhang2020Attacks', {
@@ -292,8 +292,8 @@ models_l2 = OrderedDict([
         'model': Rony2019DecouplingNet,
         'gdrive_id': '1Oua2ZYSxNvoDrtlY9vTtRzyBWHziE4Uy',
     }),
-    ('Natural', {
-        'model': NaturalNet,
+    ('Standard', {
+        'model': StandardNet,
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     }),
     ('Ding2020MMA', {

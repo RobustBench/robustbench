@@ -16,7 +16,7 @@ class CleanAccTester(unittest.TestCase):
         for norm in model_dicts.keys():
             print('Test models robust wrt {}'.format(norm))
             models = list(model_dicts[norm].keys())
-            models.remove('Natural')  # removed temporarily to avoid an error for pytorch 1.4.0
+            models.remove('Standard')  # removed temporarily to avoid an error for pytorch 1.4.0
 
             n_tests_passed = 0
             for model_name in models:
@@ -40,7 +40,7 @@ class CleanAccTester(unittest.TestCase):
         for norm in model_dicts.keys():
             print('Test models robust wrt {}'.format(norm))
             models = list(model_dicts[norm].keys())
-            models.remove('Natural')  # removed temporarily to avoid an error for pytorch 1.4.0
+            models.remove('Standard')  # removed temporarily to avoid an error for pytorch 1.4.0
 
             n_tests_passed = 0
             for model_name in models:

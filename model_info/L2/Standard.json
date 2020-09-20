@@ -1,13 +1,13 @@
 {
   "link": "",
-  "name": "Naturally trained model",
+  "name": "Standardly trained model",
   "authors": "",
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "",
   "architecture": "WideResNet-28-10",
-  "eps": "8/255",
+  "eps": "0.5",
   "clean_acc": "94.78",
   "reported": "0.0",
   "AA": "0.0"
