@@ -57,7 +57,7 @@ robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/19
 stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
 
 **Q**: Does this benchmark **only** focus on Lp-robustness? 🤔 \
-**A**: Not at all! Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
+**A**: Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
 to extend the benchmark to other perturbations sets beyond Lp-balls.
 
 **Q**: What about verified adversarial robustness? 🤔 \
