@@ -40,7 +40,7 @@ that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https
 ## FAQ
 **Q**: Wait, how is it different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
 **A**: [robust-ml.org](https://www.robust-ml.org/) focuses on *adaptive* evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
-are great (e.g., see [Tramer et al., 2020](https://arxiv.org/abs/2002.08347)) but very time consuming and not standardized.
+are great (e.g., see [Tramer et al., 2020](https://arxiv.org/abs/2002.08347)) but very time consuming and not standardized. Instead, we argue that one can estimate robustness accurately *without* adaptive attacks but for this one has to introduce some restrictions on the considered models.
 
 **Q**: How is it related to libraries like `foolbox` / `cleverhans` / `advertorch`? 🤔 \
 **A**: These libraries provide implementations of different *attacks*. Besides the standardized benchmark, **`AdvBench`** 
