@@ -1,9 +1,9 @@
 import unittest
 import json
 from tests.config import get_test_config
-from advbench.utils import load_model, clean_accuracy
-from advbench.data import load_cifar10
-from advbench.model_zoo.models import model_dicts
+from robustbench.utils import load_model, clean_accuracy
+from robustbench.data import load_cifar10
+from robustbench.model_zoo.models import model_dicts
 from tests.utils_testing import slow
 
 

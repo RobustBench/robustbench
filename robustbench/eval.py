@@ -1,6 +1,6 @@
 import argparse
-from advbench.utils import load_model, clean_accuracy
-from advbench.data import load_cifar10
+from robustbench.utils import load_model, clean_accuracy
+from robustbench.data import load_cifar10
 
 
 def parse_args():

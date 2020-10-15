@@ -4,7 +4,7 @@ import torch
 import torchvision.datasets as datasets
 import torch.utils.data as data
 import torchvision.transforms as transforms
-from advbench.utils import download_gdrive
+from robustbench.utils import download_gdrive
 
 
 def load_cifar10(n_examples, data_dir='./data'):
