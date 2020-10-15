@@ -1,9 +1,9 @@
-# AdvBench: a standardized adversarial robustness benchmark
+# RobustBench: a standardized adversarial robustness benchmark
 
 
 **Paper**: [to be added soon]
 
-**Leaderboard**: https://advbench.github.io/
+**Leaderboard**: https://robustbench.github.io/
 
 <p align="center"><img src="images/leaderboard_screenshot_linf.png" width="700">
 <p align="center"><img src="images/leaderboard_screenshot_l2.png" width="700">
@@ -11,7 +11,7 @@
 
 ## Main idea
   
-The goal of **`AdvBench`** is to systematically track the *real* progress in adversarial robustness. 
+The goal of **`RobustBench`** is to systematically track the *real* progress in adversarial robustness. 
 There are already [more than 2'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
 on this topic, but it is still unclear which approaches really work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
 We start from benchmarking the Linf-robustness since it is the most studied setting in the literature. 
@@ -25,8 +25,8 @@ In particular, **we accept only defenses that are (1) have non-zero gradient alm
 harder but do not substantially improve robustness ([Carlini et al., (2019)](https://arxiv.org/abs/1902.06705)) except those
 that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
 
-**`AdvBench`** consists of two parts: 
-- a website https://advbench.github.io/ with the leaderboard based on many recent papers (plots below 👇)
+**`RobustBench`** consists of two parts: 
+- a website https://robustbench.github.io/ with the leaderboard based on many recent papers (plots below 👇)
 - a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
 
 <!-- <p align="center"><img src="images/aa_robustness_vs_venues.png" height="275">  <img src="images/aa_robustness_vs_years.png" height="275"></p> -->
@@ -43,7 +43,7 @@ that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https
 are great (e.g., see [Tramer et al., 2020](https://arxiv.org/abs/2002.08347)) but very time consuming and not standardized. Instead, we argue that one can estimate robustness accurately *without* adaptive attacks but for this one has to introduce some restrictions on the considered models.
 
 **Q**: How is it related to libraries like `foolbox` / `cleverhans` / `advertorch`? 🤔 \
-**A**: These libraries provide implementations of different *attacks*. Besides the standardized benchmark, **`AdvBench`** 
+**A**: These libraries provide implementations of different *attacks*. Besides the standardized benchmark, **`RobustBench`** 
 additionally provides a repository of the most robust models. So you can start using the
 robust models in one line of code (see the tutorial below 👇).
 
@@ -74,21 +74,21 @@ and [Li et al. (2020)](https://arxiv.org/abs/2009.04131).
 
 ## Model Zoo: quick tour
 The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible.
-Check out our Colab notebook here 👉 [AdvBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV) 
+Check out our Colab notebook here 👉 [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV) 
 for a quick introduction. It is also summarized below 👇.
 
-First, install **`AdvBench`**:
+First, install **`RobustBench`**:
 ```bash
-pip install git+https://github.com/AdvBench/advbench
+pip install git+https://github.com/RobustBench/robustbench
 ```
 
 Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
 that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
 ```python
-from advbench.data import load_cifar10
+from robustbench.data import load_cifar10
 x_test, y_test = load_cifar10(n_examples=50)
 
-from advbench.utils import load_model
+from robustbench.utils import load_model
 model = load_model(model_name='Carmon2019Unlabeled', norm='Linf')
 ```
 
@@ -131,8 +131,8 @@ What about other types of perturbations? Is Lp-robustness useful there? We can e
 For example, let's take images corrupted by fog perturbations from CIFAR-10-C with the highest level of severity (5). 
 Are different Linf robust models perform better on them?
 ```python
-from advbench.data import load_cifar10c
-from advbench.utils import clean_accuracy
+from robustbench.data import load_cifar10c
+from robustbench.utils import clean_accuracy
 
 corruptions = ['fog']
 x_test, y_test = load_cifar10c(n_examples=1000, corruptions=corruptions, severity=5)   
@@ -200,9 +200,9 @@ You can find all available model IDs in the table below (note that the full lead
 
 ## Notebooks
 We host all the notebooks at Google Colab:
-- [AdvBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV): a quick tutorial 
-to get started that illustrates the main features of **`AdvBench`**.
-- [AdvBench: json stats](https://colab.research.google.com/drive/19tgblr13SvaCpG8hoOTv6QCULVJbCec6): various plots based 
+- [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV): a quick tutorial 
+to get started that illustrates the main features of **`RobustBench`**.
+- [RobustBench: json stats](https://colab.research.google.com/drive/19tgblr13SvaCpG8hoOTv6QCULVJbCec6): various plots based 
 on the jsons from `model_info` (robustness over venues, robustness vs accuracy, etc).
 
 Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from `model_info`. We are very interested in
@@ -211,14 +211,14 @@ collecting new insights about benefits and tradeoffs between different perturbat
 
 
 ## How to contribute
-Contributions to **`AdvBench`** are very welcome! Here is how you can help us:
+Contributions to **`RobustBench`** are very welcome! Here is how you can help us:
 - Do you know some interesting paper that is not listed in the leaderboard? Consider adding new models (see the instructions below 👇).
-- Do you have in mind some better *standardized* attack? Do you want to extend **`AdvBench`** to other threat models? We'll be glad to discuss that!
+- Do you have in mind some better *standardized* attack? Do you want to extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
 - Do you have an idea how to make the existing codebase better? Just open a pull request or create an issue and we'll be happy to discuss potential changes. 
 
 
 
-## Adding a new model to AdvBench
+## Adding a new model to RobustBench
 In order to add a new model, submit a pull request where you specify the claim, model definition, and model checkpoint:
 
 - **Claim**: `model_info/<Name><Year><FirstWordOfTheTitle>.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
@@ -240,7 +240,7 @@ Here is an example from `model_info/Rice2020Overfitting.json`:
 }
 ```
 
-- **Model definition**: `advbench/model_zoo/models.py`: add your model definition as a new class. For standard architectures (e.g., `WideResNet`) consider
+- **Model definition**: `robustbench/model_zoo/models.py`: add your model definition as a new class. For standard architectures (e.g., `WideResNet`) consider
  inheriting the class defined in `wide_resnet.py` or `resnet.py`. For example:
 ```python
 class Rice2020OverfittingNet(WideResNet):
@@ -254,7 +254,7 @@ class Rice2020OverfittingNet(WideResNet):
         return super(Rice2020OverfittingNet, self).forward(x)
 ```
 
-- **Model checkpoint**: `advbench/model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain 
+- **Model checkpoint**: `robustbench/model_zoo/models.py`: And also add your model entry in `model_dicts` which should also contain 
 the *Google Drive ID* with your pytorch model so that it can be downloaded automatically from Google Drive:
 ```
     ('Rice2020Overfitting', {
@@ -272,7 +272,7 @@ In order to run the tests, run:
 - `RUN_SLOW=true python -m unittest discover tests -t . -v` for slower testing
 
 For example, one can test if the clean accuracy on 200 examples exceeds some threshold (70%) or if clean accuracy on 
-10'000 examples for each model matches the ones from the jsons located at `advbench/model_info`.
+10'000 examples for each model matches the ones from the jsons located at `robustbench/model_info`.
 
 Note that one can specify some configurations like `batch_size`, `data_dir`, `model_dir` in `tests/config.py` for 
 running the tests.
@@ -281,11 +281,11 @@ running the tests.
 
 
 ## Citation
-Would you like to refer to the **`AdvBench`** leaderboard? Or are you using models from the **Model Zoo**? \
-Then consider citing our white paper about **`AdvBench`** (currently in preparation, stay tuned).
+Would you like to refer to the **`RobustBench`** leaderboard? Or are you using models from the **Model Zoo**? \
+Then consider citing our white paper about **`RobustBench`** (currently in preparation, stay tuned).
 
 
 
 ## Contact 
-Feel free to contact us about anything related to **`AdvBench`** by creating an issue, a pull request or 
+Feel free to contact us about anything related to **`RobustBench`** by creating an issue, a pull request or 
 by email at `adversarial.benchmark@gmail.com`.
