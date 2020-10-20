@@ -284,8 +284,8 @@ running the tests.
 
 
 ## Citation
-Would you like to refer to the **`RobustBench`** leaderboard? Or are you using models from the **Model Zoo**? \
-Then consider citing our [whitepaper](https://arxiv.org/abs/2010.09670).
+Would you like to reference the **`RobustBench`** leaderboard or you are using models from the **Model Zoo**? \
+Then consider citing our [whitepaper](https://arxiv.org/abs/2010.09670):
 ```
 @inproceedings{andriushchenko2020understanding,
   title={Understanding and Improving Fast Adversarial Training},
