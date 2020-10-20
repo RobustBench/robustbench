@@ -1,9 +1,12 @@
 # RobustBench: a standardized adversarial robustness benchmark
 
+**Francesco Croce\* (University of Tübingen), Maksym Andriushchenko\* (EPFL), Vikash Sehwag\* (Princeton University), 
+Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Princeton University), Matthias Hein (University of Tübingen)**
 
-**Paper**: [to be added soon]
+**Leaderboard**: [https://robustbench.github.io/](https://robustbench.github.io/)
 
-**Leaderboard**: https://robustbench.github.io/
+**Paper:** [https://arxiv.org/abs/2010.09670](https://arxiv.org/abs/2010.09670)
+
 
 <p align="center"><img src="images/leaderboard_screenshot_linf.png" width="700">
 <p align="center"><img src="images/leaderboard_screenshot_l2.png" width="700">
@@ -20,14 +23,14 @@ We plan to extend the benchmark to other threat models in the future: first to o
 
 Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., (2020)](https://arxiv.org/abs/2002.08347)).
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
-In particular, **we accept only defenses that are (1) have non-zero gradient almost everywhere wrt the inputs, (2) have a fully deterministic forward pass (i.e. no randomness) that
+In particular, **we accept only defenses that are (1) have in general non-zero gradients wrt the inputs, (2) have a fully deterministic forward pass (i.e. no randomness) that
 (3) does not have an optimization loop.** Often, defenses that violate these 3 principles only make gradient-based attacks 
 harder but do not substantially improve robustness ([Carlini et al., (2019)](https://arxiv.org/abs/1902.06705)) except those
 that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
 
 **`RobustBench`** consists of two parts: 
-- a website https://robustbench.github.io/ with the leaderboard based on many recent papers (plots below 👇)
-- a collection of the most robust models, **Model Zoo**, which are very easy to use for any application (see the tutorial below after FAQ 👇)
+- a website [https://robustbench.github.io/](https://robustbench.github.io/) with the leaderboard based on many recent papers (plots below 👇)
+- a collection of the most robust models, **Model Zoo**, which are easy to use for any downstream application (see the tutorial below after FAQ 👇)
 
 <!-- <p align="center"><img src="images/aa_robustness_vs_venues.png" height="275">  <img src="images/aa_robustness_vs_years.png" height="275"></p> -->
 <!-- <p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_standard.png" height="260"></p> -->
@@ -170,13 +173,13 @@ You can find all available model IDs in the table below (note that the full lead
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub>**Carmon2019Unlabeled**</sub> | <sub>*[Unlabeled Data Improves Adversarial Robustness](https://arxiv.org/abs/1905.13736)*</sub> | <sub>89.69%</sub> | <sub>59.53%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2019</sub> |
-| <sub>**2**</sub> | <sub>**Sehwag2020Hydra**</sub> | <sub>*[HYDRA: Pruning Adversarially Robust Neural Networks](https://arxiv.org/abs/2002.10509)*</sub> | <sub>88.98%</sub> | <sub>57.14%</sub> | <sub>WideResNet-28-10</sub> | <sub>Unpublished</sub> |
+| <sub>**2**</sub> | <sub>**Sehwag2020Hydra**</sub> | <sub>*[HYDRA: Pruning Adversarially Robust Neural Networks](https://arxiv.org/abs/2002.10509)*</sub> | <sub>88.98%</sub> | <sub>57.14%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2020</sub> |
 | <sub>**3**</sub> | <sub>**Wang2020Improving**</sub> | <sub>*[Improving Adversarial Robustness Requires Revisiting Misclassified Examples](https://openreview.net/forum?id=rklOg6EFwS)*</sub> | <sub>87.50%</sub> | <sub>56.29%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICLR 2020</sub> |
 | <sub>**4**</sub> | <sub>**Hendrycks2019Using**</sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | <sub>87.11%</sub> | <sub>54.92%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
 | <sub>**5**</sub> | <sub>**Pang2020Boosting**</sub> | <sub>*[Boosting Adversarial Training with Hypersphere Embedding](https://arxiv.org/abs/2002.08619)*</sub> | <sub>85.14%</sub> | <sub>53.74%</sub> | <sub>WideResNet-34-20</sub> | <sub>Unpublished</sub> |
 | <sub>**6**</sub> | <sub>**Zhang2020Attacks**</sub> | <sub>*[Attacks Which Do Not Kill Training Make Adversarial Learning Stronger](https://arxiv.org/abs/2002.11242)*</sub> | <sub>84.52%</sub> | <sub>53.51%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
 | <sub>**7**</sub> | <sub>**Rice2020Overfitting**</sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>85.34%</sub> | <sub>53.42%</sub> | <sub>WideResNet-34-20</sub> | <sub>ICML 2020</sub> |
-| <sub>**8**</sub> | <sub>**Huang2020Self**</sub> | <sub>*[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)*</sub> | <sub>83.48%</sub> | <sub>53.34%</sub> | <sub>WideResNet-34-10</sub> | <sub>Unpublished</sub> |
+| <sub>**8**</sub> | <sub>**Huang2020Self**</sub> | <sub>*[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)*</sub> | <sub>83.48%</sub> | <sub>53.34%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
 | <sub>**9**</sub> | <sub>**Zhang2019Theoretically**</sub> | <sub>*[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)*</sub> | <sub>84.92%</sub> | <sub>53.08%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2019</sub> |
 | <sub>**10**</sub> | <sub>**Chen2020Adversarial**</sub> | <sub>*[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)*</sub> | <sub>86.04%</sub> | <sub>51.56%</sub> | <sub>ResNet-50 <br/> (3x ensemble)</sub> | <sub>CVPR 2020</sub> |
 | <sub>**11**</sub> | <sub>**Engstrom2019Robustness**</sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>87.03%</sub> | <sub>49.25%</sub> | <sub>ResNet-50</sub> | <sub>Unpublished</sub> |
@@ -211,9 +214,9 @@ collecting new insights about benefits and tradeoffs between different perturbat
 
 
 ## How to contribute
-Contributions to **`RobustBench`** are very welcome! Here is how you can help us:
-- Do you know some interesting paper that is not listed in the leaderboard? Consider adding new models (see the instructions below 👇).
-- Do you have in mind some better *standardized* attack? Do you want to extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
+Contributions to **`RobustBench`** are very welcome! You can help to improve **`RobustBench`**:
+- Are you an author of a recent paper focusing on improving adversarial robustness? Consider adding new models (see the instructions below 👇).
+- Do you have in mind some better *standardized* attack or an adaptive evaluation? Do you want to extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
 - Do you have an idea how to make the existing codebase better? Just open a pull request or create an issue and we'll be happy to discuss potential changes. 
 
 
@@ -282,7 +285,15 @@ running the tests.
 
 ## Citation
 Would you like to refer to the **`RobustBench`** leaderboard? Or are you using models from the **Model Zoo**? \
-Then consider citing our white paper about **`RobustBench`** (currently in preparation, stay tuned).
+Then consider citing our [whitepaper](https://arxiv.org/abs/2010.09670).
+```
+@inproceedings{andriushchenko2020understanding,
+  title={Understanding and Improving Fast Adversarial Training},
+  author={Andriushchenko, Maksym and Flammarion, Nicolas},
+  booktitle={NeurIPS},
+  year={2020}
+}
+```
 
 
 
