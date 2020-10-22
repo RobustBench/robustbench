@@ -210,6 +210,16 @@ class Rony2019DecouplingNet(WideResNet):
         return super(Rony2019DecouplingNet, self).forward(x)
 
 
+class Wu2020AdversarialNet(WideResNet):
+    def __init__(self, depth=28, widen_factor=10):
+        super(Wu2020AdversarialNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+
+
+class Wu2020AdversarialNetL2(WideResNet):
+    def __init__(self, depth=34, widen_factor=10):
+        super(Wu2020AdversarialNetL2, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+
+
 models_linf = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -272,7 +282,15 @@ models_linf = OrderedDict([
     ('Zhang2020Attacks', {
         'model': Zhang2020AttacksNet,
         'gdrive_id': '1lBVvLG6JLXJgQP2gbsTxNHl6s3YAopqk',
-    })
+    }),
+    ('Wu2020Adversarial_extra', {
+        'model': Wu2020AdversarialNet,
+        'gdrive_id': '1-WJWpAZLlmc4gJ8XXNf7IETjnSZzaCNp',
+    }),
+    ('Wu2020Adversarial', {
+        'model': Wu2020AdversarialNetL2,
+        'gdrive_id': '13LBcgNvhFppCFG22i1xATrahFPfMgXGf',
+    }),
 ])
 
 models_l2 = OrderedDict([
@@ -299,6 +317,10 @@ models_l2 = OrderedDict([
     ('Ding2020MMA', {
         'model': Ding2020MMANet,
         'gdrive_id': '13wgY0Q_eor52ltZ0PkfJx5BCZ8cLM52E',
+    }),
+    ('Wu2020Adversarial', {
+        'model': Wu2020AdversarialNetL2,
+        'gdrive_id': '1M5AZ0EZQt7d2AlTmsnqZcfx91-x7YEAV',
     }),
 ])
 

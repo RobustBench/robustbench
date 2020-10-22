@@ -54,7 +54,7 @@ def rm_substr_from_state_dict(state_dict, substr):
 def load_model(model_name, model_dir='./models', norm='Linf'):
     from .model_zoo.models import model_dicts as all_models
     model_dir += '/{}'.format(norm)
-    model_path = '{}/{}'.format(model_dir, model_name)
+    model_path = '{}/{}.pt'.format(model_dir, model_name)
     model_dicts = all_models[norm]
     if not isinstance(model_dicts[model_name]['gdrive_id'], list):
         model = model_dicts[model_name]['model']()
