@@ -224,7 +224,9 @@ Contributions to **`RobustBench`** are very welcome! You can help to improve **`
 
 
 
-## Adding a new model to RobustBench
+## Adding a new model
+
+#### Public model submission (leaderboard + Model Zoo)
 In order to add a new model, submit a pull request where you specify the claim, model definition, and model checkpoint:
 
 - **Claim**: `model_info/<Name><Year><FirstWordOfTheTitle>.json`: follow the convention of the existing json-files to specify the information to be displayed on the website. 
@@ -269,6 +271,8 @@ the *Google Drive ID* with your pytorch model so that it can be downloaded autom
     })
 ```
 
+#### Private model submission (leaderboard only)
+In case you want to keep your checkpoints private for some reasons, you can also submit your claim, model definition, and model checkpoint directly to this email address `adversarial.benchmark@gmail.com`. In this case, we will add your model to the leaderboard but not to the Model Zoo and will not share your checkpoints publicly. 
 
 
 
