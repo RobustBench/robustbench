@@ -62,7 +62,7 @@ def load_model(model_name, model_dir='./models', norm='Linf'):
             os.makedirs(model_dir)
         if not os.path.isfile(model_path):
             download_gdrive(model_dicts[model_name]['gdrive_id'], model_path)
-        checkpoint = torch.load(model_path, map_location='cuda')
+        checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
     
         # needed for the model of `Carmon2019Unlabeled`
         try:
@@ -70,8 +70,8 @@ def load_model(model_name, model_dir='./models', norm='Linf'):
         except:
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
         
-        model.load_state_dict(state_dict)
-        return model.cuda().eval()
+        model.load_state_dict(state_dict, strict=False)
+        return model.eval()
 
     # If we have an ensemble of models (e.g., Chen2020Adversarial)
     else:
@@ -81,14 +81,14 @@ def load_model(model_name, model_dir='./models', norm='Linf'):
         for i, gid in enumerate(model_dicts[model_name]['gdrive_id']):
             if not os.path.isfile('{}_m{}.pt'.format(model_path, i)):
                 download_gdrive(gid, '{}_m{}.pt'.format(model_path, i))
-            checkpoint = torch.load('{}_m{}.pt'.format(model_path, i), map_location='cuda')
+            checkpoint = torch.load('{}_m{}.pt'.format(model_path, i), map_location=torch.device('cpu'))
             try:
                 state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
             except:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
-            model.models[i].load_state_dict(state_dict)
-            model.models[i].cuda().eval()
-        return model.cuda().eval()
+            model.models[i].load_state_dict(state_dict, strict=False)
+            model.models[i].eval()
+        return model.eval()
 
 
 def clean_accuracy(model, x, y, batch_size=100):
@@ -96,8 +96,8 @@ def clean_accuracy(model, x, y, batch_size=100):
     n_batches = math.ceil(x.shape[0] / batch_size)
     with torch.no_grad():
         for counter in range(n_batches):
-            x_curr = x[counter * batch_size:(counter + 1) * batch_size].cuda()
-            y_curr = y[counter * batch_size:(counter + 1) * batch_size].cuda()
+            x_curr = x[counter * batch_size:(counter + 1) * batch_size]
+            y_curr = y[counter * batch_size:(counter + 1) * batch_size]
 
             output = model(x_curr)
             acc += (output.max(1)[1] == y_curr).float().sum()

@@ -1,4 +1,7 @@
 import argparse
+
+import torch
+
 from robustbench.utils import load_model, clean_accuracy
 from robustbench.data import load_cifar10
 
@@ -18,9 +21,11 @@ def parse_args():
 
 if __name__ == '__main__':
     args = parse_args()
+    device = torch.device('cuda:0')
 
     x_test, y_test = load_cifar10(args.n_ex, args.data_dir)
-    model = load_model(args.model_name, args.model_dir, args.norm).cuda().eval()
+    x_test, y_test = x_test.to(device), y_test.to(device)
+    model = load_model(args.model_name, args.model_dir, args.norm).to(device).eval()
 
     acc = clean_accuracy(model, x_test, y_test, batch_size=args.batch_size)
     print('Clean accuracy: {:.2%}'.format(acc))

@@ -34,13 +34,10 @@ class Hendrycks2019UsingNet(WideResNet):
 class Rice2020OverfittingNet(WideResNet):
     def __init__(self, depth=34, widen_factor=20):
         super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
-        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Rice2020OverfittingNet, self).forward(x)
 
@@ -53,13 +50,10 @@ class Zhang2019TheoreticallyNet(WideResNet):
 class Engstrom2019RobustnessNet(ResNet):
     def __init__(self):
         super(Engstrom2019RobustnessNet, self).__init__(Bottleneck, [3, 4, 6, 3])
-        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.2023, 0.1994, 0.2010]).float().view(3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.2023, 0.1994, 0.2010]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Engstrom2019RobustnessNet, self).forward(x)
 
@@ -73,13 +67,10 @@ class Chen2020AdversarialNet(torch.nn.Module):
 
         self.models = [self.branch1, self.branch2, self.branch3]
 
-        self.mu = torch.Tensor([0.485, 0.456, 0.406]).float().view(1, 3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.229, 0.224, 0.225]).float().view(1, 3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         out = (x - self.mu) / self.sigma
 
         out1 = self.branch1(out)
@@ -102,13 +93,10 @@ class Pang2020BoostingNet(WideResNet):
     def __init__(self, depth=34, widen_factor=20):
         super(Pang2020BoostingNet, self).__init__(depth=depth, widen_factor=widen_factor,
             sub_block1=True, bias_last=False)
-        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         out = self.conv1(x)
         out = self.block1(out)
@@ -127,13 +115,10 @@ class Pang2020BoostingNet(WideResNet):
 class Wong2020FastNet(PreActResNet):
     def __init__(self):
         super(Wong2020FastNet, self).__init__(PreActBlock, [2, 2, 2, 2])
-        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Wong2020FastNet, self).forward(x)
 
@@ -171,13 +156,10 @@ class Zhang2020AttacksNet(WideResNet):
 class Augustin2020AdversarialNet(ResNet):
     def __init__(self):
         super(Augustin2020AdversarialNet, self).__init__(Bottleneck, [3, 4, 6, 3])
-        self.mu = torch.Tensor([0.4913997551666284, 0.48215855929893703, 0.4465309133731618]).float().view(3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.24703225141799082, 0.24348516474564, 0.26158783926049628]).float().view(3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.4913997551666284, 0.48215855929893703, 0.4465309133731618]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.24703225141799082, 0.24348516474564, 0.26158783926049628]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Augustin2020AdversarialNet, self).forward(x)
 
@@ -185,13 +167,10 @@ class Augustin2020AdversarialNet(ResNet):
 class Rice2020OverfittingNetL2(PreActResNet):
     def __init__(self):
         super(Rice2020OverfittingNetL2, self).__init__(PreActBlockV2, [2, 2, 2, 2], bn_before_fc=True)
-        self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
-        self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Rice2020OverfittingNetL2, self).forward(x)
 
@@ -199,13 +178,10 @@ class Rice2020OverfittingNetL2(PreActResNet):
 class Rony2019DecouplingNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
         super(Rony2019DecouplingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
-        self.mu = torch.tensor([0.491, 0.482, 0.447]).view(3, 1, 1).cuda()
-        self.sigma = torch.tensor([0.247, 0.243, 0.262]).view(3, 1, 1).cuda()
+        self.register_buffer('mu', torch.tensor([0.491, 0.482, 0.447]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.247, 0.243, 0.262]).view(1, 3, 1, 1))
 
     def forward(self, x):
-        if x.device != self.mu.device:
-            self.mu = self.mu.to(x.device)
-            self.sigma = self.sigma.to(x.device)
         x = (x - self.mu) / self.sigma
         return super(Rony2019DecouplingNet, self).forward(x)
 

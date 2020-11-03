@@ -23,7 +23,7 @@ def load_cifar10(n_examples, data_dir='./data'):
     x_test = torch.cat(x_test)[:n_examples]
     y_test = torch.cat(y_test)[:n_examples]
 
-    return x_test.cuda(), y_test.cuda()
+    return x_test, y_test
 
 
 def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
@@ -82,7 +82,7 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
     x_test = torch.tensor(x_test)[:n_examples]  # to make sure that we get exactly n_examples but not a few samples more
     y_test = torch.tensor(y_test)[:n_examples]
 
-    return x_test.cuda(), y_test.cuda()
+    return x_test, y_test
 
 
 if __name__ == '__main__':
