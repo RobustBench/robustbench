@@ -16,7 +16,6 @@ class CleanAccTester(unittest.TestCase):
         device = torch.device(config['device'])
         n_ex = 200
         x_test, y_test = load_cifar10(n_ex, config['data_dir'])
-        x_test, y_test = x_test.to(device), y_test.to(device)
 
         for norm in model_dicts.keys():
             print('Test models robust wrt {}'.format(norm))
@@ -27,7 +26,7 @@ class CleanAccTester(unittest.TestCase):
             for model_name in models:
                 model = load_model(model_name, config['model_dir'], norm).to(device)
 
-                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'])
+                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'], device=device)
 
                 self.assertGreater(round(acc * 100., 2), 70.0)
                 success = round(acc * 100., 2) > 70.0
@@ -42,7 +41,6 @@ class CleanAccTester(unittest.TestCase):
         device = torch.device(config['device'])
         n_ex = 10000
         x_test, y_test = load_cifar10(n_ex, config['data_dir'])
-        x_test, y_test = x_test.to(device), y_test.to(device)
 
         for norm in model_dicts.keys():
             print('Test models robust wrt {}'.format(norm))
@@ -53,7 +51,7 @@ class CleanAccTester(unittest.TestCase):
             for model_name in models:
                 model = load_model(model_name, config['model_dir'], norm).to(device)
 
-                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'])
+                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'], device=device)
                 with open('./model_info/{}/{}.json'.format(norm, model_name), 'r') as model_info:
                     json_dict = json.load(model_info)
 

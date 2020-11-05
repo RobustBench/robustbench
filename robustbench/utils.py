@@ -91,13 +91,15 @@ def load_model(model_name, model_dir='./models', norm='Linf'):
         return model.eval()
 
 
-def clean_accuracy(model, x, y, batch_size=100):
+def clean_accuracy(model, x, y, batch_size=100, device=None):
+    if device is None:
+        device = x.device
     acc = 0.
     n_batches = math.ceil(x.shape[0] / batch_size)
     with torch.no_grad():
         for counter in range(n_batches):
-            x_curr = x[counter * batch_size:(counter + 1) * batch_size]
-            y_curr = y[counter * batch_size:(counter + 1) * batch_size]
+            x_curr = x[counter * batch_size:(counter + 1) * batch_size].to(device)
+            y_curr = y[counter * batch_size:(counter + 1) * batch_size].to(device)
 
             output = model(x_curr)
             acc += (output.max(1)[1] == y_curr).float().sum()
