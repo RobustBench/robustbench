@@ -105,7 +105,7 @@ implements many different attacks. We can start from a simple PGD attack:
 import foolbox as fb
 fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 
-_, advs, success = fb.attacks.LinfPGD()(fmodel, x_test, y_test, epsilons=[8/255])
+_, advs, success = fb.attacks.LinfPGD()(fmodel, x_test.to('cuda:0'), y_test.to('cuda:0'), epsilons=[8/255])
 print('Robust accuracy: {:.1%}'.format(1 - success.float().mean()))
 ```
 ```
