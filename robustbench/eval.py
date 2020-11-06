@@ -31,5 +31,5 @@ if __name__ == '__main__':
     acc = clean_accuracy(model, x_test, y_test, batch_size=args.batch_size, device=device)
     print('Clean accuracy: {:.2%}'.format(acc))
 
-    adversary = AutoAttack(model, norm=args.norm, eps=args.eps, version='standard')
+    adversary = AutoAttack(model, norm=args.norm, eps=args.eps, version='standard', device=device)
     x_adv = adversary.run_standard_evaluation(x_test, y_test)
