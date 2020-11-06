@@ -1,5 +1,8 @@
 import unittest
 import json
+
+import torch
+
 from tests.config import get_test_config
 from robustbench.utils import load_model, clean_accuracy
 from robustbench.data import load_cifar10
@@ -10,6 +13,7 @@ from tests.utils_testing import slow
 class CleanAccTester(unittest.TestCase):
     def test_clean_acc_jsons_fast(self):
         config = get_test_config()
+        device = torch.device(config['device'])
         n_ex = 200
         x_test, y_test = load_cifar10(n_ex, config['data_dir'])
 
@@ -20,9 +24,9 @@ class CleanAccTester(unittest.TestCase):
 
             n_tests_passed = 0
             for model_name in models:
-                model = load_model(model_name, config['model_dir'], norm).cuda().eval()
+                model = load_model(model_name, config['model_dir'], norm).to(device)
 
-                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'])
+                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'], device=device)
 
                 self.assertGreater(round(acc * 100., 2), 70.0)
                 success = round(acc * 100., 2) > 70.0
@@ -34,6 +38,7 @@ class CleanAccTester(unittest.TestCase):
     @slow
     def test_clean_acc_jsons_exact(self):
         config = get_test_config()
+        device = torch.device(config['device'])
         n_ex = 10000
         x_test, y_test = load_cifar10(n_ex, config['data_dir'])
 
@@ -44,9 +49,9 @@ class CleanAccTester(unittest.TestCase):
 
             n_tests_passed = 0
             for model_name in models:
-                model = load_model(model_name, config['model_dir'], norm).cuda().eval()
+                model = load_model(model_name, config['model_dir'], norm).to(device)
 
-                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'])
+                acc = clean_accuracy(model, x_test, y_test, batch_size=config['batch_size'], device=device)
                 with open('./model_info/{}/{}.json'.format(norm, model_name), 'r') as model_info:
                     json_dict = json.load(model_info)
 
