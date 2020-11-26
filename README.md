@@ -277,6 +277,8 @@ the *Google Drive ID* with your pytorch model so that it can be downloaded autom
 #### Private model submission (leaderboard only)
 In case you want to keep your checkpoints private for some reasons, you can also submit your claim, model definition, and model checkpoint directly to this email address `adversarial.benchmark@gmail.com`. In this case, we will add your model to the leaderboard but not to the Model Zoo and will not share your checkpoints publicly. 
 
+#### License of the models
+By default, the models are released under the MIT license, but you can also tell us if you want to release your model under a customized license.
 
 
 ## Automatic tests
