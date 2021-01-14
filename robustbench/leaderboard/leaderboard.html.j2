@@ -1,0 +1,34 @@
+<table id="leaderboard2" class="datatable" style="width: 100%">
+  <thead>
+    <tr>
+      <th class="rank">Rank</th>
+      <th class="method">Method</th>
+      <th class="ca">
+        Standard <br />
+        accuracy
+      </th>
+      <th class="aa">
+        Robust <br />
+        accuracy
+      </th>
+      <th class="extra-data">Extra <br />data</th>
+      <th class="arch">Architecture</th>
+      <th class="venue">Venue</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for model in models %}
+    <tr>
+        <td class="ranktd">{{ loop.index }}</td>
+        <td class="methoddt">
+          <a href="{{ model.link }}" target="_blank">{{ model.name }}</a>
+        </td>
+        <td class="catd">{{ model.clean_acc }}%</td>
+        <td class="aatd">{{ model.AA }}%</td>
+        <td class="datatd">{{ "&#9745;" if model.additional_data else "&#215;"}}</td>
+        <td class="archtd">{{ model.architecture }}</td>
+        <td class="venuetd">{{ model.venue }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
