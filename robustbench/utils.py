@@ -123,14 +123,27 @@ def clean_accuracy(model, x, y, batch_size=100, device=None):
     return acc.item() / x.shape[0]
 
 
-def list_available_models(norm='Linf'):
-    from .model_zoo.models import model_dicts
-    models = model_dicts[norm].keys()
+def list_available_models(dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
+                          threat_model: Union[str, ThreatModel] = ThreatModel.Linf):
+    dataset: BenchmarkDataset = BenchmarkDataset(dataset)
+    threat_model: ThreatModel = ThreatModel(threat_model)
+
+    models = all_models[dataset][threat_model].keys()
 
     json_dicts = []
+
+    jsons_dir = Path("./model_info") / dataset.value / threat_model.value
+
     for model_name in models:
-        with open('./model_info/{}/{}.json'.format(norm, model_name), 'r') as model_info:
+        json_path = jsons_dir / f"{model_name}.json"
+
+        # Some models might not yet be in model_info
+        if not json_path.exists():
+            continue
+
+        with open(json_path, 'r') as model_info:
             json_dict = json.load(model_info)
+
         json_dict['model_name'] = model_name
         json_dict['venue'] = 'Unpublished' if json_dict['venue'] == '' else json_dict['venue']
         json_dict['AA'] = float(json_dict['AA']) / 100

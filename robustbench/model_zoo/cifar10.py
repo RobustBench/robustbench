@@ -19,12 +19,12 @@ class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
 
 class Hendrycks2020AugMixWRNNet(WideResNet):
     def __init__(self, depth=40, widen_factor=2):
-        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
 
 class Gowal2020UncoveringNet(WideResNet):
     def __init__(self, depth=70, widen_factor=16):
-        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
 
 class Carmon2019UnlabeledNet(WideResNet):
@@ -294,11 +294,11 @@ linf = OrderedDict([
     }),
     ('Gowal2020Uncovering', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': None
+        'gdrive_id': "11EDXB3pef30mtiJpW46uFNb21udQFAt5"
     }),
     ('Gowal2020Uncovering_extra', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': None
+        'gdrive_id': "1HSwu57j90iuLinviH-9m5uClEyZedbGl"
     })
 ])
 
