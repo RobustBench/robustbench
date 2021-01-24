@@ -1,13 +1,21 @@
-import os
 import json
 import math
+import os
+from collections import OrderedDict
+from pathlib import Path
+from typing import Union
+
 import requests
 import torch
-from collections import OrderedDict
+from torch import nn
+
+from robustbench.model_zoo import model_dicts as all_models
+from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 
 
 def download_gdrive(gdrive_id, fname_save):
     """ source: https://stackoverflow.com/questions/38511444/python-download-files-from-google-drive-using-url """
+
     def get_confirm_token(response):
         for key, value in response.cookies.items():
             if key.startswith('download_warning'):
@@ -51,11 +59,19 @@ def rm_substr_from_state_dict(state_dict, substr):
     return new_state_dict
 
 
-def load_model(model_name, model_dir='./models', norm='Linf'):
-    from .model_zoo.models import model_dicts as all_models
-    model_dir += '/{}'.format(norm)
-    model_path = '{}/{}.pt'.format(model_dir, model_name)
-    model_dicts = all_models[norm]
+def load_model(model_name: str,
+               model_dir: Union[str, Path] = './models',
+               dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
+               threat_model: Union[str, ThreatModel] = ThreatModel.Linf) -> nn.Module:
+
+    dataset: BenchmarkDataset = BenchmarkDataset(dataset)
+    threat_model: ThreatModel = ThreatModel(threat_model)
+
+    model_dir = Path(model_dir) / dataset.value / threat_model.value
+    model_path = model_dir / f'{model_name}.pt'
+
+    model_dicts = all_models[dataset][threat_model]
+
     if not isinstance(model_dicts[model_name]['gdrive_id'], list):
         model = model_dicts[model_name]['model']()
         if not os.path.exists(model_dir):
@@ -63,13 +79,13 @@ def load_model(model_name, model_dir='./models', norm='Linf'):
         if not os.path.isfile(model_path):
             download_gdrive(model_dicts[model_name]['gdrive_id'], model_path)
         checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
-    
+
         # needed for the model of `Carmon2019Unlabeled`
         try:
             state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
         except:
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
-        
+
         model.load_state_dict(state_dict, strict=False)
         return model.eval()
 
@@ -128,11 +144,13 @@ def list_available_models(norm='Linf'):
         if json_dict['model_name'] == 'Chen2020Adversarial':
             json_dict['architecture'] = json_dict['architecture'] + ' <br/> (3x ensemble)'
         if json_dict['model_name'] != 'Natural':
-            print('| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
-                i+1, json_dict['model_name'], json_dict['name'], json_dict['link'], json_dict['clean_acc'], json_dict['AA'],
-                json_dict['architecture'], json_dict['venue']))
+            print(
+                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
+                    i + 1, json_dict['model_name'], json_dict['name'], json_dict['link'], json_dict['clean_acc'],
+                    json_dict['AA'],
+                    json_dict['architecture'], json_dict['venue']))
         else:
-            print('| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
-                i + 1, json_dict['model_name'], json_dict['name'], json_dict['clean_acc'],
-                json_dict['AA'], json_dict['architecture'], json_dict['venue']))
-
+            print(
+                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
+                    i + 1, json_dict['model_name'], json_dict['name'], json_dict['clean_acc'],
+                    json_dict['AA'], json_dict['architecture'], json_dict['venue']))
