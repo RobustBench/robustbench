@@ -63,7 +63,6 @@ def load_model(model_name: str,
                model_dir: Union[str, Path] = './models',
                dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
                threat_model: Union[str, ThreatModel] = ThreatModel.Linf) -> nn.Module:
-
     dataset: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model: ThreatModel = ThreatModel(threat_model)
 
@@ -97,10 +96,11 @@ def load_model(model_name: str,
         for i, gid in enumerate(model_dicts[model_name]['gdrive_id']):
             if not os.path.isfile('{}_m{}.pt'.format(model_path, i)):
                 download_gdrive(gid, '{}_m{}.pt'.format(model_path, i))
-            checkpoint = torch.load('{}_m{}.pt'.format(model_path, i), map_location=torch.device('cpu'))
+            checkpoint = torch.load('{}_m{}.pt'.format(model_path, i),
+                                    map_location=torch.device('cpu'))
             try:
                 state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
-            except:
+            except KeyError:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
             model.models[i].load_state_dict(state_dict, strict=False)
             model.models[i].eval()
@@ -159,7 +159,8 @@ def list_available_models(dataset: Union[str, BenchmarkDataset] = BenchmarkDatas
         if json_dict['model_name'] != 'Natural':
             print(
                 '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
-                    i + 1, json_dict['model_name'], json_dict['name'], json_dict['link'], json_dict['clean_acc'],
+                    i + 1, json_dict['model_name'], json_dict['name'], json_dict['link'],
+                    json_dict['clean_acc'],
                     json_dict['AA'],
                     json_dict['architecture'], json_dict['venue']))
         else:
