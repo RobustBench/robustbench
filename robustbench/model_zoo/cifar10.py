@@ -4,9 +4,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, PreActBlock, \
+from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, \
+    PreActBlock, \
     PreActBlockV2, PreActResNet, ResNet
-from robustbench.model_zoo.architectures.resnext.models.resnext import CifarResNeXt, ResNeXtBottleneck
+from robustbench.model_zoo.architectures.resnext.models.resnext import CifarResNeXt, \
+    ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 
@@ -29,22 +31,26 @@ class Gowal2020UncoveringNet(WideResNet):
 
 class Carmon2019UnlabeledNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
-        super(Carmon2019UnlabeledNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Carmon2019UnlabeledNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                     sub_block1=True)
 
 
 class Sehwag2020PruningNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
-        super(Sehwag2020PruningNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Sehwag2020PruningNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                   sub_block1=True)
 
 
 class Wang2020ImprovingNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
-        super(Wang2020ImprovingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Wang2020ImprovingNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                   sub_block1=True)
 
 
 class Hendrycks2019UsingNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
-        super(Hendrycks2019UsingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(Hendrycks2019UsingNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                    sub_block1=False)
 
     def forward(self, x):
         x = 2. * x - 1.
@@ -53,7 +59,8 @@ class Hendrycks2019UsingNet(WideResNet):
 
 class Rice2020OverfittingNet(WideResNet):
     def __init__(self, depth=34, widen_factor=20):
-        super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                     sub_block1=False)
         self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
         self.register_buffer('sigma', torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
 
@@ -64,7 +71,8 @@ class Rice2020OverfittingNet(WideResNet):
 
 class Zhang2019TheoreticallyNet(WideResNet):
     def __init__(self, depth=34, widen_factor=10):
-        super(Zhang2019TheoreticallyNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Zhang2019TheoreticallyNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                        sub_block1=True)
 
 
 class Engstrom2019RobustnessNet(ResNet):
@@ -106,7 +114,8 @@ class Chen2020AdversarialNet(torch.nn.Module):
 
 class Huang2020SelfNet(WideResNet):
     def __init__(self, depth=34, widen_factor=10):
-        super(Huang2020SelfNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Huang2020SelfNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                               sub_block1=True)
 
 
 class Pang2020BoostingNet(WideResNet):
@@ -149,7 +158,8 @@ class Ding2020MMANet(WideResNet):
     """
 
     def __init__(self, depth=28, widen_factor=4):
-        super(Ding2020MMANet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(Ding2020MMANet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                             sub_block1=False)
 
     def forward(self, x):
         mu = x.mean(dim=(1, 2, 3), keepdim=True)
@@ -161,7 +171,8 @@ class Ding2020MMANet(WideResNet):
 
 class Zhang2019YouNet(WideResNet):
     def __init__(self, depth=34, widen_factor=10):
-        super(Zhang2019YouNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Zhang2019YouNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                              sub_block1=True)
 
 
 class StandardNet(WideResNet):
@@ -171,18 +182,22 @@ class StandardNet(WideResNet):
 
 class Zhang2020AttacksNet(WideResNet):
     def __init__(self, depth=34, widen_factor=10):
-        super(Zhang2020AttacksNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Zhang2020AttacksNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                  sub_block1=True)
 
 
 class Augustin2020AdversarialNet(ResNet):
     def __init__(self):
         super(Augustin2020AdversarialNet, self).__init__(Bottleneck, [3, 4, 6, 3])
         self.register_buffer('mu',
-                             torch.tensor([0.4913997551666284, 0.48215855929893703, 0.4465309133731618]).view(1, 3, 1,
-                                                                                                              1))
+                             torch.tensor([0.4913997551666284, 0.48215855929893703,
+                                           0.4465309133731618]).view(1, 3, 1,
+                                                                     1))
         self.register_buffer('sigma',
-                             torch.tensor([0.24703225141799082, 0.24348516474564, 0.26158783926049628]).view(1, 3, 1,
-                                                                                                             1))
+                             torch.tensor(
+                                 [0.24703225141799082, 0.24348516474564, 0.26158783926049628]).view(
+                                 1, 3, 1,
+                                 1))
 
     def forward(self, x):
         x = (x - self.mu) / self.sigma
@@ -191,7 +206,8 @@ class Augustin2020AdversarialNet(ResNet):
 
 class Rice2020OverfittingNetL2(PreActResNet):
     def __init__(self):
-        super(Rice2020OverfittingNetL2, self).__init__(PreActBlockV2, [2, 2, 2, 2], bn_before_fc=True)
+        super(Rice2020OverfittingNetL2, self).__init__(PreActBlockV2, [2, 2, 2, 2],
+                                                       bn_before_fc=True)
         self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
         self.register_buffer('sigma', torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
 
@@ -202,7 +218,8 @@ class Rice2020OverfittingNetL2(PreActResNet):
 
 class Rony2019DecouplingNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
-        super(Rony2019DecouplingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(Rony2019DecouplingNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                    sub_block1=False)
         self.register_buffer('mu', torch.tensor([0.491, 0.482, 0.447]).view(1, 3, 1, 1))
         self.register_buffer('sigma', torch.tensor([0.247, 0.243, 0.262]).view(1, 3, 1, 1))
 
@@ -213,12 +230,14 @@ class Rony2019DecouplingNet(WideResNet):
 
 class Wu2020AdversarialNet(WideResNet):
     def __init__(self, depth=28, widen_factor=10):
-        super(Wu2020AdversarialNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        super(Wu2020AdversarialNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                   sub_block1=True)
 
 
 class Wu2020AdversarialNetL2(WideResNet):
     def __init__(self, depth=34, widen_factor=10):
-        super(Wu2020AdversarialNetL2, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(Wu2020AdversarialNetL2, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                     sub_block1=False)
 
 
 linf = OrderedDict([
@@ -333,11 +352,11 @@ l2 = OrderedDict([
     }),
     ('Gowal2020Uncovering', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': None
+        'gdrive_id': "1MxJEYcACdbg8ygmW4wNZzfajZrbeecG6"
     }),
     ('Gowal2020Uncovering_extra', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': None
+        'gdrive_id': "17RwGZ1uXcWp-Vndnv6YVC9eRcHLtV6Hk"
     })
 ])
 
