@@ -1,17 +1,18 @@
 import os
+
 import numpy as np
 import torch
-import torchvision.datasets as datasets
 import torch.utils.data as data
+import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+from torch.utils.data import Dataset
+
 from robustbench.utils import download_gdrive
 
 
-def load_cifar10(n_examples, data_dir='./data'):
+def _load_dataset(dataset: Dataset, n_examples: int):
     batch_size = 100
-    transform_chain = transforms.Compose([transforms.ToTensor()])
-    item = datasets.CIFAR10(root=data_dir, train=False, transform=transform_chain, download=True)
-    test_loader = data.DataLoader(item, batch_size=batch_size, shuffle=False, num_workers=0)
+    test_loader = data.DataLoader(dataset, batch_size=batch_size, shuffle=False, num_workers=0)
 
     x_test, y_test = [], []
     for i, (x, y) in enumerate(test_loader):
@@ -26,10 +27,25 @@ def load_cifar10(n_examples, data_dir='./data'):
     return x_test, y_test
 
 
+def load_cifar10(n_examples, data_dir='./data'):
+    transform_chain = transforms.Compose([transforms.ToTensor()])
+    dataset = datasets.CIFAR10(root=data_dir, train=False, transform=transform_chain, download=True)
+    return _load_dataset(dataset, n_examples)
+
+
+def load_cifar100(n_examples, data_dir='./data'):
+    transform_chain = transforms.Compose([transforms.ToTensor()])
+    dataset = datasets.CIFAR100(root=data_dir, train=False,transform=transform_chain,
+                                download=True)
+    return _load_dataset(dataset, n_examples)
+
+
 def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
-                  corruptions=('shot_noise', 'motion_blur', 'snow', 'pixelate', 'gaussian_noise', 'defocus_blur',
-                                 'brightness', 'fog', 'zoom_blur', 'frost', 'glass_blur', 'impulse_noise', 'contrast',
-                                 'jpeg_compression', 'elastic_transform')):
+                  corruptions=(
+                  'shot_noise', 'motion_blur', 'snow', 'pixelate', 'gaussian_noise', 'defocus_blur',
+                  'brightness', 'fog', 'zoom_blur', 'frost', 'glass_blur', 'impulse_noise',
+                  'contrast',
+                  'jpeg_compression', 'elastic_transform')):
     assert 1 <= severity <= 5
     n_total_cifar = 10000
     labels_gdrive_id = '1wW8vnLfPXVJyElQBGmCx1bfUz7QKALxp'
@@ -67,10 +83,11 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
         if not os.path.isfile(corruption_file_path):
             download_gdrive(dict_gdrive_ids[corruption], corruption_file_path)
         images_all = np.load(corruption_file_path)
-        images = images_all[(severity-1)*n_total_cifar : severity*n_total_cifar]
-        n_img = int(np.ceil(n_examples/n_pert))
+        images = images_all[(severity - 1) * n_total_cifar: severity * n_total_cifar]
+        n_img = int(np.ceil(n_examples / n_pert))
         x_test_list.append(images[:n_img])
-        y_test_list.append(labels[:n_img])  # we need to duplicate the same labels potentially multiple times
+        y_test_list.append(
+            labels[:n_img])  # we need to duplicate the same labels potentially multiple times
 
     x_test, y_test = np.concatenate(x_test_list), np.concatenate(y_test_list)
     if shuffle:
@@ -79,7 +96,8 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
 
     x_test = np.transpose(x_test, (0, 3, 1, 2))  # to make it in the pytorch format
     x_test = x_test.astype(np.float32) / 255  # to be compatible with our models
-    x_test = torch.tensor(x_test)[:n_examples]  # to make sure that we get exactly n_examples but not a few samples more
+    x_test = torch.tensor(x_test)[
+             :n_examples]  # to make sure that we get exactly n_examples but not a few samples more
     y_test = torch.tensor(y_test)[:n_examples]
 
     return x_test, y_test
@@ -87,4 +105,3 @@ def load_cifar10c(n_examples, severity=5, data_dir='./data', shuffle=False,
 
 if __name__ == '__main__':
     x_test, y_test = load_cifar10c(100, corruptions=['fog'])
-
