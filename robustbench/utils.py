@@ -63,20 +63,20 @@ def load_model(model_name: str,
                model_dir: Union[str, Path] = './models',
                dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
                threat_model: Union[str, ThreatModel] = ThreatModel.Linf) -> nn.Module:
-    dataset: BenchmarkDataset = BenchmarkDataset(dataset)
-    threat_model: ThreatModel = ThreatModel(threat_model)
+    dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
+    threat_model_: ThreatModel = ThreatModel(threat_model)
 
-    model_dir = Path(model_dir) / dataset.value / threat_model.value
-    model_path = model_dir / f'{model_name}.pt'
+    model_dir_ = Path(model_dir) / dataset_.value / threat_model_.value
+    model_path = model_dir_ / f'{model_name}.pt'
 
-    model_dicts = all_models[dataset][threat_model]
+    models = all_models[dataset_][threat_model_]
 
-    if not isinstance(model_dicts[model_name]['gdrive_id'], list):
-        model = model_dicts[model_name]['model']()
-        if not os.path.exists(model_dir):
-            os.makedirs(model_dir)
+    if not isinstance(models[model_name]['gdrive_id'], list):
+        model = models[model_name]['model']()
+        if not os.path.exists(model_dir_):
+            os.makedirs(model_dir_)
         if not os.path.isfile(model_path):
-            download_gdrive(model_dicts[model_name]['gdrive_id'], model_path)
+            download_gdrive(models[model_name]['gdrive_id'], model_path)
         checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
 
         # needed for the model of `Carmon2019Unlabeled`
@@ -90,10 +90,10 @@ def load_model(model_name: str,
 
     # If we have an ensemble of models (e.g., Chen2020Adversarial)
     else:
-        model = model_dicts[model_name]['model']()
-        if not os.path.exists(model_dir):
-            os.makedirs(model_dir)
-        for i, gid in enumerate(model_dicts[model_name]['gdrive_id']):
+        model = models[model_name]['model']()
+        if not os.path.exists(model_dir_):
+            os.makedirs(model_dir_)
+        for i, gid in enumerate(models[model_name]['gdrive_id']):
             if not os.path.isfile('{}_m{}.pt'.format(model_path, i)):
                 download_gdrive(gid, '{}_m{}.pt'.format(model_path, i))
             checkpoint = torch.load('{}_m{}.pt'.format(model_path, i),
@@ -125,14 +125,14 @@ def clean_accuracy(model, x, y, batch_size=100, device=None):
 
 def list_available_models(dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
                           threat_model: Union[str, ThreatModel] = ThreatModel.Linf):
-    dataset: BenchmarkDataset = BenchmarkDataset(dataset)
-    threat_model: ThreatModel = ThreatModel(threat_model)
+    dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
+    threat_model_: ThreatModel = ThreatModel(threat_model)
 
-    models = all_models[dataset][threat_model].keys()
+    models = all_models[dataset_][threat_model_].keys()
 
     json_dicts = []
 
-    jsons_dir = Path("./model_info") / dataset.value / threat_model.value
+    jsons_dir = Path("./model_info") / dataset_.value / threat_model_.value
 
     for model_name in models:
         json_path = jsons_dir / f"{model_name}.json"
