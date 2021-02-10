@@ -5,6 +5,9 @@ from collections import OrderedDict
 from pathlib import Path
 from typing import Union
 
+import numpy as np
+import pandas as pd
+from scipy import stats
 import requests
 import torch
 from torch import nn
@@ -15,7 +18,6 @@ from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 
 def download_gdrive(gdrive_id, fname_save):
     """ source: https://stackoverflow.com/questions/38511444/python-download-files-from-google-drive-using-url """
-
     def get_confirm_token(response):
         for key, value in response.cookies.items():
             if key.startswith('download_warning'):
@@ -31,7 +33,8 @@ def download_gdrive(gdrive_id, fname_save):
                 if chunk:  # filter out keep-alive new chunks
                     f.write(chunk)
 
-    print('Download started: path={} (gdrive_id={})'.format(fname_save, gdrive_id))
+    print('Download started: path={} (gdrive_id={})'.format(
+        fname_save, gdrive_id))
 
     url_base = "https://docs.google.com/uc?export=download"
     session = requests.Session()
@@ -45,7 +48,8 @@ def download_gdrive(gdrive_id, fname_save):
 
     save_response_content(response, fname_save)
     session.close()
-    print('Download finished: path={} (gdrive_id={})'.format(fname_save, gdrive_id))
+    print('Download finished: path={} (gdrive_id={})'.format(
+        fname_save, gdrive_id))
 
 
 def rm_substr_from_state_dict(state_dict, substr):
@@ -59,10 +63,11 @@ def rm_substr_from_state_dict(state_dict, substr):
     return new_state_dict
 
 
-def load_model(model_name: str,
-               model_dir: Union[str, Path] = './models',
-               dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
-               threat_model: Union[str, ThreatModel] = ThreatModel.Linf) -> nn.Module:
+def load_model(
+        model_name: str,
+        model_dir: Union[str, Path] = './models',
+        dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
+        threat_model: Union[str, ThreatModel] = ThreatModel.Linf) -> nn.Module:
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
 
@@ -81,7 +86,8 @@ def load_model(model_name: str,
 
         # needed for the model of `Carmon2019Unlabeled`
         try:
-            state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
+            state_dict = rm_substr_from_state_dict(checkpoint['state_dict'],
+                                                   'module.')
         except:
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
@@ -99,7 +105,8 @@ def load_model(model_name: str,
             checkpoint = torch.load('{}_m{}.pt'.format(model_path, i),
                                     map_location=torch.device('cpu'))
             try:
-                state_dict = rm_substr_from_state_dict(checkpoint['state_dict'], 'module.')
+                state_dict = rm_substr_from_state_dict(
+                    checkpoint['state_dict'], 'module.')
             except KeyError:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
             model.models[i].load_state_dict(state_dict, strict=False)
@@ -114,8 +121,10 @@ def clean_accuracy(model, x, y, batch_size=100, device=None):
     n_batches = math.ceil(x.shape[0] / batch_size)
     with torch.no_grad():
         for counter in range(n_batches):
-            x_curr = x[counter * batch_size:(counter + 1) * batch_size].to(device)
-            y_curr = y[counter * batch_size:(counter + 1) * batch_size].to(device)
+            x_curr = x[counter * batch_size:(counter + 1) *
+                       batch_size].to(device)
+            y_curr = y[counter * batch_size:(counter + 1) *
+                       batch_size].to(device)
 
             output = model(x_curr)
             acc += (output.max(1)[1] == y_curr).float().sum()
@@ -123,8 +132,9 @@ def clean_accuracy(model, x, y, batch_size=100, device=None):
     return acc.item() / x.shape[0]
 
 
-def list_available_models(dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
-                          threat_model: Union[str, ThreatModel] = ThreatModel.Linf):
+def list_available_models(
+        dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
+        threat_model: Union[str, ThreatModel] = ThreatModel.Linf):
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
 
@@ -145,26 +155,44 @@ def list_available_models(dataset: Union[str, BenchmarkDataset] = BenchmarkDatas
             json_dict = json.load(model_info)
 
         json_dict['model_name'] = model_name
-        json_dict['venue'] = 'Unpublished' if json_dict['venue'] == '' else json_dict['venue']
+        json_dict['venue'] = 'Unpublished' if json_dict[
+            'venue'] == '' else json_dict['venue']
         json_dict['AA'] = float(json_dict['AA']) / 100
         json_dict['clean_acc'] = float(json_dict['clean_acc']) / 100
         json_dicts.append(json_dict)
 
     json_dicts = sorted(json_dicts, key=lambda d: -d['AA'])
-    print('| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |')
+    print(
+        '| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |'
+    )
     print('|:---:|---|---|:---:|:---:|:---:|:---:|')
     for i, json_dict in enumerate(json_dicts):
         if json_dict['model_name'] == 'Chen2020Adversarial':
-            json_dict['architecture'] = json_dict['architecture'] + ' <br/> (3x ensemble)'
+            json_dict['architecture'] = json_dict[
+                'architecture'] + ' <br/> (3x ensemble)'
         if json_dict['model_name'] != 'Natural':
             print(
-                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
-                    i + 1, json_dict['model_name'], json_dict['name'], json_dict['link'],
-                    json_dict['clean_acc'],
-                    json_dict['AA'],
-                    json_dict['architecture'], json_dict['venue']))
+                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
+                .format(i + 1, json_dict['model_name'], json_dict['name'],
+                        json_dict['link'], json_dict['clean_acc'],
+                        json_dict['AA'], json_dict['architecture'],
+                        json_dict['venue']))
         else:
             print(
-                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'.format(
-                    i + 1, json_dict['model_name'], json_dict['name'], json_dict['clean_acc'],
-                    json_dict['AA'], json_dict['architecture'], json_dict['venue']))
+                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
+                .format(i + 1, json_dict['model_name'], json_dict['name'],
+                        json_dict['clean_acc'], json_dict['AA'],
+                        json_dict['architecture'], json_dict['venue']))
+
+
+def severity_weighted_mean(df: pd.DataFrame) -> pd.DataFrame:
+    return df.groupby(level=0, axis=1).agg(
+        lambda x: np.average(x, weights=x.columns.get_level_values(1), axis=1))
+
+
+def severity_harmonic_mean(df: pd.DataFrame) -> pd.DataFrame:
+    return df.groupby(level=0, axis=1).agg(lambda x: stats.hmean(x, axis=1))
+
+
+def severity_mean(df: pd.DataFrame) -> pd.DataFrame:
+    return df.groupby(level=0, axis=1).mean()
