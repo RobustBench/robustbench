@@ -165,7 +165,9 @@ def load_cifar10c(
         jpeg_compression='13XqvkSnRcfUmSvxHr0Acex3itjAq0T95',
         fog='1NSrbUvrWofmRD1LTmg-RmeaZX2ZC-b6U')
 
-    return _load_corruptions_dataset(n_examples, severity, data_dir, shuffle,
+    dataset_dir = os.path.join(data_dir, "cifar10c")
+
+    return _load_corruptions_dataset(n_examples, severity, dataset_dir, shuffle,
                                      corruptions, gdrive_ids, labels_gdrive_id)
 
 

@@ -1,9 +1,10 @@
+import argparse
 import json
 import math
 import os
 from collections import OrderedDict
 from pathlib import Path
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -187,7 +188,7 @@ def list_available_models(
 
 def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
                 model_name: str, accuracy: float, adv_accuracy: float,
-                eps: float) -> None:
+                eps: Optional[float]) -> None:
     json_path = Path(
         "model_info"
     ) / dataset.value / threat_model.value / f"{model_name}.json"
@@ -221,3 +222,42 @@ def severity_harmonic_mean(df: pd.DataFrame) -> pd.DataFrame:
 
 def severity_mean(df: pd.DataFrame) -> pd.DataFrame:
     return df.groupby(level=0, axis=1).mean()
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_name',
+                        type=str,
+                        default='Carmon2019Unlabeled')
+    parser.add_argument('--threat_model',
+                        type=str,
+                        default='Linf',
+                        choices=[x.value for x in ThreatModel])
+    parser.add_argument('--dataset',
+                        type=str,
+                        default='cifar10',
+                        choices=[x.value for x in BenchmarkDataset])
+    parser.add_argument('--eps', type=float, default=8 / 255)
+    parser.add_argument('--n_ex',
+                        type=int,
+                        default=100,
+                        help='number of examples to evaluate on')
+    parser.add_argument('--batch_size',
+                        type=int,
+                        default=500,
+                        help='batch size for evaluation')
+    parser.add_argument('--data_dir',
+                        type=str,
+                        default='./data',
+                        help='where to store downloaded datasets')
+    parser.add_argument('--model_dir',
+                        type=str,
+                        default='./models',
+                        help='where to store downloaded models')
+    parser.add_argument('--device',
+                        type=str,
+                        default='cuda:0',
+                        help='device to use for computations')
+    parser.add_argument('--to_disk', type=bool, default=True)
+    args = parser.parse_args()
+    return args

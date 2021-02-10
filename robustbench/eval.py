@@ -1,4 +1,4 @@
-import argparse
+from argparse import Namespace
 from pathlib import Path
 from typing import Dict, Optional, Sequence, Tuple, Union
 
@@ -10,7 +10,7 @@ from torch import nn
 
 from robustbench.data import CORRUPTIONS, load_clean_dataset, load_corruptions_dataset
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
-from robustbench.utils import clean_accuracy, update_json
+from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
 
 
 def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
@@ -84,7 +84,6 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                       clean_y_test,
                                       batch_size=batch_size,
                                       device=device)
-        print(f'Adversarial accuracy: {adv_accuracy:.2%}')
     elif threat_model_ == ThreatModel.corruptions:
         print(f"Evaluating over {len(CORRUPTIONS)} corruptions")
         # Save into a dict to make a Pandas DF with nested index
@@ -93,8 +92,15 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                               to_disk, model_name)
     else:
         raise NotImplementedError
+    print(f'Adversarial accuracy: {adv_accuracy:.2%}')
 
-    update_json(dataset_, threat_model_, model_name, accuracy, adv_accuracy, eps)
+    if to_disk:
+        if model_name is None:
+            raise ValueError(
+                "If `to_disk` is True, `model_name` should be specified.")
+
+        update_json(dataset_, threat_model_, model_name, accuracy, adv_accuracy,
+                    eps)
 
     return accuracy, adv_accuracy
 
@@ -153,43 +159,25 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
     return adv_accuracy
 
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--model_name',
-                        type=str,
-                        default='Carmon2019Unlabeled')
-    parser.add_argument('--threat_model',
-                        type=str,
-                        default='Linf',
-                        choices=[x.value for x in ThreatModel])
-    parser.add_argument('--dataset',
-                        type=str,
-                        default='cifar10',
-                        choices=[x.value for x in BenchmarkDataset])
-    parser.add_argument('--eps', type=float, default=8 / 255)
-    parser.add_argument('--n_ex',
-                        type=int,
-                        default=100,
-                        help='number of examples to evaluate on')
-    parser.add_argument('--batch_size',
-                        type=int,
-                        default=500,
-                        help='batch size for evaluation')
-    parser.add_argument('--data_dir',
-                        type=str,
-                        default='./data',
-                        help='where to store downloaded datasets')
-    parser.add_argument('--model_dir',
-                        type=str,
-                        default='./models',
-                        help='where to store downloaded models')
-    parser.add_argument('--device',
-                        type=str,
-                        default='cuda:0',
-                        help='device to use for computations')
-    args = parser.parse_args()
-    return args
+def main(args: Namespace) -> None:
+    model = load_model(args.model_name,
+                       model_dir=args.model_dir,
+                       dataset=args.dataset,
+                       threat_model=args.threat_model)
+
+    device = torch.device(args.device)
+    benchmark(model,
+              n_examples=args.n_ex,
+              dataset=args.dataset,
+              threat_model=args.threat_model,
+              to_disk=args.to_disk,
+              model_name=args.model_name,
+              data_dir=args.data_dir,
+              device=device,
+              batch_size=args.batch_size,
+              eps=args.eps)
 
 
 if __name__ == '__main__':
-    ...
+    args_ = parse_args()
+    main(args_)
