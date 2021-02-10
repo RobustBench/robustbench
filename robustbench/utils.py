@@ -185,6 +185,31 @@ def list_available_models(
                         json_dict['architecture'], json_dict['venue']))
 
 
+def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
+                model_name: str, accuracy: float, adv_accuracy: float,
+                eps: float) -> None:
+    json_path = Path(
+        "model_info"
+    ) / dataset.value / threat_model.value / f"{model_name}.json"
+    model_info = {
+        "link": None,
+        "name": None,
+        "authors": None,
+        "additional_data": None,
+        "number_forward_passes": None,
+        "dataset": dataset.value,
+        "venue": None,
+        "architecture": None,
+        "eps": eps,
+        "clean_acc": accuracy,
+        "reported": None,
+        "AA": adv_accuracy
+    }
+
+    with open(json_path, "w") as f:
+        f.write(json.dumps(model_info, indent=2))
+
+
 def severity_weighted_mean(df: pd.DataFrame) -> pd.DataFrame:
     return df.groupby(level=0, axis=1).agg(
         lambda x: np.average(x, weights=x.columns.get_level_values(1), axis=1))

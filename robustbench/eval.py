@@ -10,7 +10,7 @@ from torch import nn
 
 from robustbench.data import CORRUPTIONS, load_clean_dataset, load_corruptions_dataset
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
-from robustbench.utils import clean_accuracy
+from robustbench.utils import clean_accuracy, update_json
 
 
 def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
@@ -93,6 +93,8 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                               to_disk, model_name)
     else:
         raise NotImplementedError
+
+    update_json(dataset_, threat_model_, model_name, accuracy, adv_accuracy, eps)
 
     return accuracy, adv_accuracy
 
