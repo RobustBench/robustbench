@@ -228,19 +228,6 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
         f.write(json.dumps(model_info, indent=2))
 
 
-def severity_weighted_mean(df: pd.DataFrame) -> pd.DataFrame:
-    return df.groupby(level=0, axis=1).agg(
-        lambda x: np.average(x, weights=x.columns.get_level_values(1), axis=1))
-
-
-def severity_harmonic_mean(df: pd.DataFrame) -> pd.DataFrame:
-    return df.groupby(level=0, axis=1).agg(lambda x: stats.hmean(x, axis=1))
-
-
-def severity_mean(df: pd.DataFrame) -> pd.DataFrame:
-    return df.groupby(level=0, axis=1).mean()
-
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_name',
