@@ -316,11 +316,11 @@ linf = OrderedDict([
     }),
     ('Gowal2020Uncovering', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': "11EDXB3pef30mtiJpW46uFNb21udQFAt5"
+        'gdrive_id': "1DVwKclibqzniE2Ss5_g6BY77ChG8QKzl"
     }),
     ('Gowal2020Uncovering_extra', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': "1HSwu57j90iuLinviH-9m5uClEyZedbGl"
+        'gdrive_id': "1GxryYj_Or-VCDca0wgiFLz4ssXSZXQoJ"
     })
 ])
 
