@@ -28,8 +28,8 @@ class Hendrycks2020AugMixWRNNet(WideResNet):
 
 class Gowal2020UncoveringNet(DMWideResNet):
     def __init__(self, depth=70, width=16):
-        super().__init__(depth=depth, width=width, activation_fn=Swish, mean=CIFAR10_MEAN,
-                         std=CIFAR10_STD)
+        super().__init__(num_classes=10, depth=depth, width=width, activation_fn=Swish,
+                         mean=CIFAR10_MEAN, std=CIFAR10_STD)
 
 
 class Carmon2019UnlabeledNet(WideResNet):
@@ -355,11 +355,11 @@ l2 = OrderedDict([
     }),
     ('Gowal2020Uncovering', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': "1MxJEYcACdbg8ygmW4wNZzfajZrbeecG6"
+        'gdrive_id': "1QL4SNvYydjIg1uI3VP9SyNt-2kTXRisG"
     }),
     ('Gowal2020Uncovering_extra', {
         'model': Gowal2020UncoveringNet,
-        'gdrive_id': "17RwGZ1uXcWp-Vndnv6YVC9eRcHLtV6Hk"
+        'gdrive_id': "1pkZDCpCBShpAnx92n8PUeNOY1fSiTi0s"
     })
 ])
 
