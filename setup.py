@@ -19,7 +19,7 @@ setuptools.setup(
         'Jinja2~=2.11.2',
         'tqdm~=4.56.1',
         'pandas~=1.1.0',
-        'scipy~=1.5.4',
+        'scipy~=1.4.1',
         'autoattack @ git+https://github.com/fra31/auto-attack.git@9b264b52bb65c373373727f532865a5551ab9c02#egg=autoattack'
     ],
     classifiers=[
