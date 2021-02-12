@@ -26,7 +26,7 @@ class Hendrycks2020AugMixWRNNet(WideResNet):
 
 class Gowal2020UncoveringNet(WideResNet):
     def __init__(self, depth=70, widen_factor=16):
-        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
 
 
 class Carmon2019UnlabeledNet(WideResNet):
