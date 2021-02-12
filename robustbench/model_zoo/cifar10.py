@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, \
     PreActBlock, \
     PreActBlockV2, PreActResNet, ResNet
-from robustbench.model_zoo.architectures.resnext.models.resnext import CifarResNeXt, \
+from robustbench.model_zoo.architectures.resnext import CifarResNeXt, \
     ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
