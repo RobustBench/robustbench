@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, \
+    DMWideResNet, Swish
 from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, \
     PreActBlock, \
     PreActBlockV2, PreActResNet, ResNet
@@ -24,9 +26,10 @@ class Hendrycks2020AugMixWRNNet(WideResNet):
         super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
 
 
-class Gowal2020UncoveringNet(WideResNet):
-    def __init__(self, depth=70, widen_factor=16):
-        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+class Gowal2020UncoveringNet(DMWideResNet):
+    def __init__(self, depth=70, width=16):
+        super().__init__(depth=depth, width=width, activation_fn=Swish, mean=CIFAR10_MEAN,
+                         std=CIFAR10_STD)
 
 
 class Carmon2019UnlabeledNet(WideResNet):
