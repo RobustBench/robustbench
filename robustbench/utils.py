@@ -101,7 +101,7 @@ def load_model(model_name: str,
         except:
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
-        model.load_state_dict(state_dict, strict=False)  # TODO: change to True
+        model.load_state_dict(state_dict, strict=True)
         return model.eval()
 
     # If we have an ensemble of models (e.g., Chen2020Adversarial)
@@ -119,7 +119,7 @@ def load_model(model_name: str,
                     checkpoint['state_dict'], 'module.')
             except KeyError:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
-            model.models[i].load_state_dict(state_dict, strict=False)
+            model.models[i].load_state_dict(state_dict, strict=True)
             model.models[i].eval()
         return model.eval()
 
