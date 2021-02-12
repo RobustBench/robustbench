@@ -177,6 +177,8 @@ def main(args: Namespace) -> None:
               batch_size=args.batch_size,
               eps=args.eps)
 
+    # Add attack_norm
+
 
 if __name__ == '__main__':
     args_ = parse_args()

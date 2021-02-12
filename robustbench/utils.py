@@ -2,15 +2,16 @@ import argparse
 import json
 import math
 import os
+import warnings
 from collections import OrderedDict
 from pathlib import Path
 from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from scipy import stats
 import requests
 import torch
+from scipy import stats
 from torch import nn
 
 from robustbench.model_zoo import model_dicts as all_models
@@ -64,13 +65,21 @@ def rm_substr_from_state_dict(state_dict, substr):
     return new_state_dict
 
 
-def load_model(
-        model_name: str,
-        model_dir: Union[str, Path] = './models',
-        dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
-        threat_model: Union[str, ThreatModel] = ThreatModel.Linf) -> nn.Module:
+def load_model(model_name: str,
+               model_dir: Union[str, Path] = './models',
+               dataset: Union[str,
+                              BenchmarkDataset] = BenchmarkDataset.cifar_10,
+               threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
+               norm: Optional[str] = None) -> nn.Module:
+
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
-    threat_model_: ThreatModel = ThreatModel(threat_model)
+    if norm is None:
+        threat_model_: ThreatModel = ThreatModel(threat_model)
+    else:
+        threat_model_: ThreatModel = ThreatModel(norm)
+        warnings.warn(
+            "`norm` has been deprecated and will be removed in a future version.",
+            DeprecationWarning)
 
     model_dir_ = Path(model_dir) / dataset_.value / threat_model_.value
     model_path = model_dir_ / f'{model_name}.pt'
@@ -92,7 +101,7 @@ def load_model(
         except:
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
-        model.load_state_dict(state_dict, strict=False)
+        model.load_state_dict(state_dict, strict=False)  # TODO: change to True
         return model.eval()
 
     # If we have an ensemble of models (e.g., Chen2020Adversarial)
@@ -135,9 +144,17 @@ def clean_accuracy(model, x, y, batch_size=100, device=None):
 
 def list_available_models(
         dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
-        threat_model: Union[str, ThreatModel] = ThreatModel.Linf):
+        threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
+        norm: Optional[str] = None):
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
-    threat_model_: ThreatModel = ThreatModel(threat_model)
+
+    if norm is None:
+        threat_model_: ThreatModel = ThreatModel(threat_model)
+    else:
+        threat_model_: ThreatModel = ThreatModel(norm)
+        warnings.warn(
+            "`norm` has been deprecated and will be removed in a future version.",
+            DeprecationWarning)
 
     models = all_models[dataset_][threat_model_].keys()
 
