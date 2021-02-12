@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/RobustBench/robustbench",
     packages=setuptools.find_packages(),
     install_requires=[
-        'requests~=2.25.1',
+        'requests~=2.23.0',
         'numpy~=1.19.4',
         'Jinja2~=2.11.2',
         'tqdm~=4.56.1',
