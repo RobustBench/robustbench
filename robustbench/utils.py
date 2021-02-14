@@ -5,13 +5,10 @@ import os
 import warnings
 from collections import OrderedDict
 from pathlib import Path
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 
-import numpy as np
-import pandas as pd
 import requests
 import torch
-from scipy import stats
 from torch import nn
 
 from robustbench.model_zoo import model_dicts as all_models
@@ -71,6 +68,9 @@ def load_model(model_name: str,
                               BenchmarkDataset] = BenchmarkDataset.cifar_10,
                threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
                norm: Optional[str] = None) -> nn.Module:
+    """Loads a model from the model_zoo.
+
+     The model is trained on the given ``dataset``, for the given ``threat_model``"""
 
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     if norm is None:
@@ -101,7 +101,8 @@ def load_model(model_name: str,
         except:
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
-        model.load_state_dict(state_dict, strict=True)
+        model = _safe_load_state_dict(model, model_name, state_dict)
+
         return model.eval()
 
     # If we have an ensemble of models (e.g., Chen2020Adversarial)
@@ -119,12 +120,40 @@ def load_model(model_name: str,
                     checkpoint['state_dict'], 'module.')
             except KeyError:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
-            model.models[i].load_state_dict(state_dict, strict=True)
+
+            model.models[i] = _safe_load_state_dict(model.models[i],
+                                                    model_name, state_dict)
             model.models[i].eval()
+
         return model.eval()
 
 
-def clean_accuracy(model, x, y, batch_size=100, device=None):
+def _safe_load_state_dict(model: nn.Module, model_name: str,
+                          state_dict: Dict[str, torch.Tensor]) -> nn.Module:
+    known_failing_models = {
+        "Augustin2020Adversarial", "Engstrom2019Robustness",
+        "Pang2020Boosting", "Rice2020Overfitting", "Rony2019Decoupling",
+        "Wong2020Fast"
+    }
+
+    failure_message = 'Missing key(s) in state_dict: "mu", "sigma".'
+
+    try:
+        model.load_state_dict(state_dict, strict=True)
+    except RuntimeError as e:
+        if model_name in known_failing_models and failure_message in str(e):
+            model.load_state_dict(state_dict, strict=False)
+        else:
+            raise e
+
+    return model
+
+
+def clean_accuracy(model: nn.Module,
+                   x: torch.Tensor,
+                   y: torch.Tensor,
+                   batch_size: int = 100,
+                   device: torch.device = None):
     if device is None:
         device = x.device
     acc = 0.
