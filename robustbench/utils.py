@@ -86,7 +86,7 @@ def load_model(model_name: str,
     if norm is None:
         threat_model_: ThreatModel = ThreatModel(threat_model)
     else:
-        threat_model_: ThreatModel = ThreatModel(norm)
+        threat_model_ = ThreatModel(norm)
         warnings.warn(
             "`norm` has been deprecated and will be removed in a future version.",
             DeprecationWarning)
@@ -190,7 +190,7 @@ def list_available_models(
     if norm is None:
         threat_model_: ThreatModel = ThreatModel(threat_model)
     else:
-        threat_model_: ThreatModel = ThreatModel(norm)
+        threat_model_ = ThreatModel(norm)
         warnings.warn(
             "`norm` has been deprecated and will be removed in a future version.",
             DeprecationWarning)
