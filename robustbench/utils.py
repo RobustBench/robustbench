@@ -70,7 +70,17 @@ def load_model(model_name: str,
                norm: Optional[str] = None) -> nn.Module:
     """Loads a model from the model_zoo.
 
-     The model is trained on the given ``dataset``, for the given ``threat_model``"""
+     The model is trained on the given ``dataset``, for the given ``threat_model``.
+
+    :param model_name: The name used in the model zoo.
+    :param model_dir: The base directory where the models are saved.
+    :param dataset: The dataset on which the model is trained.
+    :param threat_model: The threat model for which the model is trained.
+    :param norm: Deprecated argument that can be used in place of ``threat_model``. If specified, it
+      overrides ``threat_model``
+
+    :return: A ready-to-used trained model.
+    """
 
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     if norm is None:
