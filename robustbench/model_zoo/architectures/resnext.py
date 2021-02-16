@@ -22,18 +22,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-name: "ResNeXt-DenseNet"
-description: "PyTorch implementations of ResNeXt and DenseNet."
-
-third_party {
-  url {
-    type: GIT
-    value: "https://github.com/D-X-Y/ResNeXt-DenseNet"
-  }
-  version: "0de9a8c8fd095b37eb60945f8dafefdbfe1cef6b"
-  last_upgrade_date { year: 2019 month: 12 day: 4 }
-  license_type: PERMISSIVE
-}
+From:
+https://github.com/google-research/augmix/blob/master/third_party/WideResNet_pytorch/wideresnet.py
 
 """
 
