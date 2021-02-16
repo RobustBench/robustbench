@@ -5,7 +5,7 @@
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
-  "venue": "",
+  "venue": "N/A",
   "architecture": "WideResNet-28-10",
   "eps": "0.5",
   "clean_acc": "94.78",

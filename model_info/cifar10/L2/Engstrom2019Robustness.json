@@ -5,7 +5,7 @@
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
-  "venue": "",
+  "venue": "GitHub,<br>Sep 2019",
   "architecture": "ResNet-50",
   "eps": "0.5",
   "clean_acc": "90.83",
