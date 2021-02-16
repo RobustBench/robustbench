@@ -10,5 +10,6 @@
   "eps": "0.031",
   "clean_acc": "83.48",
   "reported": "58.03",
-  "AA": "53.34"
+  "AA": "53.34",
+  "footnote": "Uses \\(\\ell_{\\infty} \\) = 0.031 ≈ 7.9/255 instead of 8/255."
 }

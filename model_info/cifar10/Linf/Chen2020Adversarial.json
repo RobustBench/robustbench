@@ -10,5 +10,6 @@
   "eps": "8/255",
   "clean_acc": "86.04",
   "reported": "54.64",
-  "AA": "51.56"
+  "AA": "51.56",
+  "footnote": "Uses ensembles of 3 models."
 }
