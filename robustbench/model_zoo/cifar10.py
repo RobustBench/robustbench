@@ -353,11 +353,11 @@ l2 = OrderedDict([
         'model': Wu2020AdversarialNetL2,
         'gdrive_id': '1M5AZ0EZQt7d2AlTmsnqZcfx91-x7YEAV',
     }),
-    ('Gowal2020Uncovering', {
+    ('Gowal2020Uncovering_70_16', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1QL4SNvYydjIg1uI3VP9SyNt-2kTXRisG"
     }),
-    ('Gowal2020Uncovering_extra', {
+    ('Gowal2020Uncovering_70_16_extra', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1pkZDCpCBShpAnx92n8PUeNOY1fSiTi0s"
     })
