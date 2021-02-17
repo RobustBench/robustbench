@@ -90,12 +90,15 @@ pip install git+https://github.com/RobustBench/robustbench
 
 Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
 that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
+
 ```python
 from robustbench.data import load_cifar10
+
 x_test, y_test = load_cifar10(n_examples=50)
 
 from robustbench.utils import load_model
-model = load_model(model_name='Carmon2019Unlabeled', norm='Linf')
+
+model = load_model(model_name='Carmon2019Unlabeled', dataset='cifar10', threat_model='Linf')
 ```
 
 Let's try to evaluate the robustness of this model. We can use any favourite library for this. For example, [FoolBox](https://github.com/bethgelab/foolbox)
@@ -115,7 +118,7 @@ Wonderful! Can we do better with a more accurate attack?
 
 Let's try to evaluate its robustness with a cheap version [AutoAttack](https://arxiv.org/abs/2003.01690) from ICML 2020 with 2/4 attacks (only APGD-CE and APGD-DLR):
 ```python
-!pip install -q git+https://github.com/fra31/auto-attack
+# autoattack is installed as a dependency of robustbench so there is not need to install it separately
 from autoattack import AutoAttack
 adversary = AutoAttack(model, norm='Linf', eps=8/255, version='custom', attacks_to_run=['apgd-ce', 'apgd-dlr'])
 adversary.apgd.n_restarts = 1
@@ -136,17 +139,19 @@ more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps
 What about other types of perturbations? Is Lp-robustness useful there? We can evaluate the available models on more general perturbations. 
 For example, let's take images corrupted by fog perturbations from CIFAR-10-C with the highest level of severity (5). 
 Are different Linf robust models perform better on them?
+
 ```python
 from robustbench.data import load_cifar10c
 from robustbench.utils import clean_accuracy
 
 corruptions = ['fog']
-x_test, y_test = load_cifar10c(n_examples=1000, corruptions=corruptions, severity=5)   
+x_test, y_test = load_cifar10c(n_examples=1000, corruptions=corruptions, severity=5)
 
-for model_name in ['Standard', 'Engstrom2019Robustness', 'Rice2020Overfitting', 'Carmon2019Unlabeled']:
-  model = load_model(model_name)
-  acc = clean_accuracy(model, x_test, y_test)
-  print('Model: {}, CIFAR-10-C accuracy: {:.1%}'.format(model_name, acc))
+for model_name in ['Standard', 'Engstrom2019Robustness', 'Rice2020Overfitting',
+                   'Carmon2019Unlabeled']:
+ model = load_model(model_name, dataset='cifar10', threat_model='Linf')
+ acc = clean_accuracy(model, x_test, y_test)
+ print(f'Model: {model_name}, CIFAR-10-C accuracy: {acc:.1%}')
 ``` 
 ```
 >>> Model: Standard, CIFAR-10-C accuracy: 74.4%
