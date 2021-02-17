@@ -6,6 +6,7 @@ from typing import Union
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
+from robustbench.utils import ACC_FIELDS
 
 
 def generate_leaderboard(dataset: Union[str, BenchmarkDataset],
@@ -48,13 +49,7 @@ def generate_leaderboard(dataset: Union[str, BenchmarkDataset],
 
     folder = Path(models_folder) / dataset_.value / threat_model_.value
 
-    acc_fields = {
-        ThreatModel.corruptions: "corruptions_acc",
-        ThreatModel.L2: "autoattack_acc",
-        ThreatModel.Linf: "autoattack_acc"
-    }
-
-    acc_field = acc_fields[threat_model_]
+    acc_field = ACC_FIELDS[threat_model_]
 
     models = []
     for model_path in folder.glob("*.json"):

@@ -252,9 +252,11 @@ Here is an example from `model_info/Rice2020Overfitting.json`:
   "eps": "8/255",
   "clean_acc": "85.34",
   "reported": "58",
-  "AA": "53.42"
+  "autoattack_acc": "53.42"
 }
 ```
+If the model is robust to common corruptions, then the "autoattack_acc" field should be
+"corruptions_acc".
 
 - **Model definition**: `robustbench/model_zoo/models.py`: add your model definition as a new class. For standard architectures (e.g., `WideResNet`) consider
  inheriting the class defined in `wide_resnet.py` or `resnet.py`. For example:

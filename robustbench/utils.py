@@ -15,6 +15,13 @@ from robustbench.model_zoo import model_dicts as all_models
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 
 
+ACC_FIELDS = {
+    ThreatModel.corruptions: "corruptions_acc",
+    ThreatModel.L2: "autoattack_acc",
+    ThreatModel.Linf: "autoattack_acc"
+}
+
+
 def download_gdrive(gdrive_id, fname_save):
     """ source: https://stackoverflow.com/questions/38511444/python-download-files-from-google-drive-using-url """
     def get_confirm_token(response):
@@ -197,6 +204,8 @@ def list_available_models(
 
     models = all_models[dataset_][threat_model_].keys()
 
+    acc_field = ACC_FIELDS[threat_model_]
+
     json_dicts = []
 
     jsons_dir = Path("./model_info") / dataset_.value / threat_model_.value
@@ -214,11 +223,11 @@ def list_available_models(
         json_dict['model_name'] = model_name
         json_dict['venue'] = 'Unpublished' if json_dict[
             'venue'] == '' else json_dict['venue']
-        json_dict['AA'] = float(json_dict['AA']) / 100
+        json_dict[acc_field] = float(json_dict[acc_field]) / 100
         json_dict['clean_acc'] = float(json_dict['clean_acc']) / 100
         json_dicts.append(json_dict)
 
-    json_dicts = sorted(json_dicts, key=lambda d: -d['AA'])
+    json_dicts = sorted(json_dicts, key=lambda d: -d[acc_field])
     print(
         '| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |'
     )
@@ -232,13 +241,13 @@ def list_available_models(
                 '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
                 .format(i + 1, json_dict['model_name'], json_dict['name'],
                         json_dict['link'], json_dict['clean_acc'],
-                        json_dict['AA'], json_dict['architecture'],
+                        json_dict[acc_field], json_dict['architecture'],
                         json_dict['venue']))
         else:
             print(
                 '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
                 .format(i + 1, json_dict['model_name'], json_dict['name'],
-                        json_dict['clean_acc'], json_dict['AA'],
+                        json_dict['clean_acc'], json_dict[acc_field],
                         json_dict['architecture'], json_dict['venue']))
 
 
@@ -248,6 +257,9 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
     json_path = Path(
         "model_info"
     ) / dataset.value / threat_model.value / f"{model_name}.json"
+
+    acc_field = ACC_FIELDS[threat_model]
+
     model_info = {
         "link": None,
         "name": None,
@@ -260,7 +272,7 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
         "eps": eps,
         "clean_acc": accuracy,
         "reported": None,
-        "AA": adv_accuracy
+        acc_field: adv_accuracy
     }
 
     with open(json_path, "w") as f:
