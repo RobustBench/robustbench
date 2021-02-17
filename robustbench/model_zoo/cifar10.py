@@ -314,11 +314,11 @@ linf = OrderedDict([
         'model': Wu2020AdversarialNetL2,
         'gdrive_id': '13LBcgNvhFppCFG22i1xATrahFPfMgXGf',
     }),
-    ('Gowal2020Uncovering', {
+    ('Gowal2020Uncovering_70_16', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1DVwKclibqzniE2Ss5_g6BY77ChG8QKzl"
     }),
-    ('Gowal2020Uncovering_extra', {
+    ('Gowal2020Uncovering_70_16_extra', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1GxryYj_Or-VCDca0wgiFLz4ssXSZXQoJ"
     })
@@ -353,11 +353,11 @@ l2 = OrderedDict([
         'model': Wu2020AdversarialNetL2,
         'gdrive_id': '1M5AZ0EZQt7d2AlTmsnqZcfx91-x7YEAV',
     }),
-    ('Gowal2020Uncovering_70_16', {
+    ('Gowal2020Uncovering', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1QL4SNvYydjIg1uI3VP9SyNt-2kTXRisG"
     }),
-    ('Gowal2020Uncovering_70_16_extra', {
+    ('Gowal2020Uncovering_extra', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1pkZDCpCBShpAnx92n8PUeNOY1fSiTi0s"
     })
