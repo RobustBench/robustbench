@@ -30,7 +30,7 @@
             {% endif %}
         </td>
         <td class="catd">{{ model.clean_acc }}%</td>
-        <td class="aatd">{{ model.AA }}%</td>
+        <td class="aatd">{{ model[acc_field] }}%</td>
         <td class="datatd">{{ "&#9745;" if model.additional_data else "&#215;"}}</td>
         <td class="archtd">{{ model.architecture }}</td>
         <td class="venuetd">{{ model.venue }}</td>

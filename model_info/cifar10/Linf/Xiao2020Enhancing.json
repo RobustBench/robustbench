@@ -1,15 +1,1 @@
-{
-  "link": "https://arxiv.org/abs/1905.10510",
-  "name": "Enhancing Adversarial Defense by k-Winners-Take-All",
-  "authors": "Chang Xiao, Peilin Zhong, Changxi Zheng",
-  "additional_data": false,
-  "number_forward_passes": 1,
-  "dataset": "cifar10",
-  "venue": "ICLR 2020",
-  "architecture": "DenseNet-121",
-  "eps": "0.031",
-  "clean_acc": "79.28",
-  "reported": "52.4",
-  "AA": "18.50",
-  "footnote": "Uses \\(\\ell_{\\infty} \\) = 0.031 ≈ 7.9/255 instead of 8/255."
-}
+{"link": "https://arxiv.org/abs/1905.10510", "name": "Enhancing Adversarial Defense by k-Winners-Take-All", "authors": "Chang Xiao, Peilin Zhong, Changxi Zheng", "additional_data": false, "number_forward_passes": 1, "dataset": "cifar10", "venue": "ICLR 2020", "architecture": "DenseNet-121", "eps": "0.031", "clean_acc": "79.28", "reported": "52.4", "footnote": "Uses \\(\\ell_{\\infty} \\) = 0.031 \u2248 7.9/255 instead of 8/255.", "autoattack_acc": "18.50"}

@@ -1,11 +1,16 @@
 import json
 from argparse import ArgumentParser
 from pathlib import Path
+from typing import Union
 
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 
-def generate_leaderboard(folder_name: str) -> str:
+
+def generate_leaderboard(dataset: Union[str, BenchmarkDataset],
+                         threat_model: Union[str, ThreatModel],
+                         models_folder: str = "model_info") -> str:
     """Prints the HTML leaderboard starting from the .json results.
 
     The result is a <table> that can be put directly into the RobustBench index.html page,
@@ -25,40 +30,70 @@ def generate_leaderboard(folder_name: str) -> str:
       "eps": "0.5",
       "clean_acc": "91.08",
       "reported": "73.27",
-      "AA": "72.91"
+      "autoattack_acc": "72.91"
     }
     ``
 
-    :param folder_name: the name of the folder where the .json files are placed.
-    :return: The resulting table.
+    If the model is robust to common corruptions, then the "autoattack_acc" field should be
+    "corruptions_acc".
+
+    :param dataset: The dataset of the wanted leaderboard.
+    :param threat_model: The threat model of the wanted leaderboard.
+    :param models_folder: The base folder of the model jsons (e.g. our "model_info" folder).
+
+    :return: The resulting HTML table.
     """
-    folder = Path(folder_name)
+    dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
+    threat_model_: ThreatModel = ThreatModel(threat_model)
+
+    folder = Path(models_folder) / dataset_.value / threat_model_.value
+
+    acc_fields = {
+        ThreatModel.corruptions: "corruptions_acc",
+        ThreatModel.L2: "autoattack_acc",
+        ThreatModel.Linf: "autoattack_acc"
+    }
+
+    acc_field = acc_fields[threat_model_]
 
     models = []
-
     for model_path in folder.glob("*.json"):
         with open(model_path) as fp:
             model = json.load(fp)
 
         models.append(model)
 
-    models.sort(key=lambda x: x["AA"], reverse=True)
+    models.sort(key=lambda x: x[acc_field], reverse=True)
 
-    env = Environment(
-        loader=PackageLoader('robustbench', 'leaderboard'),
-        autoescape=select_autoescape(['html', 'xml'])
-    )
+    env = Environment(loader=PackageLoader('robustbench', 'leaderboard'),
+                      autoescape=select_autoescape(['html', 'xml']))
 
     template = env.get_template('leaderboard.html.j2')
-    result = template.render(models=models)
+
+    result = template.render(models=models, acc_field=acc_field)
     print(result)
     return result
 
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--models_folder", type=str,
-                        help="The folder containing the .json file with the models information")
+    parser.add_argument(
+        "--dataset",
+        type=str,
+        default="cifar10",
+        help="The dataset of the desired leaderboard."
+    )
+    parser.add_argument(
+        "--threat_model",
+        type=str,
+        help="The threat model of the desired leaderboard."
+    )
+    parser.add_argument(
+        "--models_folder",
+        type=str,
+        default="model_info",
+        help="The base folder of the model jsons (e.g. our 'model_info' folder)"
+    )
     args = parser.parse_args()
 
-    generate_leaderboard(args.models_folder)
+    generate_leaderboard(args.dataset, args.threat_model, args.models_folder)
