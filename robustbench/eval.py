@@ -55,6 +55,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     threat_model_: ThreatModel = ThreatModel(threat_model)
 
     device = device or torch.device("cpu")
+    model = model.to(device)
 
     clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
                                                     data_dir)
@@ -123,6 +124,8 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
                 severity,
                 data_dir,
                 corruptions=[corruption])
+
+            x_corrupt, y_corrupt = x_corrupt.to(device), y_corrupt.to(device)
 
             corruption_severity_accuracy = clean_accuracy(
                 model,
