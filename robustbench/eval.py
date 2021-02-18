@@ -14,7 +14,7 @@ from robustbench.utils import clean_accuracy, load_model, parse_args, update_jso
 
 
 def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
-              n_examples: int,
+              n_examples: int = 10_000,
               dataset: Union[str,
                              BenchmarkDataset] = BenchmarkDataset.cifar_10,
               threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
@@ -57,8 +57,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
-                                                    data_dir)
+    clean_x_test, clean_y_test = load_clean_dataset(dataset_, None, data_dir)
     clean_x_test, clean_y_test = clean_x_test.to(device), clean_y_test.to(
         device)
 

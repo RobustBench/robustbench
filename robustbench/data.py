@@ -1,6 +1,6 @@
 import dataclasses
 import os
-from typing import Callable, Dict, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
 import numpy as np
 import torch
@@ -14,7 +14,7 @@ from robustbench.utils import download_gdrive
 
 
 def _load_dataset(dataset: Dataset,
-                  n_examples: int) -> Tuple[torch.Tensor, torch.Tensor]:
+                  n_examples: Optional[int] = None) -> Tuple[torch.Tensor, torch.Tensor]:
     batch_size = 100
     test_loader = data.DataLoader(dataset,
                                   batch_size=batch_size,
@@ -25,17 +25,20 @@ def _load_dataset(dataset: Dataset,
     for i, (x, y) in enumerate(test_loader):
         x_test.append(x)
         y_test.append(y)
-        if batch_size * i >= n_examples:
+        if n_examples is not None and batch_size * i >= n_examples:
             break
+    x_test_tensor = torch.cat(x_test)
+    y_test_tensor = torch.cat(y_test)
 
-    x_test_tensor = torch.cat(x_test)[:n_examples]
-    y_test_tensor = torch.cat(y_test)[:n_examples]
+    if n_examples is not None:
+        x_test_tensor = x_test_tensor[:n_examples]
+        y_test_tensor = y_test_tensor[:n_examples]
 
     return x_test_tensor, y_test_tensor
 
 
 def load_cifar10(
-        n_examples: int,
+        n_examples: Optional[int] = None,
         data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
     transform_chain = transforms.Compose([transforms.ToTensor()])
     dataset = datasets.CIFAR10(root=data_dir,
@@ -46,7 +49,7 @@ def load_cifar10(
 
 
 def load_cifar100(
-        n_examples: int,
+        n_examples: Optional[int] = None,
         data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
     transform_chain = transforms.Compose([transforms.ToTensor()])
     dataset = datasets.CIFAR100(root=data_dir,
@@ -56,14 +59,14 @@ def load_cifar100(
     return _load_dataset(dataset, n_examples)
 
 
-CleanDatasetLoader = Callable[[int, str], Tuple[torch.Tensor, torch.Tensor]]
+CleanDatasetLoader = Callable[[Optional[int], str], Tuple[torch.Tensor, torch.Tensor]]
 _clean_dataset_loaders: Dict[BenchmarkDataset, CleanDatasetLoader] = {
     BenchmarkDataset.cifar_10: load_cifar10,
     BenchmarkDataset.cifar_100: load_cifar100
 }
 
 
-def load_clean_dataset(dataset: BenchmarkDataset, n_examples: int,
+def load_clean_dataset(dataset: BenchmarkDataset, n_examples: Optional[int],
                        data_dir: str) -> Tuple[torch.Tensor, torch.Tensor]:
     return _clean_dataset_loaders[dataset](n_examples, data_dir)
 
