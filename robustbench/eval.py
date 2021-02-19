@@ -58,8 +58,6 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     model = model.to(device)
 
     clean_x_test, clean_y_test = load_clean_dataset(dataset_, None, data_dir)
-    clean_x_test, clean_y_test = clean_x_test.to(device), clean_y_test.to(
-        device)
 
     accuracy = clean_accuracy(model,
                               clean_x_test,
@@ -123,8 +121,6 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
                 severity,
                 data_dir,
                 corruptions=[corruption])
-
-            x_corrupt, y_corrupt = x_corrupt.to(device), y_corrupt.to(device)
 
             corruption_severity_accuracy = clean_accuracy(
                 model,
