@@ -145,6 +145,8 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
     # Save unaggregated results on disk
     existing_results_path = Path(
         "model_info") / dataset.value / "corruptions" / "unagg_results.csv"
+    if not existing_results_path.parent.exists():
+        existing_results_path.parent.mkdir(parents=True, exist_ok=True)
     try:
         existing_results = pd.read_csv(existing_results_path,
                                        header=[0, 1],

@@ -257,6 +257,8 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
     json_path = Path(
         "model_info"
     ) / dataset.value / threat_model.value / f"{model_name}.json"
+    if not json_path.parent.exists():
+        json_path.parent.mkdir(parents=True, exist_ok=True)
 
     acc_field = ACC_FIELDS[threat_model]
 
