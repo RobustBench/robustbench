@@ -8,7 +8,7 @@
   "venue": "ICLR 2020",
   "architecture": "WideResNet",
   "eps": null,
-  "clean_acc": "91.15",
+  "clean_acc": "95.08",
   "reported": "",
-  "corruptions_acc": "77.19"
+  "corruptions_acc": "88.82"
 }

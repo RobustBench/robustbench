@@ -212,8 +212,8 @@ You can find all available model IDs in the table below (note that the full lead
 
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub>**Hendrycks2020AugMixResNeXt**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>91.15%</sub> | <sub>78.33%</sub> | <sub>ResNeXt</sub> | <sub>ICLR 2020</sub> |
-| <sub>**2**</sub> | <sub>**Hendrycks2020AugMixWRN**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>91.15%</sub> | <sub>77.19%</sub> | <sub>WideResNet</sub> | <sub>ICLR 2020</sub> |
+| <sub>**1**</sub> | <sub>**Hendrycks2020AugMixResNeXt**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.83%</sub> | <sub>89.09%</sub> | <sub>ResNeXt</sub> | <sub>ICLR 2020</sub> |
+| <sub>**2**</sub> | <sub>**Hendrycks2020AugMixWRN**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.08%</sub> | <sub>88.82%</sub> | <sub>WideResNet</sub> | <sub>ICLR 2020</sub> |
 
 
 ## Notebooks

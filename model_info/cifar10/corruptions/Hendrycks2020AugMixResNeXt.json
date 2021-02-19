@@ -8,7 +8,7 @@
   "venue": "ICLR 2020",
   "architecture": "ResNeXt",
   "eps": null,
-  "clean_acc": "91.15",
-  "reported": "",
-  "corruptions_acc": "78.33"
+  "clean_acc": "95.83",
+  "reported": "89.1",
+  "corruptions_acc": "89.09"
 }
