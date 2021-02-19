@@ -1,0 +1,14 @@
+{
+  "link": "https://arxiv.org/abs/1912.02781",
+  "name": "AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty",
+  "authors": "Dan Hendrycks, Norman Mu, Ekin D. Cubuk, Barret Zoph, Justin Gilmer, Balaji Lakshminarayanan",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "ICLR 2020",
+  "architecture": "ResNeXt",
+  "eps": null,
+  "clean_acc": "91.15",
+  "reported": "",
+  "corruptions_acc": "78.33"
+}
