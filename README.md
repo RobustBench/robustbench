@@ -208,6 +208,14 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**8**</sub> | <sub>**Ding2020MMA**</sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>88.02%</sub> | <sub>66.09%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**9**</sub> | <sub>**Standard**</sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
+### Common Corruptions
+
+| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub>**Hendrycks2020AugMixResNeXt**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>91.15%</sub> | <sub>78.33%</sub> | <sub>ResNeXt</sub> | <sub>ICLR 2020</sub> |
+| <sub>**2**</sub> | <sub>**Hendrycks2020AugMixWRN**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>91.15%</sub> | <sub>77.19%</sub> | <sub>WideResNet</sub> | <sub>ICLR 2020</sub> |
+
+
 ## Notebooks
 We host all the notebooks at Google Colab:
 - [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV): a quick tutorial 
