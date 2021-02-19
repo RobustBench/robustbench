@@ -7,14 +7,16 @@ import torch
 import torch.utils.data as data
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+import torchvision.transforms.functional as F
 from torch.utils.data import Dataset
 
 from robustbench.model_zoo.enums import BenchmarkDataset
 from robustbench.utils import download_gdrive
 
 
-def _load_dataset(dataset: Dataset,
-                  n_examples: Optional[int] = None) -> Tuple[torch.Tensor, torch.Tensor]:
+def _load_dataset(
+        dataset: Dataset,
+        n_examples: Optional[int] = None) -> Tuple[torch.Tensor, torch.Tensor]:
     batch_size = 100
     test_loader = data.DataLoader(dataset,
                                   batch_size=batch_size,
@@ -40,7 +42,9 @@ def _load_dataset(dataset: Dataset,
 def load_cifar10(
         n_examples: Optional[int] = None,
         data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
-    transform_chain = transforms.Compose([transforms.ToTensor()])
+    transform_chain = transforms.Compose(
+        [transforms.ToTensor(),
+         transforms.Normalize([0.5] * 3, [0.5] * 3)])
     dataset = datasets.CIFAR10(root=data_dir,
                                train=False,
                                transform=transform_chain,
@@ -59,7 +63,8 @@ def load_cifar100(
     return _load_dataset(dataset, n_examples)
 
 
-CleanDatasetLoader = Callable[[Optional[int], str], Tuple[torch.Tensor, torch.Tensor]]
+CleanDatasetLoader = Callable[[Optional[int], str], Tuple[torch.Tensor,
+                                                          torch.Tensor]]
 _clean_dataset_loaders: Dict[BenchmarkDataset, CleanDatasetLoader] = {
     BenchmarkDataset.cifar_10: load_cifar10,
     BenchmarkDataset.cifar_100: load_cifar100
@@ -121,7 +126,7 @@ def _load_corruptions_dataset(
                 corruption_file_path)
         images_all = np.load(corruption_file_path)
         images = images_all[(severity - 1) * n_total_cifar:severity *
-                            n_total_cifar]
+                                                           n_total_cifar]
         n_img = int(np.ceil(n_examples / n_pert))
         x_test_list.append(images[:n_img])
         # Duplicate the same labels potentially multiple times
@@ -140,15 +145,17 @@ def _load_corruptions_dataset(
     x_test = torch.tensor(x_test)[:n_examples]
     y_test = torch.tensor(y_test)[:n_examples]
 
-    return x_test, y_test
+    norm_x_test = F.normalize(x_test, [0.5] * 3, [0.5] * 3)
+
+    return norm_x_test, y_test
 
 
 def load_cifar10c(
-    n_examples: int,
-    severity: int = 5,
-    data_dir: str = './data',
-    shuffle: bool = False,
-    corruptions: Sequence[str] = CORRUPTIONS
+        n_examples: int,
+        severity: int = 5,
+        data_dir: str = './data',
+        shuffle: bool = False,
+        corruptions: Sequence[str] = CORRUPTIONS
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     labels_gdrive_id = '1wW8vnLfPXVJyElQBGmCx1bfUz7QKALxp'
     gdrive_ids = _CorruptionsGDriveIDs(
@@ -170,8 +177,9 @@ def load_cifar10c(
 
     dataset_dir = os.path.join(data_dir, "cifar10c")
 
-    return _load_corruptions_dataset(n_examples, severity, dataset_dir, shuffle,
-                                     corruptions, gdrive_ids, labels_gdrive_id)
+    return _load_corruptions_dataset(n_examples, severity, dataset_dir,
+                                     shuffle, corruptions, gdrive_ids,
+                                     labels_gdrive_id)
 
 
 CorruptDatasetLoader = Callable[[int, int, str, bool, Sequence[str]],
@@ -182,11 +190,11 @@ _corruption_dataset_loaders: Dict[BenchmarkDataset, CorruptDatasetLoader] = {
 
 
 def load_corruptions_dataset(
-    dataset: BenchmarkDataset,
-    n_examples: int,
-    severity: int,
-    data_dir: str,
-    corruptions: Sequence[str] = CORRUPTIONS
+        dataset: BenchmarkDataset,
+        n_examples: int,
+        severity: int,
+        data_dir: str,
+        corruptions: Sequence[str] = CORRUPTIONS
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     return _corruption_dataset_loaders[dataset](n_examples, severity, data_dir,
                                                 False, corruptions)
