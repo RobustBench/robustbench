@@ -42,9 +42,7 @@ def _load_dataset(
 def load_cifar10(
         n_examples: Optional[int] = None,
         data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
-    transform_chain = transforms.Compose(
-        [transforms.ToTensor(),
-         transforms.Normalize([0.5] * 3, [0.5] * 3)])
+    transform_chain = transforms.Compose([transforms.ToTensor()])
     dataset = datasets.CIFAR10(root=data_dir,
                                train=False,
                                transform=transform_chain,
@@ -145,9 +143,7 @@ def _load_corruptions_dataset(
     x_test = torch.tensor(x_test)[:n_examples]
     y_test = torch.tensor(y_test)[:n_examples]
 
-    norm_x_test = F.normalize(x_test, [0.5] * 3, [0.5] * 3)
-
-    return norm_x_test, y_test
+    return x_test, y_test
 
 
 def load_cifar10c(

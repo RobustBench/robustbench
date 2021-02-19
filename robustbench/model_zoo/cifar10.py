@@ -19,11 +19,23 @@ class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
     def __init__(self, depth=29, num_classes=10, cardinality=4, base_width=32):
         super().__init__(ResNeXtBottleneck, depth=depth, num_classes=num_classes,
                          cardinality=cardinality, base_width=base_width)
+        self.register_buffer('mu', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
 
 
 class Hendrycks2020AugMixWRNNet(WideResNet):
     def __init__(self, depth=40, widen_factor=2):
         super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        self.register_buffer('mu', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
 
 
 class Gowal2020UncoveringNet(DMWideResNet):
