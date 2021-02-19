@@ -383,6 +383,10 @@ common_corruptions = OrderedDict([
     ('Hendrycks2020AugMixResNeXt', {
         'model': Hendrycks2020AugMixResNeXtNet,
         'gdrive_id': "1uGP3nZbL3LC160kOsxwkkt6tDd4qbZT1"
+    }),
+    ('Standard', {
+        'model': StandardNet,
+        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     })
 ])
 

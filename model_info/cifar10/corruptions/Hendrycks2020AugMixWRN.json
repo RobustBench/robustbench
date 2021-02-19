@@ -6,9 +6,9 @@
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "ICLR 2020",
-  "architecture": "WideResNet",
+  "architecture": "WideResNet-40-2",
   "eps": null,
   "clean_acc": "95.08",
-  "reported": "",
+  "reported": "88.8",
   "corruptions_acc": "88.82"
 }
