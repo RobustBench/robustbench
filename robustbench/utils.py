@@ -150,7 +150,7 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
     known_failing_models = {
         "Augustin2020Adversarial", "Engstrom2019Robustness",
         "Pang2020Boosting", "Rice2020Overfitting", "Rony2019Decoupling",
-        "Wong2020Fast"
+        "Wong2020Fast", "Hendrycks2020AugMixWRN", "Hendrycks2020AugMixResNeXt"
     }
 
     failure_message = 'Missing key(s) in state_dict: "mu", "sigma".'
@@ -257,6 +257,8 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
     json_path = Path(
         "model_info"
     ) / dataset.value / threat_model.value / f"{model_name}.json"
+    if not json_path.parent.exists():
+        json_path.parent.mkdir(parents=True, exist_ok=True)
 
     acc_field = ACC_FIELDS[threat_model]
 
