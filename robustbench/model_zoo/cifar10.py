@@ -333,7 +333,16 @@ linf = OrderedDict([
     ('Gowal2020Uncovering_70_16_extra', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1GxryYj_Or-VCDca0wgiFLz4ssXSZXQoJ"
+    }),
+    ('Gowal2020Uncovering_34_20', {
+        'model': lambda: Gowal2020UncoveringNet(34, 20),
+        'gdrive_id': "1YWvZO1u9_yNLFNC3JYd_TVkvrRSMER1O"
+    }),
+    ('Gowal2020Uncovering_28_10_extra', {
+        'model': lambda: Gowal2020UncoveringNet(28, 10),
+        'gdrive_id': "1MBAWGxiZxKt-GfqEqtLcXcd3tAxPhvV2"
     })
+
 ])
 
 l2 = OrderedDict([
