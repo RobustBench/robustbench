@@ -11,5 +11,5 @@
   "clean_acc": "90.90",
   "reported": "",
   "corruptions_acc": "84.90",
-  "footnote": "Trained for \\(\\ell_2 \\) robustness."
+  "footnote": "Trained for \\(\\ell_2 \\) robustness with \\(\\varepsilon = 0.5\\)."
 }
