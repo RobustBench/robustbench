@@ -11,5 +11,5 @@
   "clean_acc": "91.10",
   "reported": "",
   "corruptions_acc": "81.84",
-  "footnote": "Trained for \\(\\ell_2 \\) robustness with \\(\\varepsilon = 0.5\\)."
+  "footnote": "Trained for \\(\\ell_{\\infty} \\) robustness with \\(\\varepsilon = 8/255\\)."
 }
