@@ -287,6 +287,9 @@ def get_leaderboard_bibtex(dataset: Union[str, BenchmarkDataset], threat_model: 
             bibtex_entry = _get_bibtex_entry(model_name, title, authors, venue, year)
             bibtex_entries.add(bibtex_entry)
 
+    for entry in bibtex_entries:
+        print(entry)
+
     return bibtex_entries
 
 
