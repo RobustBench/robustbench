@@ -150,7 +150,7 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
     known_failing_models = {
         "Augustin2020Adversarial", "Engstrom2019Robustness",
         "Pang2020Boosting", "Rice2020Overfitting", "Rony2019Decoupling",
-        "Wong2020Fast", "Hendrycks2020AugMixWRN", "Hendrycks2020AugMixResNeXt"
+        "Wong2020Fast", "Hendrycks2020AugMix_WRN", "Hendrycks2020AugMix_ResNeXt"
     }
 
     failure_message = 'Missing key(s) in state_dict: "mu", "sigma".'
@@ -249,6 +249,45 @@ def list_available_models(
                 .format(i + 1, json_dict['model_name'], json_dict['name'],
                         json_dict['clean_acc'], json_dict[acc_field],
                         json_dict['architecture'], json_dict['venue']))
+
+
+def _get_bibtex_entry(model_name: str, title: str, authors: str, venue: str, year: int):
+    return (f"@article{{{model_name},\n"
+            f"\ttitle\t= {{{title}}},\n"
+            f"\tauthor\t= {{{authors}}},\n"
+            f"\tjournal\t= {{{venue}}},\n"
+            f"\tyear\t= {{{year}}}\n"
+            "}\n")
+
+
+def get_leaderboard_bibtex(dataset: Union[str, BenchmarkDataset], threat_model: Union[str, ThreatModel]):
+    dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
+    threat_model_: ThreatModel = ThreatModel(threat_model)
+
+    jsons_dir = Path("./model_info") / dataset_.value / threat_model_.value
+
+    bibtex_entries = set()
+
+    for json_path in jsons_dir.glob("*.json"):
+
+        model_name = json_path.stem.split("_")[0]
+
+        with open(json_path, 'r') as model_info:
+            model_dict = json.load(model_info)
+            title = model_dict["name"]
+            authors = model_dict["authors"]
+            full_venue = model_dict["venue"]
+            if full_venue == "N/A":
+                continue
+            venue = full_venue.split(" ")[0]
+            venue = venue.split(",")[0]
+
+            year = model_dict["venue"].split(" ")[-1]
+
+            bibtex_entry = _get_bibtex_entry(model_name, title, authors, venue, year)
+            bibtex_entries.add(bibtex_entry)
+
+    return bibtex_entries
 
 
 def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,

@@ -385,11 +385,11 @@ l2 = OrderedDict([
 ])
 
 common_corruptions = OrderedDict([
-    ('Hendrycks2020AugMixWRN', {
+    ('Hendrycks2020AugMix_WRN', {
         'model': Hendrycks2020AugMixWRNNet,
         'gdrive_id': "1wy7gSRsUZzCzj8QhmTbcnwmES_2kkNph"
     }),
-    ('Hendrycks2020AugMixResNeXt', {
+    ('Hendrycks2020AugMix_ResNeXt', {
         'model': Hendrycks2020AugMixResNeXtNet,
         'gdrive_id': "1uGP3nZbL3LC160kOsxwkkt6tDd4qbZT1"
     }),
