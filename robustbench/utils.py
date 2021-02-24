@@ -293,6 +293,39 @@ def get_leaderboard_bibtex(dataset: Union[str, BenchmarkDataset], threat_model: 
     return bibtex_entries
 
 
+def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset], threat_model: Union[str, ThreatModel],
+    l_keys=['clean_acc', 'autoattack_acc', 'additional_data', 'architecture', 'venue'],
+    sort_by='autoattack_acc'):
+    dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
+    threat_model_: ThreatModel = ThreatModel(threat_model)
+
+    jsons_dir = Path("../model_info") / dataset_.value / threat_model_.value
+    entries = []
+    
+    for json_path in jsons_dir.glob("*.json"):
+        model_name = json_path.stem.split("_")[0]
+        
+        with open(json_path, 'r') as model_info:
+            model_dict = json.load(model_info)
+
+        str_curr = '\\cite{{{}}}'.format(model_name) if not model_name in [
+            'Standard'] else model_name
+        
+        for k in l_keys:
+            if k == 'additional_data':
+                str_curr += ' & {}'.format('Y' if model_dict[k] else 'N')
+            else:
+                str_curr += ' & {}'.format(model_dict[k])
+        str_curr += '\\\\'
+        entries.append((str_curr, float(model_dict[sort_by])))
+
+    entries = sorted(entries, key=lambda k: k[1], reverse=True)
+    entries = ['{} &'.format(i + 1) + a for i, (a, b) in enumerate(entries)]
+    entries = '\n'.join(entries).replace('<br>', ' ')
+
+    return entries
+
+
 def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
                 model_name: str, accuracy: float, adv_accuracy: float,
                 eps: Optional[float]) -> None:
