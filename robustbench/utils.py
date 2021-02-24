@@ -252,6 +252,7 @@ def list_available_models(
 
 
 def _get_bibtex_entry(model_name: str, title: str, authors: str, venue: str, year: int):
+    authors = authors.replace(', ', ' and ')
     return (f"@article{{{model_name},\n"
             f"\ttitle\t= {{{title}}},\n"
             f"\tauthor\t= {{{authors}}},\n"
@@ -287,10 +288,12 @@ def get_leaderboard_bibtex(dataset: Union[str, BenchmarkDataset], threat_model: 
             bibtex_entry = _get_bibtex_entry(model_name, title, authors, venue, year)
             bibtex_entries.add(bibtex_entry)
 
+    str_entries = ''
     for entry in bibtex_entries:
         print(entry)
-
-    return bibtex_entries
+        str_entries += entry
+    
+    return bibtex_entries, str_entries
 
 
 def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset], threat_model: Union[str, ThreatModel],
