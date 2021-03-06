@@ -287,6 +287,10 @@ The only difference is that the generated json will have only the fields `"clean
 `"autoattack_acc"` (for `"Linf"` and `"L2"` threat models) or `"corruptions_acc"` (for the
 `"corruptions"` threat model) already specified. The other fields have to be filled manually.
 
+If the given `threat_model` is `corruptions`, we also save unaggregated results on the different
+combinations of corruption types and severities in
+[this csv file](model_info/cifar10/corruptions/unaggregated_results.csv) (for CIFAR-10).
+
 ##### Model definition
 
 You can add your model as a new class into `robustbench/model_zoo/<dataset>.py`, given that the
