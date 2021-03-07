@@ -433,3 +433,4 @@ cifar_10_models = OrderedDict([
     (ThreatModel.L2, l2),
     (ThreatModel.corruptions, common_corruptions)
 ])
+

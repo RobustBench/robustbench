@@ -111,6 +111,8 @@ def load_model(model_name: str,
             download_gdrive(models[model_name]['gdrive_id'], model_path)
         checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
 
+        if 'Kireev2021Effectiveness' in model_name:
+            checkpoint = checkpoint['last']  # we take the last model (choices: 'last', 'best')
         # needed for the model of `Carmon2019Unlabeled`
         try:
             state_dict = rm_substr_from_state_dict(checkpoint['state_dict'],
@@ -150,7 +152,9 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
     known_failing_models = {
         "Augustin2020Adversarial", "Engstrom2019Robustness",
         "Pang2020Boosting", "Rice2020Overfitting", "Rony2019Decoupling",
-        "Wong2020Fast", "Hendrycks2020AugMix_WRN", "Hendrycks2020AugMix_ResNeXt"
+        "Wong2020Fast", "Hendrycks2020AugMix_WRN", "Hendrycks2020AugMix_ResNeXt",
+        "Kireev2021Effectiveness_Gauss50percent", "Kireev2021Effectiveness_Gauss100percent",
+        "Kireev2021Effectiveness_RLAT", "Kireev2021Effectiveness_RLATAugMix",
     }
 
     failure_message = 'Missing key(s) in state_dict: "mu", "sigma".'
