@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
+from torch import nn
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, \
@@ -101,7 +101,7 @@ class Engstrom2019RobustnessNet(ResNet):
         return super(Engstrom2019RobustnessNet, self).forward(x)
 
 
-class Chen2020AdversarialNet(torch.nn.Module):
+class Chen2020AdversarialNet(nn.Module):
     def __init__(self):
         super(Chen2020AdversarialNet, self).__init__()
         self.branch1 = ResNet(BottleneckChen2020AdversarialNet, [3, 4, 6, 3])
