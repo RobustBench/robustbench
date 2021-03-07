@@ -171,7 +171,10 @@ which automatically downloads the model (all models are defined in `model_zoo/mo
 
 You can find all available model IDs in the table below (note that the full leaderboard contains more models): 
 
-### Linf
+
+### CIFAR-10
+
+#### Linf
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub>**Gowal2020Uncovering_70_16_extra**</sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>91.10%</sub> | <sub>65.87%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
@@ -196,7 +199,7 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**20**</sub> | <sub>**Ding2020MMA**</sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**21**</sub> | <sub>**Standard**</sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
-### L2
+#### L2
 
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
@@ -210,13 +213,30 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**8**</sub> | <sub>**Ding2020MMA**</sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>88.02%</sub> | <sub>66.09%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**9**</sub> | <sub>**Standard**</sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
-### Common Corruptions
+#### Common Corruptions
 
 | # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub>**Hendrycks2020AugMix_ResNeXt**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.83%</sub> | <sub>89.09%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
 | <sub>**2**</sub> | <sub>**Hendrycks2020AugMix_WRN**</sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.08%</sub> | <sub>88.82%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
 | <sub>**3**</sub> | <sub>**Standard**</sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>73.46%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
+
+### CIFAR 100
+
+#### Linf
+
+| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub>**Gowal2020Uncovering_extra**</sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>69.15%</sub> | <sub>36.88%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**2**</sub> | <sub>**Cui2020Learnable_34_20_LBGAT6**</sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>62.55%</sub> | <sub>30.20%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**3**</sub> | <sub>**Gowal2020Uncovering**</sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>60.86%</sub> | <sub>30.03%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**4**</sub> | <sub>**Cui2020Learnable_34_10_LBGAT6**</sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>60.64%</sub> | <sub>29.33%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**5**</sub> | <sub>**Wu2020Adversarial**</sub> | <sub>*[Adversarial Weight Perturbation Helps Robust Generalization](https://arxiv.org/abs/2004.05884)*</sub> | <sub>60.38%</sub> | <sub>28.86%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**6**</sub> | <sub>**Hendrycks2019Using**</sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | <sub>59.23%</sub> | <sub>28.42%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
+| <sub>**7**</sub> | <sub>**Cui2020Learnable_34_10_LBGAT0**</sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>70.25%</sub> | <sub>27.16%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**8**</sub> | <sub>**Chen2020Efficient**</sub> | <sub>*[Efficient Robust Training via Backward Smoothing](https://arxiv.org/abs/2010.01278)*</sub> | <sub>62.15%</sub> | <sub>26.94%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**9**</sub> | <sub>**Sitawarin2020Improving**</sub> | <sub>*[Improving Adversarial Robustness Through Progressive Hardening](https://arxiv.org/abs/2003.09347)*</sub> | <sub>62.82%</sub> | <sub>24.57%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
+| <sub>**10**</sub> | <sub>**Rice2020Overfitting**</sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>53.83%</sub> | <sub>18.95%</sub> | <sub>Pre-activation ResNet 18</sub> | <sub>ICML 2020</sub> |
 
 ## Notebooks
 We host all the notebooks at Google Colab:
