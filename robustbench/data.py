@@ -7,7 +7,6 @@ import torch
 import torch.utils.data as data
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
-import torchvision.transforms.functional as F
 from torch.utils.data import Dataset
 
 from robustbench.model_zoo.enums import BenchmarkDataset
@@ -94,8 +93,24 @@ class _CorruptionsGDriveIDs:
     elastic_transform: str
 
 
-CORRUPTIONS = tuple(field.name
-                    for field in dataclasses.fields(_CorruptionsGDriveIDs))
+@dataclasses.dataclass
+class _CIFAR100CorruptionsGDriveIDs(_CorruptionsGDriveIDs):
+    spatter: str
+    speckle_noise: str
+    gaussian_blur: str
+    saturate: str
+
+
+CIFAR_10_CORRUPTIONS = tuple(field.name
+                             for field in dataclasses.fields(_CorruptionsGDriveIDs))
+
+CIFAR_100_CORRUPTIONS = tuple(field.name
+                              for field in dataclasses.fields(_CIFAR100CorruptionsGDriveIDs))
+
+CORRUPTIONS: Dict[BenchmarkDataset, Tuple[str, ...]] = {
+    BenchmarkDataset.cifar_10: CIFAR_10_CORRUPTIONS,
+    BenchmarkDataset.cifar_100: CIFAR_100_CORRUPTIONS
+}
 
 
 def _load_corruptions_dataset(
@@ -151,7 +166,7 @@ def load_cifar10c(
         severity: int = 5,
         data_dir: str = './data',
         shuffle: bool = False,
-        corruptions: Sequence[str] = CORRUPTIONS
+        corruptions: Sequence[str] = CIFAR_10_CORRUPTIONS
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     labels_gdrive_id = '1wW8vnLfPXVJyElQBGmCx1bfUz7QKALxp'
     gdrive_ids = _CorruptionsGDriveIDs(
@@ -178,10 +193,47 @@ def load_cifar10c(
                                      labels_gdrive_id)
 
 
+def load_cifar100c(
+        n_examples: int,
+        severity: int = 5,
+        data_dir: str = './data',
+        shuffle: bool = False,
+        corruptions: Sequence[str] = CIFAR_100_CORRUPTIONS
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    labels_gdrive_id = '1Fe7mvreJ7fdt6LKp2p5u40SIDuk3--EZ'
+    gdrive_ids = _CIFAR100CorruptionsGDriveIDs(
+        pixelate='1qzsa1Kcnlt5sCwrofBm50CF_u1NQ4DLx',
+        impulse_noise='1DKZV-pBlmIc1f000NwRDJpFZ7b1mVrWm',
+        contrast='1yFOwe1VOm0HjmJhbsZvJijiLBao7nFQr',
+        motion_blur='1uLNue6U7gFTBPvI6XfftblWe-ubBoRe5',
+        gaussian_noise='16yH2JBosELSvTD2gvaWobm5mAaWzDx1A',
+        snow='1Vgi3ltm33PGKo9b4PuxG2LngxAIAXX4Z',
+        brightness='1trgUOArXx7vYN-JnJdi2ZKDfogS6_g3b',
+        frost='19scsYiu9iwXUrwHCX9PCwwRLXLIiPJgL',
+        elastic_transform='1-2GlWlT20_sITM-TxX06XTBQk1W3p5zm',
+        defocus_blur='1AQ_M_YPXfvL8eLeM6zpfYOYxTKQtJkVV',
+        shot_noise='1rICddnW17oC7tnhpczDg7SAlvQTKqebb',
+        glass_blur='1PmMnCGoqs_u8xtp28QTsbfzr1FT11rcx',
+        zoom_blur='1QPvqcuT7FLNW4tVQmHI789SKQx94tdY7',
+        jpeg_compression='13ulgbI9nKC9HCTXlja_nd5xqWg8OABRV',
+        fog='1z2mGB6hXvY06xrFPM4ymjeaRb5jfQqOm',
+        spatter='1QPvqcuT7FLNW4tVQmHI789SKQx94tdY7',
+        speckle_noise='1bCPrZSXGg-No3TMtDr47cUg43qV9W-Al',
+        saturate='1haZ2VJi1w5K41oqG-pTv6voxGDOQBQ6y',
+        gaussian_blur='1PmMnCGoqs_u8xtp28QTsbfzr1FT11rcx')
+
+    dataset_dir = os.path.join(data_dir, "cifar100c")
+
+    return _load_corruptions_dataset(n_examples, severity, dataset_dir,
+                                     shuffle, corruptions, gdrive_ids,
+                                     labels_gdrive_id)
+
+
 CorruptDatasetLoader = Callable[[int, int, str, bool, Sequence[str]],
                                 Tuple[torch.Tensor, torch.Tensor]]
 _corruption_dataset_loaders: Dict[BenchmarkDataset, CorruptDatasetLoader] = {
-    BenchmarkDataset.cifar_10: load_cifar10c
+    BenchmarkDataset.cifar_10: load_cifar10c,
+    BenchmarkDataset.cifar_100: load_cifar100c
 }
 
 
@@ -190,7 +242,9 @@ def load_corruptions_dataset(
         n_examples: int,
         severity: int,
         data_dir: str,
-        corruptions: Sequence[str] = CORRUPTIONS
+        corruptions: Optional[Sequence[str]] = None
 ) -> Tuple[torch.Tensor, torch.Tensor]:
+    if corruptions is None:
+        corruptions = CORRUPTIONS[dataset]
     return _corruption_dataset_loaders[dataset](n_examples, severity, data_dir,
                                                 False, corruptions)

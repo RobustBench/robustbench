@@ -83,7 +83,8 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                       batch_size=batch_size,
                                       device=device)
     elif threat_model_ == ThreatModel.corruptions:
-        print(f"Evaluating over {len(CORRUPTIONS)} corruptions")
+        corruptions = CORRUPTIONS[dataset_]
+        print(f"Evaluating over {len(corruptions)} corruptions")
         # Save into a dict to make a Pandas DF with nested index
         adv_accuracy = corruptions_evaluation(batch_size, data_dir, dataset_,
                                               device, model, n_examples,
@@ -112,8 +113,9 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
         raise ValueError(
             "If `to_disk` is True, `model_name` should be specified.")
 
+    corruptions = CORRUPTIONS[dataset]
     model_results_dict: Dict[Tuple[str, int], float] = {}
-    for corruption in tqdm(CORRUPTIONS):
+    for corruption in tqdm(corruptions):
         for severity in range(1, 6):
             x_corrupt, y_corrupt = load_corruptions_dataset(
                 dataset,
