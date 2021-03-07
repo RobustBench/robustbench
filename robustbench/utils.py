@@ -1,4 +1,5 @@
 import argparse
+import dataclasses
 import json
 import math
 import os
@@ -285,35 +286,37 @@ def get_leaderboard_bibtex(dataset: Union[str, BenchmarkDataset], threat_model: 
 
             year = model_dict["venue"].split(" ")[-1]
 
-            bibtex_entry = _get_bibtex_entry(model_name, title, authors, venue, year)
+            bibtex_entry = _get_bibtex_entry(
+                model_name, title, authors, venue, year)
             bibtex_entries.add(bibtex_entry)
 
     str_entries = ''
     for entry in bibtex_entries:
         print(entry)
         str_entries += entry
-    
+
     return bibtex_entries, str_entries
 
 
 def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset], threat_model: Union[str, ThreatModel],
-    l_keys=['clean_acc', 'autoattack_acc', 'additional_data', 'architecture', 'venue'],
-    sort_by='autoattack_acc'):
+                          l_keys=['clean_acc', 'autoattack_acc',
+                                  'additional_data', 'architecture', 'venue'],
+                          sort_by='autoattack_acc'):
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
 
     jsons_dir = Path("../model_info") / dataset_.value / threat_model_.value
     entries = []
-    
+
     for json_path in jsons_dir.glob("*.json"):
         model_name = json_path.stem.split("_")[0]
-        
+
         with open(json_path, 'r') as model_info:
             model_dict = json.load(model_info)
 
         str_curr = '\\cite{{{}}}'.format(model_name) if not model_name in [
             'Standard'] else model_name
-        
+
         for k in l_keys:
             if k == 'additional_data':
                 str_curr += ' & {}'.format('Y' if model_dict[k] else 'N')
@@ -340,23 +343,30 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
 
     acc_field = ACC_FIELDS[threat_model]
 
-    model_info = {
-        "link": None,
-        "name": None,
-        "authors": None,
-        "additional_data": None,
-        "number_forward_passes": None,
-        "dataset": dataset.value,
-        "venue": None,
-        "architecture": None,
-        "eps": eps,
-        "clean_acc": accuracy,
-        "reported": None,
-        acc_field: adv_accuracy
-    }
+    acc_field_kwarg = {acc_field: adv_accuracy}
+
+    model_info = ModelInfo(dataset=dataset.value, eps=eps, clean_acc=accuracy, **acc_field_kwarg)
 
     with open(json_path, "w") as f:
-        f.write(json.dumps(model_info, indent=2))
+        f.write(json.dumps(dataclasses.asdict(model_info), indent=2))
+
+
+@dataclasses.dataclass
+class ModelInfo:
+    link: Optional[str] = None
+    name: Optional[str] = None
+    authors: Optional[str] = None
+    additional_data: Optional[bool] = None
+    number_forward_passes: Optional[int] = None
+    dataset: Optional[str] = None
+    venue: Optional[str] = None
+    architecture: Optional[str] = None
+    eps: Optional[float] = None
+    clean_acc: Optional[float] = None
+    reported: Optional[float] = None
+    corruptions_acc: Optional[str] = None
+    autoattack_acc: Optional[str] = None
+    footnote: Optional[str] = None
 
 
 def parse_args():

@@ -3,7 +3,7 @@ from enum import Enum
 
 class BenchmarkDataset(Enum):
     cifar_10 = 'cifar10'
-    cifar_100 = 'cifar_100'
+    cifar_100 = 'cifar100'
     image_net = 'imagenet'
 
 
