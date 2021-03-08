@@ -10,5 +10,6 @@
   "eps": null,
   "clean_acc": "92.46",
   "reported": "80.5",
-  "corruptions_acc": "80.46"
+  "corruptions_acc": "80.46",
+  "footnote": "Trained with Gaussian noise which is contained in CIFAR-10-C."
 }
