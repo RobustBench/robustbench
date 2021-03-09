@@ -232,9 +232,7 @@ def list_available_models(
         json_dicts.append(json_dict)
 
     json_dicts = sorted(json_dicts, key=lambda d: -d[acc_field])
-    print(
-        '| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |'
-    )
+    print('| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |')
     print('|:---:|---|---|:---:|:---:|:---:|:---:|')
     for i, json_dict in enumerate(json_dicts):
         if json_dict['model_name'] == 'Chen2020Adversarial':

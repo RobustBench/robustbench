@@ -174,7 +174,7 @@ which automatically downloads the model (all models are defined in `model_zoo/mo
 You can find all available model IDs in the table below (note that the full leaderboard contains more models): 
 
 ### Linf
-| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Gowal2020Uncovering_70_16_extra**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>91.10%</sub> | <sub>65.87%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
 | <sub>**2**</sub> | <sub><sup>**Gowal2020Uncovering_28_10_extra**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>89.48%</sub> | <sub>62.76%</sub> | <sub>WideResNet-28-10</sub> | <sub>arXiv, Oct 2020</sub> |
@@ -200,8 +200,7 @@ You can find all available model IDs in the table below (note that the full lead
 
 
 ### L2
-
-| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Gowal2020Uncovering_extra**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>94.74%</sub> | <sub>80.53%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
 | <sub>**2**</sub> | <sub><sup>**Gowal2020Uncovering**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>90.90%</sub> | <sub>74.50%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
@@ -215,8 +214,7 @@ You can find all available model IDs in the table below (note that the full lead
 
 
 ### Common Corruptions
-
-| # | Model ID | Paper | Clean accuracy | Robust accuracy | Architecture | Venue |
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.83%</sub> | <sub>89.09%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
 | <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.08%</sub> | <sub>88.82%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
