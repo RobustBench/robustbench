@@ -242,14 +242,14 @@ def list_available_models(
                 'architecture'] + ' <br/> (3x ensemble)'
         if json_dict['model_name'] != 'Natural':
             print(
-                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
+                '| <sub>**{}**</sub> | <sub><sup>**{}**</sup></sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
                 .format(i + 1, json_dict['model_name'], json_dict['name'],
                         json_dict['link'], json_dict['clean_acc'],
                         json_dict[acc_field], json_dict['architecture'],
                         json_dict['venue']))
         else:
             print(
-                '| <sub>**{}**</sub> | <sub>**{}**</sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
+                '| <sub>**{}**</sub> | <sub><sup>**{}**</sup></sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
                 .format(i + 1, json_dict['model_name'], json_dict['name'],
                         json_dict['clean_acc'], json_dict[acc_field],
                         json_dict['architecture'], json_dict['venue']))
