@@ -1,4 +1,4 @@
-<table id="leaderboard2" class="datatable" style="width: 100%">
+<table id="leaderboard_{{ threat_model }}" class="datatable" style="width: 100%">
     <thead>
     <tr>
         <th class="rank">Rank</th>
@@ -38,3 +38,11 @@
     {% endfor %}
     </tbody>
 </table>
+
+<script>
+    $(document).ready(function () {
+      $("#leaderboard_{{ threat_model }}").DataTable({
+        lengthMenu: [15, 25, 50, 75, 100],
+      });
+    });
+</script>

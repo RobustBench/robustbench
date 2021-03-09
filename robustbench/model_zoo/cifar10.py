@@ -255,6 +255,19 @@ class Wu2020AdversarialNetL2(WideResNet):
                                                      sub_block1=False)
 
 
+class Kireev2021EffectivenessNet(PreActResNet):
+    def __init__(self):
+        super(Kireev2021EffectivenessNet, self).__init__(PreActBlockV2, [2, 2, 2, 2],
+                                                         bn_before_fc=True)
+        self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super(Kireev2021EffectivenessNet, self).forward(x)
+
+
+
 linf = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -393,6 +406,22 @@ common_corruptions = OrderedDict([
         'model': Hendrycks2020AugMixResNeXtNet,
         'gdrive_id': "1uGP3nZbL3LC160kOsxwkkt6tDd4qbZT1"
     }),
+    ('Kireev2021Effectiveness_Gauss50percent', {
+        'model': Kireev2021EffectivenessNet,
+        'gdrive_id': '1zR6lwYLkO3TFSgeqvu_CMYTq_IS-eicQ',
+    }),
+    ('Kireev2021Effectiveness_AugMixNoJSD', {
+        'model': Kireev2021EffectivenessNet,
+        'gdrive_id': '1p_1v1Oa-FSrjHTAq63QX4WtLYETkcbdH',
+    }),
+    ('Kireev2021Effectiveness_RLAT', {
+        'model': Kireev2021EffectivenessNet,
+        'gdrive_id': '16bCDA_5Rhr6qMKHRAO5W-4nu9_10kFyF',
+    }),
+    ('Kireev2021Effectiveness_RLATAugMixNoJSD', {
+        'model': Kireev2021EffectivenessNet,
+        'gdrive_id': '1hgJuvLPSVQMbUczn8qnIphONlJePsWgU',
+    }),
     ('Standard', {
         'model': StandardNet,
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
@@ -404,3 +433,4 @@ cifar_10_models = OrderedDict([
     (ThreatModel.L2, l2),
     (ThreatModel.corruptions, common_corruptions)
 ])
+
