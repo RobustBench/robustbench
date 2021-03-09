@@ -12,7 +12,7 @@ from tests.config import get_test_config
 from tests.utils_testing import slow
 
 
-def _accuracy_computation(f: Callable[[str, float, str, str], bool], n_ex: int) -> None:
+def _accuracy_computation(success_criterion: Callable[[str, float, str, str], bool], n_ex: int) -> None:
     config = get_test_config()
     device = torch.device(config["device"])
 
@@ -25,7 +25,6 @@ def _accuracy_computation(f: Callable[[str, float, str, str], bool], n_ex: int) 
 
         for threat_model, threat_model_dict in dataset_dict.items():
             print(f"Test models robust wrt {threat_model.value}")
-            n_tests_passed = 0
             models = list(threat_model_dict.keys())
             tot_models += len(models)
 
@@ -35,7 +34,7 @@ def _accuracy_computation(f: Callable[[str, float, str, str], bool], n_ex: int) 
                 acc = clean_accuracy(model, x_test, y_test,
                                      batch_size=config["batch_size"], device=device)
 
-                success = f(model_name, acc, dataset.value, threat_model.value)
+                success = success_criterion(model_name, acc, dataset.value, threat_model.value)
                 n_tests_passed += int(success)
                 print(f"{model_name}: clean accuracy {acc:.2%} (on {n_ex} examples),"
                       f" test passed: {success}")
@@ -46,16 +45,16 @@ def _accuracy_computation(f: Callable[[str, float, str, str], bool], n_ex: int) 
 class CleanAccTester(unittest.TestCase):
 
     def test_clean_acc_jsons_fast(self):
-        def fast_acc(model_name: str, acc: float, dataset: str, threat_model: str) -> bool:
+        def fast_acc_success_criterion(model_name: str, acc: float, dataset: str, threat_model: str) -> bool:
             self.assertGreater(round(acc * 100., 2), 70.0)
             return round(acc * 100., 2) > 70.0
 
         n_ex = 200
-        _accuracy_computation(fast_acc, n_ex)
+        _accuracy_computation(fast_acc_success_criterion, n_ex)
 
     @slow
     def test_clean_acc_jsons_exact(self):
-        def exact_acc(model_name: str, acc: float, dataset: str, threat_model: str) -> bool:
+        def exact_acc_success_criterion(model_name: str, acc: float, dataset: str, threat_model: str) -> bool:
             model_info_path = Path("model_info") / dataset / threat_model / f"{model_name}.json"
 
             with open(model_info_path) as model_info:
@@ -66,4 +65,4 @@ class CleanAccTester(unittest.TestCase):
             return abs(round(acc * 100., 2) - float(json_dict['clean_acc'])) <= 0.05
 
         n_ex = 10000
-        _accuracy_computation(exact_acc, n_ex)
+        _accuracy_computation(exact_acc_success_criterion, n_ex)
