@@ -410,15 +410,15 @@ common_corruptions = OrderedDict([
         'model': Kireev2021EffectivenessNet,
         'gdrive_id': '1zR6lwYLkO3TFSgeqvu_CMYTq_IS-eicQ',
     }),
-    ('Kireev2021Effectiveness_Gauss100percent', {
+    ('Kireev2021Effectiveness_AugMixNoJSD', {
         'model': Kireev2021EffectivenessNet,
-        'gdrive_id': '1u2B92IraGGZ_9MzaFRmEQIeFo-CONx5g',
+        'gdrive_id': '1p_1v1Oa-FSrjHTAq63QX4WtLYETkcbdH',
     }),
     ('Kireev2021Effectiveness_RLAT', {
         'model': Kireev2021EffectivenessNet,
         'gdrive_id': '16bCDA_5Rhr6qMKHRAO5W-4nu9_10kFyF',
     }),
-    ('Kireev2021Effectiveness_RLATAugMix', {
+    ('Kireev2021Effectiveness_RLATAugMixNoJSD', {
         'model': Kireev2021EffectivenessNet,
         'gdrive_id': '1hgJuvLPSVQMbUczn8qnIphONlJePsWgU',
     }),

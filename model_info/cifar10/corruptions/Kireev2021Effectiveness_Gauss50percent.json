@@ -1,6 +1,6 @@
 {
   "link": "https://arxiv.org/abs/2103.02325",
-  "name": "On the effectiveness of adversarial training against common corruptions\n",
+  "name": "On the effectiveness of adversarial training against common corruptions",
   "authors": "Klim Kireev, Maksym Andriushchenko, Nicolas Flammarion",
   "additional_data": false,
   "number_forward_passes": 1,
@@ -11,5 +11,5 @@
   "clean_acc": "93.24",
   "reported": "85.0",
   "corruptions_acc": "85.04",
-  "footnote": "Trained with Gaussian noise which is contained in CIFAR-10-C."
+  "footnote": "Trained with 50% Gaussian noise per batch. Note: Gaussian noise is contained in CIFAR-10-C."
 }
