@@ -43,6 +43,9 @@
     $(document).ready(function () {
       $("#leaderboard_{{ threat_model }}").DataTable({
         lengthMenu: [15, 25, 50, 75, 100],
+        "drawCallback": function( settings ) {
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+        }
       });
     });
 </script>
