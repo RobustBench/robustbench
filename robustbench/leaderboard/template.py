@@ -65,7 +65,7 @@ def generate_leaderboard(dataset: Union[str, BenchmarkDataset],
 
     template = env.get_template('leaderboard.html.j2')
 
-    result = template.render(models=models, acc_field=acc_field)
+    result = template.render(threat_model=threat_model, models=models, acc_field=acc_field)
     print(result)
     return result
 
