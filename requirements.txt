@@ -1,6 +1,8 @@
+torch
+torchvision
 requests~=2.25.1
 numpy~=1.19.4
 Jinja2~=2.11.2
 tqdm~=4.56.1
 pandas~=1.2.0
--q git+https://github.com/fra31/auto-attack.git@9b264b52bb65c373373727f532865a5551ab9c02#egg=autoattack
+git+https://github.com/fra31/auto-attack.git@9b264b52bb65c373373727f532865a5551ab9c02#egg=autoattack
