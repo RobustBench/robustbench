@@ -6,4 +6,3 @@ def get_test_config():
         'device': 'cuda:0'
     }
     return config
-

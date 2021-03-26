@@ -1,3 +1,4 @@
+import warnings
 from argparse import Namespace
 from pathlib import Path
 from typing import Dict, Optional, Sequence, Tuple, Union
@@ -50,6 +51,12 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     if isinstance(model, Sequence) or isinstance(device, Sequence):
         # Multiple models evaluation in parallel not yet implemented
         raise NotImplementedError
+
+    try:
+        if model.training:
+            warnings.warn(Warning("The given model is *not* in eval mode."))
+    except AttributeError:
+        warnings.warn(Warning("It is not possible to asses if the model is in eval mode"))
 
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
@@ -167,6 +174,8 @@ def main(args: Namespace) -> None:
                        dataset=args.dataset,
                        threat_model=args.threat_model)
 
+    model.eval()
+
     device = torch.device(args.device)
     benchmark(model,
               n_examples=args.n_ex,
@@ -178,8 +187,6 @@ def main(args: Namespace) -> None:
               device=device,
               batch_size=args.batch_size,
               eps=args.eps)
-
-    # Add attack_norm
 
 
 if __name__ == '__main__':
