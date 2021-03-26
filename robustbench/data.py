@@ -73,21 +73,10 @@ def load_clean_dataset(dataset: BenchmarkDataset, n_examples: Optional[int],
     return _clean_dataset_loaders[dataset](n_examples, data_dir)
 
 
-CORRUPTIONS = ("shot_noise",
-               "motion_blur",
-               "snow",
-               "pixelate",
-               "gaussian_noise",
-               "defocus_blur",
-               "brightness",
-               "fog",
-               "zoom_blur",
-               "frost",
-               "glass_blur",
-               "impulse_noise",
-               "contrast",
-               "jpeg_compression",
-               "elastic_transform")
+CORRUPTIONS = ("shot_noise", "motion_blur", "snow", "pixelate",
+               "gaussian_noise", "defocus_blur", "brightness", "fog",
+               "zoom_blur", "frost", "glass_blur", "impulse_noise", "contrast",
+               "jpeg_compression", "elastic_transform")
 
 ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
     BenchmarkDataset.cifar_10: ("2535967", {"CIFAR-10-C.tar"})
@@ -99,15 +88,14 @@ CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
 
 
 def load_cifar10c(
-        n_examples: int,
-        severity: int = 5,
-        data_dir: str = './data',
-        shuffle: bool = False,
-        corruptions: Sequence[str] = CORRUPTIONS
+    n_examples: int,
+    severity: int = 5,
+    data_dir: str = './data',
+    shuffle: bool = False,
+    corruptions: Sequence[str] = CORRUPTIONS
 ) -> Tuple[torch.Tensor, torch.Tensor]:
-    return load_corruptions_dataset(BenchmarkDataset.cifar_10,
-                                    n_examples, severity,
-                                    data_dir, corruptions, shuffle)
+    return load_corruptions_dataset(BenchmarkDataset.cifar_10, n_examples,
+                                    severity, data_dir, corruptions, shuffle)
 
 
 CorruptDatasetLoader = Callable[[int, int, str, bool, Sequence[str]],
@@ -123,8 +111,7 @@ def load_corruptions_dataset(
         severity: int,
         data_dir: str,
         corruptions: Sequence[str] = CORRUPTIONS,
-        shuffle: bool = False
-) -> Tuple[torch.Tensor, torch.Tensor]:
+        shuffle: bool = False) -> Tuple[torch.Tensor, torch.Tensor]:
     assert 1 <= severity <= 5
     n_total_cifar = 10000
 
@@ -148,11 +135,12 @@ def load_corruptions_dataset(
     for corruption in corruptions:
         corruption_file_path = data_root_dir / (corruption + '.npy')
         if not corruption_file_path.is_file():
-            raise DownloadError(f"{corruption} file is missing, try to re-download it.")
+            raise DownloadError(
+                f"{corruption} file is missing, try to re-download it.")
 
         images_all = np.load(corruption_file_path)
         images = images_all[(severity - 1) * n_total_cifar:severity *
-                                                           n_total_cifar]
+                            n_total_cifar]
         n_img = int(np.ceil(n_examples / n_pert))
         x_test_list.append(images[:n_img])
         # Duplicate the same labels potentially multiple times
