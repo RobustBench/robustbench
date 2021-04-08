@@ -1,17 +1,16 @@
-import dataclasses
 import os
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from pathlib import Path
+from typing import Callable, Dict, Optional, Sequence, Set, Tuple
 
 import numpy as np
 import torch
 import torch.utils.data as data
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
-import torchvision.transforms.functional as F
 from torch.utils.data import Dataset
 
 from robustbench.model_zoo.enums import BenchmarkDataset
-from robustbench.utils import download_gdrive
+from robustbench.zenodo_download import DownloadError, zenodo_download
 
 
 def _load_dataset(
@@ -74,57 +73,74 @@ def load_clean_dataset(dataset: BenchmarkDataset, n_examples: Optional[int],
     return _clean_dataset_loaders[dataset](n_examples, data_dir)
 
 
-@dataclasses.dataclass
-class _CorruptionsGDriveIDs:
-    """Google Drive IDs of the possible corruptions"""
-    shot_noise: str
-    motion_blur: str
-    snow: str
-    pixelate: str
-    gaussian_noise: str
-    defocus_blur: str
-    brightness: str
-    fog: str
-    zoom_blur: str
-    frost: str
-    glass_blur: str
-    impulse_noise: str
-    contrast: str
-    jpeg_compression: str
-    elastic_transform: str
+CORRUPTIONS = ("shot_noise", "motion_blur", "snow", "pixelate",
+               "gaussian_noise", "defocus_blur", "brightness", "fog",
+               "zoom_blur", "frost", "glass_blur", "impulse_noise", "contrast",
+               "jpeg_compression", "elastic_transform")
+
+ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
+    BenchmarkDataset.cifar_10: ("2535967", {"CIFAR-10-C.tar"})
+}
+
+CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
+    BenchmarkDataset.cifar_10: "CIFAR-10-C"
+}
 
 
-CORRUPTIONS = tuple(field.name
-                    for field in dataclasses.fields(_CorruptionsGDriveIDs))
+def load_cifar10c(
+    n_examples: int,
+    severity: int = 5,
+    data_dir: str = './data',
+    shuffle: bool = False,
+    corruptions: Sequence[str] = CORRUPTIONS
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    return load_corruptions_dataset(BenchmarkDataset.cifar_10, n_examples,
+                                    severity, data_dir, corruptions, shuffle)
 
 
-def _load_corruptions_dataset(
-        n_examples: int, severity: int, data_dir: str, shuffle: bool,
-        corruptions: Sequence[str], gdrive_ids: _CorruptionsGDriveIDs,
-        labels_gdrive_id: str) -> Tuple[torch.Tensor, torch.Tensor]:
+CorruptDatasetLoader = Callable[[int, int, str, bool, Sequence[str]],
+                                Tuple[torch.Tensor, torch.Tensor]]
+_corruption_dataset_loaders: Dict[BenchmarkDataset, CorruptDatasetLoader] = {
+    BenchmarkDataset.cifar_10: load_cifar10c
+}
+
+
+def load_corruptions_dataset(
+        dataset: BenchmarkDataset,
+        n_examples: int,
+        severity: int,
+        data_dir: str,
+        corruptions: Sequence[str] = CORRUPTIONS,
+        shuffle: bool = False) -> Tuple[torch.Tensor, torch.Tensor]:
     assert 1 <= severity <= 5
     n_total_cifar = 10000
 
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
 
+    data_dir = Path(data_dir)
+    data_root_dir = data_dir / CORRUPTIONS_DIR_NAMES[dataset]
+
+    if not data_root_dir.exists():
+        zenodo_download(*ZENODO_CORRUPTIONS_LINKS[dataset], save_dir=data_dir)
+
     # Download labels
-    labels_path = data_dir + '/labels.npy'
+    labels_path = data_root_dir / 'labels.npy'
     if not os.path.isfile(labels_path):
-        download_gdrive(labels_gdrive_id, labels_path)
+        raise DownloadError("Labels are missing, try to re-download them.")
     labels = np.load(labels_path)
 
     x_test_list, y_test_list = [], []
     n_pert = len(corruptions)
     for corruption in corruptions:
-        corruption_file_path = data_dir + '/' + corruption + '.npy'
-        if not os.path.isfile(corruption_file_path):
-            download_gdrive(
-                dataclasses.asdict(gdrive_ids)[corruption],
-                corruption_file_path)
+        corruption_file_path = data_root_dir / (corruption + '.npy')
+        if not corruption_file_path.is_file():
+            raise DownloadError(
+                f"{corruption} file is missing, try to re-download it.")
+
         images_all = np.load(corruption_file_path)
         images = images_all[(severity - 1) * n_total_cifar:severity *
-                                                           n_total_cifar]
+                            n_total_cifar]
         n_img = int(np.ceil(n_examples / n_pert))
         x_test_list.append(images[:n_img])
         # Duplicate the same labels potentially multiple times
@@ -144,53 +160,3 @@ def _load_corruptions_dataset(
     y_test = torch.tensor(y_test)[:n_examples]
 
     return x_test, y_test
-
-
-def load_cifar10c(
-        n_examples: int,
-        severity: int = 5,
-        data_dir: str = './data',
-        shuffle: bool = False,
-        corruptions: Sequence[str] = CORRUPTIONS
-) -> Tuple[torch.Tensor, torch.Tensor]:
-    labels_gdrive_id = '1wW8vnLfPXVJyElQBGmCx1bfUz7QKALxp'
-    gdrive_ids = _CorruptionsGDriveIDs(
-        pixelate='1QxOQZ9fbDiO__PX5bz3npnHEl58nviYi',
-        impulse_noise='1F1XB95bOrI5vdE6IqKagoDCGRwgz02Af',
-        contrast='1AKzDIt6W7PZUtySB7tuW63RiT0qCmFIn',
-        motion_blur='1KaDN9nkbiCcrnJ9gGtf1HXk1gNiNFHJs',
-        gaussian_noise='1AKcle1BPbYp-KExKoAxByvpeKBLJOgjI',
-        snow='1C0s9ZoIQa9jpK2apgzAYVA6kVnsbyiVo',
-        brightness='1oTw7NLMx0USafsEFo8YnrBd2q9yOyih8',
-        frost='1A2RFHlCPvRBRiQoRwp5s04qbf2OnhRun',
-        elastic_transform='18ohQA9EQ-nuTuPARzvAb_GnxcdwsUsB-',
-        defocus_blur='1R9gBaM9Fshp_rj9ZHzJ5-r-42JRcKFl4',
-        shot_noise='1Ka58iub7-hIvW9e5FPsljym3-wSPHlXM',
-        glass_blur='19sobK_CKJeqMiwJipAk-u_eHx-sh9xOg',
-        zoom_blur='148Lb2f4VbmMpcNYCTskLttC9YKsGlZnk',
-        jpeg_compression='13XqvkSnRcfUmSvxHr0Acex3itjAq0T95',
-        fog='1NSrbUvrWofmRD1LTmg-RmeaZX2ZC-b6U')
-
-    dataset_dir = os.path.join(data_dir, "cifar10c")
-
-    return _load_corruptions_dataset(n_examples, severity, dataset_dir,
-                                     shuffle, corruptions, gdrive_ids,
-                                     labels_gdrive_id)
-
-
-CorruptDatasetLoader = Callable[[int, int, str, bool, Sequence[str]],
-                                Tuple[torch.Tensor, torch.Tensor]]
-_corruption_dataset_loaders: Dict[BenchmarkDataset, CorruptDatasetLoader] = {
-    BenchmarkDataset.cifar_10: load_cifar10c
-}
-
-
-def load_corruptions_dataset(
-        dataset: BenchmarkDataset,
-        n_examples: int,
-        severity: int,
-        data_dir: str,
-        corruptions: Sequence[str] = CORRUPTIONS
-) -> Tuple[torch.Tensor, torch.Tensor]:
-    return _corruption_dataset_loaders[dataset](n_examples, severity, data_dir,
-                                                False, corruptions)
