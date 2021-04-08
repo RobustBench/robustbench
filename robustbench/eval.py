@@ -5,11 +5,12 @@ from typing import Dict, Optional, Sequence, Tuple, Union
 
 import pandas as pd
 import torch
-from tqdm import tqdm
 from autoattack import AutoAttack
 from torch import nn
+from tqdm import tqdm
 
-from robustbench.data import CORRUPTIONS, load_clean_dataset, load_corruptions_dataset
+from robustbench.data import DATASET_CORRUPTIONS, load_clean_dataset, \
+    load_corruptions_dataset
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
 
@@ -56,7 +57,9 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
         if model.training:
             warnings.warn(Warning("The given model is *not* in eval mode."))
     except AttributeError:
-        warnings.warn(Warning("It is not possible to asses if the model is in eval mode"))
+        warnings.warn(
+            Warning(
+                "It is not possible to asses if the model is in eval mode"))
 
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
@@ -90,7 +93,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                       batch_size=batch_size,
                                       device=device)
     elif threat_model_ == ThreatModel.corruptions:
-        corruptions = CORRUPTIONS[dataset_]
+        corruptions = DATASET_CORRUPTIONS[dataset_]
         print(f"Evaluating over {len(corruptions)} corruptions")
         # Save into a dict to make a Pandas DF with nested index
         adv_accuracy = corruptions_evaluation(batch_size, data_dir, dataset_,
@@ -105,8 +108,8 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
             raise ValueError(
                 "If `to_disk` is True, `model_name` should be specified.")
 
-        update_json(dataset_, threat_model_, model_name, accuracy, adv_accuracy,
-                    eps)
+        update_json(dataset_, threat_model_, model_name, accuracy,
+                    adv_accuracy, eps)
 
     return accuracy, adv_accuracy
 
@@ -115,12 +118,11 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
                            dataset: BenchmarkDataset, device: torch.device,
                            model: nn.Module, n_examples: int, to_disk: bool,
                            model_name: Optional[str]) -> float:
-
     if to_disk and model_name is None:
         raise ValueError(
             "If `to_disk` is True, `model_name` should be specified.")
 
-    corruptions = CORRUPTIONS[dataset]
+    corruptions = DATASET_CORRUPTIONS[dataset]
     model_results_dict: Dict[Tuple[str, int], float] = {}
     for corruption in tqdm(corruptions):
         for severity in range(1, 6):
@@ -147,9 +149,10 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
     if not to_disk:
         return adv_accuracy
 
-    # Save unaggregated results on disk
+    # Save disaggregated results on disk
     existing_results_path = Path(
-        "model_info") / dataset.value / "corruptions" / "unaggregated_results.csv"
+        "model_info"
+    ) / dataset.value / "corruptions" / "unaggregated_results.csv"
     if not existing_results_path.parent.exists():
         existing_results_path.parent.mkdir(parents=True, exist_ok=True)
     try:

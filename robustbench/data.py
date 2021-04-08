@@ -91,6 +91,11 @@ CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
     BenchmarkDataset.cifar_100: "CIFAR-100-C"
 }
 
+DATASET_CORRUPTIONS: Dict[BenchmarkDataset, Tuple[str, ...]] = {
+    BenchmarkDataset.cifar_10: CORRUPTIONS,
+    BenchmarkDataset.cifar_100: CIFAR_100_CORRUPTIONS
+}
+
 
 def load_cifar10c(
     n_examples: int,
@@ -108,7 +113,7 @@ def load_cifar100c(
     severity: int = 5,
     data_dir: str = './data',
     shuffle: bool = False,
-    corruptions: Sequence[str] = CORRUPTIONS
+    corruptions: Sequence[str] = CIFAR_100_CORRUPTIONS
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     return load_corruptions_dataset(BenchmarkDataset.cifar_100, n_examples,
                                     severity, data_dir, corruptions, shuffle)
