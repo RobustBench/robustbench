@@ -78,12 +78,17 @@ CORRUPTIONS = ("shot_noise", "motion_blur", "snow", "pixelate",
                "zoom_blur", "frost", "glass_blur", "impulse_noise", "contrast",
                "jpeg_compression", "elastic_transform")
 
+CIFAR_100_CORRUPTIONS = CORRUPTIONS + ("spatter", "speckle_noise",
+                                       "gaussian_blur", "saturate")
+
 ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
-    BenchmarkDataset.cifar_10: ("2535967", {"CIFAR-10-C.tar"})
+    BenchmarkDataset.cifar_10: ("2535967", {"CIFAR-10-C.tar"}),
+    BenchmarkDataset.cifar_100: ("3555552", {"CIFAR-100-C.tar"})
 }
 
 CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
-    BenchmarkDataset.cifar_10: "CIFAR-10-C"
+    BenchmarkDataset.cifar_10: "CIFAR-10-C",
+    BenchmarkDataset.cifar_100: "CIFAR-100-C"
 }
 
 
@@ -95,6 +100,17 @@ def load_cifar10c(
     corruptions: Sequence[str] = CORRUPTIONS
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     return load_corruptions_dataset(BenchmarkDataset.cifar_10, n_examples,
+                                    severity, data_dir, corruptions, shuffle)
+
+
+def load_cifar100c(
+    n_examples: int,
+    severity: int = 5,
+    data_dir: str = './data',
+    shuffle: bool = False,
+    corruptions: Sequence[str] = CORRUPTIONS
+) -> Tuple[torch.Tensor, torch.Tensor]:
+    return load_corruptions_dataset(BenchmarkDataset.cifar_100, n_examples,
                                     severity, data_dir, corruptions, shuffle)
 
 
