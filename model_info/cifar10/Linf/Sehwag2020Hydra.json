@@ -10,5 +10,6 @@
   "eps": "8/255",
   "clean_acc": "88.98",
   "reported": "62.24",
+  "footnote": "Compressed model",
   "autoattack_acc": "57.14"
 }
