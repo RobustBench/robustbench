@@ -24,7 +24,7 @@ class LipschitzTester(TestCase):
             parameter.data = slope * torch.ones(parameter.data.shape)
 
         eps = 8 / 255
-        x = torch.randn(25, in_features)
+        x = torch.randn(200, in_features)
         lips = compute_lipschitz(model, x, eps, eps / 5, 50)
 
         self.assertAlmostEqual(lips, slope, places=2)
