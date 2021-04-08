@@ -5,6 +5,7 @@ import torch
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
     DMWideResNet, Swish
+from robustbench.model_zoo.architectures.resnext import CifarResNeXt, ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 
@@ -54,6 +55,29 @@ class Rice2020OverfittingNet(PreActResNet):
         return super().forward(x)
 
 
+class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
+    def __init__(self, depth=29, cardinality=4, base_width=32):
+        super().__init__(ResNeXtBottleneck, depth=depth, num_classes=100,
+                         cardinality=cardinality, base_width=base_width)
+        self.register_buffer('mu', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
+
+
+class Hendrycks2020AugMixWRNNet(WideResNet):
+    def __init__(self, depth=40, widen_factor=2):
+        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False, num_classes=100)
+        self.register_buffer('mu', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
+
+
 linf = OrderedDict([
     ('Gowal2020Uncovering', {
         'model': Gowal2020UncoveringNet,
@@ -97,6 +121,18 @@ linf = OrderedDict([
     })
 ])
 
+common_corruptions = OrderedDict([
+    ('Hendrycks2020AugMix_WRN', {
+        'model': Hendrycks2020AugMixWRNNet,
+        'gdrive_id': '1XpFFdCdU9LcDtcyNfo6_BV1RZHKKkBVE'
+    }),
+    ('Hendrycks2020AugMix_ResNeXt', {
+        'model': Hendrycks2020AugMixResNeXtNet,
+        'gdrive_id': '1ocnHbvDdOBLvgNr6K7vEYL08hUdkD1Rv'
+    })
+])
+
 cifar_100_models = OrderedDict([
-    (ThreatModel.Linf, linf)
+    (ThreatModel.Linf, linf),
+    (ThreatModel.corruptions, common_corruptions)
 ])
