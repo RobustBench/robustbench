@@ -1,9 +1,11 @@
+import random
 from unittest import TestCase
 
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 
-from robustbench.eval.lipschitz import box, compute_lipschitz, compute_lipschitz_batch
+from robustbench.eval.lipschitz import benchmark_lipschitz, box, compute_lipschitz, \
+    compute_lipschitz_batch
 from tests.utils import DummyModel
 
 
@@ -17,7 +19,7 @@ class LipschitzTester(TestCase):
         self.assertTrue((boxed_x_prime.numpy() == expected.numpy()).all())
 
     def test_compute_lipschitz_batch(self):
-        model = DummyModel(in_shape=1, out_shape=1, slope=5)
+        model = DummyModel(in_shape=1, out_shape=1, slope=random.random())
 
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
@@ -26,7 +28,7 @@ class LipschitzTester(TestCase):
         self.assertAlmostEqual(lips, model.slope, places=2)
 
     def test_compute_lipschitz(self):
-        model = DummyModel(in_shape=1, out_shape=1, slope=5)
+        model = DummyModel(in_shape=1, out_shape=1, slope=random.random())
 
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
@@ -35,3 +37,8 @@ class LipschitzTester(TestCase):
         lips = compute_lipschitz(model, dl, eps, eps / 5, 50)
 
         self.assertAlmostEqual(lips, model.slope, places=2)
+
+    def test_benchmark_lipschitz(self):
+        model = DummyModel()
+        lips = benchmark_lipschitz(model.eval(), 16, "cifar10")
+        self.assertGreaterEqual(lips, 0)
