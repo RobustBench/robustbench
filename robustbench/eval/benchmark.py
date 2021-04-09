@@ -1,4 +1,3 @@
-import warnings
 from argparse import Namespace
 from pathlib import Path
 from typing import Dict, Optional, Sequence, Tuple, Union
@@ -11,6 +10,7 @@ from tqdm import tqdm
 
 from robustbench.data import DATASET_CORRUPTIONS, load_clean_dataset, \
     load_corruptions_dataset
+from robustbench.eval.utils import check_model_eval
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
 
@@ -53,13 +53,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
         # Multiple models evaluation in parallel not yet implemented
         raise NotImplementedError
 
-    try:
-        if model.training:
-            warnings.warn(Warning("The given model is *not* in eval mode."))
-    except AttributeError:
-        warnings.warn(
-            Warning(
-                "It is not possible to asses if the model is in eval mode"))
+    check_model_eval(model)
 
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
