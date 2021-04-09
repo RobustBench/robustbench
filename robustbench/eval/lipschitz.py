@@ -1,6 +1,8 @@
+from typing import Optional
+
 import torch
-from torch.autograd import functional as agf
 from torch import nn
+from torch.utils.data import DataLoader
 
 
 def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
@@ -10,25 +12,13 @@ def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
     return torch.max(min_x, torch.min(x_prime, max_x))
 
 
-def compute_lipschitz(model: nn.Module,
-                      x: torch.Tensor,
-                      eps: float,
-                      step_size: float,
-                      n_steps: int = 50) -> float:
-    """Computes local (i.e. eps-ball) Lipschitzness of the given `model`.
-
-    We use the method proposed by Yang et al. [1]_.
-
-    .. [1] Yao-Yuan Yang, Cyrus Rashtchian, Hongyang Zhang, Russ R. Salakhutdinov,
-        Kamalika Chaudhuri, A Closer Look at Accuracy vs. Robustness, NeurIPS 2020.
-
-    :param model: The model whose Lipschitzness has to be computed.
-    :param x: The batch of data to compute Lipschitness on.
-    :param eps: The ball boundary (around each sample)
-    :param step_size: The step size of the each step.
-    :param n_steps: The number of steps to run.
-
-    :return: The local Lipschitz constant.
+def compute_lipschitz_batch(model: nn.Module,
+                            x: torch.Tensor,
+                            eps: float,
+                            step_size: float,
+                            n_steps: int = 50) -> float:
+    """Computes local (i.e. eps-ball) Lipschitzness of the given `model` on
+    a batch of data.
     """
 
     # Function to differentiate
@@ -49,3 +39,40 @@ def compute_lipschitz(model: nn.Module,
                       eps).requires_grad_(True)
 
     return torch.mean(f(x_prime)).item()
+
+
+def compute_lipschitz(model: nn.Module,
+                      dl: DataLoader,
+                      eps: float,
+                      step_size: float,
+                      n_steps: int = 50,
+                      device: Optional[torch.device] = None):
+    """Computes local (i.e. eps-ball) Lipschitzness of the given `model`.
+
+    We use the method proposed by Yang et al. [1]_.
+
+    .. [1] Yao-Yuan Yang, Cyrus Rashtchian, Hongyang Zhang, Russ R. Salakhutdinov,
+        Kamalika Chaudhuri, A Closer Look at Accuracy vs. Robustness, NeurIPS 2020.
+
+    :param model: The model whose Lipschitzness has to be computed.
+    :param dl: The dataloader of data to compute Lipschitzness on.
+    :param eps: The ball boundary (around each sample)
+    :param step_size: The step size of the each step.
+    :param n_steps: The number of steps to run.
+    :param device: The device to run computations.
+
+    :return: The local Lipschitz constant.
+    """
+    if device is None:
+        device = torch.device("cpu")
+
+    model_dev = model.to(device)
+
+    lips = 0.
+    for x, _ in dl:
+        x_dev = x.to(device)
+        batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size,
+                                             n_steps)
+        lips += batch_lips
+
+    return lips / len(dl)
