@@ -10,8 +10,8 @@ from robustbench.model_zoo.enums import BenchmarkDataset
 
 
 def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
-    min_x = torch.max(torch.zeros(x.shape), x - eps)
-    max_x = torch.min(torch.ones(x.shape), x + eps)
+    min_x = torch.max(torch.zeros_like(x), x - eps)
+    max_x = torch.min(torch.ones_like(x), x + eps)
 
     return torch.max(min_x, torch.min(x_prime, max_x))
 
