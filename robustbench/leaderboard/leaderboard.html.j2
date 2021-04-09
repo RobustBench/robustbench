@@ -1,4 +1,4 @@
-<table id="leaderboard_{{ threat_model }}" class="datatable" style="width: 100%">
+<table id="{{ dataset }}_leaderboard_{{ threat_model }}" class="datatable" style="width: 100%">
     <thead>
     <tr>
         <th class="rank">Rank</th>
@@ -22,7 +22,7 @@
         <td class="ranktd">{{ loop.index }}</td>
         <td class="methoddt">
             <a href="{{ model.link }}" target="_blank">{{ model.name }}</a>
-            {% if model.footnote is defined %}
+            {% if model.footnote is defined and model.footnote != None %}
             <br>
             <span class="td-footer">
                 {{ model.footnote }}
@@ -41,11 +41,14 @@
 
 <script>
     $(document).ready(function () {
-      $("#leaderboard_{{ threat_model }}").DataTable({
-        lengthMenu: [15, 25, 50, 75, 100],
-        "drawCallback": function( settings ) {
-            MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
-        }
-      });
+        $("#{{ dataset }}_leaderboard_{{ threat_model }}").DataTable({
+            lengthMenu: [15, 25, 50, 75, 100],
+            "drawCallback": function (settings) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            },
+            language: {
+                searchPlaceholder: "Papers, architectures, venues"
+            }
+        });
     });
 </script>
