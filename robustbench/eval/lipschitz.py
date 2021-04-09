@@ -32,7 +32,7 @@ def compute_lipschitz_batch(model: nn.Module,
         denominator = torch.norm(
             torch.flatten(x, start_dim=1) - torch.flatten(x_prime_, start_dim=1), p=float("inf"),
             dim=1)
-        return (numerator / denominator).mean()
+        return numerator / denominator
 
     # Initialize to a slightly different random value
     x_prime = box(x + step_size * torch.randn_like(x), x, eps)
@@ -40,7 +40,7 @@ def compute_lipschitz_batch(model: nn.Module,
 
     for i in range(n_steps):
         y = f(x_prime)
-        y.backward()
+        y.sum().backward()
         grads_x_prime = x_prime.grad
         x_prime = box(x_prime.detach() + step_size * grads_x_prime, x,
                       eps).requires_grad_(True)
@@ -101,6 +101,6 @@ def benchmark_lipschitz(model: nn.Module,
 
     x, y = load_clean_dataset(dataset_, n_examples, data_dir)
     dataset = TensorDataset(x, y)
-    dl = DataLoader(dataset, batch_size=batch_size, drop_last=True)
+    dl = DataLoader(dataset, batch_size=batch_size, drop_last=True, num_workers=8)
 
     return compute_lipschitz(model, dl, eps, step_size, n_steps, device)
