@@ -3,6 +3,7 @@ from typing import Optional, Union
 import torch
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
+from tqdm import tqdm
 
 from robustbench.data import load_clean_dataset
 from robustbench.eval.utils import check_model_eval
@@ -73,11 +74,14 @@ def compute_lipschitz(model: nn.Module,
     model_dev = model.to(device)
 
     lips = 0.
-    for x, _ in dl:
+    prog_bar = tqdm(dl)
+
+    for i, (x, _) in enumerate(prog_bar):
         x_dev = x.to(device)
         batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size,
                                              n_steps)
         lips += batch_lips
+        prog_bar.set_postfix({"lips": lips / (i + 1)})
 
     return lips / len(dl)
 
@@ -97,6 +101,6 @@ def benchmark_lipschitz(model: nn.Module,
 
     x, y = load_clean_dataset(dataset_, n_examples, data_dir)
     dataset = TensorDataset(x, y)
-    dl = DataLoader(dataset, batch_size=batch_size)
+    dl = DataLoader(dataset, batch_size=batch_size, drop_last=True)
 
     return compute_lipschitz(model, dl, eps, step_size, n_steps, device)

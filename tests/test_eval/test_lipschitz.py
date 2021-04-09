@@ -33,7 +33,7 @@ class LipschitzTester(TestCase):
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
         y = torch.randn(200, model.out_shape)
-        dl = DataLoader(TensorDataset(x, y), batch_size=50)
+        dl = DataLoader(TensorDataset(x, y), batch_size=50, drop_last=True)
         lips = compute_lipschitz(model, dl, eps, eps / 5, 50)
 
         self.assertAlmostEqual(lips, model.slope, places=2)
