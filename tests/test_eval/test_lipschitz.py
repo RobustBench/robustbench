@@ -18,14 +18,20 @@ class LipschitzTester(TestCase):
         expected = torch.Tensor([0.2, 0.6, 1.0])
         self.assertTrue((boxed_x_prime.numpy() == expected.numpy()).all())
 
-    def test_compute_lipschitz_batch(self):
+    def _test_compute_lipschitz_batch(self, normalize, expected):
         model = DummyModel(in_shape=1, out_shape=1, slope=random.random())
 
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
-        lips = compute_lipschitz_batch(model, x, eps, eps / 5, 50)
+        lips = compute_lipschitz_batch(model, x, eps, eps / 5, 50, normalize_by_logits=normalize)
 
-        self.assertAlmostEqual(lips, model.slope, places=2)
+        self.assertAlmostEqual(lips, expected(model, x), places=2)
+
+    def test_compute_lipschitz_batch(self):
+        self._test_compute_lipschitz_batch(False, lambda f, _: f.slope)
+
+    def test_compute_lipschitz_batch_norm(self):
+        self._test_compute_lipschitz_batch(True, lambda f, x: f.slope / f(x).mean().item())
 
     def test_compute_lipschitz(self):
         model = DummyModel(in_shape=1, out_shape=1, slope=random.random())
@@ -34,7 +40,7 @@ class LipschitzTester(TestCase):
         x = torch.randn(200, model.in_shape)
         y = torch.randn(200, model.out_shape)
         dl = DataLoader(TensorDataset(x, y), batch_size=50, drop_last=True)
-        lips = compute_lipschitz(model, dl, eps, eps / 5, 50)
+        lips = compute_lipschitz(model, dl, eps, eps / 5, 50, normalize_by_logits=False)
 
         self.assertAlmostEqual(lips, model.slope, places=2)
 

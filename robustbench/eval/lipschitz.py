@@ -21,7 +21,8 @@ def compute_lipschitz_batch(model: Layer,
                             x: torch.Tensor,
                             eps: float,
                             step_size: float,
-                            n_steps: int = 50) -> float:
+                            n_steps: int = 50,
+                            normalize_by_logits: bool = True) -> float:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` on
     a batch of data.
     """
@@ -38,15 +39,20 @@ def compute_lipschitz_batch(model: Layer,
     # Initialize to a slightly different random value
     x_prime = box(x + step_size * torch.randn_like(x), x, eps)
     x_prime.requires_grad = True
+    max_lips = f(x_prime).mean().item()
 
     for i in range(n_steps):
-        y = f(x_prime)
-        y.sum().backward()
+        y = f(x_prime).mean()
+        max_lips = max(max_lips, y.item())
+        y.backward()
         grads_x_prime = x_prime.grad
         x_prime = box(x_prime.detach() + step_size * grads_x_prime, x,
                       eps).requires_grad_(True)
 
-    return torch.mean(f(x_prime)).item()
+    max_lips = max(max_lips, f(x_prime).mean().item())
+    if normalize_by_logits:
+        return max_lips / model(x).mean().item()
+    return max_lips
 
 
 def compute_lipschitz(model: Layer,
@@ -54,7 +60,8 @@ def compute_lipschitz(model: Layer,
                       eps: float,
                       step_size: float,
                       n_steps: int = 50,
-                      device: Optional[torch.device] = None):
+                      normalize_by_logits: bool = True,
+                      device: Optional[torch.device] = None, ):
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model`.
 
     We use the method proposed by Yang et al. [1]_.
@@ -67,6 +74,8 @@ def compute_lipschitz(model: Layer,
     :param eps: The ball boundary (around each sample)
     :param step_size: The step size of the each step.
     :param n_steps: The number of steps to run.
+    :param normalize_by_logits: Whether the Lipschitz constant should be normalized by the
+        output logits.
     :param device: The device to run computations.
 
     :return: The local Lipschitz constant.
@@ -79,8 +88,8 @@ def compute_lipschitz(model: Layer,
 
     for i, (x, _) in enumerate(prog_bar):
         x_dev = x.to(device)
-        batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size,
-                                             n_steps)
+        batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size, n_steps,
+                                             normalize_by_logits)
         lips += batch_lips
         prog_bar.set_postfix({"lips": lips / (i + 1)})
 
@@ -96,6 +105,7 @@ def benchmark_lipschitz(
         eps: float = 8 / 255,
         step_size: float = (8 / 255) / 3,
         n_steps: int = 50,
+        normalize_by_logits: bool = True,
         device: Optional[torch.device] = None):
     dataset_ = BenchmarkDataset(dataset)
     check_model_eval(model)
@@ -111,7 +121,7 @@ def benchmark_lipschitz(
 
     for layer in model.get_lipschitz_layers():
         layer_lips = compute_lipschitz(layer, dl, eps, step_size, n_steps,
-                                       device)
+                                       normalize_by_logits, device)
         lips.append(layer_lips)
 
     return lips
