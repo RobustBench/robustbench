@@ -28,10 +28,13 @@ https://github.com/google-research/augmix/blob/master/third_party/WideResNet_pyt
 """
 
 import math
+from typing import Sequence
 
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn import init
+
+from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
 
 
 class ResNeXtBottleneck(nn.Module):
@@ -99,7 +102,7 @@ class ResNeXtBottleneck(nn.Module):
         return F.relu(residual + bottleneck, inplace=True)
 
 
-class CifarResNeXt(nn.Module):
+class CifarResNeXt(nn.Module, LipschitzModel):
     """ResNext optimized for the Cifar dataset, as specified in
     https://arxiv.org/pdf/1611.05431.pdf."""
 
@@ -168,3 +171,13 @@ class CifarResNeXt(nn.Module):
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         return self.classifier(x)
+
+    def get_lipschitz_layers(self) -> Sequence[Layer]:
+        layers = [nn.Sequential(self.conv_1_3x3, self.bn_1, nn.ReLU(inplace=True))]
+
+        for stage in [self.stage_1, self.stage_2, self.stage_3]:
+            for block in stage:
+                layers.append(nn.Sequential(*layers[-1], block))
+
+        layers.append(self)
+        return layers

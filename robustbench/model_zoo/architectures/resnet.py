@@ -160,8 +160,12 @@ class ResNet(nn.Module, LipschitzModel):
 
     def get_lipschitz_layers(self) -> Sequence[Layer]:
         layers = [nn.Sequential(self.conv1, self.bn1, nn.ReLU())]
+
         for layer in [self.layer1, self.layer2, self.layer3, self.layer4]:
-            layers.append(nn.Sequential(layers[-1], layer))
+            for block in layer:
+                # Unpack the previous nn.Sequential to avoid too many nested nn.Sequential
+                layers.append(nn.Sequential(*layers[-1], block))
+
         layers.append(self)
         return layers
 
@@ -281,7 +285,7 @@ class PreActBottleneck(nn.Module):
         return out
 
 
-class PreActResNet(nn.Module):
+class PreActResNet(nn.Module, LipschitzModel):
     def __init__(self, block, num_blocks, num_classes=10, bn_before_fc=False):
         super(PreActResNet, self).__init__()
         self.in_planes = 64
@@ -321,6 +325,17 @@ class PreActResNet(nn.Module):
         out = out.view(out.size(0), -1)
         out = self.linear(out)
         return out
+
+    def get_lipschitz_layers(self) -> Sequence[Layer]:
+        layers = [nn.Sequential(self.conv1)]
+
+        for layer in [self.layer1, self.layer2, self.layer3, self.layer4]:
+            for block in layer:
+                # Unpack the previous nn.Sequential to avoid too many nested nn.Sequential
+                layers.append(nn.Sequential(*layers[-1], block))
+
+        layers.append(self)
+        return layers
 
 
 def ResNet18():

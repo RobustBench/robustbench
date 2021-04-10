@@ -187,9 +187,11 @@ class DMWideResNet(nn.Module, LipschitzModel):
         return self.logits(out)
 
     def get_lipschitz_layers(self) -> Sequence[Layer]:
-        layers = [self.init_conv]
+        layers = [nn.Sequential(self.init_conv)]
+
         for layer in self.layer:
-            layers.append(nn.Sequential(layers[-1], layer))
+            for block in layer.block:
+                layers.append(nn.Sequential(*layers[-1], block))
 
         layers.append(self)
 

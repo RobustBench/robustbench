@@ -137,9 +137,12 @@ class WideResNet(nn.Module, LipschitzModel):
         return self.fc(out)
 
     def get_lipschitz_layers(self) -> Sequence[Layer]:
-        l1 = self.conv1
-        l2 = nn.Sequential(l1, self.block1)
-        l3 = nn.Sequential(l2, self.block2)
-        l4 = nn.Sequential(l3, self.block3)
+        layers = [nn.Sequential(self.conv1)]
 
-        return [l1, l2, l3, l4, self]
+        for layer in [self.block1, self.block2, self.block3]:
+            for block in layer.layer:
+                # Unpack the previous nn.Sequential to avoid too many nested nn.Sequential
+                layers.append(nn.Sequential(*layers[-1], block))
+
+        layers.append(self)
+        return layers
