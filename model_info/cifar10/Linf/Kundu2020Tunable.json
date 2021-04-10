@@ -11,5 +11,5 @@
   "clean_acc": "87.32",
   "reported": "47.35",
   "footnote": "Compressed model",
-  "autoattack_acc": "40.41",
+  "autoattack_acc": "40.41"
 }
