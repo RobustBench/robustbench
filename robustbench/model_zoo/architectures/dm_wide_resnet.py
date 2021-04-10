@@ -16,11 +16,13 @@
 https://github.com/deepmind/deepmind-research/blob/master/adversarial_robustness/pytorch/model_zoo.py
 """
 
-from typing import Tuple, Type, Union
+from typing import Sequence, Tuple, Type, Union
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
 
 CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
 CIFAR10_STD = (0.2471, 0.2435, 0.2616)
@@ -128,7 +130,7 @@ class _BlockGroup(nn.Module):
         return self.block(x)
 
 
-class DMWideResNet(nn.Module):
+class DMWideResNet(nn.Module, LipschitzModel):
     """WideResNet."""
     def __init__(self,
                  num_classes: int = 10,
@@ -183,3 +185,12 @@ class DMWideResNet(nn.Module):
         out = F.avg_pool2d(out, 8)
         out = out.view(-1, self.num_channels)
         return self.logits(out)
+
+    def get_lipschitz_layers(self) -> Sequence[Layer]:
+        layers = [self.init_conv]
+        for layer in self.layer:
+            layers.append(nn.Sequential(layers[-1], layer))
+
+        layers.append(self)
+
+        return layers
