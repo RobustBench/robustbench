@@ -29,7 +29,10 @@ def compute_lipschitz_batch(model: Layer,
 
     # Function to differentiate
     def f(x_prime_: torch.Tensor) -> torch.Tensor:
-        numerator = torch.norm(model(x) - model(x_prime_), p=1, dim=1)
+        numerator = torch.norm(torch.flatten(model(x), start_dim=1) -
+                               torch.flatten(model(x_prime_), start_dim=1),
+                               p=1,
+                               dim=1)
         denominator = torch.norm(torch.flatten(x, start_dim=1) -
                                  torch.flatten(x_prime_, start_dim=1),
                                  p=float("inf"),
@@ -51,17 +54,19 @@ def compute_lipschitz_batch(model: Layer,
 
     max_lips = max(max_lips, f(x_prime).mean().item())
     if normalize_by_logits:
-        return max_lips / model(x).mean().item()
+        return max_lips / model(x).abs().mean().item()
     return max_lips
 
 
-def compute_lipschitz(model: Layer,
-                      dl: DataLoader,
-                      eps: float,
-                      step_size: float,
-                      n_steps: int = 50,
-                      normalize_by_logits: bool = True,
-                      device: Optional[torch.device] = None, ):
+def compute_lipschitz(
+    model: Layer,
+    dl: DataLoader,
+    eps: float,
+    step_size: float,
+    n_steps: int = 50,
+    normalize_by_logits: bool = True,
+    device: Optional[torch.device] = None,
+):
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model`.
 
     We use the method proposed by Yang et al. [1]_.
@@ -88,8 +93,8 @@ def compute_lipschitz(model: Layer,
 
     for i, (x, _) in enumerate(prog_bar):
         x_dev = x.to(device)
-        batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size, n_steps,
-                                             normalize_by_logits)
+        batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size,
+                                             n_steps, normalize_by_logits)
         lips += batch_lips
         prog_bar.set_postfix({"lips": lips / (i + 1)})
 

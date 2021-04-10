@@ -31,7 +31,7 @@ class LipschitzTester(TestCase):
         self._test_compute_lipschitz_batch(False, lambda f, _: f.slope)
 
     def test_compute_lipschitz_batch_norm(self):
-        self._test_compute_lipschitz_batch(True, lambda f, x: f.slope / f(x).mean().item())
+        self._test_compute_lipschitz_batch(True, lambda f, x: f.slope / f(x).abs().mean().item())
 
     def test_compute_lipschitz(self):
         model = DummyModel(in_shape=1, out_shape=1, slope=random.random())
