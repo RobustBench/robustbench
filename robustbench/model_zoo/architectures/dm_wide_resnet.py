@@ -142,8 +142,8 @@ class DMWideResNet(nn.Module, LipschitzModel):
                  padding: int = 0,
                  num_input_channels: int = 3):
         super().__init__()
-        self.register_buffer("mean", torch.tensor(mean).view(num_input_channels, 1, 1))
-        self.register_buffer("std", torch.tensor(std).view(num_input_channels, 1, 1))
+        self.mean = torch.tensor(mean).view(num_input_channels, 1, 1)
+        self.std = torch.tensor(std).view(num_input_channels, 1, 1)
         self.padding = padding
         num_channels = [16, 16 * width, 32 * width, 64 * width]
         assert (depth - 4) % 6 == 0
@@ -178,7 +178,7 @@ class DMWideResNet(nn.Module, LipschitzModel):
     def forward(self, x):
         if self.padding > 0:
             x = F.pad(x, (self.padding, ) * 4)
-        out = (x - self.mean) / self.std
+        out = (x - self.mean.to(x.device)) / self.std.to(x.device)
         out = self.init_conv(out)
         out = self.layer(out)
         out = self.relu(self.batchnorm(out))
