@@ -41,4 +41,4 @@ class LipschitzTester(TestCase):
     def test_benchmark_lipschitz(self):
         model = DummyModel()
         lips = benchmark_lipschitz(model.eval(), 16, "cifar10")
-        self.assertGreaterEqual(lips, 0)
+        self.assertGreaterEqual(lips[0], 0)

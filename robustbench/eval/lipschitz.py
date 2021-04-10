@@ -1,12 +1,12 @@
 from typing import Optional, Union
 
 import torch
-from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
 from robustbench.data import load_clean_dataset
 from robustbench.eval.utils import check_model_eval
+from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
 from robustbench.model_zoo.enums import BenchmarkDataset
 
 
@@ -17,7 +17,7 @@ def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
     return torch.max(min_x, torch.min(x_prime, max_x))
 
 
-def compute_lipschitz_batch(model: nn.Module,
+def compute_lipschitz_batch(model: Layer,
                             x: torch.Tensor,
                             eps: float,
                             step_size: float,
@@ -29,9 +29,10 @@ def compute_lipschitz_batch(model: nn.Module,
     # Function to differentiate
     def f(x_prime_: torch.Tensor) -> torch.Tensor:
         numerator = torch.norm(model(x) - model(x_prime_), p=1, dim=1)
-        denominator = torch.norm(
-            torch.flatten(x, start_dim=1) - torch.flatten(x_prime_, start_dim=1), p=float("inf"),
-            dim=1)
+        denominator = torch.norm(torch.flatten(x, start_dim=1) -
+                                 torch.flatten(x_prime_, start_dim=1),
+                                 p=float("inf"),
+                                 dim=1)
         return numerator / denominator
 
     # Initialize to a slightly different random value
@@ -48,7 +49,7 @@ def compute_lipschitz_batch(model: nn.Module,
     return torch.mean(f(x_prime)).item()
 
 
-def compute_lipschitz(model: nn.Module,
+def compute_lipschitz(model: Layer,
                       dl: DataLoader,
                       eps: float,
                       step_size: float,
@@ -61,7 +62,7 @@ def compute_lipschitz(model: nn.Module,
     .. [1] Yao-Yuan Yang, Cyrus Rashtchian, Hongyang Zhang, Russ R. Salakhutdinov,
         Kamalika Chaudhuri, A Closer Look at Accuracy vs. Robustness, NeurIPS 2020.
 
-    :param model: The model whose Lipschitzness has to be computed.
+    :param model: The layer whose Lipschitzness has to be computed.
     :param dl: The dataloader of data to compute Lipschitzness on.
     :param eps: The ball boundary (around each sample)
     :param step_size: The step size of the each step.
@@ -86,21 +87,31 @@ def compute_lipschitz(model: nn.Module,
     return lips / len(dl)
 
 
-def benchmark_lipschitz(model: nn.Module,
-                        n_examples: int = 10_000,
-                        dataset: Union[str,
-                                       BenchmarkDataset] = BenchmarkDataset.cifar_10,
-                        data_dir: str = "./data",
-                        batch_size: int = 16,
-                        eps: float = 8 / 255,
-                        step_size: float = (8 / 255) / 3,
-                        n_steps: int = 50,
-                        device: Optional[torch.device] = None):
+def benchmark_lipschitz(
+        model: LipschitzModel,
+        n_examples: int = 10_000,
+        dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
+        data_dir: str = "./data",
+        batch_size: int = 16,
+        eps: float = 8 / 255,
+        step_size: float = (8 / 255) / 3,
+        n_steps: int = 50,
+        device: Optional[torch.device] = None):
     dataset_ = BenchmarkDataset(dataset)
     check_model_eval(model)
 
     x, y = load_clean_dataset(dataset_, n_examples, data_dir)
     dataset = TensorDataset(x, y)
-    dl = DataLoader(dataset, batch_size=batch_size, drop_last=True, num_workers=8)
+    dl = DataLoader(dataset,
+                    batch_size=batch_size,
+                    drop_last=True,
+                    num_workers=8)
 
-    return compute_lipschitz(model, dl, eps, step_size, n_steps, device)
+    lips = []
+
+    for layer in model.get_lipschitz_layers():
+        layer_lips = compute_lipschitz(layer, dl, eps, step_size, n_steps,
+                                       device)
+        lips.append(layer_lips)
+
+    return lips
