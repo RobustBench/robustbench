@@ -3,7 +3,7 @@ from typing import Sequence
 import torch.nn as nn
 import torch.nn.functional as F
 
-from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
+from robustbench.model_zoo.architectures.utils import LipschitzModel
 
 
 class BasicBlock(nn.Module):
@@ -158,15 +158,17 @@ class ResNet(nn.Module, LipschitzModel):
         out = self.linear(out)
         return out
 
-    def get_lipschitz_layers(self) -> Sequence[Layer]:
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
         layers = [nn.Sequential(self.conv1, self.bn1, nn.ReLU())]
 
         for layer in [self.layer1, self.layer2, self.layer3, self.layer4]:
             for block in layer:
-                # Unpack the previous nn.Sequential to avoid too many nested nn.Sequential
-                layers.append(nn.Sequential(*layers[-1], block))
+                layers.append(block)
 
-        layers.append(self)
+        final_layer = nn.Sequential(nn.AvgPool2d(4), nn.Flatten(start_dim=1),
+                                    self.linear)
+        layers.append(final_layer)
+
         return layers
 
 
@@ -326,15 +328,22 @@ class PreActResNet(nn.Module, LipschitzModel):
         out = self.linear(out)
         return out
 
-    def get_lipschitz_layers(self) -> Sequence[Layer]:
-        layers = [nn.Sequential(self.conv1)]
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = [self.conv1]
 
         for layer in [self.layer1, self.layer2, self.layer3, self.layer4]:
             for block in layer:
-                # Unpack the previous nn.Sequential to avoid too many nested nn.Sequential
-                layers.append(nn.Sequential(*layers[-1], block))
+                layers.append(block)
 
-        layers.append(self)
+        if self.bn_before_fc:
+            bn = nn.Sequential(self.bn, nn.ReLU())
+        else:
+            bn = nn.Sequential()
+
+        final_layer = nn.Sequential(*bn, nn.AvgPool2d(4), nn.Flatten(1),
+                                    self.linear)
+        layers.append(final_layer)
+
         return layers
 
 

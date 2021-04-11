@@ -3,7 +3,7 @@ from typing import Sequence
 import torch
 from torch import nn
 
-from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
+from robustbench.model_zoo.architectures.utils import LipschitzModel
 
 
 class DummyModel(nn.Module, LipschitzModel):
@@ -12,7 +12,8 @@ class DummyModel(nn.Module, LipschitzModel):
         self.in_shape = in_shape
         self.out_shape = out_shape
         self.slope = slope
-        self.main = nn.Sequential(nn.Flatten(), nn.Linear(in_shape, out_shape, bias=False))
+        self.main = nn.Sequential(nn.Flatten(),
+                                  nn.Linear(in_shape, out_shape, bias=False))
 
         if slope is not None:
             for parameter in self.parameters():
@@ -21,6 +22,5 @@ class DummyModel(nn.Module, LipschitzModel):
     def forward(self, x):
         return self.main(x)
 
-    def get_lipschitz_layers(self) -> Sequence[Layer]:
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
         return [self.main]
-

@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """WideResNet implementation in PyTorch. From:
 https://github.com/deepmind/deepmind-research/blob/master/adversarial_robustness/pytorch/model_zoo.py
 """
@@ -22,7 +21,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
+from robustbench.model_zoo.architectures.utils import LipschitzModel, View
 
 CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
 CIFAR10_STD = (0.2471, 0.2435, 0.2616)
@@ -186,13 +185,16 @@ class DMWideResNet(nn.Module, LipschitzModel):
         out = out.view(-1, self.num_channels)
         return self.logits(out)
 
-    def get_lipschitz_layers(self) -> Sequence[Layer]:
-        layers = [nn.Sequential(self.init_conv)]
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = [self.init_conv]
 
         for layer in self.layer:
             for block in layer.block:
-                layers.append(nn.Sequential(*layers[-1], block))
+                layers.append(block)
 
-        layers.append(self)
+        final_layer = nn.Sequential(self.batchnorm, self.relu, nn.AvgPool2d(8),
+                                    View((-1, self.num_channels)), self.logits)
+
+        layers.append(final_layer)
 
         return layers

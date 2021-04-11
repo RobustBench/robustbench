@@ -34,7 +34,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.nn import init
 
-from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
+from robustbench.model_zoo.architectures.utils import LipschitzModel
 
 
 class ResNeXtBottleneck(nn.Module):
@@ -54,32 +54,29 @@ class ResNeXtBottleneck(nn.Module):
 
         dim = int(math.floor(planes * (base_width / 64.0)))
 
-        self.conv_reduce = nn.Conv2d(
-            inplanes,
-            dim * cardinality,
-            kernel_size=1,
-            stride=1,
-            padding=0,
-            bias=False)
+        self.conv_reduce = nn.Conv2d(inplanes,
+                                     dim * cardinality,
+                                     kernel_size=1,
+                                     stride=1,
+                                     padding=0,
+                                     bias=False)
         self.bn_reduce = nn.BatchNorm2d(dim * cardinality)
 
-        self.conv_conv = nn.Conv2d(
-            dim * cardinality,
-            dim * cardinality,
-            kernel_size=3,
-            stride=stride,
-            padding=1,
-            groups=cardinality,
-            bias=False)
+        self.conv_conv = nn.Conv2d(dim * cardinality,
+                                   dim * cardinality,
+                                   kernel_size=3,
+                                   stride=stride,
+                                   padding=1,
+                                   groups=cardinality,
+                                   bias=False)
         self.bn = nn.BatchNorm2d(dim * cardinality)
 
-        self.conv_expand = nn.Conv2d(
-            dim * cardinality,
-            planes * 4,
-            kernel_size=1,
-            stride=1,
-            padding=0,
-            bias=False)
+        self.conv_expand = nn.Conv2d(dim * cardinality,
+                                     planes * 4,
+                                     kernel_size=1,
+                                     stride=1,
+                                     padding=0,
+                                     bias=False)
         self.bn_expand = nn.BatchNorm2d(planes * 4)
 
         self.downsample = downsample
@@ -105,12 +102,12 @@ class ResNeXtBottleneck(nn.Module):
 class CifarResNeXt(nn.Module, LipschitzModel):
     """ResNext optimized for the Cifar dataset, as specified in
     https://arxiv.org/pdf/1611.05431.pdf."""
-
     def __init__(self, block, depth, cardinality, base_width, num_classes):
         super(CifarResNeXt, self).__init__()
 
         # Model type specifies number of layers for CIFAR-10 and CIFAR-100 model
-        assert (depth - 2) % 9 == 0, 'depth should be one of 29, 38, 47, 56, 101'
+        assert (depth -
+                2) % 9 == 0, 'depth should be one of 29, 38, 47, 56, 101'
         layer_blocks = (depth - 2) // 9
 
         self.cardinality = cardinality
@@ -142,23 +139,23 @@ class CifarResNeXt(nn.Module, LipschitzModel):
         downsample = None
         if stride != 1 or self.inplanes != planes * block.expansion:
             downsample = nn.Sequential(
-                nn.Conv2d(
-                    self.inplanes,
-                    planes * block.expansion,
-                    kernel_size=1,
-                    stride=stride,
-                    bias=False),
+                nn.Conv2d(self.inplanes,
+                          planes * block.expansion,
+                          kernel_size=1,
+                          stride=stride,
+                          bias=False),
                 nn.BatchNorm2d(planes * block.expansion),
             )
 
         layers = []
         layers.append(
-            block(self.inplanes, planes, self.cardinality, self.base_width, stride,
-                  downsample))
+            block(self.inplanes, planes, self.cardinality, self.base_width,
+                  stride, downsample))
         self.inplanes = planes * block.expansion
         for _ in range(1, blocks):
             layers.append(
-                block(self.inplanes, planes, self.cardinality, self.base_width))
+                block(self.inplanes, planes, self.cardinality,
+                      self.base_width))
 
         return nn.Sequential(*layers)
 
@@ -172,12 +169,17 @@ class CifarResNeXt(nn.Module, LipschitzModel):
         x = x.view(x.size(0), -1)
         return self.classifier(x)
 
-    def get_lipschitz_layers(self) -> Sequence[Layer]:
-        layers = [nn.Sequential(self.conv_1_3x3, self.bn_1, nn.ReLU(inplace=True))]
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = [
+            nn.Sequential(self.conv_1_3x3, self.bn_1, nn.ReLU(inplace=True))
+        ]
 
         for stage in [self.stage_1, self.stage_2, self.stage_3]:
             for block in stage:
-                layers.append(nn.Sequential(*layers[-1], block))
+                layers.append(block)
 
-        layers.append(self)
+        final_layer = nn.Sequential(self.avgpool, nn.Flatten(start_dim=1),
+                                    self.classifier)
+        layers.append(final_layer)
+
         return layers

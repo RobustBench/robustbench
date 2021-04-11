@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
+from robustbench.model_zoo.architectures.utils import LipschitzModel, View
 
 
 class BasicBlock(nn.Module):
@@ -136,13 +136,15 @@ class WideResNet(nn.Module, LipschitzModel):
         out = out.view(-1, self.nChannels)
         return self.fc(out)
 
-    def get_lipschitz_layers(self) -> Sequence[Layer]:
-        layers = [nn.Sequential(self.conv1)]
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = [self.conv1]
 
         for layer in [self.block1, self.block2, self.block3]:
             for block in layer.layer:
-                # Unpack the previous nn.Sequential to avoid too many nested nn.Sequential
-                layers.append(nn.Sequential(*layers[-1], block))
+                layers.append(block)
 
-        layers.append(self)
+        final_layer = nn.Sequential(self.bn1, self.relu, nn.AvgPool2d(8),
+                                    View((-1, self.nChannels)), self.fc)
+        layers.append(final_layer)
+
         return layers

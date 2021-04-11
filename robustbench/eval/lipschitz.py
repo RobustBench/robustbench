@@ -1,12 +1,13 @@
 from typing import Optional, Union
 
 import torch
+from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
 from robustbench.data import load_clean_dataset
 from robustbench.eval.utils import check_model_eval
-from robustbench.model_zoo.architectures.utils import Layer, LipschitzModel
+from robustbench.model_zoo.architectures.utils import LipschitzModel
 from robustbench.model_zoo.enums import BenchmarkDataset
 
 
@@ -17,7 +18,7 @@ def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
     return torch.max(min_x, torch.min(x_prime, max_x))
 
 
-def compute_lipschitz_batch(model: Layer,
+def compute_lipschitz_batch(model: nn.Module,
                             x: torch.Tensor,
                             eps: float,
                             step_size: float,
@@ -59,7 +60,7 @@ def compute_lipschitz_batch(model: Layer,
 
 
 def compute_lipschitz(
-    model: Layer,
+    model: nn.Module,
     dl: DataLoader,
     eps: float,
     step_size: float,
@@ -124,8 +125,11 @@ def benchmark_lipschitz(
 
     lips = []
 
+    net = nn.Sequential()
+
     for layer in model.get_lipschitz_layers():
-        layer_lips = compute_lipschitz(layer, dl, eps, step_size, n_steps,
+        net = nn.Sequential(*net, layer)
+        layer_lips = compute_lipschitz(net, dl, eps, step_size, n_steps,
                                        normalize_by_logits, device)
         lips.append(layer_lips)
 
