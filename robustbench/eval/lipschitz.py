@@ -1,6 +1,7 @@
-from typing import Optional, Union
+from typing import Callable, Optional, Union
 
 import torch
+import torch.nn.functional as F
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
@@ -22,16 +23,20 @@ def compute_lipschitz_batch(model: nn.Module,
                             x: torch.Tensor,
                             eps: float,
                             step_size: float,
-                            n_steps: int = 50,
-                            normalize_by_logits: bool = True) -> float:
+                            n_steps: int,
+                            l2_normalize: bool) -> float:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` on
-    a batch of data.
-    """
+    a batch of data."""
+
+    model_: Callable[[torch.Tensor], torch.Tensor]
+    if l2_normalize:
+        model_ = lambda x_: F.normalize(torch.flatten(model(x_), start_dim=1))
+    else:
+        model_ = lambda x_: torch.flatten(model(x_), start_dim=1)
 
     # Function to differentiate
     def f(x_prime_: torch.Tensor) -> torch.Tensor:
-        numerator = torch.norm(torch.flatten(model(x), start_dim=1) -
-                               torch.flatten(model(x_prime_), start_dim=1),
+        numerator = torch.norm(model_(x) - model_(x_prime_),
                                p=1,
                                dim=1)
         denominator = torch.norm(torch.flatten(x, start_dim=1) -
@@ -53,10 +58,7 @@ def compute_lipschitz_batch(model: nn.Module,
         x_prime = box(x_prime.detach() + step_size * grads_x_prime, x,
                       eps).requires_grad_(True)
 
-    max_lips = max(max_lips, f(x_prime).mean().item())
-    if normalize_by_logits:
-        return max_lips / model(x).abs().mean().item()
-    return max_lips
+    return max(max_lips, f(x_prime).mean().item())
 
 
 def compute_lipschitz(
@@ -65,7 +67,7 @@ def compute_lipschitz(
     eps: float,
     step_size: float,
     n_steps: int = 50,
-    normalize_by_logits: bool = True,
+    l2_normalize: bool = True,
     device: Optional[torch.device] = None,
 ):
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model`.
@@ -80,8 +82,7 @@ def compute_lipschitz(
     :param eps: The ball boundary (around each sample)
     :param step_size: The step size of the each step.
     :param n_steps: The number of steps to run.
-    :param normalize_by_logits: Whether the Lipschitz constant should be normalized by the
-        output logits.
+    :param l2_normalize: Whether the logits should be projected to the unit L2 ball.
     :param device: The device to run computations.
 
     :return: The local Lipschitz constant.
@@ -94,8 +95,8 @@ def compute_lipschitz(
 
     for i, (x, _) in enumerate(prog_bar):
         x_dev = x.to(device)
-        batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size,
-                                             n_steps, normalize_by_logits)
+        batch_lips = compute_lipschitz_batch(model_dev, x_dev, eps, step_size, n_steps,
+                                             l2_normalize)
         lips += batch_lips
         prog_bar.set_postfix({"lips": lips / (i + 1)})
 
@@ -111,7 +112,7 @@ def benchmark_lipschitz(
         eps: float = 8 / 255,
         step_size: float = (8 / 255) / 3,
         n_steps: int = 50,
-        normalize_by_logits: bool = True,
+        l2_normalize: bool = True,
         device: Optional[torch.device] = None):
     dataset_ = BenchmarkDataset(dataset)
     check_model_eval(model)
@@ -129,8 +130,7 @@ def benchmark_lipschitz(
 
     for layer in model.get_lipschitz_layers():
         net = nn.Sequential(*net, layer)
-        layer_lips = compute_lipschitz(net, dl, eps, step_size, n_steps,
-                                       normalize_by_logits, device)
+        layer_lips = compute_lipschitz(net, dl, eps, step_size, n_steps, l2_normalize, device)
         lips.append(layer_lips)
 
     return lips
