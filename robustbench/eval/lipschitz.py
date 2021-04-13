@@ -34,9 +34,12 @@ def compute_lipschitz_batch(model: nn.Module,
     else:
         model_ = lambda x_: torch.flatten(model(x_), start_dim=1)
 
+    with torch.no_grad():
+        model_x = model_(x).detach()
+
     # Function to differentiate
     def f(x_prime_: torch.Tensor) -> torch.Tensor:
-        numerator = torch.norm(model_(x) - model_(x_prime_),
+        numerator = torch.norm(model_x - model_(x_prime_),
                                p=1,
                                dim=1)
         denominator = torch.norm(torch.flatten(x, start_dim=1) -
@@ -46,17 +49,15 @@ def compute_lipschitz_batch(model: nn.Module,
         return numerator / denominator
 
     # Initialize to a slightly different random value
-    x_prime = box(x + step_size * torch.randn_like(x), x, eps)
-    x_prime.requires_grad = True
+    x_prime = box(x + step_size * torch.randn_like(x), x, eps).requires_grad_(True)
     max_lips = f(x_prime).mean().item()
 
     for i in range(n_steps):
         y = f(x_prime).mean()
-        max_lips = max(max_lips, y.item())
         y.backward()
-        grads_x_prime = x_prime.grad
-        x_prime = box(x_prime.detach() + step_size * grads_x_prime, x,
-                      eps).requires_grad_(True)
+        max_lips = max(max_lips, y.item())
+        x_prime = box(x_prime.detach() + step_size * x_prime.grad.sign(),
+                      x, eps).requires_grad_(True)
 
     return max(max_lips, f(x_prime).mean().item())
 
