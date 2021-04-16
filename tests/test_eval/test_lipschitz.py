@@ -23,19 +23,24 @@ class LipschitzTester(TestCase):
 
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
-        lips = compute_lipschitz_batch(model, x, eps, eps / 5, 50, l2_normalize=normalize)
+        lips = compute_lipschitz_batch(model,
+                                       x,
+                                       eps,
+                                       eps / 5,
+                                       50,
+                                       l2_normalize=normalize,
+                                       p=float("inf"))
 
         assertion(model, x, lips)
 
     def test_compute_lipschitz_batch(self):
-        self._test_compute_lipschitz_batch(False,
-                                           lambda f, _, lips: self.assertAlmostEqual(lips,
-                                                                                     f.slope,
-                                                                                     places=2))
+        self._test_compute_lipschitz_batch(
+            False,
+            lambda f, _, lips: self.assertAlmostEqual(lips, f.slope, places=2))
 
     def test_compute_lipschitz_batch_norm(self):
-        self._test_compute_lipschitz_batch(True,
-                                           lambda f, _, lips: self.assertGreaterEqual(lips, 0))
+        self._test_compute_lipschitz_batch(
+            True, lambda f, _, lips: self.assertGreaterEqual(lips, 0))
 
     def test_compute_lipschitz(self):
         model = DummyModel(in_shape=1, out_shape=1, slope=random.random())
@@ -43,12 +48,20 @@ class LipschitzTester(TestCase):
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
         y = torch.randn(200, model.out_shape)
-        dl = DataLoader(TensorDataset(x, y), batch_size=50, drop_last=True)
-        lips = compute_lipschitz(model, dl, eps, eps / 5, 50, l2_normalize=False)
+        dl = DataLoader(TensorDataset(x, y), batch_size=50)
+        lips = compute_lipschitz(model,
+                                 dl,
+                                 eps,
+                                 eps / 5,
+                                 50,
+                                 l2_normalize=False)
 
         self.assertAlmostEqual(lips, model.slope, places=2)
 
     def test_benchmark_lipschitz(self):
         model = DummyModel()
-        lips = benchmark_lipschitz(model.eval(), 16, "cifar10")
+        lips = benchmark_lipschitz(model.eval(),
+                                   16,
+                                   "cifar10",
+                                   l2_normalize=False)
         self.assertGreaterEqual(lips[0], 0)
