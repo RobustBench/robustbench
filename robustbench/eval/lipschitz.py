@@ -99,7 +99,7 @@ def benchmark_lipschitz(
         data_dir: str = "./data",
         batch_size: int = 16,
         eps: float = 8 / 255,
-        step_size: float = (8 / 255) / 3,
+        step_size: float = (8 / 255) / 5,
         n_steps: int = 50,
         l2_normalize: bool = True,
         p: float = float("inf"),
@@ -111,8 +111,8 @@ def benchmark_lipschitz(
     dataset = TensorDataset(x, y)
     dl = DataLoader(dataset,
                     batch_size=batch_size,
-                    drop_last=True,
-                    num_workers=8)
+                    num_workers=8,
+                    shuffle=True)
 
     lips = []
 

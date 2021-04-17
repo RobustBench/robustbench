@@ -58,10 +58,19 @@ class LipschitzTester(TestCase):
 
         self.assertAlmostEqual(lips, model.slope, places=2)
 
-    def test_benchmark_lipschitz(self):
+    def _test_benchmark_lipschitz(self, p):
         model = DummyModel()
         lips = benchmark_lipschitz(model.eval(),
-                                   16,
+                                   1,
                                    "cifar10",
-                                   l2_normalize=False)
-        self.assertGreaterEqual(lips[0], 0)
+                                   l2_normalize=False,
+                                   p=p)
+        gradient = list(model.parameters())[0].sum(dim=0)
+        expected_lips = gradient.norm(p=p).item()
+        self.assertAlmostEqual(lips[0], expected_lips)
+
+    def test_benchmark_lipschitz_l2(self):
+        self._test_benchmark_lipschitz(2)
+
+    def test_benchmark_lipschitz_linf(self):
+        self._test_benchmark_lipschitz(p=float("inf"))
