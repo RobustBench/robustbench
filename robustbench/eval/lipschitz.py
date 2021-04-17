@@ -25,7 +25,6 @@ def compute_lipschitz_batch(model: nn.Module, x: torch.Tensor, eps: float,
                             p: float) -> float:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` on a batch of data."""
     def grad_norm(x_prime_: torch.Tensor) -> torch.Tensor:
-        x_prime_ = torch.flatten(x_prime_, start_dim=1)
         if l2_normalize:
             x_prime_ = F.normalize(x_prime_)
         model_output = model(x_prime_).sum()
