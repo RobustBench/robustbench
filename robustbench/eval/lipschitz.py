@@ -34,8 +34,8 @@ def compute_lipschitz_batch(model: nn.Module, x: torch.Tensor, eps: float,
         numerator = (out_1 - out_2).norm(dim=1, p=1)
         flattened_x_1_ = torch.flatten(x_1_, start_dim=1)
         flattened_x_2_ = torch.flatten(x_2_, start_dim=1)
-        # Add 1e-6 for numerical stability
-        denominator = (flattened_x_1_ - flattened_x_2_ + 1e-6).norm(p=p, dim=1)
+        # Add 1e-9 for numerical stability
+        denominator = (flattened_x_1_ - flattened_x_2_).norm(p=p, dim=1) + 1e-9
         return (numerator / denominator).mean()
 
     # Initialize to a slightly different random value
