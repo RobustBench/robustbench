@@ -3,7 +3,6 @@ from typing import Optional, Union
 import torch
 import torch.nn.functional as F
 from torch import nn
-from torch.autograd import grad
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 
@@ -24,32 +23,38 @@ def compute_lipschitz_batch(model: nn.Module, x: torch.Tensor, eps: float,
                             step_size: float, n_steps: int, l2_normalize: bool,
                             p: float) -> float:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` on a batch of data."""
-    def grad_norm(x_prime_: torch.Tensor) -> torch.Tensor:
-        if l2_normalize:
-            x_prime_ = F.normalize(x_prime_)
-        model_output = model(x_prime_).sum()
-        model_grad = grad(model_output, x_prime_, create_graph=True)[0]
 
-        return torch.norm(model_grad, p=p)
+    # Function to optimize
+    def lipschitz(x_1_: torch.Tensor, x_2_: torch.Tensor) -> torch.Tensor:
+        if l2_normalize:
+            x_1_ = F.normalize(x_1_)
+            x_2_ = F.normalize(x_2_)
+        out_1 = torch.flatten(model(x_1_), start_dim=1)
+        out_2 = torch.flatten(model(x_2_), start_dim=1)
+        numerator = (out_1 - out_2).norm(dim=1, p=1)
+        flattened_x_1_ = torch.flatten(x_1_, start_dim=1)
+        flattened_x_2_ = torch.flatten(x_2_, start_dim=1)
+        # Add 1e-6 for numerical stability
+        denominator = (flattened_x_1_ - flattened_x_2_ + 1e-6).norm(p=p, dim=1)
+        return (numerator / denominator).mean()
 
     # Initialize to a slightly different random value
-    x_prime = box(x + step_size * torch.randn_like(x), x,
-                  eps).requires_grad_(True)
-    max_lips = grad_norm(x_prime).mean().item()
+    x_1 = box(x.clone() + step_size * torch.randn_like(x), x,
+              eps).requires_grad_(True)
+    x_2 = x.clone().requires_grad_(True)
+
+    max_lips = lipschitz(x_1, x_2).item()
 
     for i in range(n_steps):
-        y = grad_norm(x_prime).mean()
-        # The gradient can be independent of the input if the model is linear
-        # if this is the case, then make it 0.
-        gradient = grad(y, x_prime, allow_unused=True)[0]
-        if gradient is None:
-            gradient = torch.zeros_like(x_prime)
-
-        x_prime = box(x_prime.detach() + step_size * gradient.sign(), x,
-                      eps).requires_grad_(True)
+        y = lipschitz(x_1, x_2)
+        y.backward()
+        x_1 = box(x_1.detach() + step_size * x_1.grad.sign(), x,
+                  eps).requires_grad_(True)
+        x_2 = box(x_2.detach() + step_size * x_2.grad.sign(), x,
+                  eps).requires_grad_(True)
         max_lips = max(max_lips, y.item())
 
-    return max(max_lips, grad_norm(x_prime).mean().item())
+    return max(max_lips, lipschitz(x_1, x_2).item())
 
 
 def compute_lipschitz(
