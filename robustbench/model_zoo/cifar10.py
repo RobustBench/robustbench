@@ -267,12 +267,6 @@ class Kireev2021EffectivenessNet(PreActResNet):
         return super(Kireev2021EffectivenessNet, self).forward(x)
 
 
-class Sehwag2021ProxyNet(WideResNet):
-    def __init__(self, depth=34, widen_factor=10):
-        super(Sehwag2021ProxyNet, self).__init__(depth=depth, widen_factor=widen_factor,
-                                                   sub_block1=False)
-
-
 linf = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -361,7 +355,7 @@ linf = OrderedDict([
         'gdrive_id': "1MBAWGxiZxKt-GfqEqtLcXcd3tAxPhvV2"
     }), 
     ('Sehwag2021Proxy', {
-        'model': Sehwag2021ProxyNet,
+        'model': lambda: WideResNet(34, 10, sub_block1=False),
         'gdrive_id': '1QFA5fPMj2Qw4aYNG33PkFqiv_RTDWvzm',
     }), 
     ('Sehwag2021Proxy_R18', {
@@ -408,11 +402,11 @@ l2 = OrderedDict([
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1pkZDCpCBShpAnx92n8PUeNOY1fSiTi0s"
     }),
-    ('Sehwag2021ProxyL2', {
-        'model': Sehwag2021ProxyNet,
+    ('Sehwag2021Proxy', {
+        'model': lambda: WideResNet(34, 10, sub_block1=False),
         'gdrive_id': '1UviikNzpltVFsgMuqQ8YhpmvGczGRS4S',
     }), 
-    ('Sehwag2021ProxyL2_R18', {
+    ('Sehwag2021Proxy_R18', {
         'model': ResNet18,
         'gdrive_id': '1zPjjZj9wujBNkAmHHHIikem6_aIjMhXG',
     })
