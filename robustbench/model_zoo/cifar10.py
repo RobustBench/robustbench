@@ -1,21 +1,25 @@
 from collections import OrderedDict
+from typing import Sequence
 
-from torch import nn
 import torch
 import torch.nn.functional as F
+from torch import nn
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, \
     DMWideResNet, Swish
 from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, \
     PreActBlock, \
-    PreActBlockV2, PreActResNet, ResNet
-from robustbench.model_zoo.architectures.resnext import CifarResNeXt, \
-    ResNeXtBottleneck
+    PreActBlockV2, ResNet
+from robustbench.model_zoo.architectures.resnext import ResNeXtBottleneck
+from robustbench.model_zoo.architectures.utils import NormalizeData, NormalizedCifarResNeXt, \
+    NormalizedPreActResNet, \
+    NormalizedResNet, \
+    NormalizedWideResNet
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 
 
-class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
+class Hendrycks2020AugMixResNeXtNet(NormalizedCifarResNeXt):
     def __init__(self, depth=29, num_classes=10, cardinality=4, base_width=32):
         super().__init__(ResNeXtBottleneck, depth=depth, num_classes=num_classes,
                          cardinality=cardinality, base_width=base_width)
@@ -27,7 +31,7 @@ class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
         return super().forward(x)
 
 
-class Hendrycks2020AugMixWRNNet(WideResNet):
+class Hendrycks2020AugMixWRNNet(NormalizedWideResNet):
     def __init__(self, depth=40, widen_factor=2):
         super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
         self.register_buffer('mu', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
@@ -71,8 +75,14 @@ class Hendrycks2019UsingNet(WideResNet):
         x = 2. * x - 1.
         return super(Hendrycks2019UsingNet, self).forward(x)
 
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = list(super().get_lipschitz_layers())
+        norm_layer = NormalizeData(torch.Tensor([0.5]), torch.Tensor([0.5]))
+        layers[0] = nn.Sequential(norm_layer, layers[0])
+        return layers
 
-class Rice2020OverfittingNet(WideResNet):
+
+class Rice2020OverfittingNet(NormalizedWideResNet):
     def __init__(self, depth=34, widen_factor=20):
         super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor,
                                                      sub_block1=False)
@@ -90,7 +100,7 @@ class Zhang2019TheoreticallyNet(WideResNet):
                                                         sub_block1=True)
 
 
-class Engstrom2019RobustnessNet(ResNet):
+class Engstrom2019RobustnessNet(NormalizedResNet):
     def __init__(self):
         super(Engstrom2019RobustnessNet, self).__init__(Bottleneck, [3, 4, 6, 3])
         self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
@@ -155,8 +165,11 @@ class Pang2020BoostingNet(WideResNet):
                 module.weight.data = F.normalize(module.weight, p=2, dim=1)
         return self.fc(out)
 
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        raise NotImplementedError()
 
-class Wong2020FastNet(PreActResNet):
+
+class Wong2020FastNet(NormalizedPreActResNet):
     def __init__(self):
         super(Wong2020FastNet, self).__init__(PreActBlock, [2, 2, 2, 2])
         self.register_buffer('mu', torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
@@ -167,21 +180,38 @@ class Wong2020FastNet(PreActResNet):
         return super(Wong2020FastNet, self).forward(x)
 
 
+class NormalizeInput(nn.Module):
+    """Needed for Ding2020MMANet."""
+
+    def __init__(self):
+        super().__init__()
+
+    def forward(self, x: torch.Tensor):
+        mu = x.mean(dim=(1, 2, 3), keepdim=True)
+        std = x.std(dim=(1, 2, 3), keepdim=True)
+        std_min = torch.ones_like(std) / (x.shape[1] * x.shape[2] * x.shape[3]) ** .5
+        x = (x - mu) / torch.max(std, std_min)
+        return x
+
+
 class Ding2020MMANet(WideResNet):
     """
     See the appendix of the LICENSE file specifically for this model.
     """
 
     def __init__(self, depth=28, widen_factor=4):
+        self.normalize_input = NormalizeInput()
         super(Ding2020MMANet, self).__init__(depth=depth, widen_factor=widen_factor,
                                              sub_block1=False)
 
     def forward(self, x):
-        mu = x.mean(dim=(1, 2, 3), keepdim=True)
-        std = x.std(dim=(1, 2, 3), keepdim=True)
-        std_min = torch.ones_like(std) / (x.shape[1] * x.shape[2] * x.shape[3]) ** .5
-        x = (x - mu) / torch.max(std, std_min)
+        x = self.normalize_input(x)
         return super(Ding2020MMANet, self).forward(x)
+
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = list(super().get_lipschitz_layers())
+        layers[0] = nn.Sequential(NormalizeInput(), layers[0])
+        return layers
 
 
 class Zhang2019YouNet(WideResNet):
@@ -201,25 +231,22 @@ class Zhang2020AttacksNet(WideResNet):
                                                   sub_block1=True)
 
 
-class Augustin2020AdversarialNet(ResNet):
+class Augustin2020AdversarialNet(NormalizedResNet):
     def __init__(self):
         super(Augustin2020AdversarialNet, self).__init__(Bottleneck, [3, 4, 6, 3])
-        self.register_buffer('mu',
-                             torch.tensor([0.4913997551666284, 0.48215855929893703,
-                                           0.4465309133731618]).view(1, 3, 1,
-                                                                     1))
-        self.register_buffer('sigma',
-                             torch.tensor(
-                                 [0.24703225141799082, 0.24348516474564, 0.26158783926049628]).view(
-                                 1, 3, 1,
-                                 1))
+        mu = torch.tensor(
+            [0.4913997551666284, 0.48215855929893703, 0.4465309133731618])
+        sigma = torch.tensor(
+            [0.24703225141799082, 0.24348516474564, 0.26158783926049628])
+        self.register_buffer('mu', mu.view(1, 3, 1, 1))
+        self.register_buffer('sigma', sigma.view(1, 3, 1, 1))
 
     def forward(self, x):
         x = (x - self.mu) / self.sigma
         return super(Augustin2020AdversarialNet, self).forward(x)
 
 
-class Rice2020OverfittingNetL2(PreActResNet):
+class Rice2020OverfittingNetL2(NormalizedPreActResNet):
     def __init__(self):
         super(Rice2020OverfittingNetL2, self).__init__(PreActBlockV2, [2, 2, 2, 2],
                                                        bn_before_fc=True)
@@ -231,7 +258,7 @@ class Rice2020OverfittingNetL2(PreActResNet):
         return super(Rice2020OverfittingNetL2, self).forward(x)
 
 
-class Rony2019DecouplingNet(WideResNet):
+class Rony2019DecouplingNet(NormalizedWideResNet):
     def __init__(self, depth=28, widen_factor=10):
         super(Rony2019DecouplingNet, self).__init__(depth=depth, widen_factor=widen_factor,
                                                     sub_block1=False)
@@ -255,7 +282,7 @@ class Wu2020AdversarialNetL2(WideResNet):
                                                      sub_block1=False)
 
 
-class Kireev2021EffectivenessNet(PreActResNet):
+class Kireev2021EffectivenessNet(NormalizedPreActResNet):
     def __init__(self):
         super(Kireev2021EffectivenessNet, self).__init__(PreActBlockV2, [2, 2, 2, 2],
                                                          bn_before_fc=True)
@@ -265,7 +292,6 @@ class Kireev2021EffectivenessNet(PreActResNet):
     def forward(self, x):
         x = (x - self.mu) / self.sigma
         return super(Kireev2021EffectivenessNet, self).forward(x)
-
 
 
 linf = OrderedDict([
@@ -433,4 +459,3 @@ cifar_10_models = OrderedDict([
     (ThreatModel.L2, l2),
     (ThreatModel.corruptions, common_corruptions)
 ])
-

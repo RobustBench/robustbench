@@ -21,7 +21,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from robustbench.model_zoo.architectures.utils import LipschitzModel, View
+from robustbench.model_zoo.architectures.utils import LipschitzModel, NormalizeData, View
 
 CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
 CIFAR10_STD = (0.2471, 0.2435, 0.2616)
@@ -186,7 +186,7 @@ class DMWideResNet(nn.Module, LipschitzModel):
         return self.logits(out)
 
     def get_lipschitz_layers(self) -> Sequence[nn.Module]:
-        layers = [self.init_conv]
+        layers = [nn.Sequential(NormalizeData(self.mean, self.std), self.init_conv)]
 
         for layer in self.layer:
             for block in layer.block:

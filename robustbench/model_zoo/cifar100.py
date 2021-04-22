@@ -1,11 +1,13 @@
 from collections import OrderedDict
-from robustbench.model_zoo.architectures.resnet import PreActResNet, PreActBlock
 
 import torch
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
     DMWideResNet, Swish
-from robustbench.model_zoo.architectures.resnext import CifarResNeXt, ResNeXtBottleneck
+from robustbench.model_zoo.architectures.resnet import PreActBlock
+from robustbench.model_zoo.architectures.resnext import ResNeXtBottleneck
+from robustbench.model_zoo.architectures.utils import NormalizedCifarResNeXt, \
+    NormalizedPreActResNet, NormalizedWideResNet
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 
@@ -16,7 +18,7 @@ class Gowal2020UncoveringNet(DMWideResNet):
                          mean=CIFAR100_MEAN, std=CIFAR100_STD)
 
 
-class Chen2020EfficientNet(WideResNet):
+class Chen2020EfficientNet(NormalizedWideResNet):
     def __init__(self, depth=34, widen_factor=10):
         super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False, num_classes=100)
         self.register_buffer('mu', torch.tensor(
@@ -29,7 +31,7 @@ class Chen2020EfficientNet(WideResNet):
         return super().forward(x)
 
 
-class Wu2020AdversarialNet(WideResNet):
+class Wu2020AdversarialNet(NormalizedWideResNet):
     def __init__(self, depth=34, widen_factor=10):
         super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False, num_classes=100)
         self.register_buffer('mu', torch.tensor(
@@ -42,7 +44,7 @@ class Wu2020AdversarialNet(WideResNet):
         return super().forward(x)
 
 
-class Rice2020OverfittingNet(PreActResNet):
+class Rice2020OverfittingNet(NormalizedPreActResNet):
     def __init__(self):
         super().__init__(PreActBlock, [2, 2, 2, 2], num_classes=100)
         self.register_buffer('mu', torch.tensor(
@@ -55,7 +57,7 @@ class Rice2020OverfittingNet(PreActResNet):
         return super().forward(x)
 
 
-class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
+class Hendrycks2020AugMixResNeXtNet(NormalizedCifarResNeXt):
     def __init__(self, depth=29, cardinality=4, base_width=32):
         super().__init__(ResNeXtBottleneck, depth=depth, num_classes=100,
                          cardinality=cardinality, base_width=base_width)
@@ -67,7 +69,7 @@ class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
         return super().forward(x)
 
 
-class Hendrycks2020AugMixWRNNet(WideResNet):
+class Hendrycks2020AugMixWRNNet(NormalizedWideResNet):
     def __init__(self, depth=40, widen_factor=2):
         super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False, num_classes=100)
         self.register_buffer('mu', torch.tensor([0.5] * 3).view(1, 3, 1, 1))
