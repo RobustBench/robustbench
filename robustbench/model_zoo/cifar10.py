@@ -8,7 +8,7 @@ from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIF
     DMWideResNet, Swish
 from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, \
     PreActBlock, \
-    PreActBlockV2, PreActResNet, ResNet
+    PreActBlockV2, PreActResNet, ResNet, ResNet18
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, \
     ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
@@ -267,7 +267,6 @@ class Kireev2021EffectivenessNet(PreActResNet):
         return super(Kireev2021EffectivenessNet, self).forward(x)
 
 
-
 linf = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -354,6 +353,14 @@ linf = OrderedDict([
     ('Gowal2020Uncovering_28_10_extra', {
         'model': lambda: Gowal2020UncoveringNet(28, 10),
         'gdrive_id': "1MBAWGxiZxKt-GfqEqtLcXcd3tAxPhvV2"
+    }), 
+    ('Sehwag2021Proxy', {
+        'model': lambda: WideResNet(34, 10, sub_block1=False),
+        'gdrive_id': '1QFA5fPMj2Qw4aYNG33PkFqiv_RTDWvzm',
+    }), 
+    ('Sehwag2021Proxy_R18', {
+        'model': ResNet18,
+        'gdrive_id': '1-ZgoSlD_AMhtXdnUElilxVXnzK2DcHuu',
     })
 
 ])
@@ -394,6 +401,14 @@ l2 = OrderedDict([
     ('Gowal2020Uncovering_extra', {
         'model': Gowal2020UncoveringNet,
         'gdrive_id': "1pkZDCpCBShpAnx92n8PUeNOY1fSiTi0s"
+    }),
+    ('Sehwag2021Proxy', {
+        'model': lambda: WideResNet(34, 10, sub_block1=False),
+        'gdrive_id': '1UviikNzpltVFsgMuqQ8YhpmvGczGRS4S',
+    }), 
+    ('Sehwag2021Proxy_R18', {
+        'model': ResNet18,
+        'gdrive_id': '1zPjjZj9wujBNkAmHHHIikem6_aIjMhXG',
     })
 ])
 
