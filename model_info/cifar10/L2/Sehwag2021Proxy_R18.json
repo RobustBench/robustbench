@@ -1,0 +1,16 @@
+{
+  "link": "https://arxiv.org/abs/2104.09425",
+  "name": "Improving Adversarial Robustness Using Proxy Distributions",
+  "authors": "Vikash Sehwag, Saeed Mahloujifar, Tinashe Handina, Sihui Dai, Chong Xiang, Mung Chiang, Prateek Mittal",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "arXiv, Apr 2021",
+  "architecture": "ResNet-18",
+  "eps": "0.5",
+  "clean_acc": "89.52",
+  "reported": "73.4",
+  "autoattack_acc": "73.39",
+  "footnote": "It uses additional ~6M synthetic images in training."
+}
+
