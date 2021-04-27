@@ -4,10 +4,6 @@ from typing import Sequence
 import torch
 from torch import nn
 
-from robustbench.model_zoo.architectures.resnet import PreActResNet, ResNet
-from robustbench.model_zoo.architectures.resnext import CifarResNeXt
-from robustbench.model_zoo.architectures.wide_resnet import WideResNet
-
 
 class LipschitzModel(abc.ABC):
     def get_lipschitz_layers(self) -> Sequence[nn.Module]:
@@ -27,34 +23,6 @@ class View(nn.Module):
     def forward(self, input):
         out = input.view(self.shape)
         return out
-
-
-class NormalizedWideResNet(WideResNet):
-    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
-        layers = list(super().get_lipschitz_layers())
-        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
-        return layers
-
-
-class NormalizedResNet(ResNet):
-    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
-        layers = list(super().get_lipschitz_layers())
-        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
-        return layers
-
-
-class NormalizedPreActResNet(PreActResNet):
-    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
-        layers = list(super().get_lipschitz_layers())
-        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
-        return layers
-
-
-class NormalizedCifarResNeXt(CifarResNeXt):
-    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
-        layers = list(super().get_lipschitz_layers())
-        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
-        return layers
 
 
 class NormalizeData(nn.Module):

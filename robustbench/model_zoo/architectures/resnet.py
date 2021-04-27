@@ -1,9 +1,9 @@
 from typing import Sequence
 
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
-from robustbench.model_zoo.architectures.utils import LipschitzModel
+from .utils import LipschitzModel, NormalizeData
 
 
 class BasicBlock(nn.Module):
@@ -369,3 +369,17 @@ def ResNet152():
 
 def PreActResNet18():
     return PreActResNet(PreActBlock, [2, 2, 2, 2])
+
+
+class NormalizedResNet(ResNet):
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = list(super().get_lipschitz_layers())
+        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
+        return layers
+
+
+class NormalizedPreActResNet(PreActResNet):
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = list(super().get_lipschitz_layers())
+        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
+        return layers

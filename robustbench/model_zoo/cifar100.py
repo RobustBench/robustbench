@@ -4,11 +4,9 @@ import torch
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
     DMWideResNet, Swish
-from robustbench.model_zoo.architectures.resnet import PreActBlock
-from robustbench.model_zoo.architectures.resnext import ResNeXtBottleneck
-from robustbench.model_zoo.architectures.utils import NormalizedCifarResNeXt, \
-    NormalizedPreActResNet, NormalizedWideResNet
-from robustbench.model_zoo.architectures.wide_resnet import WideResNet
+from robustbench.model_zoo.architectures.resnet import NormalizedPreActResNet, PreActBlock
+from robustbench.model_zoo.architectures.resnext import NormalizedCifarResNeXt, ResNeXtBottleneck
+from robustbench.model_zoo.architectures.wide_resnet import NormalizedWideResNet, WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 
 

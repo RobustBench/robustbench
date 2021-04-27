@@ -30,11 +30,11 @@ https://github.com/google-research/augmix/blob/master/third_party/WideResNet_pyt
 import math
 from typing import Sequence
 
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 from torch.nn import init
 
-from robustbench.model_zoo.architectures.utils import LipschitzModel
+from robustbench.model_zoo.architectures.utils import LipschitzModel, NormalizeData
 
 
 class ResNeXtBottleneck(nn.Module):
@@ -182,4 +182,11 @@ class CifarResNeXt(nn.Module, LipschitzModel):
                                     self.classifier)
         layers.append(final_layer)
 
+        return layers
+
+
+class NormalizedCifarResNeXt(CifarResNeXt):
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = list(super().get_lipschitz_layers())
+        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
         return layers

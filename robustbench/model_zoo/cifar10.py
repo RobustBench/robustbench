@@ -8,14 +8,11 @@ from torch import nn
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, \
     DMWideResNet, Swish
 from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, \
-    PreActBlock, \
+    NormalizedPreActResNet, NormalizedResNet, PreActBlock, \
     PreActBlockV2, ResNet, ResNet18
-from robustbench.model_zoo.architectures.resnext import ResNeXtBottleneck
-from robustbench.model_zoo.architectures.utils import NormalizeData, NormalizedCifarResNeXt, \
-    NormalizedPreActResNet, \
-    NormalizedResNet, \
-    NormalizedWideResNet
-from robustbench.model_zoo.architectures.wide_resnet import WideResNet
+from robustbench.model_zoo.architectures.resnext import NormalizedCifarResNeXt, ResNeXtBottleneck
+from robustbench.model_zoo.architectures.utils import NormalizeData
+from robustbench.model_zoo.architectures.wide_resnet import NormalizedWideResNet, WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 
 

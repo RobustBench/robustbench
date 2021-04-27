@@ -2,10 +2,10 @@ import math
 from typing import Sequence
 
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+from torch import nn
 
-from robustbench.model_zoo.architectures.utils import LipschitzModel, View
+from robustbench.model_zoo.architectures.utils import LipschitzModel, NormalizeData, View
 
 
 class BasicBlock(nn.Module):
@@ -147,4 +147,11 @@ class WideResNet(nn.Module, LipschitzModel):
                                     View((-1, self.nChannels)), self.fc)
         layers.append(final_layer)
 
+        return layers
+
+
+class NormalizedWideResNet(WideResNet):
+    def get_lipschitz_layers(self) -> Sequence[nn.Module]:
+        layers = list(super().get_lipschitz_layers())
+        layers[0] = nn.Sequential(NormalizeData(self.mu, self.sigma), layers[0])
         return layers
