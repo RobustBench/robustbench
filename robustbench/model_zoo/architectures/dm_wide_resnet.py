@@ -186,7 +186,12 @@ class DMWideResNet(nn.Module, LipschitzModel):
         return self.logits(out)
 
     def get_lipschitz_layers(self) -> Sequence[nn.Module]:
-        layers = [nn.Sequential(NormalizeData(self.mean, self.std), self.init_conv)]
+        if self.padding > 0:
+            pad = nn.Sequential(nn.ConstantPad2d((self.padding, ) * 4, 0))
+        else:
+            pad = nn.Sequential()
+
+        layers = [nn.Sequential(*pad, NormalizeData(self.mean, self.std), self.init_conv)]
 
         for layer in self.layer:
             for block in layer.block:
