@@ -26,11 +26,11 @@ def compute_lipschitz_batch(model: nn.Module, x: torch.Tensor, eps: float,
 
     # Function to optimize
     def lipschitz(x_1_: torch.Tensor, x_2_: torch.Tensor) -> torch.Tensor:
-        if l2_normalize:
-            x_1_ = F.normalize(x_1_)
-            x_2_ = F.normalize(x_2_)
         out_1 = torch.flatten(model(x_1_), start_dim=1)
         out_2 = torch.flatten(model(x_2_), start_dim=1)
+        if l2_normalize:
+            out_1 = F.normalize(out_1)
+            out_2 = F.normalize(out_2)
         numerator = (out_1 - out_2).norm(dim=1, p=1)
         flattened_x_1_ = torch.flatten(x_1_, start_dim=1)
         flattened_x_2_ = torch.flatten(x_2_, start_dim=1)
