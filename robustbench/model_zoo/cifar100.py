@@ -88,15 +88,15 @@ linf = OrderedDict([
         'gdrive_id': "1LQBdwO2b391mg7VKcP6I0HIOpC6O83gn"
     }),
     ('Cui2020Learnable_34_20_LBGAT6', {
-        'model': lambda: WideResNet(depth=34, widen_factor=20, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=20, num_classes=100, sub_block1=True),
         'gdrive_id': '1rN76st8q_32j6Uo8DI5XhcC2cwVhXBwK'
     }),
     ('Cui2020Learnable_34_10_LBGAT0', {
-        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=True),
         'gdrive_id': '1RnWbGxN-A-ltsfOvulr68U6i2L8ohAJi'
     }),
     ('Cui2020Learnable_34_10_LBGAT6', {
-        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=True),
         'gdrive_id': '1TfIgvW3BAkL8jL9J7AAWFSLW3SSzJ2AE'
     }),
     ('Chen2020Efficient', {
