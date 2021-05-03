@@ -175,6 +175,7 @@ You can find all available model IDs in the table below (note that the full lead
 ### CIFAR-10
 
 #### Linf
+
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Gowal2020Uncovering_70_16_extra**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>91.10%</sub> | <sub>65.87%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
@@ -190,19 +191,24 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**11**</sub> | <sub><sup>**Hendrycks2019Using**</sup></sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | <sub>87.11%</sub> | <sub>54.92%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
 | <sub>**12**</sub> | <sub><sup>**Sehwag2021Proxy_R18**</sup></sub> | <sub>*[Improving Adversarial Robustness Using Proxy Distributions](https://arxiv.org/abs/2104.09425)*</sub> | <sub>84.38%</sub> | <sub>54.43%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Apr 2021</sub> |
 | <sub>**13**</sub> | <sub><sup>**Pang2020Boosting**</sup></sub> | <sub>*[Boosting Adversarial Training with Hypersphere Embedding](https://arxiv.org/abs/2002.08619)*</sub> | <sub>85.14%</sub> | <sub>53.74%</sub> | <sub>WideResNet-34-20</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**14**</sub> | <sub><sup>**Zhang2020Attacks**</sup></sub> | <sub>*[Attacks Which Do Not Kill Training Make Adversarial Learning Stronger](https://arxiv.org/abs/2002.11242)*</sub> | <sub>84.52%</sub> | <sub>53.51%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
-| <sub>**15**</sub> | <sub><sup>**Rice2020Overfitting**</sup></sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>85.34%</sub> | <sub>53.42%</sub> | <sub>WideResNet-34-20</sub> | <sub>ICML 2020</sub> |
-| <sub>**16**</sub> | <sub><sup>**Huang2020Self**</sup></sub> | <sub>*[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)*</sub> | <sub>83.48%</sub> | <sub>53.34%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**17**</sub> | <sub><sup>**Zhang2019Theoretically**</sup></sub> | <sub>*[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)*</sub> | <sub>84.92%</sub> | <sub>53.08%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2019</sub> |
-| <sub>**18**</sub> | <sub><sup>**Chen2020Adversarial**</sup></sub> | <sub>*[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)*</sub> | <sub>86.04%</sub> | <sub>51.56%</sub> | <sub>ResNet-50 <br/> (3x ensemble)</sub> | <sub>CVPR 2020</sub> |
-| <sub>**19**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>87.03%</sub> | <sub>49.25%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
-| <sub>**20**</sub> | <sub><sup>**Zhang2019You**</sup></sub> | <sub>*[You Only Propagate Once: Accelerating Adversarial Training via Maximal Principle](https://arxiv.org/abs/1905.00877)*</sub> | <sub>87.20%</sub> | <sub>44.83%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2019</sub> |
-| <sub>**21**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>83.34%</sub> | <sub>43.21%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
-| <sub>**22**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
-| <sub>**23**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
+| <sub>**14**</sub> | <sub><sup>**Cui2020Learnable_34_20**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>88.70%</sub> | <sub>53.57%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**15**</sub> | <sub><sup>**Zhang2020Attacks**</sup></sub> | <sub>*[Attacks Which Do Not Kill Training Make Adversarial Learning Stronger](https://arxiv.org/abs/2002.11242)*</sub> | <sub>84.52%</sub> | <sub>53.51%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
+| <sub>**16**</sub> | <sub><sup>**Rice2020Overfitting**</sup></sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>85.34%</sub> | <sub>53.42%</sub> | <sub>WideResNet-34-20</sub> | <sub>ICML 2020</sub> |
+| <sub>**17**</sub> | <sub><sup>**Huang2020Self**</sup></sub> | <sub>*[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)*</sub> | <sub>83.48%</sub> | <sub>53.34%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**18**</sub> | <sub><sup>**Zhang2019Theoretically**</sup></sub> | <sub>*[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)*</sub> | <sub>84.92%</sub> | <sub>53.08%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2019</sub> |
+| <sub>**19**</sub> | <sub><sup>**Cui2020Learnable_34_10**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>88.22%</sub> | <sub>52.86%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**20**</sub> | <sub><sup>**Chen2020Adversarial**</sup></sub> | <sub>*[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)*</sub> | <sub>86.04%</sub> | <sub>51.56%</sub> | <sub>ResNet-50 <br/> (3x ensemble)</sub> | <sub>CVPR 2020</sub> |
+| <sub>**21**</sub> | <sub><sup>**Chen2020Efficient**</sup></sub> | <sub>*[Efficient Robust Training via Backward Smoothing](https://arxiv.org/abs/2010.01278)*</sub> | <sub>85.32%</sub> | <sub>51.12%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**22**</sub> | <sub><sup>**Sitawarin2020Improving**</sup></sub> | <sub>*[Improving Adversarial Robustness Through Progressive Hardening](https://arxiv.org/abs/2003.09347)*</sub> | <sub>86.84%</sub> | <sub>50.72%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Mar 2020</sub> |
+| <sub>**23**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>87.03%</sub> | <sub>49.25%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
+| <sub>**24**</sub> | <sub><sup>**Zhang2019You**</sup></sub> | <sub>*[You Only Propagate Once: Accelerating Adversarial Training via Maximal Principle](https://arxiv.org/abs/1905.00877)*</sub> | <sub>87.20%</sub> | <sub>44.83%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2019</sub> |
+| <sub>**25**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>83.34%</sub> | <sub>43.21%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
+| <sub>**26**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
+| <sub>**27**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
 
 #### L2
+
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Gowal2020Uncovering_extra**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>94.74%</sub> | <sub>80.53%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
@@ -219,6 +225,7 @@ You can find all available model IDs in the table below (note that the full lead
 
 
 #### Common Corruptions
+
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.83%</sub> | <sub>89.09%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
@@ -235,16 +242,16 @@ You can find all available model IDs in the table below (note that the full lead
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub>**Gowal2020Uncovering_extra**</sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>69.15%</sub> | <sub>36.88%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
-| <sub>**2**</sub> | <sub>**Cui2020Learnable_34_20_LBGAT6**</sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>62.55%</sub> | <sub>30.20%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Nov 2020</sub> |
-| <sub>**3**</sub> | <sub>**Gowal2020Uncovering**</sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>60.86%</sub> | <sub>30.03%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
-| <sub>**4**</sub> | <sub>**Cui2020Learnable_34_10_LBGAT6**</sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>60.64%</sub> | <sub>29.33%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
-| <sub>**5**</sub> | <sub>**Wu2020Adversarial**</sub> | <sub>*[Adversarial Weight Perturbation Helps Robust Generalization](https://arxiv.org/abs/2004.05884)*</sub> | <sub>60.38%</sub> | <sub>28.86%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**6**</sub> | <sub>**Hendrycks2019Using**</sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | <sub>59.23%</sub> | <sub>28.42%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
-| <sub>**7**</sub> | <sub>**Cui2020Learnable_34_10_LBGAT0**</sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>70.25%</sub> | <sub>27.16%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
-| <sub>**8**</sub> | <sub>**Chen2020Efficient**</sub> | <sub>*[Efficient Robust Training via Backward Smoothing](https://arxiv.org/abs/2010.01278)*</sub> | <sub>62.15%</sub> | <sub>26.94%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Oct 2020</sub> |
-| <sub>**9**</sub> | <sub>**Sitawarin2020Improving**</sub> | <sub>*[Improving Adversarial Robustness Through Progressive Hardening](https://arxiv.org/abs/2003.09347)*</sub> | <sub>62.82%</sub> | <sub>24.57%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
-| <sub>**10**</sub> | <sub>**Rice2020Overfitting**</sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>53.83%</sub> | <sub>18.95%</sub> | <sub>Pre-activation ResNet 18</sub> | <sub>ICML 2020</sub> |
+| <sub>**1**</sub> | <sub><sup>**Gowal2020Uncovering_extra**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>69.15%</sub> | <sub>36.88%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**2**</sub> | <sub><sup>**Cui2020Learnable_34_20_LBGAT6**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>62.55%</sub> | <sub>30.20%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Gowal2020Uncovering**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>60.86%</sub> | <sub>30.03%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**4**</sub> | <sub><sup>**Cui2020Learnable_34_10_LBGAT6**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>60.64%</sub> | <sub>29.33%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**5**</sub> | <sub><sup>**Wu2020Adversarial**</sup></sub> | <sub>*[Adversarial Weight Perturbation Helps Robust Generalization](https://arxiv.org/abs/2004.05884)*</sub> | <sub>60.38%</sub> | <sub>28.86%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**6**</sub> | <sub><sup>**Hendrycks2019Using**</sup></sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | <sub>59.23%</sub> | <sub>28.42%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
+| <sub>**7**</sub> | <sub><sup>**Cui2020Learnable_34_10_LBGAT0**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>70.25%</sub> | <sub>27.16%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**8**</sub> | <sub><sup>**Chen2020Efficient**</sup></sub> | <sub>*[Efficient Robust Training via Backward Smoothing](https://arxiv.org/abs/2010.01278)*</sub> | <sub>62.15%</sub> | <sub>26.94%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**9**</sub> | <sub><sup>**Sitawarin2020Improving**</sup></sub> | <sub>*[Improving Adversarial Robustness Through Progressive Hardening](https://arxiv.org/abs/2003.09347)*</sub> | <sub>62.82%</sub> | <sub>24.57%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
+| <sub>**10**</sub> | <sub><sup>**Rice2020Overfitting**</sup></sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>53.83%</sub> | <sub>18.95%</sub> | <sub>Pre-activation ResNet 18</sub> | <sub>ICML 2020</sub> |
 
 ## Notebooks
 We host all the notebooks at Google Colab:

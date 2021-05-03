@@ -18,7 +18,7 @@ class Gowal2020UncoveringNet(DMWideResNet):
 
 class Chen2020EfficientNet(WideResNet):
     def __init__(self, depth=34, widen_factor=10):
-        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False, num_classes=100)
+        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=True, num_classes=100)
         self.register_buffer('mu', torch.tensor(
             [0.5071, 0.4867, 0.4408]).view(1, 3, 1, 1))
         self.register_buffer('sigma', torch.tensor(
@@ -108,7 +108,7 @@ linf = OrderedDict([
         'gdrive_id': '1yWGvHmrgjtd9vOpV5zVDqZmeGhCgVYq7'
     }),
     ('Sitawarin2020Improving', {
-        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=True),
         'gdrive_id': '1hbpwans776KM1SMbOxISkDx0KR0DW8EN'
     }),
     ('Rice2020Overfitting', {
