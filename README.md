@@ -78,7 +78,7 @@ for a quick introduction. It is also summarized below 👇.
 
 First, install **`RobustBench`**:
 ```bash
-pip install git+https://github.com/RobustBench/robustbench.git@v0.1
+pip install git+https://github.com/RobustBench/robustbench.git@v0.2
 ```
 
 Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
@@ -252,6 +252,13 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**8**</sub> | <sub><sup>**Chen2020Efficient**</sup></sub> | <sub>*[Efficient Robust Training via Backward Smoothing](https://arxiv.org/abs/2010.01278)*</sub> | <sub>62.15%</sub> | <sub>26.94%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Oct 2020</sub> |
 | <sub>**9**</sub> | <sub><sup>**Sitawarin2020Improving**</sup></sub> | <sub>*[Improving Adversarial Robustness Through Progressive Hardening](https://arxiv.org/abs/2003.09347)*</sub> | <sub>62.82%</sub> | <sub>24.57%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
 | <sub>**10**</sub> | <sub><sup>**Rice2020Overfitting**</sup></sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>53.83%</sub> | <sub>18.95%</sub> | <sub>Pre-activation ResNet 18</sub> | <sub>ICML 2020</sub> |
+
+#### Corruptions
+
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.54%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.63%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
 
 ## Notebooks
 We host all the notebooks at Google Colab:
