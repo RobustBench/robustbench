@@ -390,7 +390,11 @@ linf = OrderedDict([
     ('Cui2020Learnable_34_10', {
         'model': lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
         'gdrive_id': '16s9pi_1QgMbFLISVvaVUiNfCzah6g2YV'
-    })
+    }),
+    ('Zhang2020Geometry', {
+        'model': lambda: WideResNet(depth=28, widen_factor=10, sub_block1=True),
+        'gdrive_id': '1UoG1JhbAps1MdMc6PEFiZ2yVXl_Ii5Jk'
+    }),
 ])
 
 l2 = OrderedDict([
