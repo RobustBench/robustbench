@@ -373,7 +373,7 @@ linf = OrderedDict(
             'model':
             lambda: DMWideResNet(num_classes=10,
                                  depth=70,
-                                 width=10,
+                                 width=16,
                                  activation_fn=Swish,
                                  mean=CIFAR10_MEAN,
                                  std=CIFAR10_STD),
