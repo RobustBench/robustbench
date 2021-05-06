@@ -360,23 +360,23 @@ linf = OrderedDict(
         }),
         ('Gowal2020Uncovering_70_16', {
             'model':
-            DMWideResNet(num_classes=10,
-                         depth=70,
-                         width=10,
-                         activation_fn=Swish,
-                         mean=CIFAR10_MEAN,
-                         std=CIFAR10_STD),
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=70,
+                                 width=10,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
             'gdrive_id':
             "1DVwKclibqzniE2Ss5_g6BY77ChG8QKzl"
         }),
         ('Gowal2020Uncovering_70_16_extra', {
             'model':
-            DMWideResNet(num_classes=10,
-                         depth=70,
-                         width=10,
-                         activation_fn=Swish,
-                         mean=CIFAR10_MEAN,
-                         std=CIFAR10_STD),
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=70,
+                                 width=10,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
             'gdrive_id':
             "1GxryYj_Or-VCDca0wgiFLz4ssXSZXQoJ"
         }),
