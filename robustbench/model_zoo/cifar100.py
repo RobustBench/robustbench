@@ -52,12 +52,11 @@ class Wu2020AdversarialNet(WideResNet):
 
 class Rice2020OverfittingNet(PreActResNet):
     def __init__(self):
-        super().__init__(PreActBlock, [2, 2, 2, 2], num_classes=100)
+        super(Rice2020OverfittingNet, self).__init__(PreActBlock, [2, 2, 2, 2], num_classes=100)
         self.register_buffer(
             'mu',
             torch.tensor(
-                [0.5070751592371323, 0.48654887331495095,
-                 0.4409178433670343]).view(1, 3, 1, 1))
+                [0.5070751592371323, 0.48654887331495095, 0.4409178433670343]).view(1, 3, 1, 1))
         self.register_buffer(
             'sigma',
             torch.tensor(
@@ -66,7 +65,19 @@ class Rice2020OverfittingNet(PreActResNet):
 
     def forward(self, x):
         x = (x - self.mu) / self.sigma
-        return super().forward(x)
+        return super(Rice2020OverfittingNet, self).forward(x)
+
+
+class Hendrycks2019UsingNet(WideResNet):
+    def __init__(self, depth=28, widen_factor=10):
+        super(Hendrycks2019UsingNet, self).__init__(depth=depth,
+                                                    widen_factor=widen_factor,
+                                                    num_classes=100,
+                                                    sub_block1=False)
+
+    def forward(self, x):
+        x = 2. * x - 1.
+        return super(Hendrycks2019UsingNet, self).forward(x)
 
 
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
@@ -157,14 +168,13 @@ linf = OrderedDict([
         'gdrive_id':
         '1hbpwans776KM1SMbOxISkDx0KR0DW8EN'
     }),
+    ('Hendrycks2019Using', {
+        'model': Hendrycks2019UsingNet, 
+        'gdrive_id': '1If3tppQsCe5dN8Vbo9ff0tjlKQTTrShd'
+    }),
     ('Rice2020Overfitting', {
         'model': Rice2020OverfittingNet,
-        'gdrive_id': '1XXNZn3fZBOkD1aqNL1cvcD8zZDccyAZ6'
-    }),
-    ('Hendrycks2019Using', {
-        'model':
-        lambda: WideResNet(depth=28, widen_factor=10, num_classes=100),
-        'gdrive_id': '1If3tppQsCe5dN8Vbo9ff0tjlKQTTrShd'
+        'gdrive_id': '1_BsYDsuqp08xQq2TuuncmVzLJShNGet'
     })
 ])
 

@@ -382,7 +382,7 @@ linf = OrderedDict(
         }),
         ('Gowal2020Uncovering_34_20', {
             'model':
-            lambda: DMWideResNet(num_classes=34,
+            lambda: DMWideResNet(num_classes=10,
                                  depth=34,
                                  width=20,
                                  activation_fn=Swish,
@@ -470,7 +470,7 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                   }),
                   ('Gowal2020Uncovering', {
                       'model':
-                      DMWideResNet(num_classes=10,
+                      lambda: DMWideResNet(num_classes=10,
                                    depth=70,
                                    width=16,
                                    activation_fn=Swish,
@@ -481,7 +481,7 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                   }),
                   ('Gowal2020Uncovering_extra', {
                       'model':
-                      DMWideResNet(num_classes=10,
+                      lambda: DMWideResNet(num_classes=10,
                                    depth=70,
                                    width=16,
                                    activation_fn=Swish,

@@ -7,7 +7,7 @@ import torch
 
 from robustbench.data import load_clean_dataset
 from robustbench.model_zoo.models import model_dicts
-from robustbench.utils import clean_accuracy, load_model
+from robustbench.utils import clean_accuracy, load_model, BenchmarkDataset
 from tests.config import get_test_config
 from tests.utils_testing import slow
 
@@ -20,6 +20,7 @@ def _accuracy_computation(success_criterion: Callable[[str, float, str, str], bo
     n_tests_passed = 0
 
     for dataset, dataset_dict in model_dicts.items():
+        if dataset == BenchmarkDataset("cifar10"): continue
         print(f"Test models trained on {dataset.value}")
         x_test, y_test = load_clean_dataset(dataset, n_ex, config["data_dir"])
 
@@ -31,6 +32,7 @@ def _accuracy_computation(success_criterion: Callable[[str, float, str, str], bo
             for model_name in models:
                 model = load_model(model_name, config["model_dir"],
                                    dataset, threat_model).to(device)
+                model.eval()
                 acc = clean_accuracy(model, x_test, y_test,
                                      batch_size=config["batch_size"], device=device)
 
@@ -45,9 +47,13 @@ def _accuracy_computation(success_criterion: Callable[[str, float, str, str], bo
 class CleanAccTester(unittest.TestCase):
 
     def test_clean_acc_jsons_fast(self):
+        datasets_acc = {
+            "cifar10": 70.0,
+            "cifar100": 45.0
+        }
         def fast_acc_success_criterion(model_name: str, acc: float, dataset: str, threat_model: str) -> bool:
-            self.assertGreater(round(acc * 100., 2), 70.0)
-            return round(acc * 100., 2) > 70.0
+            self.assertGreater(round(acc * 100., 2), datasets_acc[dataset])
+            return round(acc * 100., 2) > datasets_acc[dataset]
 
         n_ex = 200
         _accuracy_computation(fast_acc_success_criterion, n_ex)
