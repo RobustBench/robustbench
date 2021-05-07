@@ -78,7 +78,7 @@ for a quick introduction. It is also summarized below 👇.
 
 First, install **`RobustBench`**:
 ```bash
-pip install git+https://github.com/RobustBench/robustbench.git@v0.2
+pip install git+https://github.com/RobustBench/robustbench.git@v0.2.1
 ```
 
 Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
