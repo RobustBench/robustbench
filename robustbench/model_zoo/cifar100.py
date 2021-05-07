@@ -18,7 +18,7 @@ class Gowal2020UncoveringNet(DMWideResNet):
 
 class Chen2020EfficientNet(NormalizedWideResNet):
     def __init__(self, depth=34, widen_factor=10):
-        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=False, num_classes=100)
+        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=True, num_classes=100)
         self.register_buffer('mu', torch.tensor(
             [0.5071, 0.4867, 0.4408]).view(1, 3, 1, 1))
         self.register_buffer('sigma', torch.tensor(
@@ -88,15 +88,15 @@ linf = OrderedDict([
         'gdrive_id': "1LQBdwO2b391mg7VKcP6I0HIOpC6O83gn"
     }),
     ('Cui2020Learnable_34_20_LBGAT6', {
-        'model': lambda: WideResNet(depth=34, widen_factor=20, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=20, num_classes=100, sub_block1=True),
         'gdrive_id': '1rN76st8q_32j6Uo8DI5XhcC2cwVhXBwK'
     }),
     ('Cui2020Learnable_34_10_LBGAT0', {
-        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=True),
         'gdrive_id': '1RnWbGxN-A-ltsfOvulr68U6i2L8ohAJi'
     }),
     ('Cui2020Learnable_34_10_LBGAT6', {
-        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=True),
         'gdrive_id': '1TfIgvW3BAkL8jL9J7AAWFSLW3SSzJ2AE'
     }),
     ('Chen2020Efficient', {
@@ -108,7 +108,7 @@ linf = OrderedDict([
         'gdrive_id': '1yWGvHmrgjtd9vOpV5zVDqZmeGhCgVYq7'
     }),
     ('Sitawarin2020Improving', {
-        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=True),
         'gdrive_id': '1hbpwans776KM1SMbOxISkDx0KR0DW8EN'
     }),
     ('Rice2020Overfitting', {

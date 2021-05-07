@@ -291,6 +291,19 @@ class Kireev2021EffectivenessNet(NormalizedPreActResNet):
         return super(Kireev2021EffectivenessNet, self).forward(x)
 
 
+class Chen2020EfficientNet(WideResNet):
+    def __init__(self, depth=34, widen_factor=10):
+        super().__init__(depth=depth, widen_factor=widen_factor, sub_block1=True)
+        self.register_buffer('mu', torch.tensor(
+            [0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor(
+            [0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
+
+
 linf = OrderedDict([
     ('Carmon2019Unlabeled', {
         'model': Carmon2019UnlabeledNet,
@@ -385,8 +398,27 @@ linf = OrderedDict([
     ('Sehwag2021Proxy_R18', {
         'model': ResNet18,
         'gdrive_id': '1-ZgoSlD_AMhtXdnUElilxVXnzK2DcHuu',
-    })
-
+    }),
+    ('Sitawarin2020Improving', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
+        'gdrive_id': '12teknvo6dQGSWBaGnbNFwFO3-Y8j2eB6',
+    }),
+    ('Chen2020Efficient', {
+        'model': Chen2020EfficientNet,
+        'gdrive_id': '1c5EXpd3Kn_s6qQIbkLX3tTOOPC8VslHg',
+    }),
+    ('Cui2020Learnable_34_20', {
+        'model': lambda: WideResNet(depth=34, widen_factor=20, sub_block1=True),
+        'gdrive_id': '1y7BUxPhQjNlb4w4BUlDyYJIS4w4fsGiS'
+    }),
+    ('Cui2020Learnable_34_10', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
+        'gdrive_id': '16s9pi_1QgMbFLISVvaVUiNfCzah6g2YV'
+    }),
+    ('Zhang2020Geometry', {
+        'model': lambda: WideResNet(depth=28, widen_factor=10, sub_block1=True),
+        'gdrive_id': '1UoG1JhbAps1MdMc6PEFiZ2yVXl_Ii5Jk'
+    }),
 ])
 
 l2 = OrderedDict([
