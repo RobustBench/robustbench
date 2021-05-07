@@ -23,24 +23,19 @@ class LipschitzTester(TestCase):
 
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
-        lips = compute_lipschitz_batch(model,
-                                       x,
-                                       eps,
-                                       eps / 5,
-                                       50,
-                                       l2_normalize=normalize,
+        lips = compute_lipschitz_batch(model, x, eps, eps / 5, 50, normalization=normalize,
                                        p=float("inf"))
 
         assertion(model, x, lips)
 
     def test_compute_lipschitz_batch(self):
         self._test_compute_lipschitz_batch(
-            False,
+            None,
             lambda f, _, lips: self.assertAlmostEqual(lips, f.slope, places=2))
 
     def test_compute_lipschitz_batch_norm(self):
         self._test_compute_lipschitz_batch(
-            True, lambda f, _, lips: self.assertGreaterEqual(lips, 0))
+            "l2", lambda f, _, lips: self.assertGreaterEqual(lips, 0))
 
     def test_compute_lipschitz(self):
         model = DummyModel(in_shape=1, out_shape=1, slope=random.random())
@@ -54,7 +49,7 @@ class LipschitzTester(TestCase):
                                  eps,
                                  eps / 5,
                                  50,
-                                 l2_normalize=False)
+                                 normalization=None)
 
         self.assertAlmostEqual(lips, model.slope, places=2)
 
@@ -63,7 +58,7 @@ class LipschitzTester(TestCase):
         lips = benchmark_lipschitz(model.eval(),
                                    1,
                                    "cifar10",
-                                   l2_normalize=False,
+                                   normalization=None,
                                    p=p)
         expected_lips = list(model.parameters())[0].norm(p=p).item()
         self.assertGreaterEqual(lips[0], 0)
