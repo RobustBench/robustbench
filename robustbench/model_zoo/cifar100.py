@@ -52,7 +52,7 @@ class Wu2020AdversarialNet(WideResNet):
 
 class Rice2020OverfittingNet(PreActResNet):
     def __init__(self):
-        super(Rice2020OverfittingNet, self).__init__(PreActBlock, [2, 2, 2, 2], num_classes=100)
+        super(Rice2020OverfittingNet, self).__init__(PreActBlock, [2, 2, 2, 2], num_classes=100, bn_before_fc=True, out_shortcut=True)
         self.register_buffer(
             'mu',
             torch.tensor(
@@ -174,7 +174,7 @@ linf = OrderedDict([
     }),
     ('Rice2020Overfitting', {
         'model': Rice2020OverfittingNet,
-        'gdrive_id': '1_BsYDsuqp08xQq2TuuncmVzLJShNGet'
+        'gdrive_id': '1XXNZn3fZBOkD1aqNL1cvcD8zZDccyAZ6'
     })
 ])
 

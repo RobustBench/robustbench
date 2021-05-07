@@ -20,7 +20,6 @@ def _accuracy_computation(success_criterion: Callable[[str, float, str, str], bo
     n_tests_passed = 0
 
     for dataset, dataset_dict in model_dicts.items():
-        if dataset == BenchmarkDataset("cifar10"): continue
         print(f"Test models trained on {dataset.value}")
         x_test, y_test = load_clean_dataset(dataset, n_ex, config["data_dir"])
 
