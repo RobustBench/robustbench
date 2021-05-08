@@ -35,8 +35,8 @@ def compute_lipschitz_batch(model: nn.Module, x: torch.Tensor, eps: float,
             out_1 = F.normalize(out_1)
             out_2 = F.normalize(out_2)
         if normalization == "avg_logit":
-            out_1 /= out_1.mean()
-            out_2 /= out_2.mean()
+            out_1 /= out_1.mean(dim=1)
+            out_2 /= out_2.mean(dim=1)
         numerator = (out_1 - out_2).norm(dim=1, p=1)
         flattened_x_1_ = torch.flatten(x_1_, start_dim=1)
         flattened_x_2_ = torch.flatten(x_2_, start_dim=1)
