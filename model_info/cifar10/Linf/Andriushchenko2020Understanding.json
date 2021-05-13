@@ -9,7 +9,7 @@
   "architecture": "ResNet-18",
   "eps": "8/255",
   "clean_acc": "79.84",
-  "reported": "43.93",
+  "reported": "44.54",
   "footnote": "Focuses on fast adversarial training.",
-  "autoattack_acc": "44.54"
+  "autoattack_acc": "43.93"
 }
