@@ -10,5 +10,6 @@
   "eps": "8/255",
   "clean_acc": "87.20",
   "reported": "47.98",
+  "footnote": "Focuses on fast adversarial training.",
   "autoattack_acc": "44.83"
 }

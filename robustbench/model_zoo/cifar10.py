@@ -269,6 +269,12 @@ class Chen2020EfficientNet(WideResNet):
 
 linf = OrderedDict(
     [
+        ('Andriushchenko2020Understanding', {
+            'model':
+            lambda: PreActResNet(PreActBlock, [2, 2, 2, 2]),
+            'gdrive_id':
+            '1Uyvprd98bIyxfMjLdCZwm-NEJ-6GMVis',
+        }),
         ('Carmon2019Unlabeled', {
             'model':
             lambda: WideResNet(depth=28, widen_factor=10, sub_block1=True),
