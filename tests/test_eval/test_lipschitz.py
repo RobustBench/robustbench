@@ -37,9 +37,9 @@ class LipschitzTester(TestCase):
         self._test_compute_lipschitz_batch(
             "l2", lambda f, _, lips: self.assertGreaterEqual(lips, 0))
 
-    """def test_compute_lipschitz_batch_logit(self):
+    def test_compute_lipschitz_batch_logit(self):
         self._test_compute_lipschitz_batch(
-            "avg_logit", lambda f, _, lips: self.assertGreaterEqual(lips, 0))"""
+            "mean_logit", lambda f, _, lips: self.assertGreaterEqual(lips, 0))
 
     def test_compute_lipschitz(self):
         model = DummyModel(in_shape=1, out_shape=1, slope=random.random())

@@ -21,41 +21,47 @@ def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
     return torch.max(min_x, torch.min(x_prime, max_x))
 
 
+def lipschitz_loss(model: nn.Module, normalization: str, p, x_1: torch.Tensor,
+                   x_2: torch.Tensor) -> torch.Tensor:
+    out_1 = torch.flatten(model(x_1), start_dim=1)
+    out_2 = torch.flatten(model(x_2), start_dim=1)
+    if normalization == "l2":
+        out_1 = F.normalize(out_1)
+        out_2 = F.normalize(out_2)
+    if normalization == "mean_logit":
+        out_1 /= out_1.mean()
+        out_2 /= out_2.mean()
+    numerator = (out_1 - out_2).norm(dim=1, p=1)
+    flattened_x_1 = torch.flatten(x_1, start_dim=1)
+    flattened_x_2 = torch.flatten(x_2, start_dim=1)
+    # Add 1e-9 for numerical stability
+    denominator = (flattened_x_1 - flattened_x_2).norm(p=p, dim=1) + 1e-9
+    return (numerator / denominator).mean()
+
+
 def compute_lipschitz_batch(
         model: nn.Module, x: torch.Tensor, eps: float, step_size: float,
         n_steps: int, normalization: Optional[str],
         p: float) -> Tuple[float, Tuple[ArrayLike, ArrayLike]]:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` on a batch of data."""
-    valid_normalizations = {None, "l2"}
+    valid_normalizations = {None, "l2", "mean_logit"}
     if normalization not in valid_normalizations:
         raise ValueError(
             f"`normalization` must be one of {valid_normalizations}")
-
-    # Function to optimize
-    def lipschitz(x_1_: torch.Tensor, x_2_: torch.Tensor) -> torch.Tensor:
-        out_1 = torch.flatten(model(x_1_), start_dim=1)
-        out_2 = torch.flatten(model(x_2_), start_dim=1)
-        if normalization == "l2":
-            out_1 = F.normalize(out_1)
-            out_2 = F.normalize(out_2)
-        numerator = (out_1 - out_2).norm(dim=1, p=1)
-        flattened_x_1_ = torch.flatten(x_1_, start_dim=1)
-        flattened_x_2_ = torch.flatten(x_2_, start_dim=1)
-        # Add 1e-9 for numerical stability
-        denominator = (flattened_x_1_ - flattened_x_2_).norm(p=p, dim=1) + 1e-9
-        return (numerator / denominator).mean()
 
     # Initialize to a slightly different random value
     x_1 = box(x.clone() + step_size * torch.randn_like(x), x,
               eps).requires_grad_(True)
     x_2 = x.clone().requires_grad_(True)
 
-    max_lips = lipschitz(x_1, x_2).item()
+    # Only L2 normalization should be kept in consideration for optimization
+    optim_norm = "l2" if normalization == "l2" else None
+    max_lips = lipschitz_loss(model, normalization, p, x_1, x_2).item()
     max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
     for i in range(n_steps):
-        y = lipschitz(x_1, x_2)
-        if max(max_lips, y.item()) != max_lips:
+        y = lipschitz_loss(model, optim_norm, p, x_1, x_2)
+        if y.item() > max_lips:
             max_lips = y.item()
             max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
@@ -65,13 +71,15 @@ def compute_lipschitz_batch(
         x_2 = box(x_2.detach() + step_size * x_2.grad.sign(), x,
                   eps).requires_grad_(True)
 
-    final_lips = lipschitz(x_1, x_2).item()
-    if max(max_lips, final_lips) != max_lips:
+    final_lips = lipschitz_loss(model, optim_norm, p, x_1, x_2).item()
+    if final_lips > max_lips:
         max_lips = final_lips
         max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
-    return max_lips, (max_x_1.cpu().numpy(), max_x_2.cpu().numpy())
+    if normalization == "mean_logit":
+        max_lips = lipschitz_loss(model, normalization, p, max_x_1, max_x_2)
 
+    return max_lips, (max_x_1.cpu().numpy(), max_x_2.cpu().numpy())
 
 def compute_lipschitz(
     model: nn.Module,
