@@ -21,7 +21,7 @@ def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
     return torch.max(min_x, torch.min(x_prime, max_x))
 
 
-def lipschitz_loss(model: nn.Module, normalization: str, p, x_1: torch.Tensor,
+def lipschitz_loss(model: nn.Module, normalization: Optional[str], p, x_1: torch.Tensor,
                    x_2: torch.Tensor) -> torch.Tensor:
     out_1 = torch.flatten(model(x_1), start_dim=1)
     out_2 = torch.flatten(model(x_2), start_dim=1)
@@ -77,7 +77,7 @@ def compute_lipschitz_batch(
         max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
     if normalization == "mean_logit":
-        max_lips = lipschitz_loss(model, normalization, p, max_x_1, max_x_2)
+        max_lips = lipschitz_loss(model, normalization, p, max_x_1, max_x_2).item()
 
     return max_lips, (max_x_1.cpu().numpy(), max_x_2.cpu().numpy())
 
