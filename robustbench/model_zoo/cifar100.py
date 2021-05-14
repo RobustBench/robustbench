@@ -175,7 +175,27 @@ linf = OrderedDict([
     ('Rice2020Overfitting', {
         'model': Rice2020OverfittingNet,
         'gdrive_id': '1XXNZn3fZBOkD1aqNL1cvcD8zZDccyAZ6'
-    })
+    }),
+    ('Rebuffi2021Fixing_70_16_cutmix_ddpm', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=70,
+                             width=16,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id': '1-GkVLo9QaRjCJl-by67xda1ySVhYxsLV'
+    }),
+    ('Rebuffi2021Fixing_28_10_cutmix_ddpm', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=28,
+                             width=10,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id': '1-P7cs82Tj6UVx7Coin3tVurVKYwXWA9p'
+    }),
 ])
 
 common_corruptions = OrderedDict([('Hendrycks2020AugMix_WRN', {
