@@ -112,7 +112,7 @@ def load_model(model_name: str,
             download_gdrive(models[model_name]['gdrive_id'], model_path)
         checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
 
-        if 'Kireev2021Effectiveness' in model_name:
+        if 'Kireev2021Effectiveness' in model_name or model_name == 'Andriushchenko2020Understanding':
             checkpoint = checkpoint['last']  # we take the last model (choices: 'last', 'best')
         try:
             # needed for the model of `Carmon2019Unlabeled`
@@ -155,20 +155,22 @@ def load_model(model_name: str,
 def _safe_load_state_dict(model: nn.Module, model_name: str,
                           state_dict: Dict[str, torch.Tensor]) -> nn.Module:
     known_failing_models = {
-        "Augustin2020Adversarial", "Engstrom2019Robustness",
-        "Pang2020Boosting", "Rice2020Overfitting", "Rony2019Decoupling",
-        "Wong2020Fast", "Hendrycks2020AugMix_WRN", "Hendrycks2020AugMix_ResNeXt",
-        "Kireev2021Effectiveness_Gauss50percent", "Kireev2021Effectiveness_AugMixNoJSD",
-        "Kireev2021Effectiveness_RLAT", "Kireev2021Effectiveness_RLATAugMixNoJSD",
-        "Chen2020Efficient", "Wu2020Adversarial"
+        "Andriushchenko2020Understanding", "Augustin2020Adversarial",
+        "Engstrom2019Robustness", "Pang2020Boosting", "Rice2020Overfitting",
+        "Rony2019Decoupling", "Wong2020Fast", "Hendrycks2020AugMix_WRN",
+        "Hendrycks2020AugMix_ResNeXt", "Kireev2021Effectiveness_Gauss50percent",
+        "Kireev2021Effectiveness_AugMixNoJSD", "Kireev2021Effectiveness_RLAT",
+        "Kireev2021Effectiveness_RLATAugMixNoJSD", "Chen2020Efficient",
+        "Wu2020Adversarial"
     }
 
-    failure_message = 'Missing key(s) in state_dict: "mu", "sigma".'
+    failure_messages = ['Missing key(s) in state_dict: "mu", "sigma".',
+                        'Unexpected key(s) in state_dict: "model_preact_hl1.1.weight"']
 
     try:
         model.load_state_dict(state_dict, strict=True)
     except RuntimeError as e:
-        if model_name in known_failing_models and failure_message in str(e):
+        if model_name in known_failing_models and any([msg in str(e) for msg in failure_messages]):
             model.load_state_dict(state_dict, strict=False)
         else:
             raise e
