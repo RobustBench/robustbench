@@ -21,8 +21,8 @@ def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
     return torch.max(min_x, torch.min(x_prime, max_x))
 
 
-def lipschitz_loss(model: nn.Module, normalization: Optional[str], p, x_1: torch.Tensor,
-                   x_2: torch.Tensor) -> torch.Tensor:
+def lipschitz_loss(model: nn.Module, normalization: Optional[str], p,
+                   x_1: torch.Tensor, x_2: torch.Tensor) -> torch.Tensor:
     out_1 = torch.flatten(model(x_1), start_dim=1)
     out_2 = torch.flatten(model(x_2), start_dim=1)
     if normalization == "l2":
@@ -56,16 +56,16 @@ def compute_lipschitz_batch(
 
     # Only L2 normalization should be kept in consideration for optimization
     optim_norm = "l2" if normalization == "l2" else None
-    max_lips = lipschitz_loss(model, normalization, p, x_1, x_2).item()
+    max_lips = lipschitz_loss(model, optim_norm, p, x_1, x_2).item()
     max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
     for i in range(n_steps):
-        y = lipschitz_loss(model, optim_norm, p, x_1, x_2)
-        if y.item() > max_lips:
-            max_lips = y.item()
+        curr_lips = lipschitz_loss(model, optim_norm, p, x_1, x_2)
+        if curr_lips.item() > max_lips:
+            max_lips = curr_lips.item()
             max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
-        y.backward()
+        curr_lips.backward()
         x_1 = box(x_1.detach() + step_size * x_1.grad.sign(), x,
                   eps).requires_grad_(True)
         x_2 = box(x_2.detach() + step_size * x_2.grad.sign(), x,
@@ -77,9 +77,11 @@ def compute_lipschitz_batch(
         max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
     if normalization == "mean_logit":
-        max_lips = lipschitz_loss(model, normalization, p, max_x_1, max_x_2).item()
+        max_lips = lipschitz_loss(model, normalization, p, max_x_1,
+                                  max_x_2).item()
 
     return max_lips, (max_x_1.cpu().numpy(), max_x_2.cpu().numpy())
+
 
 def compute_lipschitz(
     model: nn.Module,
@@ -170,7 +172,7 @@ def benchmark_lipschitz(
 
     x, y = load_clean_dataset(dataset_, n_examples, data_dir)
     ds = TensorDataset(x, y)
-    dl = DataLoader(ds, batch_size=batch_size, num_workers=8, shuffle=True)
+    dl = DataLoader(ds, batch_size=batch_size, num_workers=8, shuffle=False)
 
     lips = []
     inputs = []
