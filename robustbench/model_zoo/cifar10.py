@@ -444,6 +444,46 @@ linf = OrderedDict(
             'gdrive_id':
             '1UoG1JhbAps1MdMc6PEFiZ2yVXl_Ii5Jk'
         }),
+        ('Rebuffi2021Fixing_28_10_cutmix_ddpm', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=28,
+                                 width=10,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id': '1-0EChXbc6pOvx26O17av263bCeqIAz6s'
+        }),
+        ('Rebuffi2021Fixing_106_16_cutmix_ddpm', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=106,
+                                 width=16,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id': '1-4qnkveIkeWoGdF72kpEFHETiY3y4_tF'
+        }),
+        ('Rebuffi2021Fixing_70_16_cutmix_ddpm', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=70,
+                                 width=16,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id': '1-8CWRT-OFWyrz4T4s0I2mbFjPg8K_MUi'
+        }),
+        ('Rebuffi2021Fixing_70_16_cutmix_extra', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=70,
+                                 width=16,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id': '1qKDTp6IJ1BUXZaRtbYuo_t0tuDl_4mLg'
+        })
     ])
 
 l2 = OrderedDict([('Augustin2020Adversarial', {
@@ -503,7 +543,28 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                   ('Sehwag2021Proxy_R18', {
                       'model': ResNet18,
                       'gdrive_id': '1zPjjZj9wujBNkAmHHHIikem6_aIjMhXG',
-                  })])
+                  }),
+                  ('Rebuffi2021Fixing_70_16_cutmix_ddpm', {
+                      'model':
+                      lambda: DMWideResNet(num_classes=10,
+                                           depth=70,
+                                           width=16,
+                                           activation_fn=Swish,
+                                           mean=CIFAR10_MEAN,
+                                           std=CIFAR10_STD),
+                      'gdrive_id': '1-8ECIOYF4JB0ywxJOmhkefnv4TW-KuXp'
+                  }),
+                  ('Rebuffi2021Fixing_28_10_cutmix_ddpm', {
+                      'model':
+                      lambda: DMWideResNet(num_classes=10,
+                                           depth=28,
+                                           width=10,
+                                           activation_fn=Swish,
+                                           mean=CIFAR10_MEAN,
+                                           std=CIFAR10_STD),
+                      'gdrive_id': '1-DUKcvfDzeWwt0NK7q2XvU-dIi8up8B0'
+                  }),
+    ])
 
 common_corruptions = OrderedDict([
     ('Hendrycks2020AugMix_WRN', {

@@ -4,9 +4,10 @@ Copyright (c) 2020 Francesco Croce, Maksym Andriushchenko, Vikash Sehwag
 All weights of the models in the Model Zoo are released under the MIT license except the following models which are released under different licenses (format for the list below: dataset, threat model, model's code name, license; copyright notice):
 - CIFAR-10, Linf, Hendrycks2019Using: Apache License 2.0; Copyright (c) 2019, Dan Hendrycks
 - CIFAR-10, Linf, Pang2020Boosting: Apache License 2.0; Copyright (c) 2020, Tianyu Pang, Xiao Yang
-- CIFAR-10, Linf/L2, Gowal2020Uncovering*: Apache License 2.0; Copyright (c) 2021, Google
+- CIFAR-10/CIFAR-100, Linf/L2, Gowal2020Uncovering*: Apache License 2.0; Copyright (c) 2021, Google
 - CIFAR-10, Linf/L2, Ding2020MMA: Attribution-NonCommercial-ShareAlike 4.0 International; Copyright (c) 2020, Borealis AI
 - CIFAR-10, L2, Rony2019Decoupling: BSD 3-Clause License; Copyright (c) 2018, Jerome Rony
+- CIFAR-10/CIFAR-100, Linf/L2, Rebuffi2021Fixing*: Apache License 2.0; Copyright (c) 2021, Google
 * denotes multiple models that satisfy the same beginning substring.
 
 Texts of the mentioned licenses are provided below. Copyrights belong to the authors of the respective code and models.
