@@ -564,6 +564,16 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                                            std=CIFAR10_STD),
                       'gdrive_id': '1-DUKcvfDzeWwt0NK7q2XvU-dIi8up8B0'
                   }),
+                  ('Rebuffi2021Fixing_70_16_cutmix_extra', {
+                      'model':
+                      lambda: DMWideResNet(num_classes=10,
+                                           depth=70,
+                                           width=16,
+                                           activation_fn=Swish,
+                                           mean=CIFAR10_MEAN,
+                                           std=CIFAR10_STD),
+                      'gdrive_id': '1JX82BDVBNO-Ffa2J37EuB8C-aFCbz708'
+                  }),
     ])
 
 common_corruptions = OrderedDict([
