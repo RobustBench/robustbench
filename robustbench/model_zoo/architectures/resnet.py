@@ -176,8 +176,9 @@ class PreActBlock(nn.Module):
     '''Pre-activation version of the BasicBlock.'''
     expansion = 1
 
-    def __init__(self, in_planes, planes, stride=1):
+    def __init__(self, in_planes, planes, stride=1, out_shortcut=False):
         super(PreActBlock, self).__init__()
+        self.out_shortcut = out_shortcut
         self.bn1 = nn.BatchNorm2d(in_planes)
         self.conv1 = nn.Conv2d(in_planes,
                                planes,
@@ -203,7 +204,8 @@ class PreActBlock(nn.Module):
 
     def forward(self, x):
         out = F.relu(self.bn1(x))
-        shortcut = self.shortcut(x) if hasattr(self, 'shortcut') else x
+        shortcut = self.shortcut(out if self.out_shortcut else x) if hasattr(self,
+                                                                             'shortcut') else x
         out = self.conv1(out)
         out = self.conv2(F.relu(self.bn2(out)))
         out += shortcut
@@ -214,7 +216,7 @@ class PreActBlockV2(nn.Module):
     '''Pre-activation version of the BasicBlock (slightly different forward pass)'''
     expansion = 1
 
-    def __init__(self, in_planes, planes, stride=1):
+    def __init__(self, in_planes, planes, stride=1, out_shortcut=False):
         super(PreActBlockV2, self).__init__()
         self.bn1 = nn.BatchNorm2d(in_planes)
         self.conv1 = nn.Conv2d(in_planes,
@@ -288,10 +290,11 @@ class PreActBottleneck(nn.Module):
 
 
 class PreActResNet(nn.Module, LipschitzModel):
-    def __init__(self, block, num_blocks, num_classes=10, bn_before_fc=False):
+    def __init__(self, block, num_blocks, num_classes=10, bn_before_fc=False, out_shortcut=False):
         super(PreActResNet, self).__init__()
         self.in_planes = 64
         self.bn_before_fc = bn_before_fc
+        self.out_shortcut = out_shortcut
 
         self.conv1 = nn.Conv2d(3,
                                64,
@@ -311,7 +314,7 @@ class PreActResNet(nn.Module, LipschitzModel):
         strides = [stride] + [1] * (num_blocks - 1)
         layers = []
         for stride in strides:
-            layers.append(block(self.in_planes, planes, stride))
+            layers.append(block(self.in_planes, planes, stride, out_shortcut=self.out_shortcut))
             self.in_planes = planes * block.expansion
         return nn.Sequential(*layers)
 
