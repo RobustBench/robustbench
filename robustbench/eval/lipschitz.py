@@ -237,6 +237,6 @@ def benchmark_lipschitz(
         inputs.append(layer_inputs)
 
     if tensorboard_dir is not None:
-        np.savez(tensorboard_dir / f"{inputs}", inputs)
+        np.savez(tensorboard_dir / f"inputs", inputs)
 
     return lips, inputs
