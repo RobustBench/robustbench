@@ -190,11 +190,11 @@ class Ding2020MMANet(WideResNet):
     See the appendix of the LICENSE file specifically for this model.
     """
     def __init__(self, depth=28, widen_factor=4):
-        self.normalize_input = _NormalizeInput()
         super(Ding2020MMANet, self).__init__(depth=depth,
                                              widen_factor=widen_factor,
                                              sub_block1=False)
-
+        self.normalize_input = _NormalizeInput()
+    
     def forward(self, x):
         x = self.normalize_input(x)
         return super(Ding2020MMANet, self).forward(x)
