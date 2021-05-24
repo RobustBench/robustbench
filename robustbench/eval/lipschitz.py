@@ -107,7 +107,7 @@ def compute_lipschitz(
     normalization: Optional[str] = None,
     p: float = float("inf"),
     device: Optional[torch.device] = None,
-    tensorboard_dir_suffix: Optional[Tuple[Path, str]] = None
+    summary_writer_suffix: Optional[Tuple[SummaryWriter, str]] = None
 ) -> Tuple[float, Tuple[ArrayLike, ArrayLike]]:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` around each sample.
 
@@ -122,7 +122,7 @@ def compute_lipschitz(
     :param normalization: The normalization to apply to the each layer's output (default None).
     :param p: the p of the norm of Lipschitzness.
     :param device: The device to run computations.
-    :param tensorboard_dir_suffix:
+    :param summary_writer_suffix:
 
     :return: The local Lipschitz constant, and the inputs found for the model.
     """
@@ -132,12 +132,6 @@ def compute_lipschitz(
     lips = 0.
     x_1s, x_2s = [], []
     prog_bar = tqdm(dl)
-
-    if tensorboard_dir_suffix is not None:
-        tensorboard_dir, suffix = tensorboard_dir_suffix
-        summary_writer_suffix = SummaryWriter(str(tensorboard_dir)), suffix
-    else:
-        summary_writer_suffix = None
 
     for i, (x, _) in enumerate(prog_bar):
         x_dev = x.to(device)
@@ -208,20 +202,21 @@ def benchmark_lipschitz(
         tensorboard_dir = (
             logging_dir / model_name /
             f"{normalization}_{eps:.2f}_{n_steps}_{step_size:.2f}")
+        if not tensorboard_dir.exists():
+            tensorboard_dir.mkdir(parents=True)
+        summary_writer = SummaryWriter(str(tensorboard_dir))
         results_filename = logging_dir / RESULTS_FILENAME
     else:
-        model_name = None
-        tensorboard_dir = None
+        summary_writer = None
         results_filename = None
-    if not tensorboard_dir.exists():
-        tensorboard_dir.mkdir(parents=True)
+        tensorboard_dir = None
 
     net = nn.Sequential()
     for i, layer in enumerate(model.get_lipschitz_layers()):
         net = nn.Sequential(*net, layer)
         suffix = f"layer_{i}"
         if tensorboard_dir is not None:
-            tensorboard_dir_suffix = tensorboard_dir, suffix
+            tensorboard_dir_suffix = summary_writer, suffix
         else:
             tensorboard_dir_suffix = None
         layer_lips, layer_inputs = compute_lipschitz(net, dl, eps, step_size,
@@ -229,14 +224,26 @@ def benchmark_lipschitz(
                                                      device,
                                                      tensorboard_dir_suffix)
         if logging_dir is not None:
-            string_to_log = f"{model_name},{dataset.value},{i},{p},{eps},{step_size},{n_steps},{normalization},{layer_lips}\n"
+            string_to_log = f"{model_name},{dataset_.value},{i},{p},{eps},{step_size},{n_steps},{normalization},{layer_lips}\n"
             with open(results_filename, "a") as fp:
                 fp.write(string_to_log)
 
         lips.append(layer_lips)
         inputs.append(layer_inputs)
 
-    if tensorboard_dir is not None:
+    if tensorboard_dir is not None and summary_writer is not None:
+        hparams = {
+            "model": model_name,
+            "eps": eps,
+            "step_size": step_size,
+            "normalization": str(normalization),
+            "n_steps": n_steps,
+            "p": p
+        }
+        metrics = {f"lipschitz_{i}": l for i, l in enumerate(lips)}
+        print(hparams)
+        print(metrics)
+        summary_writer.add_hparams(hparams, metrics)
         np.savez(tensorboard_dir / f"inputs", inputs)
 
     return lips, inputs

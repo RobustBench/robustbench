@@ -1,4 +1,5 @@
 import random
+from pathlib import Path
 from unittest import TestCase
 
 import torch
@@ -53,22 +54,19 @@ class LipschitzTester(TestCase):
         x = torch.randn(200, model.in_shape)
         y = torch.randn(200, model.out_shape)
         dl = DataLoader(TensorDataset(x, y), batch_size=50)
-        lips, _ = compute_lipschitz(model,
-                                    dl,
-                                    eps,
-                                    eps / 5,
-                                    50,
-                                    normalization=None)
+        lips, _ = compute_lipschitz(model, dl, eps, eps / 5, 50, normalization=None)
 
         self.assertAlmostEqual(lips, model.slope, places=2)
 
-    def _test_benchmark_lipschitz(self, p):
+    def _test_benchmark_lipschitz(self, p, logging_dir=None):
         model = DummyModel()
         lips, _ = benchmark_lipschitz(model.eval(),
                                       1,
                                       "cifar10",
                                       normalization=None,
-                                      p=p)
+                                      p=p,
+                                      logging_dir=logging_dir,
+                                      model_name="model")
         expected_lips = list(model.parameters())[0].norm(p=p).item()
         self.assertGreaterEqual(lips[0], 0)
 
@@ -77,3 +75,6 @@ class LipschitzTester(TestCase):
 
     def test_benchmark_lipschitz_linf(self):
         self._test_benchmark_lipschitz(p=float("inf"))
+
+    def test_benchmark_lipschitz_tensorboard(self):
+        self._test_benchmark_lipschitz(p=float("inf"), logging_dir=Path("logs"))
