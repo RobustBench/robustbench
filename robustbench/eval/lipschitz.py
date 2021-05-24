@@ -15,6 +15,8 @@ from robustbench.eval.utils import check_model_eval
 from robustbench.model_zoo.architectures.utils import LipschitzModel
 from robustbench.model_zoo.enums import BenchmarkDataset
 
+RESULTS_FILENAME = "lipschitz_results.txt"
+
 
 def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
     min_x = torch.max(torch.zeros_like(x), x - eps)
@@ -202,10 +204,13 @@ def benchmark_lipschitz(
     if logging_dir is not None:
         model_name = model.__class__.__name__
         tensorboard_dir = (
-            logging_dir / model_name /
-            f"norm_{normalization}_{eps:.2f}_{n_steps}_{step_size:.2f}")
+                logging_dir / model_name /
+                f"norm_{normalization}_{eps:.2f}_{n_steps}_{step_size:.2f}")
+        results_filename = logging_dir / RESULTS_FILENAME
     else:
+        model_name = None
         tensorboard_dir = None
+        results_filename = None
     if not tensorboard_dir.exists():
         tensorboard_dir.mkdir(parents=True)
 
@@ -221,6 +226,11 @@ def benchmark_lipschitz(
                                                      n_steps, normalization, p,
                                                      device,
                                                      tensorboard_dir_suffix)
+        if logging_dir is not None:
+            string_to_log = f"{model_name},{dataset},{i},{p},{eps},{step_size},{n_steps},{normalization},{layer_lips}"
+            with open(results_filename, "a") as fp:
+                fp.write(string_to_log)
+
         lips.append(layer_lips)
         inputs.append(layer_inputs)
 
