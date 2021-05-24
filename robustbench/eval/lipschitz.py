@@ -76,10 +76,12 @@ def compute_lipschitz_batch(
             max_x_1, max_x_2 = x_1.detach(), x_2.detach()
 
         curr_lips.backward()
-        x_1 = box(x_1.detach() + step_size * x_1.grad.sign(), x,
-                  eps).requires_grad_(True)
-        x_2 = box(x_2.detach() + step_size * x_2.grad.sign(), x,
-                  eps).requires_grad_(True)
+        if i % 2 == 0:
+            x_1 = box(x_1.detach() + step_size * x_1.grad.sign(), x,
+                      eps).requires_grad_(True)
+        else:
+            x_2 = box(x_2.detach() + step_size * x_2.grad.sign(), x,
+                      eps).requires_grad_(True)
 
         if summary_writer_suffix is not None:
             summary_writer, suffix = summary_writer_suffix
