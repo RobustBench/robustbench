@@ -164,7 +164,8 @@ def benchmark_lipschitz(
     normalization: Optional[str] = None,
     p: float = float("inf"),
     device: Optional[torch.device] = None,
-    logging_dir: Optional[Path] = None
+    logging_dir: Optional[Path] = None,
+    model_name: Optional[str] = None,
 ) -> Tuple[List[float], List[Tuple[ArrayLike, ArrayLike]]]:
     """Benchmarks the Lipschitzness of a given model and dataset, at the layers given
     by the `get_lipschitz_layers()` method.
@@ -177,6 +178,7 @@ def benchmark_lipschitz(
     a model with 2 subsequent linear layers `l1` and `l2` should return `[l1, l2]`. Check out
     `robustbench.model_zoo.architectures.wide_resnet.WideResNet` to see an example.
 
+    :param model_name:
     :param model: The model to benchmark. It must implement the `get_lipschitz_layers()` method.
     :param n_examples: The number of examples to use for the benchmark.
     :param dataset: The dataset of the benchmark.
@@ -202,10 +204,10 @@ def benchmark_lipschitz(
     inputs = []
 
     if logging_dir is not None:
-        model_name = model.__class__.__name__
+        assert model_name is not None
         tensorboard_dir = (
-                logging_dir / model_name /
-                f"norm_{normalization}_{eps:.2f}_{n_steps}_{step_size:.2f}")
+            logging_dir / model_name /
+            f"{normalization}_{eps:.2f}_{n_steps}_{step_size:.2f}")
         results_filename = logging_dir / RESULTS_FILENAME
     else:
         model_name = None
@@ -227,7 +229,7 @@ def benchmark_lipschitz(
                                                      device,
                                                      tensorboard_dir_suffix)
         if logging_dir is not None:
-            string_to_log = f"{model_name},{dataset},{i},{p},{eps},{step_size},{n_steps},{normalization},{layer_lips}"
+            string_to_log = f"{model_name},{dataset.value},{i},{p},{eps},{step_size},{n_steps},{normalization},{layer_lips}\n"
             with open(results_filename, "a") as fp:
                 fp.write(string_to_log)
 
