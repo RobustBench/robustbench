@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import List, Optional, Tuple, Union
 
 import numpy as np
@@ -6,6 +7,7 @@ import torch.nn.functional as F
 from numpy.typing import ArrayLike
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
+from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 from robustbench.data import load_clean_dataset
@@ -40,9 +42,15 @@ def lipschitz_loss(model: nn.Module, normalization: Optional[str], p,
 
 
 def compute_lipschitz_batch(
-        model: nn.Module, x: torch.Tensor, eps: float, step_size: float,
-        n_steps: int, normalization: Optional[str],
-        p: float) -> Tuple[float, Tuple[ArrayLike, ArrayLike]]:
+    model: nn.Module,
+    x: torch.Tensor,
+    eps: float,
+    step_size: float,
+    n_steps: int,
+    normalization: Optional[str],
+    p: float,
+    summary_writer_suffix: Optional[Tuple[SummaryWriter, str]] = None
+) -> Tuple[float, Tuple[ArrayLike, ArrayLike]]:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` on a batch of data."""
     valid_normalizations = {None, "l2", "mean_logit"}
     if normalization not in valid_normalizations:
@@ -71,6 +79,11 @@ def compute_lipschitz_batch(
         x_2 = box(x_2.detach() + step_size * x_2.grad.sign(), x,
                   eps).requires_grad_(True)
 
+        if summary_writer_suffix is not None:
+            summary_writer, suffix = summary_writer_suffix
+            summary_writer.add_scalar(f"lipschitz_{suffix}", curr_lips.item(),
+                                      i)
+
     final_lips = lipschitz_loss(model, optim_norm, p, x_1, x_2).item()
     if final_lips > max_lips:
         max_lips = final_lips
@@ -92,6 +105,7 @@ def compute_lipschitz(
     normalization: Optional[str] = None,
     p: float = float("inf"),
     device: Optional[torch.device] = None,
+    tensorboard_dir_suffix: Optional[Tuple[Path, str]] = None
 ) -> Tuple[float, Tuple[ArrayLike, ArrayLike]]:
     """Computes local (i.e. eps-ball) Lipschitzness of the given `model` around each sample.
 
@@ -106,6 +120,7 @@ def compute_lipschitz(
     :param normalization: The normalization to apply to the each layer's output (default None).
     :param p: the p of the norm of Lipschitzness.
     :param device: The device to run computations.
+    :param tensorboard_dir_suffix:
 
     :return: The local Lipschitz constant, and the inputs found for the model.
     """
@@ -116,12 +131,17 @@ def compute_lipschitz(
     x_1s, x_2s = [], []
     prog_bar = tqdm(dl)
 
+    if tensorboard_dir_suffix is not None:
+        tensorboard_dir, suffix = tensorboard_dir_suffix
+        summary_writer_suffix = SummaryWriter(str(tensorboard_dir)), suffix
+    else:
+        summary_writer_suffix = None
+
     for i, (x, _) in enumerate(prog_bar):
         x_dev = x.to(device)
-        batch_lips, (x_1,
-                     x_2) = compute_lipschitz_batch(model_dev, x_dev, eps,
-                                                    step_size, n_steps,
-                                                    normalization, p)
+        batch_lips, (x_1, x_2) = compute_lipschitz_batch(
+            model_dev, x_dev, eps, step_size, n_steps, normalization, p,
+            summary_writer_suffix)
         lips += batch_lips
         x_1s.append(x_1)
         x_2s.append(x_2)
@@ -141,7 +161,8 @@ def benchmark_lipschitz(
     n_steps: int = 50,
     normalization: Optional[str] = None,
     p: float = float("inf"),
-    device: Optional[torch.device] = None
+    device: Optional[torch.device] = None,
+    logging_dir: Optional[Path] = None
 ) -> Tuple[List[float], List[Tuple[ArrayLike, ArrayLike]]]:
     """Benchmarks the Lipschitzness of a given model and dataset, at the layers given
     by the `get_lipschitz_layers()` method.
@@ -165,6 +186,7 @@ def benchmark_lipschitz(
     :param normalization: What kind of normalization to apply. None by default.
     :param p: The type of norm of the denominator.
     :param device: The device to run computations.
+    :param logging_dir: The directory to save the logs.
     :return: The computed local Lipschitz constant, and the inputs found for each layer..
     """
     dataset_ = BenchmarkDataset(dataset)
@@ -177,13 +199,32 @@ def benchmark_lipschitz(
     lips = []
     inputs = []
 
+    if logging_dir is not None:
+        model_name = model.__class__.__name__
+        tensorboard_dir = (
+            logging_dir / model_name /
+            f"norm_{normalization}_{eps:.2f}_{n_steps}_{step_size:.2f}")
+    else:
+        tensorboard_dir = None
+    if not tensorboard_dir.exists():
+        tensorboard_dir.mkdir(parents=True)
+
     net = nn.Sequential()
-    for layer in model.get_lipschitz_layers():
+    for i, layer in enumerate(model.get_lipschitz_layers()):
         net = nn.Sequential(*net, layer)
+        suffix = f"layer_{i}"
+        if tensorboard_dir is not None:
+            tensorboard_dir_suffix = tensorboard_dir, suffix
+        else:
+            tensorboard_dir_suffix = None
         layer_lips, layer_inputs = compute_lipschitz(net, dl, eps, step_size,
                                                      n_steps, normalization, p,
-                                                     device)
+                                                     device,
+                                                     tensorboard_dir_suffix)
         lips.append(layer_lips)
         inputs.append(layer_inputs)
+
+    if tensorboard_dir is not None:
+        np.savez(tensorboard_dir / f"{inputs}", inputs)
 
     return lips, inputs

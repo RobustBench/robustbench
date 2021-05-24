@@ -23,7 +23,12 @@ class LipschitzTester(TestCase):
 
         eps = 8 / 255
         x = torch.randn(200, model.in_shape)
-        lips, _ = compute_lipschitz_batch(model, x, eps, eps / 5, 50, normalization=normalize,
+        lips, _ = compute_lipschitz_batch(model,
+                                          x,
+                                          eps,
+                                          eps / 5,
+                                          50,
+                                          normalization=normalize,
                                           p=float("inf"))
 
         assertion(model, x, lips)
