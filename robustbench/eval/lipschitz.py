@@ -15,7 +15,7 @@ from robustbench.eval.utils import check_model_eval
 from robustbench.model_zoo.architectures.utils import LipschitzModel
 from robustbench.model_zoo.enums import BenchmarkDataset
 
-RESULTS_FILENAME = "lipschitz_results.txt"
+RESULTS_FILENAME = "lipschitz_results.csv"
 
 
 def box(x_prime: torch.Tensor, x: torch.Tensor, eps: float) -> torch.Tensor:
