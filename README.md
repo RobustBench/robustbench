@@ -72,16 +72,23 @@ and [Li et al. (2020)](https://arxiv.org/abs/2009.04131).
 
 ## Model Zoo: quick tour
 
-The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible.
-Check out our Colab notebook here 👉 [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV) 
+The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible. Check
+out our Colab notebook here
+👉 [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV)
 for a quick introduction. It is also summarized below 👇.
 
 First, install **`RobustBench`**:
+
 ```bash
 pip install git+https://github.com/RobustBench/robustbench.git@v0.2.1
 ```
 
-Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
+This will also install all the dependencies but `torch` and `torchvision`. We leave the installation
+of the most suitable versions for your hardware up to you. We're currently supporting `torch>=1.7.0`
+.
+
+Now let's try to load CIFAR-10 and the most robust CIFAR-10 model
+from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)
 that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
 
 ```python
@@ -171,7 +178,6 @@ which automatically downloads the model (all models are defined in `model_zoo/mo
 
 You can find all available model IDs in the table below (note that the full leaderboard contains more models): 
 
-
 ### CIFAR-10
 
 #### Linf
@@ -212,7 +218,6 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**32**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**33**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
-
 #### L2
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
@@ -231,10 +236,6 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**12**</sub> | <sub><sup>**Rony2019Decoupling**</sup></sub> | <sub>*[Decoupling Direction and Norm for Efficient Gradient-Based L2 Adversarial Attacks and Defenses](https://arxiv.org/abs/1811.09600)*</sub> | <sub>89.05%</sub> | <sub>66.44%</sub> | <sub>WideResNet-28-10</sub> | <sub>CVPR 2019</sub> |
 | <sub>**13**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>88.02%</sub> | <sub>66.09%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**14**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
-
-
-
-
 
 #### Common Corruptions
 
@@ -275,26 +276,38 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.63%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
 
 ## Notebooks
-We host all the notebooks at Google Colab:
-- [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV): a quick tutorial 
-to get started that illustrates the main features of **`RobustBench`**.
-- [RobustBench: json stats](https://colab.research.google.com/drive/19tgblr13SvaCpG8hoOTv6QCULVJbCec6): various plots based 
-on the jsons from `model_info` (robustness over venues, robustness vs accuracy, etc).
 
-Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from `model_info`. We are very interested in
-collecting new insights about benefits and tradeoffs between different perturbation types.
+We host all the notebooks at Google Colab:
+
+- [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV):
+  a quick tutorial to get started that illustrates the main features of **`RobustBench`**.
+- [RobustBench: json stats](https://colab.research.google.com/drive/19tgblr13SvaCpG8hoOTv6QCULVJbCec6):
+  various plots based on the jsons from `model_info` (robustness over venues, robustness vs
+  accuracy, etc).
+
+Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from `model_info`. We
+are very interested in collecting new insights about benefits and tradeoffs between different
+perturbation types.
 
 ## How to contribute
+
 Contributions to **`RobustBench`** are very welcome! You can help to improve **`RobustBench`**:
-- Are you an author of a recent paper focusing on improving adversarial robustness? Consider adding new models (see the instructions below 👇).
-- Do you have in mind some better *standardized* attack or an adaptive evaluation? Do you want to extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
-- Do you have an idea how to make the existing codebase better? Just open a pull request or create an issue and we'll be happy to discuss potential changes. 
+
+- Are you an author of a recent paper focusing on improving adversarial robustness? Consider adding
+  new models (see the instructions below 👇).
+- Do you have in mind some better *standardized* attack or an adaptive evaluation? Do you want to
+  extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
+- Do you have an idea how to make the existing codebase better? Just open a pull request or create
+  an issue and we'll be happy to discuss potential changes.
 
 ## Adding a new model
 
-#### Public model submission (leaderboard + Model Zoo)
-In order to add a new model for a specific dataset-threat model combination, submit a pull request
-where you specify the claim, model definition, and model checkpoint.
+#### Public model submission (Leaderboard + Model Zoo)
+
+The easiest way to add new models to the leaderboard and/or to the model zoo, is by **opening an issue
+with the "New Model(s)" template**, and fill in all the fields.
+
+In the following sections there are some tips on how to prepare the claim.
 
 ##### Claim
 
@@ -304,7 +317,8 @@ The claim can be computed in the following way:
 import torch
 
 from robustbench import benchmark
-from myrobust model import MyRobustModel
+from myrobust model
+import MyRobustModel
 
 threat_model = "Linf"  # One of {"Linf", "L2", "corruptions"}
 dataset = "cifar10"  # For the moment "cifar10" only is supported
@@ -314,7 +328,8 @@ model_name = "<Name><Year><FirstWordOfTheTitle>"
 device = torch.device("cuda:0")
 
 clean_acc, robust_acc = benchmark(model, model_name=model_name, n_examples=1000, dataset=dataset,
-                                  threat_model=threat_model, eps=8/255, device=device, to_disk=True)
+                                  threat_model=threat_model, eps=8 / 255, device=device,
+                                  to_disk=True)
 
 ```
 
@@ -339,7 +354,7 @@ in the following way (example from `model_info/cifar10/Linf/Rice2020Overfitting.
 }
 ```
 
-The only difference is that the generated json will have only the fields `"clean_acc"` and 
+The only difference is that the generated json will have only the fields `"clean_acc"` and
 `"autoattack_acc"` (for `"Linf"` and `"L2"` threat models) or `"corruptions_acc"` (for the
 `"corruptions"` threat model) already specified. The other fields have to be filled manually.
 
@@ -349,14 +364,35 @@ combinations of corruption types and severities in
 
 ##### Model definition
 
-You can add your model as a new class into `robustbench/model_zoo/<dataset>.py`, given that the
-model has been trained on `<dataset>`. For standard architectures (e.g., `WideResNet`) consider 
-inheriting the class defined in `wide_resnet.py` or `resnet.py`. For example:
+In case you want to add a model in the Model Zoo by yourself, then you should also open a PR with
+the new model(s) you would like to add. All the models of each `<dataset>` are saved
+in `robustbench/model_zoo/<dataset>.py`. Each file contains a dictionary for every threat model,
+where the keys are the identifiers of each model, and the values are either class constructors, for
+models that have to change standard architectures, or `lambda` functions that return the constructed
+model.
+
+If your model is a standard architecture (e.g., `WideResNet`), does not apply any normalization to
+the input nor has to do things differently from the standard architecture, consider adding your
+model as a lambda, e.g.
+
+```python
+    ('Cui2020Learnable_34_10', {
+    'model':
+        lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
+    'gdrive_id':
+        '16s9pi_1QgMbFLISVvaVUiNfCzah6g2YV'
+})
+```
+
+If your model is a standard architecture, but you need to do something differently (e.g. applying
+normalization), consider inheriting the class defined in `wide_resnet.py` or `resnet.py`. For
+example:
 
 ```python
 class Rice2020OverfittingNet(WideResNet):
     def __init__(self, depth, widen_factor):
-        super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                     sub_block1=False)
         self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
         self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
 
@@ -370,32 +406,38 @@ If, instead, you need to create a new architecture, please put it in
 
 ##### Model checkpoint
 
-You should also add your model entry in the `<threat_model>` dict in the file
+You should also add your model entry in the corresponding `<threat_model>` dict in the file
 `robustbench/model_zoo/<dataset>.py`. For instance, let's say your model is robust against common
 corruptions in CIFAR-10 (i.e. CIFAR-10-C), then you should add your model to the
 `common_corruptions` dict in [`robustbench/model_zoo/cifar10.py`](robustbench/model_zoo/cifar10.py).
 
-The model should also contain the *Google Drive ID* with your
-pytorch model so that it can be downloaded automatically from Google Drive:
+The model should also contain the *Google Drive ID* with your PyTorch model so that it can be
+downloaded automatically from Google Drive:
 
 ```python
     ('Rice2020Overfitting', {
-        'model': Rice2020OverfittingNet(34, 20),
-        'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
-    })
+    'model': Rice2020OverfittingNet(34, 20),
+    'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
+})
 ```
 
 #### Private model submission (leaderboard only)
 
-In case you want to keep your checkpoints private for some reasons, you can also submit your claim, model definition, and model checkpoint directly to this email address `adversarial.benchmark@gmail.com`. In this case, we will add your model to the leaderboard but not to the Model Zoo and will not share your checkpoints publicly. 
+In case you want to keep your checkpoints private for some reasons, you can also submit your claim
+by opening an issue with the same "New Model(s)" template, specifying that the submission is
+private, and sharing the checkpoints with the email address `adversarial.benchmark@gmail.com`. In
+this case, we will add your model to the leaderboard but not to the Model Zoo and will not share
+your checkpoints publicly.
 
 #### License of the models
 
-By default, the models are released under the MIT license, but you can also tell us if you want to release your model under a customized license.
+By default, the models are released under the MIT license, but you can also tell us if you want to
+release your model under a customized license.
 
 ## Automatic tests
 
 In order to run the tests, run:
+
 - `python -m unittest discover tests -t . -v` for fast testing
 - `RUN_SLOW=true python -m unittest discover tests -t . -v` for slower testing
 
