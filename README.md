@@ -272,10 +272,8 @@ You can find all available model IDs in the table below (note that the full lead
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub><sup>**
-Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.54%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
-| <sub>**2**</sub> | <sub><sup>**
-Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.63%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.54%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.63%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
 
 ## Notebooks
 
@@ -306,8 +304,8 @@ Contributions to **`RobustBench`** are very welcome! You can help to improve **`
 
 #### Public model submission (Leaderboard + Model Zoo)
 
-The easiest way to add new models to the leaderboard and/or to the model zoo, is by opening an issue
-with the "New Model(s)" template, and fill in all the fields.
+The easiest way to add new models to the leaderboard and/or to the model zoo, is by **opening an issue
+with the "New Model(s)" template**, and fill in all the fields.
 
 In the following sections there are some tips on how to prepare the claim.
 
