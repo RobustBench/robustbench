@@ -327,7 +327,7 @@ model = MyRobustModel()
 model_name = "<Name><Year><FirstWordOfTheTitle>"
 device = torch.device("cuda:0")
 
-clean_acc, robust_acc = benchmark(model, model_name=model_name, n_examples=1000, dataset=dataset,
+clean_acc, robust_acc = benchmark(model, model_name=model_name, n_examples=10000, dataset=dataset,
                                   threat_model=threat_model, eps=8 / 255, device=device,
                                   to_disk=True)
 
