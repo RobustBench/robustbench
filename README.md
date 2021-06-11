@@ -36,7 +36,7 @@ that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https
 ## FAQ
 
 **Q**: Wait, how does this leaderboard differ from the [AutoAttack leaderboard](https://github.com/fra31/auto-attack)? 🤔 \
-**A**: The [AutoAttack leaderboard](https://github.com/fra31/auto-attack) is maintained simultaneously with the `RobustBench` L2 / Linf leaderboards by [Francesco Croce](https://github.com/fra31/), and all the changes to either of them will be synchronized (given that the 3 restrictions on the models are met for the `RobustBench` leaderboard). One can see the current L2 / Linf `RobustBench` leaderboard as a continuously updated fork of the [AutoAttack leaderboard](https://github.com/fra31/auto-attack) extended by adaptive evaluations, Model Zoo, and clear restrictions on the models we accept. And in the future, we will extend `RobustBench` with other threat models and potentially with a different standardized attack if it's shown to perform better than AutoAttack.
+**A**: The [AutoAttack leaderboard](https://github.com/fra31/auto-attack) is maintained simultaneously with the `RobustBench` L2 / Linf leaderboards by [Francesco Croce](https://github.com/fra31/), and all the changes to either of them will be synchronized (given that the 3 restrictions on the models are met for the `RobustBench` leaderboard). One can see the current L2 / Linf `RobustBench` leaderboard as a continuously updated fork of the [AutoAttack leaderboard](https://github.com/fra31/auto-attack) extended by adaptive evaluations, Model Zoo, clear restrictions on the models we accept, and a new leaderboard for common corruptions. And in the future, we will extend `RobustBench` with other threat models and potentially with a different standardized attack if it's shown to perform better than AutoAttack.
 
 **Q**: Wait, how is it different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
 **A**: [robust-ml.org](https://www.robust-ml.org/) focuses on *adaptive* evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
@@ -55,10 +55,6 @@ security ([Tramèr et al. (2018)](https://arxiv.org/abs/1811.03194), [Saadatpana
 generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et al. (2019)](https://arxiv.org/abs/1909.11764), [Bochkovskiy et al. (2020)](https://arxiv.org/abs/2004.10934)), 
 robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Kang et al. (2019)](https://arxiv.org/abs/1905.01034)),
 stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
-
-**Q**: Does this benchmark **only** focus on Lp-robustness? 🤔 \
-**A**: Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
-to extend the benchmark to other perturbations sets beyond Lp-balls.
 
 **Q**: What about verified adversarial robustness? 🤔 \
 **A**: We specifically focus on defenses which improve empirical robustness, given the lack of clarity regarding 
