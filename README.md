@@ -82,7 +82,7 @@ This will also install all the dependencies but `torch` and `torchvision`. We le
 of the most suitable versions for your hardware up to you. We're currently supporting `torch>=1.7.0`
 .
 
-Now let's try to load CIFAR-10 and the most robust CIFAR-10 model
+Now let's try to load CIFAR-10 and one of the most robust CIFAR-10 models
 from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)
 that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
 
@@ -171,7 +171,7 @@ model = load_model(model_name='Carmon2019Unlabeled', dataset='cifar10', threat_m
 ```
 which automatically downloads the model (all models are defined in `model_zoo/models.py`).
 
-You can find all available model IDs in the table below (note that the full leaderboard contains more models): 
+You can find all available model IDs in the tables below (note that the full leaderboard contains more models): 
 
 ### CIFAR-10
 
@@ -368,14 +368,12 @@ model.
 
 If your model is a standard architecture (e.g., `WideResNet`), does not apply any normalization to
 the input nor has to do things differently from the standard architecture, consider adding your
-model as a lambda, e.g.
+model as a lambda function, e.g.
 
 ```python
-    ('Cui2020Learnable_34_10', {
-    'model':
-        lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
-    'gdrive_id':
-        '16s9pi_1QgMbFLISVvaVUiNfCzah6g2YV'
+('Cui2020Learnable_34_10', {
+    'model': lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
+    'gdrive_id': '16s9pi_1QgMbFLISVvaVUiNfCzah6g2YV'
 })
 ```
 
@@ -396,7 +394,7 @@ class Rice2020OverfittingNet(WideResNet):
         return super(Rice2020OverfittingNet, self).forward(x)
 ```
 
-If, instead, you need to create a new architecture, please put it in
+If instead you need to create a new architecture, please put it in
 `robustbench/model_zoo/archietectures/<my_architecture>.py`.
 
 ##### Model checkpoint
@@ -449,7 +447,7 @@ Then consider citing our [whitepaper](https://arxiv.org/abs/2010.09670):
 ```
 @article{croce2020robustbench,
     title={RobustBench: a standardized adversarial robustness benchmark},
-    author={Croce, Francesco and Andriushchenko, Maksym and Sehwag, Vikash and Flammarion, Nicolas and Chiang, Mung and Mittal, Prateek and Matthias Hein},
+    author={Croce, Francesco and Andriushchenko, Maksym and Sehwag, Vikash and Debenedetti, Edoardo and Flammarion, Nicolas and Chiang, Mung and Mittal, Prateek and Matthias Hein},
     journal={arXiv preprint arXiv:2010.09670},
     year={2020}
 }
