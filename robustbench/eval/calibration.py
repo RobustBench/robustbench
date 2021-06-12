@@ -130,10 +130,13 @@ def compute_calibration():
     device = torch.device("cuda")
 
     ece_criterion = ECELoss().cuda()
+    dataset_list, threat_model_list, acc_list, rob_acc_list, extra_data_list, arch_list = [], [], [], [], [], []  # from jsons
+    accs_reproduced_list, ece_list, ece_t_list, t_opt_list = [], [], [], []  # new stats
     for dataset, dataset_dict in model_dicts.items():
         x_test, y_test = load_clean_dataset(dataset, n_ex, data_dir='./data')
 
         for threat_model, threat_model_dict in dataset_dict.items():
+            # if threat_model.value != 'corruptions': continue
             models = list(threat_model_dict.keys())
 
             for model_name in models:
@@ -143,18 +146,39 @@ def compute_calibration():
 
                 model = load_model(model_name, './models',
                                    dataset, threat_model).to(device)
-                acc = clean_accuracy(model, x_test, y_test,
-                                     batch_size=batch_size, device=device)
+                acc = clean_accuracy(model, x_test, y_test, batch_size=batch_size, device=device)
+                if acc < 0.5:
+                    print('----- Warning: acc < 0.5! Was the model restored correctly? ------')
                 logits = get_logits(model, x_test, batch_size, device)
                 ece = ece_criterion(logits, y_test.to(device)).item()
 
-                temperatures_opt = temperature_calibration(logits, y_test.to(device))
-                ece_calibrated = ece_criterion(logits / temperatures_opt, y_test.to(device)).item()
+                t_opt = temperature_calibration(logits, y_test.to(device))
+                ece_calibrated = ece_criterion(logits / t_opt, y_test.to(device)).item()
 
                 rob_acc_field = 'autoattack_acc' if threat_model.value in ('Linf', 'L2') else 'corruptions_acc'
                 print('Dataset={}, threat_model={}, model={}: acc={:.1%}, rob_acc={:.1%}, ece={:.2%}, ece_t={:.2%} (t={:.3f}) ({} ex; acc={:.1%})'.format(
                     dataset.value, threat_model.value, model_name, float(json_dict['clean_acc'])/100, float(json_dict[rob_acc_field])/100,
-                    ece, ece_calibrated, temperatures_opt, n_ex, acc))
+                    ece, ece_calibrated, t_opt, n_ex, acc))
+
+                dataset_list.append(dataset.value)
+                threat_model_list.append(threat_model.value)
+                acc_list.append(float(json_dict['clean_acc'])/100)
+                rob_acc_list.append(float(json_dict[rob_acc_field])/100)
+                extra_data_list.append(json_dict['additional_data'])
+                arch_list.append(json_dict['architecture'])
+                accs_reproduced_list.append(acc)
+                ece_list.append(ece)
+                ece_t_list.append(ece_calibrated)
+                t_opt_list.append(t_opt)
+
+            calibration_stats = {
+                'n_ex': n_ex,
+                'dataset': np.array(dataset_list), 'threat_model': np.array(threat_model_list), 'acc': np.array(acc_list),
+                'rob_acc': np.array(rob_acc_list), 'extra_data': np.array(extra_data_list), 'arch': np.array(arch_list),
+                'accs_reproduced': np.array(accs_reproduced_list), 'ece': np.array(ece_list), 'ece_t': np.array(ece_t_list),
+                't_opt': np.array(t_opt_list),
+            }
+            np.save('model_info/calibration_stats.npy', calibration_stats)
 
 
 if __name__ == '__main__':
