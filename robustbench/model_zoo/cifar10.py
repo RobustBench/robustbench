@@ -483,6 +483,16 @@ linf = OrderedDict(
                                  mean=CIFAR10_MEAN,
                                  std=CIFAR10_STD),
             'gdrive_id': '1qKDTp6IJ1BUXZaRtbYuo_t0tuDl_4mLg'
+        }),
+        ('Sridhar2021Robust', {
+            'model':
+            lambda: WideResNet(depth=28, widen_factor=10, sub_block1=True),
+            'gdrive_id': '1muDMpOyRlgJ7n2rhS2NpfFGp3rzjuIu0'
+        }),
+        ('Sridhar2021Robust_34_15', {
+            'model':
+            lambda: WideResNet(depth=34, widen_factor=15, sub_block1=True),
+            'gdrive_id': '1-3ii3GX93YqIcmJ3VNsOgYA7ecdnSZ0Z',
         })
     ])
 
