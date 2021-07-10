@@ -60,11 +60,42 @@ def load_cifar100(
     return _load_dataset(dataset, n_examples)
 
 
+def load_imagenet(
+        n_examples: Optional[int] = 5000,
+        data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
+    if not os.path.exists(f'{data_dir}/predefined_imgs.pt'):
+        #IMAGENET_SL = 224
+        imagenet = datasets.ImageFolder(data_dir, #IMAGENET_PATH
+                           transforms.Compose([
+                               transforms.Resize(256), #IMAGENET_SL + 32
+                               transforms.CenterCrop(224), #IMAGENET_SL
+                               transforms.ToTensor()
+                           ]))
+        torch.manual_seed(0) # to fix the set of images
+
+        test_loader = data.DataLoader(imagenet, batch_size=n_examples,
+            shuffle=True, num_workers=30)
+
+        x_test, y_test = next(iter(test_loader))
+
+    else:
+        #raise NotImplemented
+        datapoints = torch.load(f'{data_dir}/predefined_imgs.pt')
+        x_test = datapoints['x_test'][:n_examples]
+        y_test = datapoints['y_test'][:n_examples]
+    
+        if n_examples > x_test.shape[0]:
+            print(f'only {x_test.shape[0]} images are available')
+    
+    return x_test, y_test
+
+
 CleanDatasetLoader = Callable[[Optional[int], str], Tuple[torch.Tensor,
                                                           torch.Tensor]]
 _clean_dataset_loaders: Dict[BenchmarkDataset, CleanDatasetLoader] = {
     BenchmarkDataset.cifar_10: load_cifar10,
-    BenchmarkDataset.cifar_100: load_cifar100
+    BenchmarkDataset.cifar_100: load_cifar100,
+    BenchmarkDataset.image_net: load_imagenet,
 }
 
 

@@ -16,7 +16,7 @@ from robustbench.utils import clean_accuracy, load_model, parse_args, update_jso
 
 
 def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
-              n_examples: int = 10_000,
+              n_examples: int = 10000,
               dataset: Union[str,
                              BenchmarkDataset] = BenchmarkDataset.cifar_10,
               threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
@@ -67,7 +67,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    clean_x_test, clean_y_test = load_clean_dataset(dataset_, None, data_dir)
+    clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples, data_dir)
 
     accuracy = clean_accuracy(model,
                               clean_x_test,
@@ -86,7 +86,8 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                eps=eps,
                                version='standard',
                                device=device)
-        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test)
+        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test,
+            bs=batch_size)
         adv_accuracy = clean_accuracy(model,
                                       x_adv,
                                       clean_y_test,
