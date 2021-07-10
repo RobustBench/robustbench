@@ -1,7 +1,7 @@
 ---
 name: New external evaluation(s)
 about: To submit new evaluations of models in the Model Zoo
-title: [New evaluation] <>
+title: "[New evaluation] <>"
 labels: ''
 assignees: ''
 
