@@ -9,17 +9,16 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
 
 <p align="center"><img src="images/leaderboard_screenshot_linf.png" width="700">
 <p align="center"><img src="images/leaderboard_screenshot_l2.png" width="700">
+<p align="center"><img src="images/leaderboard_screenshot_corruptions.png" width="700">
 
 ## Main idea
   
 The goal of **`RobustBench`** is to systematically track the *real* progress in adversarial robustness. 
-There are already [more than 2'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
+There are already [more than 3'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
 on this topic, but it is still unclear which approaches really work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
-We start from benchmarking the Linf-robustness since it is the most studied setting in the literature. 
-We plan to extend the benchmark to other threat models in the future: first to other Lp-norms and then to more general perturbation sets 
-(Wasserstein perturbations, common corruptions, etc).
+We start from benchmarking the Linf, L2, and common corruption robustness since these are the most studied settings in the literature. 
 
-Robustness evaluation *in general* is not straightforward and requires adaptive attacks ([Tramer et al., (2020)](https://arxiv.org/abs/2002.08347)).
+Evaluation of the robustness to Lp perturbations *in general* is not straightforward and requires adaptive attacks ([Tramer et al., (2020)](https://arxiv.org/abs/2002.08347)).
 Thus, in order to establish a reliable *standardized* benchmark, we need to impose some restrictions on the defenses we consider.
 In particular, **we accept only defenses that are (1) have in general non-zero gradients wrt the inputs, (2) have a fully deterministic forward pass (i.e. no randomness) that
 (3) does not have an optimization loop.** Often, defenses that violate these 3 principles only make gradient-based attacks 
@@ -37,7 +36,7 @@ that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https
 ## FAQ
 
 **Q**: Wait, how does this leaderboard differ from the [AutoAttack leaderboard](https://github.com/fra31/auto-attack)? 🤔 \
-**A**: The [AutoAttack leaderboard](https://github.com/fra31/auto-attack) is maintained simultaneously with the `RobustBench` L2 / Linf leaderboards by [Francesco Croce](https://github.com/fra31/), and all the changes to either of them will be synchronized (given that the 3 restrictions on the models are met for the `RobustBench` leaderboard). One can see the current L2 / Linf `RobustBench` leaderboard as a continuously updated fork of the [AutoAttack leaderboard](https://github.com/fra31/auto-attack) extended by adaptive evaluations, Model Zoo, and clear restrictions on the models we accept. And in the future, we will extend `RobustBench` with other threat models and potentially with a different standardized attack if it's shown to perform better than AutoAttack.
+**A**: The [AutoAttack leaderboard](https://github.com/fra31/auto-attack) is maintained simultaneously with the `RobustBench` L2 / Linf leaderboards by [Francesco Croce](https://github.com/fra31/), and all the changes to either of them will be synchronized (given that the 3 restrictions on the models are met for the `RobustBench` leaderboard). One can see the current L2 / Linf `RobustBench` leaderboard as a continuously updated fork of the [AutoAttack leaderboard](https://github.com/fra31/auto-attack) extended by adaptive evaluations, Model Zoo, clear restrictions on the models we accept, and a new leaderboard for common corruptions. And in the future, we will extend `RobustBench` with other threat models and potentially with a different standardized attack if it's shown to perform better than AutoAttack.
 
 **Q**: Wait, how is it different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
 **A**: [robust-ml.org](https://www.robust-ml.org/) focuses on *adaptive* evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
@@ -57,10 +56,6 @@ generalization ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Zhu et a
 robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/1911.09665), [Kang et al. (2019)](https://arxiv.org/abs/1905.01034)),
 stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
 
-**Q**: Does this benchmark **only** focus on Lp-robustness? 🤔 \
-**A**: Lp-robustness is the most well-studied area, so we focus on it first. However, in the future, we plan 
-to extend the benchmark to other perturbations sets beyond Lp-balls.
-
 **Q**: What about verified adversarial robustness? 🤔 \
 **A**: We specifically focus on defenses which improve empirical robustness, given the lack of clarity regarding 
 which approaches really improve robustness and which only make some particular attacks unsuccessful.
@@ -72,16 +67,23 @@ and [Li et al. (2020)](https://arxiv.org/abs/2009.04131).
 
 ## Model Zoo: quick tour
 
-The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible.
-Check out our Colab notebook here 👉 [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV) 
+The goal of our **Model Zoo** is to simplify the usage of robust models as much as possible. Check
+out our Colab notebook here
+👉 [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV)
 for a quick introduction. It is also summarized below 👇.
 
 First, install **`RobustBench`**:
+
 ```bash
 pip install git+https://github.com/RobustBench/robustbench.git@v0.2.1
 ```
 
-Now let's try to load CIFAR-10 and the most robust CIFAR-10 model from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) 
+This will also install all the dependencies but `torch` and `torchvision`. We leave the installation
+of the most suitable versions for your hardware up to you. We're currently supporting `torch>=1.7.0`
+.
+
+Now let's try to load CIFAR-10 and one of the most robust CIFAR-10 models
+from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)
 that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
 
 ```python
@@ -169,8 +171,7 @@ model = load_model(model_name='Carmon2019Unlabeled', dataset='cifar10', threat_m
 ```
 which automatically downloads the model (all models are defined in `model_zoo/models.py`).
 
-You can find all available model IDs in the table below (note that the full leaderboard contains more models): 
-
+You can find all available model IDs in the tables below (note that the full leaderboard contains more models): 
 
 ### CIFAR-10
 
@@ -184,34 +185,35 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**4**</sub> | <sub><sup>**Rebuffi2021Fixing_70_16_cutmix_ddpm**</sup></sub> | <sub>*[Fixing Data Augmentation to Improve Adversarial Robustness](https://arxiv.org/abs/2103.01946)*</sub> | <sub>88.54%</sub> | <sub>64.20%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Mar 2021</sub> |
 | <sub>**5**</sub> | <sub><sup>**Gowal2020Uncovering_28_10_extra**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>89.48%</sub> | <sub>62.76%</sub> | <sub>WideResNet-28-10</sub> | <sub>arXiv, Oct 2020</sub> |
 | <sub>**6**</sub> | <sub><sup>**Rebuffi2021Fixing_28_10_cutmix_ddpm**</sup></sub> | <sub>*[Fixing Data Augmentation to Improve Adversarial Robustness](https://arxiv.org/abs/2103.01946)*</sub> | <sub>87.33%</sub> | <sub>60.73%</sub> | <sub>WideResNet-28-10</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**7**</sub> | <sub><sup>**Wu2020Adversarial_extra**</sup></sub> | <sub>*[Adversarial Weight Perturbation Helps Robust Generalization](https://arxiv.org/abs/2004.05884)*</sub> | <sub>88.25%</sub> | <sub>60.04%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**8**</sub> | <sub><sup>**Zhang2020Geometry**</sup></sub> | <sub>*[Geometry-aware Instance-reweighted Adversarial Training](https://arxiv.org/abs/2010.01736)*</sub> | <sub>89.36%</sub> | <sub>59.64%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICLR 2021</sub> |
-| <sub>**9**</sub> | <sub><sup>**Carmon2019Unlabeled**</sup></sub> | <sub>*[Unlabeled Data Improves Adversarial Robustness](https://arxiv.org/abs/1905.13736)*</sub> | <sub>89.69%</sub> | <sub>59.53%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2019</sub> |
-| <sub>**10**</sub> | <sub><sup>**Sehwag2021Proxy**</sup></sub> | <sub>*[Improving Adversarial Robustness Using Proxy Distributions](https://arxiv.org/abs/2104.09425)*</sub> | <sub>85.85%</sub> | <sub>59.09%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Apr 2021</sub> |
-| <sub>**11**</sub> | <sub><sup>**Sehwag2020Hydra**</sup></sub> | <sub>*[HYDRA: Pruning Adversarially Robust Neural Networks](https://arxiv.org/abs/2002.10509)*</sub> | <sub>88.98%</sub> | <sub>57.14%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**12**</sub> | <sub><sup>**Gowal2020Uncovering_70_16**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>85.29%</sub> | <sub>57.14%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
-| <sub>**13**</sub> | <sub><sup>**Gowal2020Uncovering_34_20**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>85.64%</sub> | <sub>56.82%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Oct 2020</sub> |
-| <sub>**14**</sub> | <sub><sup>**Wang2020Improving**</sup></sub> | <sub>*[Improving Adversarial Robustness Requires Revisiting Misclassified Examples](https://openreview.net/forum?id=rklOg6EFwS)*</sub> | <sub>87.50%</sub> | <sub>56.29%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICLR 2020</sub> |
-| <sub>**15**</sub> | <sub><sup>**Wu2020Adversarial**</sup></sub> | <sub>*[Adversarial Weight Perturbation Helps Robust Generalization](https://arxiv.org/abs/2004.05884)*</sub> | <sub>85.36%</sub> | <sub>56.17%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**16**</sub> | <sub><sup>**Hendrycks2019Using**</sup></sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | <sub>87.11%</sub> | <sub>54.92%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
-| <sub>**17**</sub> | <sub><sup>**Sehwag2021Proxy_R18**</sup></sub> | <sub>*[Improving Adversarial Robustness Using Proxy Distributions](https://arxiv.org/abs/2104.09425)*</sub> | <sub>84.38%</sub> | <sub>54.43%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Apr 2021</sub> |
-| <sub>**18**</sub> | <sub><sup>**Pang2020Boosting**</sup></sub> | <sub>*[Boosting Adversarial Training with Hypersphere Embedding](https://arxiv.org/abs/2002.08619)*</sub> | <sub>85.14%</sub> | <sub>53.74%</sub> | <sub>WideResNet-34-20</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**19**</sub> | <sub><sup>**Cui2020Learnable_34_20**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>88.70%</sub> | <sub>53.57%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Nov 2020</sub> |
-| <sub>**20**</sub> | <sub><sup>**Zhang2020Attacks**</sup></sub> | <sub>*[Attacks Which Do Not Kill Training Make Adversarial Learning Stronger](https://arxiv.org/abs/2002.11242)*</sub> | <sub>84.52%</sub> | <sub>53.51%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
-| <sub>**21**</sub> | <sub><sup>**Rice2020Overfitting**</sup></sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>85.34%</sub> | <sub>53.42%</sub> | <sub>WideResNet-34-20</sub> | <sub>ICML 2020</sub> |
-| <sub>**22**</sub> | <sub><sup>**Huang2020Self**</sup></sub> | <sub>*[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)*</sub> | <sub>83.48%</sub> | <sub>53.34%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**23**</sub> | <sub><sup>**Zhang2019Theoretically**</sup></sub> | <sub>*[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)*</sub> | <sub>84.92%</sub> | <sub>53.08%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2019</sub> |
-| <sub>**24**</sub> | <sub><sup>**Cui2020Learnable_34_10**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>88.22%</sub> | <sub>52.86%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
-| <sub>**25**</sub> | <sub><sup>**Chen2020Adversarial**</sup></sub> | <sub>*[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)*</sub> | <sub>86.04%</sub> | <sub>51.56%</sub> | <sub>ResNet-50 <br/> (3x ensemble)</sub> | <sub>CVPR 2020</sub> |
-| <sub>**26**</sub> | <sub><sup>**Chen2020Efficient**</sup></sub> | <sub>*[Efficient Robust Training via Backward Smoothing](https://arxiv.org/abs/2010.01278)*</sub> | <sub>85.32%</sub> | <sub>51.12%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Oct 2020</sub> |
-| <sub>**27**</sub> | <sub><sup>**Sitawarin2020Improving**</sup></sub> | <sub>*[Improving Adversarial Robustness Through Progressive Hardening](https://arxiv.org/abs/2003.09347)*</sub> | <sub>86.84%</sub> | <sub>50.72%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Mar 2020</sub> |
-| <sub>**28**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>87.03%</sub> | <sub>49.25%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
-| <sub>**29**</sub> | <sub><sup>**Zhang2019You**</sup></sub> | <sub>*[You Only Propagate Once: Accelerating Adversarial Training via Maximal Principle](https://arxiv.org/abs/1905.00877)*</sub> | <sub>87.20%</sub> | <sub>44.83%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2019</sub> |
-| <sub>**30**</sub> | <sub><sup>**Andriushchenko2020Understanding**</sup></sub> | <sub>*[Understanding and Improving Fast Adversarial Training](https://arxiv.org/abs/2007.02617)*</sub> | <sub>79.84%</sub> | <sub>43.93%</sub> | <sub>ResNet-18</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**31**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>83.34%</sub> | <sub>43.21%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
-| <sub>**32**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
-| <sub>**33**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
-
+| <sub>**7**</sub> | <sub><sup>**Sridhar2021Robust_34_15**</sup></sub> | <sub>*[Robust Learning via Persistency of Excitation](https://arxiv.org/abs/2106.02078)*</sub> | <sub>86.53%</sub> | <sub>60.41%</sub> | <sub>WideResNet-34-15</sub> | <sub>arXiv, Jun 2021</sub> |
+| <sub>**8**</sub> | <sub><sup>**Wu2020Adversarial_extra**</sup></sub> | <sub>*[Adversarial Weight Perturbation Helps Robust Generalization](https://arxiv.org/abs/2004.05884)*</sub> | <sub>88.25%</sub> | <sub>60.04%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**9**</sub> | <sub><sup>**Sridhar2021Robust**</sup></sub> | <sub>*[Robust Learning via Persistency of Excitation](https://arxiv.org/abs/2106.02078)*</sub> | <sub>89.46%</sub> | <sub>59.66%</sub> | <sub>WideResNet-28-10</sub> | <sub>arXiv, Jun 2021</sub> |
+| <sub>**10**</sub> | <sub><sup>**Zhang2020Geometry**</sup></sub> | <sub>*[Geometry-aware Instance-reweighted Adversarial Training](https://arxiv.org/abs/2010.01736)*</sub> | <sub>89.36%</sub> | <sub>59.64%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICLR 2021</sub> |
+| <sub>**11**</sub> | <sub><sup>**Carmon2019Unlabeled**</sup></sub> | <sub>*[Unlabeled Data Improves Adversarial Robustness](https://arxiv.org/abs/1905.13736)*</sub> | <sub>89.69%</sub> | <sub>59.53%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2019</sub> |
+| <sub>**12**</sub> | <sub><sup>**Sehwag2021Proxy**</sup></sub> | <sub>*[Improving Adversarial Robustness Using Proxy Distributions](https://arxiv.org/abs/2104.09425)*</sub> | <sub>85.85%</sub> | <sub>59.09%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Apr 2021</sub> |
+| <sub>**13**</sub> | <sub><sup>**Sehwag2020Hydra**</sup></sub> | <sub>*[HYDRA: Pruning Adversarially Robust Neural Networks](https://arxiv.org/abs/2002.10509)*</sub> | <sub>88.98%</sub> | <sub>57.14%</sub> | <sub>WideResNet-28-10</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**14**</sub> | <sub><sup>**Gowal2020Uncovering_70_16**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>85.29%</sub> | <sub>57.14%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**15**</sub> | <sub><sup>**Gowal2020Uncovering_34_20**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>85.64%</sub> | <sub>56.82%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**16**</sub> | <sub><sup>**Wang2020Improving**</sup></sub> | <sub>*[Improving Adversarial Robustness Requires Revisiting Misclassified Examples](https://openreview.net/forum?id=rklOg6EFwS)*</sub> | <sub>87.50%</sub> | <sub>56.29%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICLR 2020</sub> |
+| <sub>**17**</sub> | <sub><sup>**Wu2020Adversarial**</sup></sub> | <sub>*[Adversarial Weight Perturbation Helps Robust Generalization](https://arxiv.org/abs/2004.05884)*</sub> | <sub>85.36%</sub> | <sub>56.17%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**18**</sub> | <sub><sup>**Hendrycks2019Using**</sup></sub> | <sub>*[Using Pre-Training Can Improve Model Robustness and Uncertainty](https://arxiv.org/abs/1901.09960)*</sub> | <sub>87.11%</sub> | <sub>54.92%</sub> | <sub>WideResNet-28-10</sub> | <sub>ICML 2019</sub> |
+| <sub>**19**</sub> | <sub><sup>**Sehwag2021Proxy_R18**</sup></sub> | <sub>*[Improving Adversarial Robustness Using Proxy Distributions](https://arxiv.org/abs/2104.09425)*</sub> | <sub>84.38%</sub> | <sub>54.43%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Apr 2021</sub> |
+| <sub>**20**</sub> | <sub><sup>**Pang2020Boosting**</sup></sub> | <sub>*[Boosting Adversarial Training with Hypersphere Embedding](https://arxiv.org/abs/2002.08619)*</sub> | <sub>85.14%</sub> | <sub>53.74%</sub> | <sub>WideResNet-34-20</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**21**</sub> | <sub><sup>**Cui2020Learnable_34_20**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>88.70%</sub> | <sub>53.57%</sub> | <sub>WideResNet-34-20</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**22**</sub> | <sub><sup>**Zhang2020Attacks**</sup></sub> | <sub>*[Attacks Which Do Not Kill Training Make Adversarial Learning Stronger](https://arxiv.org/abs/2002.11242)*</sub> | <sub>84.52%</sub> | <sub>53.51%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2020</sub> |
+| <sub>**23**</sub> | <sub><sup>**Rice2020Overfitting**</sup></sub> | <sub>*[Overfitting in adversarially robust deep learning](https://arxiv.org/abs/2002.11569)*</sub> | <sub>85.34%</sub> | <sub>53.42%</sub> | <sub>WideResNet-34-20</sub> | <sub>ICML 2020</sub> |
+| <sub>**24**</sub> | <sub><sup>**Huang2020Self**</sup></sub> | <sub>*[Self-Adaptive Training: beyond Empirical Risk Minimization](https://arxiv.org/abs/2002.10319)*</sub> | <sub>83.48%</sub> | <sub>53.34%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**25**</sub> | <sub><sup>**Zhang2019Theoretically**</sup></sub> | <sub>*[Theoretically Principled Trade-off between Robustness and Accuracy](https://arxiv.org/abs/1901.08573)*</sub> | <sub>84.92%</sub> | <sub>53.08%</sub> | <sub>WideResNet-34-10</sub> | <sub>ICML 2019</sub> |
+| <sub>**26**</sub> | <sub><sup>**Cui2020Learnable_34_10**</sup></sub> | <sub>*[Learnable Boundary Guided Adversarial Training](https://arxiv.org/abs/2011.11164)*</sub> | <sub>88.22%</sub> | <sub>52.86%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Nov 2020</sub> |
+| <sub>**27**</sub> | <sub><sup>**Chen2020Adversarial**</sup></sub> | <sub>*[Adversarial Robustness: From Self-Supervised Pre-Training to Fine-Tuning](https://arxiv.org/abs/2003.12862)*</sub> | <sub>86.04%</sub> | <sub>51.56%</sub> | <sub>ResNet-50 <br/> (3x ensemble)</sub> | <sub>CVPR 2020</sub> |
+| <sub>**28**</sub> | <sub><sup>**Chen2020Efficient**</sup></sub> | <sub>*[Efficient Robust Training via Backward Smoothing](https://arxiv.org/abs/2010.01278)*</sub> | <sub>85.32%</sub> | <sub>51.12%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**29**</sub> | <sub><sup>**Sitawarin2020Improving**</sup></sub> | <sub>*[Improving Adversarial Robustness Through Progressive Hardening](https://arxiv.org/abs/2003.09347)*</sub> | <sub>86.84%</sub> | <sub>50.72%</sub> | <sub>WideResNet-34-10</sub> | <sub>arXiv, Mar 2020</sub> |
+| <sub>**30**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>87.03%</sub> | <sub>49.25%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
+| <sub>**31**</sub> | <sub><sup>**Zhang2019You**</sup></sub> | <sub>*[You Only Propagate Once: Accelerating Adversarial Training via Maximal Principle](https://arxiv.org/abs/1905.00877)*</sub> | <sub>87.20%</sub> | <sub>44.83%</sub> | <sub>WideResNet-34-10</sub> | <sub>NeurIPS 2019</sub> |
+| <sub>**32**</sub> | <sub><sup>**Andriushchenko2020Understanding**</sup></sub> | <sub>*[Understanding and Improving Fast Adversarial Training](https://arxiv.org/abs/2007.02617)*</sub> | <sub>79.84%</sub> | <sub>43.93%</sub> | <sub>ResNet-18</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**33**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>83.34%</sub> | <sub>43.21%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
+| <sub>**34**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
+| <sub>**35**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
 #### L2
 
@@ -231,10 +233,6 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**12**</sub> | <sub><sup>**Rony2019Decoupling**</sup></sub> | <sub>*[Decoupling Direction and Norm for Efficient Gradient-Based L2 Adversarial Attacks and Defenses](https://arxiv.org/abs/1811.09600)*</sub> | <sub>89.05%</sub> | <sub>66.44%</sub> | <sub>WideResNet-28-10</sub> | <sub>CVPR 2019</sub> |
 | <sub>**13**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>88.02%</sub> | <sub>66.09%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**14**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
-
-
-
-
 
 #### Common Corruptions
 
@@ -275,26 +273,38 @@ You can find all available model IDs in the table below (note that the full lead
 | <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.63%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
 
 ## Notebooks
-We host all the notebooks at Google Colab:
-- [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV): a quick tutorial 
-to get started that illustrates the main features of **`RobustBench`**.
-- [RobustBench: json stats](https://colab.research.google.com/drive/19tgblr13SvaCpG8hoOTv6QCULVJbCec6): various plots based 
-on the jsons from `model_info` (robustness over venues, robustness vs accuracy, etc).
 
-Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from `model_info`. We are very interested in
-collecting new insights about benefits and tradeoffs between different perturbation types.
+We host all the notebooks at Google Colab:
+
+- [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV):
+  a quick tutorial to get started that illustrates the main features of **`RobustBench`**.
+- [RobustBench: json stats](https://colab.research.google.com/drive/19tgblr13SvaCpG8hoOTv6QCULVJbCec6):
+  various plots based on the jsons from `model_info` (robustness over venues, robustness vs
+  accuracy, etc).
+
+Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from `model_info`. We
+are very interested in collecting new insights about benefits and tradeoffs between different
+perturbation types.
 
 ## How to contribute
+
 Contributions to **`RobustBench`** are very welcome! You can help to improve **`RobustBench`**:
-- Are you an author of a recent paper focusing on improving adversarial robustness? Consider adding new models (see the instructions below 👇).
-- Do you have in mind some better *standardized* attack or an adaptive evaluation? Do you want to extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
-- Do you have an idea how to make the existing codebase better? Just open a pull request or create an issue and we'll be happy to discuss potential changes. 
+
+- Are you an author of a recent paper focusing on improving adversarial robustness? Consider adding
+  new models (see the instructions below 👇).
+- Do you have in mind some better *standardized* attack or an adaptive evaluation? Do you want to
+  extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
+- Do you have an idea how to make the existing codebase better? Just open a pull request or create
+  an issue and we'll be happy to discuss potential changes.
 
 ## Adding a new model
 
-#### Public model submission (leaderboard + Model Zoo)
-In order to add a new model for a specific dataset-threat model combination, submit a pull request
-where you specify the claim, model definition, and model checkpoint.
+#### Public model submission (Leaderboard + Model Zoo)
+
+The easiest way to add new models to the leaderboard and/or to the model zoo, is by **opening an issue
+with the "New Model(s)" template**, and fill in all the fields.
+
+In the following sections there are some tips on how to prepare the claim.
 
 ##### Claim
 
@@ -304,7 +314,8 @@ The claim can be computed in the following way:
 import torch
 
 from robustbench import benchmark
-from myrobust model import MyRobustModel
+from myrobust model
+import MyRobustModel
 
 threat_model = "Linf"  # One of {"Linf", "L2", "corruptions"}
 dataset = "cifar10"  # For the moment "cifar10" only is supported
@@ -313,8 +324,9 @@ model = MyRobustModel()
 model_name = "<Name><Year><FirstWordOfTheTitle>"
 device = torch.device("cuda:0")
 
-clean_acc, robust_acc = benchmark(model, model_name=model_name, n_examples=1000, dataset=dataset,
-                                  threat_model=threat_model, eps=8/255, device=device, to_disk=True)
+clean_acc, robust_acc = benchmark(model, model_name=model_name, n_examples=10000, dataset=dataset,
+                                  threat_model=threat_model, eps=8 / 255, device=device,
+                                  to_disk=True)
 
 ```
 
@@ -339,7 +351,7 @@ in the following way (example from `model_info/cifar10/Linf/Rice2020Overfitting.
 }
 ```
 
-The only difference is that the generated json will have only the fields `"clean_acc"` and 
+The only difference is that the generated json will have only the fields `"clean_acc"` and
 `"autoattack_acc"` (for `"Linf"` and `"L2"` threat models) or `"corruptions_acc"` (for the
 `"corruptions"` threat model) already specified. The other fields have to be filled manually.
 
@@ -349,14 +361,33 @@ combinations of corruption types and severities in
 
 ##### Model definition
 
-You can add your model as a new class into `robustbench/model_zoo/<dataset>.py`, given that the
-model has been trained on `<dataset>`. For standard architectures (e.g., `WideResNet`) consider 
-inheriting the class defined in `wide_resnet.py` or `resnet.py`. For example:
+In case you want to add a model in the Model Zoo by yourself, then you should also open a PR with
+the new model(s) you would like to add. All the models of each `<dataset>` are saved
+in `robustbench/model_zoo/<dataset>.py`. Each file contains a dictionary for every threat model,
+where the keys are the identifiers of each model, and the values are either class constructors, for
+models that have to change standard architectures, or `lambda` functions that return the constructed
+model.
+
+If your model is a standard architecture (e.g., `WideResNet`), does not apply any normalization to
+the input nor has to do things differently from the standard architecture, consider adding your
+model as a lambda function, e.g.
+
+```python
+('Cui2020Learnable_34_10', {
+    'model': lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
+    'gdrive_id': '16s9pi_1QgMbFLISVvaVUiNfCzah6g2YV'
+})
+```
+
+If your model is a standard architecture, but you need to do something differently (e.g. applying
+normalization), consider inheriting the class defined in `wide_resnet.py` or `resnet.py`. For
+example:
 
 ```python
 class Rice2020OverfittingNet(WideResNet):
     def __init__(self, depth, widen_factor):
-        super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor, sub_block1=False)
+        super(Rice2020OverfittingNet, self).__init__(depth=depth, widen_factor=widen_factor,
+                                                     sub_block1=False)
         self.mu = torch.Tensor([0.4914, 0.4822, 0.4465]).float().view(3, 1, 1).cuda()
         self.sigma = torch.Tensor([0.2471, 0.2435, 0.2616]).float().view(3, 1, 1).cuda()
 
@@ -365,37 +396,43 @@ class Rice2020OverfittingNet(WideResNet):
         return super(Rice2020OverfittingNet, self).forward(x)
 ```
 
-If, instead, you need to create a new architecture, please put it in
+If instead you need to create a new architecture, please put it in
 `robustbench/model_zoo/archietectures/<my_architecture>.py`.
 
 ##### Model checkpoint
 
-You should also add your model entry in the `<threat_model>` dict in the file
+You should also add your model entry in the corresponding `<threat_model>` dict in the file
 `robustbench/model_zoo/<dataset>.py`. For instance, let's say your model is robust against common
 corruptions in CIFAR-10 (i.e. CIFAR-10-C), then you should add your model to the
 `common_corruptions` dict in [`robustbench/model_zoo/cifar10.py`](robustbench/model_zoo/cifar10.py).
 
-The model should also contain the *Google Drive ID* with your
-pytorch model so that it can be downloaded automatically from Google Drive:
+The model should also contain the *Google Drive ID* with your PyTorch model so that it can be
+downloaded automatically from Google Drive:
 
 ```python
     ('Rice2020Overfitting', {
-        'model': Rice2020OverfittingNet(34, 20),
-        'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
-    })
+    'model': Rice2020OverfittingNet(34, 20),
+    'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
+})
 ```
 
 #### Private model submission (leaderboard only)
 
-In case you want to keep your checkpoints private for some reasons, you can also submit your claim, model definition, and model checkpoint directly to this email address `adversarial.benchmark@gmail.com`. In this case, we will add your model to the leaderboard but not to the Model Zoo and will not share your checkpoints publicly. 
+In case you want to keep your checkpoints private for some reasons, you can also submit your claim
+by opening an issue with the same "New Model(s)" template, specifying that the submission is
+private, and sharing the checkpoints with the email address `adversarial.benchmark@gmail.com`. In
+this case, we will add your model to the leaderboard but not to the Model Zoo and will not share
+your checkpoints publicly.
 
 #### License of the models
 
-By default, the models are released under the MIT license, but you can also tell us if you want to release your model under a customized license.
+By default, the models are released under the MIT license, but you can also tell us if you want to
+release your model under a customized license.
 
 ## Automatic tests
 
 In order to run the tests, run:
+
 - `python -m unittest discover tests -t . -v` for fast testing
 - `RUN_SLOW=true python -m unittest discover tests -t . -v` for slower testing
 
@@ -412,7 +449,7 @@ Then consider citing our [whitepaper](https://arxiv.org/abs/2010.09670):
 ```
 @article{croce2020robustbench,
     title={RobustBench: a standardized adversarial robustness benchmark},
-    author={Croce, Francesco and Andriushchenko, Maksym and Sehwag, Vikash and Flammarion, Nicolas and Chiang, Mung and Mittal, Prateek and Matthias Hein},
+    author={Croce, Francesco and Andriushchenko, Maksym and Sehwag, Vikash and Debenedetti, Edoardo and Flammarion, Nicolas and Chiang, Mung and Mittal, Prateek and Matthias Hein},
     journal={arXiv preprint arXiv:2010.09670},
     year={2020}
 }
