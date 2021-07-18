@@ -606,11 +606,11 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                   }),
                   ('Augustin2020Adversarial_34_10', {
                       'model': Augustin2020AdversarialWideNet,
-                      'gdrive_id': ''
+                      'gdrive_id': '1qPsKS546mKcs71IEhzOS-kLpQFSFhaKL'
                   }),
                   ('Augustin2020Adversarial_34_10_extra', {
                       'model': Augustin2020AdversarialWideNet,
-                      'gdrive_id': ''
+                      'gdrive_id': '1--1MFZja6C2iVWi9MgetYjnSIenRBLT-'
                   }),
     ])
 
