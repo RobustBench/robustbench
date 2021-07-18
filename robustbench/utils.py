@@ -161,7 +161,8 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
         "Hendrycks2020AugMix_ResNeXt", "Kireev2021Effectiveness_Gauss50percent",
         "Kireev2021Effectiveness_AugMixNoJSD", "Kireev2021Effectiveness_RLAT",
         "Kireev2021Effectiveness_RLATAugMixNoJSD", "Chen2020Efficient",
-        "Wu2020Adversarial"
+        "Wu2020Adversarial", "Augustin2020Adversarial_34_10",
+        "Augustin2020Adversarial_34_10_extra"
     }
 
     failure_messages = ['Missing key(s) in state_dict: "mu", "sigma".',

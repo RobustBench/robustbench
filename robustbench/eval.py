@@ -8,6 +8,7 @@ import torch
 from autoattack import AutoAttack
 from torch import nn
 from tqdm import tqdm
+import sys
 
 from robustbench.data import DATASET_CORRUPTIONS, load_clean_dataset, \
     load_corruptions_dataset
@@ -26,7 +27,8 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
               device: Optional[Union[torch.device,
                                      Sequence[torch.device]]] = None,
               batch_size: int = 32,
-              eps: Optional[float] = None) -> Tuple[float, float]:
+              eps: Optional[float] = None,
+              log_path: Optional[str] = None) -> Tuple[float, float]:
     """Benchmarks the given model(s).
 
     It is possible to benchmark on 3 different threat models, and to save the results on disk. In
@@ -67,7 +69,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    clean_x_test, clean_y_test = load_clean_dataset(dataset_, None, data_dir)
+    clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples, data_dir)
 
     accuracy = clean_accuracy(model,
                               clean_x_test,
@@ -75,7 +77,10 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                               batch_size=batch_size,
                               device=device)
     print(f'Clean accuracy: {accuracy:.2%}')
-
+    sys.exit()
+    
+    #clean_x_test = clean
+    
     if threat_model_ in {ThreatModel.Linf, ThreatModel.L2}:
         if eps is None:
             raise ValueError(
@@ -85,8 +90,10 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                norm=threat_model_.value,
                                eps=eps,
                                version='standard',
-                               device=device)
-        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test)
+                               device=device,
+                               log_path=log_path)
+        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test,
+            batch_size=batch_size)
         adv_accuracy = clean_accuracy(model,
                                       x_adv,
                                       clean_y_test,

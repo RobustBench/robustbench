@@ -6,10 +6,9 @@
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "ECCV 2020",
-  "architecture": "ResNet-50",
+  "architecture": "WideResNet-34-10",
   "eps": "0.5",
-  "clean_acc": "91.08",
-  "reported": "73.27",
-  "autoattack_acc": "72.91",
-  "footnote": "Extra data used only as OOD dataset."
+  "clean_acc": "92.23",
+  "reported": "76.25",
+  "autoattack_acc": "76.25"
 }
