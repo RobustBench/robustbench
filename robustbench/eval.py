@@ -17,7 +17,7 @@ from robustbench.utils import clean_accuracy, load_model, parse_args, update_jso
 
 
 def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
-              n_examples: int = 10_000,
+              n_examples: int = 10000,
               dataset: Union[str,
                              BenchmarkDataset] = BenchmarkDataset.cifar_10,
               threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
@@ -77,9 +77,6 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                               batch_size=batch_size,
                               device=device)
     print(f'Clean accuracy: {accuracy:.2%}')
-    sys.exit()
-    
-    #clean_x_test = clean
     
     if threat_model_ in {ThreatModel.Linf, ThreatModel.L2}:
         if eps is None:
@@ -92,8 +89,9 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                version='standard',
                                device=device,
                                log_path=log_path)
-        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test,
-            batch_size=batch_size)
+        x_adv = adversary.run_standard_evaluation(clean_x_test,
+                                                  clean_y_test,
+                                                  batch_size=batch_size)
         adv_accuracy = clean_accuracy(model,
                                       x_adv,
                                       clean_y_test,
