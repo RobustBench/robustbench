@@ -199,6 +199,26 @@ class Augustin2020AdversarialNet(ResNet):
         return super(Augustin2020AdversarialNet, self).forward(x)
 
 
+class Augustin2020AdversarialWideNet(WideResNet):
+    def __init__(self, depth=34, widen_factor=10):
+        super(Augustin2020AdversarialWideNet, self).__init__(depth=depth,
+            widen_factor=widen_factor, sub_block1=False)
+        self.register_buffer(
+            'mu',
+            torch.tensor(
+                [0.4913997551666284, 0.48215855929893703,
+                 0.4465309133731618]).view(1, 3, 1, 1))
+        self.register_buffer(
+            'sigma',
+            torch.tensor(
+                [0.24703225141799082, 0.24348516474564,
+                 0.26158783926049628]).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super(Augustin2020AdversarialWideNet, self).forward(x)
+
+
 class Rice2020OverfittingNetL2(PreActResNet):
     def __init__(self):
         super(Rice2020OverfittingNetL2, self).__init__(PreActBlockV2,
@@ -583,6 +603,14 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                                            mean=CIFAR10_MEAN,
                                            std=CIFAR10_STD),
                       'gdrive_id': '1JX82BDVBNO-Ffa2J37EuB8C-aFCbz708'
+                  }),
+                  ('Augustin2020Adversarial_34_10', {
+                      'model': Augustin2020AdversarialWideNet,
+                      'gdrive_id': ''
+                  }),
+                  ('Augustin2020Adversarial_34_10_extra', {
+                      'model': Augustin2020AdversarialWideNet,
+                      'gdrive_id': ''
                   }),
     ])
 
