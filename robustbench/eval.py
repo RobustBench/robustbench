@@ -8,7 +8,6 @@ import torch
 from autoattack import AutoAttack
 from torch import nn
 from tqdm import tqdm
-import sys
 
 from robustbench.data import DATASET_CORRUPTIONS, load_clean_dataset, \
     load_corruptions_dataset
