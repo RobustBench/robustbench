@@ -10,5 +10,6 @@
   "eps": "0.5",
   "clean_acc": "92.23",
   "reported": "76.25",
-  "autoattack_acc": "76.25"
+  "autoattack_acc": "76.25",
+  "footnote": "Extra data used only as OOD dataset."
 }
