@@ -3,7 +3,7 @@ from collections import OrderedDict
 import torch
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
-    DMWideResNet, Swish
+    DMWideResNet, Swish, DMPreActResNet
 from robustbench.model_zoo.architectures.resnet import PreActBlock, PreActResNet
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
@@ -195,6 +195,16 @@ linf = OrderedDict([
                              mean=CIFAR100_MEAN,
                              std=CIFAR100_STD),
         'gdrive_id': '1-P7cs82Tj6UVx7Coin3tVurVKYwXWA9p'
+    }),
+    ('Rebuffi2021Fixing_R18_ddpm', {
+        'model':
+        lambda: DMPreActResNet(num_classes=100,
+                               depth=18,
+                               width=0,
+                               activation_fn=Swish,
+                               mean=CIFAR100_MEAN,
+                               std=CIFAR100_STD),
+        'gdrive_id': '1-Qcph_EXw1SCYhDIl8cwqTQQy0sJKO8N'
     }),
 ])
 

@@ -5,7 +5,7 @@ import torch.nn.functional as F
 from torch import nn
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, \
-    DMWideResNet, Swish
+    DMWideResNet, Swish, DMPreActResNet
 from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChen2020AdversarialNet, \
     PreActBlock, \
     PreActBlockV2, PreActResNet, ResNet, ResNet18
@@ -513,6 +513,16 @@ linf = OrderedDict(
             'model':
             lambda: WideResNet(depth=34, widen_factor=15, sub_block1=True),
             'gdrive_id': '1-3ii3GX93YqIcmJ3VNsOgYA7ecdnSZ0Z',
+        }),
+        ('Rebuffi2021Fixing_R18_ddpm', {
+            'model':
+            lambda: DMPreActResNet(num_classes=10,
+                                   depth=18,
+                                   width=0,
+                                   activation_fn=Swish,
+                                   mean=CIFAR10_MEAN,
+                                   std=CIFAR10_STD),
+            'gdrive_id': '1--dxE66AsgBSUsuK2sXCTrsYUV9B5f95'
         })
     ])
 
@@ -611,6 +621,16 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                   ('Augustin2020Adversarial_34_10_extra', {
                       'model': Augustin2020AdversarialWideNet,
                       'gdrive_id': '1--1MFZja6C2iVWi9MgetYjnSIenRBLT-'
+                  }),
+                  ('Rebuffi2021Fixing_R18_cutmix_ddpm', {
+                      'model':
+                      lambda: DMPreActResNet(num_classes=10,
+                                             depth=18,
+                                             width=0,
+                                             activation_fn=Swish,
+                                             mean=CIFAR10_MEAN,
+                                             std=CIFAR10_STD),
+                      'gdrive_id': '1-AlwHsXU28tCOJsf9RKAZxVzbinzzQU3'
                   }),
     ])
 
