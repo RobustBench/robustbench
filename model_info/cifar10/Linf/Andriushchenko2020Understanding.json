@@ -6,7 +6,7 @@
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "NeurIPS 2020",
-  "architecture": "ResNet-18",
+  "architecture": "PreActResNet-18",
   "eps": "8/255",
   "clean_acc": "79.84",
   "reported": "44.54",

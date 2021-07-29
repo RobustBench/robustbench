@@ -6,7 +6,7 @@
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "arXiv, Mar 2021",
-  "architecture": "ResNet-18",
+  "architecture": "PreActResNet-18",
   "eps": "0.5",
   "clean_acc": "90.33",
   "reported": "75.86",
