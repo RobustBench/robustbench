@@ -18,24 +18,35 @@ linf = OrderedDict(
         ('Wong2020Fast', { # requires resolution 288 x 288
             'model': lambda: normalize_model(pt_models.resnet50(
                 pretrained=False), mu, sigma),
-            'gdrive_id': ''
+            'gdrive_id': '',
+            'preprocessing': 'Crop288'
         }),
         ('Engstrom2019Robustness', {
             'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
-            'gdrive_id': ''
+            'gdrive_id': '',
+            'preprocessing': 'Res256Crop224',
         }),
         ('Salman2020Do_R50', {
             'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
-            'gdrive_id': ''
+            'gdrive_id': '',
+            'preprocessing': 'Res256Crop224'
         }),
         ('Salman2020Do_R18', {
             'model': lambda: normalize_model(pt_models.resnet18(), mu, sigma),
-            'gdrive_id': ''
+            'gdrive_id': '',
+            'preprocessing': 'Res256Crop224'
         }),
         ('Salman2020Do_50_2', {
             'model': lambda: normalize_model(pt_models.wide_resnet50_2(),
                 mu, sigma),
-            'gdrive_id': ''
+            'gdrive_id': '',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Standard_R50', {
+            'model': lambda: normalize_model(pt_models.resnet50(
+                pretrained=True), mu, sigma),
+            'gdrive_id': '',
+            'preprocessing': 'Res256Crop224'
         }),
     ])
 

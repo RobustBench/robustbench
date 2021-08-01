@@ -13,6 +13,16 @@ from robustbench.model_zoo.enums import BenchmarkDataset
 from robustbench.zenodo_download import DownloadError, zenodo_download
 
 
+PREPROCESSINGS = {
+    'Res256Crop224': transforms.Compose([transforms.Resize(256),
+                                         transforms.CenterCrop(224),
+                                         transforms.ToTensor()]),
+    'Crop288': transforms.Compose([transforms.CenterCrop(288),
+                                   transforms.ToTensor()]),
+    
+    }
+
+
 def _load_dataset(
         dataset: Dataset,
         n_examples: Optional[int] = None) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -40,7 +50,8 @@ def _load_dataset(
 
 def load_cifar10(
         n_examples: Optional[int] = None,
-        data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
+        data_dir: str = './data',
+        prepr: Optional[str] = None) -> Tuple[torch.Tensor, torch.Tensor]:
     transform_chain = transforms.Compose([transforms.ToTensor()])
     dataset = datasets.CIFAR10(root=data_dir,
                                train=False,
@@ -51,7 +62,8 @@ def load_cifar10(
 
 def load_cifar100(
         n_examples: Optional[int] = None,
-        data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
+        data_dir: str = './data',
+        prepr: Optional[str] = None) -> Tuple[torch.Tensor, torch.Tensor]:
     transform_chain = transforms.Compose([transforms.ToTensor()])
     dataset = datasets.CIFAR100(root=data_dir,
                                 train=False,
@@ -62,15 +74,13 @@ def load_cifar100(
 
 def load_imagenet(
         n_examples: Optional[int] = 5000,
-        data_dir: str = './data') -> Tuple[torch.Tensor, torch.Tensor]:
-    if not os.path.exists(f'{data_dir}/predefined_imgs.pt'):
+        data_dir: str = './data',
+        prepr: str = 'Res256Crop224') -> Tuple[torch.Tensor, torch.Tensor]:
+    if not os.path.exists(f'{data_dir}/predefined_imgs_{prepr}.pt'):
+        transforms_test = PREPROCESSINGS[prepr]
         #IMAGENET_SL = 224
         imagenet = datasets.ImageFolder(data_dir, #IMAGENET_PATH
-                           transforms.Compose([
-                               transforms.Resize(256), #IMAGENET_SL + 32
-                               transforms.CenterCrop(224), #IMAGENET_SL
-                               transforms.ToTensor()
-                           ]))
+                                        transforms_test)
         torch.manual_seed(0) # to fix the set of images
 
         test_loader = data.DataLoader(imagenet, batch_size=n_examples,
@@ -78,9 +88,13 @@ def load_imagenet(
 
         x_test, y_test = next(iter(test_loader))
 
+        if n_examples == 5000:
+            torch.save({'x_test': x_test, 'y_test': y_test},
+                f'./predefined_imgs_{prepr}.pt')
+    
     else:
         #raise NotImplemented
-        datapoints = torch.load(f'{data_dir}/predefined_imgs.pt')
+        datapoints = torch.load(f'{data_dir}/predefined_imgs_{prepr}.pt')
         x_test = datapoints['x_test'][:n_examples]
         y_test = datapoints['y_test'][:n_examples]
     
@@ -100,8 +114,8 @@ _clean_dataset_loaders: Dict[BenchmarkDataset, CleanDatasetLoader] = {
 
 
 def load_clean_dataset(dataset: BenchmarkDataset, n_examples: Optional[int],
-                       data_dir: str) -> Tuple[torch.Tensor, torch.Tensor]:
-    return _clean_dataset_loaders[dataset](n_examples, data_dir)
+                       data_dir: str, prepr: Optional[str]) -> Tuple[torch.Tensor, torch.Tensor]:
+    return _clean_dataset_loaders[dataset](n_examples, data_dir, prepr)
 
 
 CORRUPTIONS = ("shot_noise", "motion_blur", "snow", "pixelate",
