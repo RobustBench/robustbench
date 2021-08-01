@@ -13,6 +13,7 @@ from robustbench.data import DATASET_CORRUPTIONS, load_clean_dataset, \
     load_corruptions_dataset
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
+from robustbench.model_zoo import model_dicts as all_models
 
 
 def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
@@ -67,7 +68,13 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples, data_dir)
+    if dataset == 'imagenet':
+        prepr = all_models[dataset_][threat_model_][model_name]['preprocessing']
+    else:
+        prepr = None
+    
+    clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
+        data_dir, prepr)
 
     accuracy = clean_accuracy(model,
                               clean_x_test,
