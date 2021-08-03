@@ -5,7 +5,7 @@
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
-  "venue": "arXiv, Nov 2020",
+  "venue": "ICCV 2021",
   "architecture": "WideResNet-34-20",
   "eps": "0.031",
   "clean_acc": "88.70",
