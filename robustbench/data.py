@@ -11,6 +11,7 @@ from torch.utils.data import Dataset
 
 from robustbench.model_zoo.enums import BenchmarkDataset
 from robustbench.zenodo_download import DownloadError, zenodo_download
+from robustbench.loaders import CustomImageFolder
 
 
 PREPROCESSINGS = {
@@ -76,7 +77,7 @@ def load_imagenet(
         n_examples: Optional[int] = 5000,
         data_dir: str = './data',
         prepr: str = 'Res256Crop224') -> Tuple[torch.Tensor, torch.Tensor]:
-    if not os.path.exists(f'{data_dir}/predefined_imgs_{prepr}.pt'):
+    '''if not os.path.exists(f'{data_dir}/predefined_imgs_{prepr}.pt'):
         transforms_test = PREPROCESSINGS[prepr]
         #IMAGENET_SL = 224
         imagenet = datasets.ImageFolder(data_dir, #IMAGENET_PATH
@@ -86,6 +87,19 @@ def load_imagenet(
         test_loader = data.DataLoader(imagenet, batch_size=n_examples,
             shuffle=True, num_workers=30)
 
+        if True:
+            f = open("test_y", "w")
+            with torch.no_grad():
+                for i, (images, labels) in enumerate(test_loader, 0):
+                    #outputs = model(images)
+                    #_, predicted = torch.max(outputs.data, 1)
+                    sample_fname, _ = test_loader.dataset.samples[i]
+                    print(sample_fname)
+                    f.write("{}, {}\n".format(i, sample_fname))
+                    break
+            f.close()
+            sys.exit()
+        
         x_test, y_test = next(iter(test_loader))
 
         if n_examples == 5000:
@@ -99,7 +113,15 @@ def load_imagenet(
         y_test = datapoints['y_test'][:n_examples]
     
         if n_examples > x_test.shape[0]:
-            print(f'only {x_test.shape[0]} images are available')
+            print(f'only {x_test.shape[0]} images are available')'''
+    transforms_test = PREPROCESSINGS[prepr]
+    imagenet = CustomImageFolder(data_dir, transforms_test)
+    
+    test_loader = data.DataLoader(imagenet, batch_size=n_examples,
+            shuffle=False, num_workers=30)
+
+    x_test, y_test, paths = next(iter(test_loader))
+    
     
     return x_test, y_test
 
