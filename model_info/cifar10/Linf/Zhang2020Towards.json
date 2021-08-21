@@ -8,8 +8,8 @@
   "venue": "ICLR 2020",
   "architecture": "5-layer-CNN",
   "eps": "8/255",
-  "clean_acc": "45.02",
+  "clean_acc": "44.73",
   "reported": "34.29",
   "autoattack_acc": "32.64",
-  "footnote": "Verifiably robust model"
+  "footnote": "Verifiably robust model with 32.24% provable robust accuracy"
 }
