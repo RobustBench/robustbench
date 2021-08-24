@@ -523,6 +523,36 @@ linf = OrderedDict(
                                    mean=CIFAR10_MEAN,
                                    std=CIFAR10_STD),
             'gdrive_id': '1--dxE66AsgBSUsuK2sXCTrsYUV9B5f95'
+        }),
+        ('Rade2021Helper_R18_extra', {
+            'model':
+            lambda: DMPreActResNet(num_classes=10,
+                                   depth=18,
+                                   width=0,
+                                   activation_fn=Swish,
+                                   mean=CIFAR10_MEAN,
+                                   std=CIFAR10_STD),
+            'gdrive_id': '1hdXk1rPJql2Oa84Kky64fMTQzng5UcTL'
+        }),
+        ('Rade2021Helper_R18_ddpm', {
+            'model':
+            lambda: DMPreActResNet(num_classes=10,
+                                   depth=18,
+                                   width=0,
+                                   activation_fn=Swish,
+                                   mean=CIFAR10_MEAN,
+                                   std=CIFAR10_STD),
+            'gdrive_id': '1f2yJUo-jxCQNk589frzriv6wPyrQEZdX'
+        }),
+        ('Rade2021Helper_extra', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=34,
+                                 width=10,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id': '1GhAp-0C3ONRy9BxIe0J9vKc082vHvR7t'
         })
     ])
 
@@ -631,6 +661,16 @@ l2 = OrderedDict([('Augustin2020Adversarial', {
                                              mean=CIFAR10_MEAN,
                                              std=CIFAR10_STD),
                       'gdrive_id': '1-AlwHsXU28tCOJsf9RKAZxVzbinzzQU3'
+                  }),
+                  ('Rade2021Helper_R18_ddpm', {
+                      'model':
+                      lambda: DMPreActResNet(num_classes=10,
+                                             depth=18,
+                                             width=0,
+                                             activation_fn=Swish,
+                                             mean=CIFAR10_MEAN,
+                                             std=CIFAR10_STD),
+                      'gdrive_id': '1VWrStAYy5CrUR18sjcpq_LKLpeqgUaoQ'
                   }),
     ])
 

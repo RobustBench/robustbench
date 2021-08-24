@@ -206,6 +206,16 @@ linf = OrderedDict([
                                std=CIFAR100_STD),
         'gdrive_id': '1-Qcph_EXw1SCYhDIl8cwqTQQy0sJKO8N'
     }),
+    ('Rade2021Helper_R18_ddpm', {
+        'model':
+        lambda: DMPreActResNet(num_classes=100,
+                               depth=18,
+                               width=0,
+                               activation_fn=Swish,
+                               mean=CIFAR100_MEAN,
+                               std=CIFAR100_STD),
+        'gdrive_id': '1-qUvfOjq6x4I8mZynfGtzzCH_nvqS_VQ'
+    }),
 ])
 
 common_corruptions = OrderedDict([('Hendrycks2020AugMix_WRN', {
