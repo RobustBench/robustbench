@@ -553,7 +553,17 @@ linf = OrderedDict(
                                  mean=CIFAR10_MEAN,
                                  std=CIFAR10_STD),
             'gdrive_id': '1GhAp-0C3ONRy9BxIe0J9vKc082vHvR7t'
-        })
+        }),
+        ('Rade2021Helper_ddpm', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=28,
+                                 width=10,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id': '1AOF6LxnwgS5fCz_lVLYqs_wnUYuv6O7z'
+        }),
     ])
 
 l2 = OrderedDict([('Augustin2020Adversarial', {
