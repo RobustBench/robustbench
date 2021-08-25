@@ -49,7 +49,7 @@
         <td class="aatd">{{ model[acc_field] }}%</td>
         {% if threat_model != "corruptions" %}
         <td class="aa-extd">{{ model.external if model.external is defined and model.external else "N/A"}}{{ "%" if model.external is defined and model.external else ""}}</td>
-        <td class="flagsd">{{ ", ".join(model.flags) if model.flags is defined else "Unkown"}}</td>
+        <td class="flagsd">{{ ", ".join(model.flags) if model.flags is defined else "Unknown"}}</td>
         {% endif %}
         <td class="datatd">{{ "&#9745;" if model.additional_data else "&#215;"}}</td>
         <td class="archtd">{{ model.architecture }}</td>
