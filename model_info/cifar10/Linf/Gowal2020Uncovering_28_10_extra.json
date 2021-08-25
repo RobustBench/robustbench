@@ -10,6 +10,6 @@
   "eps": "8/255",
   "clean_acc": "89.48",
   "reported": "62.76",
-  "footnote": "We show the robust accuracy reported in the paper since AutoAttack performs slightly worse (62.80%).",
-  "autoattack_acc": "62.76"
+  "autoattack_acc": "62.80",
+  "external": "62.76"
 }
