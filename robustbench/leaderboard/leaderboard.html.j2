@@ -58,9 +58,10 @@
     {% endfor %}
     </tbody>
 </table>
-
-<p><b>Flags legend</b> 1: Something; 2: Else</p>
-
+{% if threat_model != "corruptions" %}
+<p><b>Flags legend</b> 1: Randomized defense; 2: Output could be a probability distribution; 3: Has zero some gradient;
+    4: Square Attack decreased the robust accuracy; 5: Dynamic defense.</p>
+{% endif %}
 <script>
     $(document).ready(function () {
         $("#{{ dataset }}_leaderboard_{{ threat_model }}").DataTable({
