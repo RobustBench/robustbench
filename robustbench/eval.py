@@ -90,7 +90,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                log_path=log_path)
         x_adv = adversary.run_standard_evaluation(clean_x_test,
                                                   clean_y_test,
-                                                  batch_size=batch_size)
+                                                  bs=batch_size)
         adv_accuracy = clean_accuracy(model,
                                       x_adv,
                                       clean_y_test,
