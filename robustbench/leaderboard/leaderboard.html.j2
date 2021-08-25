@@ -7,16 +7,26 @@
             Standard <br/>
             accuracy
         </th>
+        {% if threat_model != "corruptions" %}
         <th class="aa">
             AA <br/>
             accuracy
         </th>
+        {% endif %}
+        {% if threat_model == "corruptions" %}
+        <th class="aa">
+            Robust <br/>
+            accuracy
+        </th>
+        {% endif %}
+        {% if threat_model != "corruptions" %}
         <th class="aa-ext">
             AA + <br/>
             external <br/>
             accuracy
         </th>
         <th class="flags">Raised <br/>flags</th>
+        {% endif %}
         <th class="extra-data">Extra <br/>data</th>
         <th class="arch">Architecture</th>
         <th class="venue">Venue</th>
@@ -37,8 +47,10 @@
         </td>
         <td class="catd">{{ model.clean_acc }}%</td>
         <td class="aatd">{{ model[acc_field] }}%</td>
-        <td class="aa-extd">{{ model.external if model.external is defined and model.external else "N/A"}}</td>
+        {% if threat_model != "corruptions" %}
+        <td class="aa-extd">{{ model.external if model.external is defined and model.external else "N/A"}}{{ "%" if model.external is defined and model.external else ""}}</td>
         <td class="flagsd">{{ ", ".join(model.flags) if model.flags is defined else "Unkown"}}</td>
+        {% endif %}
         <td class="datatd">{{ "&#9745;" if model.additional_data else "&#215;"}}</td>
         <td class="archtd">{{ model.architecture }}</td>
         <td class="venuetd">{{ model.venue }}</td>
@@ -59,10 +71,12 @@
             language: {
                 searchPlaceholder: "Papers, architectures, venues"
             },
+            {% if threat_model != "corruptions" %}
             columnDefs: [
                 { width: "10%", targets: 4 },
                 { width: "10%", targets: 5 }
             ]
+            {% endif %}
         });
     });
 </script>
