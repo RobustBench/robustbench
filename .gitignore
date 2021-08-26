@@ -7,7 +7,7 @@
 
 models/
 
-data/
+/data
 
 # Created by https://www.toptal.com/developers/gitignore/api/vscode,python,jupyternotebook,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=vscode,python,jupyternotebook,intellij
