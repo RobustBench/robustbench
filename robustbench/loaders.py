@@ -99,7 +99,8 @@ class CustomDatasetFolder(VisionDataset):
         self.target_transform = target_transform
         classes, class_to_idx = self._find_classes(self.root)
         #samples = make_dataset(self.root, class_to_idx, extensions, is_valid_file)
-        samples = make_custom_dataset(self.root, './path_imgs_new.txt', './class_to_idx.json')
+        samples = make_custom_dataset(self.root, 'robustbench/data/imagenet_test_image_ids.txt',
+                                      'robustbench/data/imagenet_class_to_id_map.json')
         if len(samples) == 0:
             raise (RuntimeError("Found 0 files in subfolders of: " + self.root + "\n"
                                 "Supported extensions are: " + ",".join(extensions)))
@@ -144,7 +145,6 @@ class CustomDatasetFolder(VisionDataset):
             sample = self.transform(sample)
         if self.target_transform is not None:
             target = self.target_transform(target)
-
         return sample, target, path
 
     def __len__(self):
@@ -204,22 +204,21 @@ class CustomImageFolder(CustomDatasetFolder):
     def __init__(self, root, transform=None, target_transform=None,
                  loader=default_loader, is_valid_file=None):
         super(CustomImageFolder, self).__init__(root, loader, IMG_EXTENSIONS if is_valid_file is None else None,
-                                          transform=transform,
-                                          target_transform=target_transform,
-                                          is_valid_file=is_valid_file)
+                                                transform=transform,
+                                                target_transform=target_transform,
+                                                is_valid_file=is_valid_file)
                                           
         self.imgs = self.samples
         
 
 if __name__ == '__main__':
     data_dir = '/home/scratch/datasets/imagenet/val'
-    imagenet = CustomImageFolder(data_dir, transforms.Compose([transforms.Resize(256),
-        transforms.CenterCrop(224), transforms.ToTensor()]))
+    imagenet = CustomImageFolder(data_dir, transforms.Compose([
+        transforms.Resize(256), transforms.CenterCrop(224), transforms.ToTensor()]))
     
     torch.manual_seed(0)
     
-    test_loader = data.DataLoader(imagenet, batch_size=5000,
-            shuffle=True, num_workers=30)
+    test_loader = data.DataLoader(imagenet, batch_size=5000, shuffle=True, num_workers=30)
 
     x, y, path = next(iter(test_loader))
 

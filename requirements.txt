@@ -1,5 +1,5 @@
-torch
-torchvision
+torch==1.7.1
+torchvision==0.8.2
 requests~=2.25.1
 numpy~=1.19.4
 Jinja2~=2.11.2

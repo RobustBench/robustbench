@@ -20,8 +20,8 @@ PREPROCESSINGS = {
                                          transforms.ToTensor()]),
     'Crop288': transforms.Compose([transforms.CenterCrop(288),
                                    transforms.ToTensor()]),
-    
-    }
+    None: transforms.Compose([transforms.ToTensor()]),
+}
 
 
 def _load_dataset(
@@ -53,10 +53,10 @@ def load_cifar10(
         n_examples: Optional[int] = None,
         data_dir: str = './data',
         prepr: Optional[str] = None) -> Tuple[torch.Tensor, torch.Tensor]:
-    transform_chain = transforms.Compose([transforms.ToTensor()])
+    transforms_test = PREPROCESSINGS[prepr]
     dataset = datasets.CIFAR10(root=data_dir,
                                train=False,
-                               transform=transform_chain,
+                               transform=transforms_test,
                                download=True)
     return _load_dataset(dataset, n_examples)
 
@@ -65,10 +65,10 @@ def load_cifar100(
         n_examples: Optional[int] = None,
         data_dir: str = './data',
         prepr: Optional[str] = None) -> Tuple[torch.Tensor, torch.Tensor]:
-    transform_chain = transforms.Compose([transforms.ToTensor()])
+    transforms_test = PREPROCESSINGS[prepr]
     dataset = datasets.CIFAR100(root=data_dir,
                                 train=False,
-                                transform=transform_chain,
+                                transform=transforms_test,
                                 download=True)
     return _load_dataset(dataset, n_examples)
 
@@ -118,10 +118,9 @@ def load_imagenet(
     imagenet = CustomImageFolder(data_dir, transforms_test)
     
     test_loader = data.DataLoader(imagenet, batch_size=n_examples,
-            shuffle=False, num_workers=30)
+                                  shuffle=False, num_workers=4)
 
     x_test, y_test, paths = next(iter(test_loader))
-    
     
     return x_test, y_test
 
@@ -131,12 +130,12 @@ CleanDatasetLoader = Callable[[Optional[int], str], Tuple[torch.Tensor,
 _clean_dataset_loaders: Dict[BenchmarkDataset, CleanDatasetLoader] = {
     BenchmarkDataset.cifar_10: load_cifar10,
     BenchmarkDataset.cifar_100: load_cifar100,
-    BenchmarkDataset.image_net: load_imagenet,
+    BenchmarkDataset.imagenet: load_imagenet,
 }
 
 
 def load_clean_dataset(dataset: BenchmarkDataset, n_examples: Optional[int],
-                       data_dir: str, prepr: Optional[str]) -> Tuple[torch.Tensor, torch.Tensor]:
+                       data_dir: str, prepr: Optional[str] = None) -> Tuple[torch.Tensor, torch.Tensor]:
     return _clean_dataset_loaders[dataset](n_examples, data_dir, prepr)
 
 

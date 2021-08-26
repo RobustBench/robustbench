@@ -113,7 +113,7 @@ def load_model(model_name: str,
 
     if not isinstance(models[model_name]['gdrive_id'], list):
         model = models[model_name]['model']()
-        if dataset_ == BenchmarkDataset.image_net and 'Standard' in model_name:
+        if dataset_ == BenchmarkDataset.imagenet and 'Standard' in model_name:
             return model.eval()
         
         if not os.path.exists(model_dir_):
@@ -135,7 +135,7 @@ def load_model(model_name: str,
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
             state_dict = rm_substr_from_state_dict(state_dict, 'model.')
 
-        if dataset_ == BenchmarkDataset.image_net:
+        if dataset_ == BenchmarkDataset.imagenet:
             # so far all models need input normalization, which is added as extra layer
             state_dict = add_substr_to_state_dict(state_dict, 'model.')
         
@@ -187,7 +187,7 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
     try:
         model.load_state_dict(state_dict, strict=True)
     except RuntimeError as e:
-        if (model_name in known_failing_models or dataset_ == BenchmarkDataset.image_net
+        if (model_name in known_failing_models or dataset_ == BenchmarkDataset.imagenet
             ) and any([msg in str(e) for msg in failure_messages]):
             model.load_state_dict(state_dict, strict=False)
         else:
