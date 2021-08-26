@@ -496,94 +496,88 @@ linf = OrderedDict(
         })
     ])
 
-l2 = OrderedDict([('Augustin2020Adversarial', {
-    'model': Augustin2020AdversarialNet,
-    'gdrive_id': '1oDghrzNfkStC2wr5Fq8T896yNV4wVG4d',
-}),
-                  ('Engstrom2019Robustness', {
-                      'model': Engstrom2019RobustnessNet,
-                      'gdrive_id': '1O8rGa6xOUIRwQ-M4ESrCjzknby8TM2ZE',
-                  }),
-                  ('Rice2020Overfitting', {
-                      'model': Rice2020OverfittingNetL2,
-                      'gdrive_id': '1jo-31utiYNBVzLM0NxUEWz0teo3Z0xa7',
-                  }),
-                  ('Rony2019Decoupling', {
-                      'model': Rony2019DecouplingNet,
-                      'gdrive_id': '1Oua2ZYSxNvoDrtlY9vTtRzyBWHziE4Uy',
-                  }),
-                  ('Standard', {
-                      'model': lambda: WideResNet(depth=28, widen_factor=10),
-                      'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
-                  }),
-                  ('Ding2020MMA', {
-                      'model': Ding2020MMANet,
-                      'gdrive_id': '13wgY0Q_eor52ltZ0PkfJx5BCZ8cLM52E',
-                  }),
-                  ('Wu2020Adversarial', {
-                      'model': lambda: WideResNet(depth=34, widen_factor=10),
-                      'gdrive_id': '1M5AZ0EZQt7d2AlTmsnqZcfx91-x7YEAV',
-                  }),
-                  ('Gowal2020Uncovering', {
-                      'model':
-                      lambda: DMWideResNet(num_classes=10,
-                                   depth=70,
-                                   width=16,
-                                   activation_fn=Swish,
-                                   mean=CIFAR10_MEAN,
-                                   std=CIFAR10_STD),
-                      'gdrive_id':
-                      "1QL4SNvYydjIg1uI3VP9SyNt-2kTXRisG"
-                  }),
-                  ('Gowal2020Uncovering_extra', {
-                      'model':
-                      lambda: DMWideResNet(num_classes=10,
-                                   depth=70,
-                                   width=16,
-                                   activation_fn=Swish,
-                                   mean=CIFAR10_MEAN,
-                                   std=CIFAR10_STD),
-                      'gdrive_id':
-                      "1pkZDCpCBShpAnx92n8PUeNOY1fSiTi0s"
-                  }),
-                  ('Sehwag2021Proxy', {
-                      'model': lambda: WideResNet(34, 10, sub_block1=False),
-                      'gdrive_id': '1UviikNzpltVFsgMuqQ8YhpmvGczGRS4S',
-                  }),
-                  ('Sehwag2021Proxy_R18', {
-                      'model': ResNet18,
-                      'gdrive_id': '1zPjjZj9wujBNkAmHHHIikem6_aIjMhXG',
-                  }),
-                  ('Rebuffi2021Fixing_70_16_cutmix_ddpm', {
-                      'model':
-                      lambda: DMWideResNet(num_classes=10,
-                                           depth=70,
-                                           width=16,
-                                           activation_fn=Swish,
-                                           mean=CIFAR10_MEAN,
-                                           std=CIFAR10_STD),
-                      'gdrive_id': '1-8ECIOYF4JB0ywxJOmhkefnv4TW-KuXp'
-                  }),
-                  ('Rebuffi2021Fixing_28_10_cutmix_ddpm', {
-                      'model':
-                      lambda: DMWideResNet(num_classes=10,
-                                           depth=28,
-                                           width=10,
-                                           activation_fn=Swish,
-                                           mean=CIFAR10_MEAN,
-                                           std=CIFAR10_STD),
-                      'gdrive_id': '1-DUKcvfDzeWwt0NK7q2XvU-dIi8up8B0'
-                  }),
-                  ('Rebuffi2021Fixing_70_16_cutmix_extra', {
-                      'model':
-                      lambda: DMWideResNet(num_classes=10,
-                                           depth=70,
-                                           width=16,
-                                           activation_fn=Swish,
-                                           mean=CIFAR10_MEAN,
-                                           std=CIFAR10_STD),
-                      'gdrive_id': '1JX82BDVBNO-Ffa2J37EuB8C-aFCbz708'
-                  }),
+l2 = OrderedDict([
+    ('Augustin2020Adversarial', {
+        'model': Augustin2020AdversarialNet,
+        'gdrive_id': '1oDghrzNfkStC2wr5Fq8T896yNV4wVG4d',
+    }),
+    ('Engstrom2019Robustness', {
+        'model': Engstrom2019RobustnessNet,
+        'gdrive_id': '1O8rGa6xOUIRwQ-M4ESrCjzknby8TM2ZE',
+    }),
+    ('Rice2020Overfitting', {
+        'model': Rice2020OverfittingNetL2,
+        'gdrive_id': '1jo-31utiYNBVzLM0NxUEWz0teo3Z0xa7',
+    }),
+    ('Rony2019Decoupling', {
+        'model': Rony2019DecouplingNet,
+        'gdrive_id': '1Oua2ZYSxNvoDrtlY9vTtRzyBWHziE4Uy',
+    }),
+    ('Standard', {
+        'model': lambda: WideResNet(depth=28, widen_factor=10),
+        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
+    }),
+    ('Ding2020MMA', {
+        'model': Ding2020MMANet,
+        'gdrive_id': '13wgY0Q_eor52ltZ0PkfJx5BCZ8cLM52E',
+    }),
+    ('Wu2020Adversarial', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10),
+        'gdrive_id': '1M5AZ0EZQt7d2AlTmsnqZcfx91-x7YEAV',
+    }),
+    ('Gowal2020Uncovering', {
+        'model': lambda: DMWideResNet(num_classes=10,
+                                      depth=70,
+                                      width=16,
+                                      activation_fn=Swish,
+                                      mean=CIFAR10_MEAN,
+                                      std=CIFAR10_STD),
+        'gdrive_id': "1QL4SNvYydjIg1uI3VP9SyNt-2kTXRisG"
+    }),
+    ('Gowal2020Uncovering_extra', {
+        'model': lambda: DMWideResNet(num_classes=10,
+                                      depth=70,
+                                      width=16,
+                                      activation_fn=Swish,
+                                      mean=CIFAR10_MEAN,
+                                      std=CIFAR10_STD),
+        'gdrive_id': "1pkZDCpCBShpAnx92n8PUeNOY1fSiTi0s"
+    }),
+    ('Sehwag2021Proxy', {
+        'model': lambda: WideResNet(34, 10, sub_block1=False),
+        'gdrive_id': '1UviikNzpltVFsgMuqQ8YhpmvGczGRS4S',
+    }),
+    ('Sehwag2021Proxy_R18', {
+        'model': ResNet18,
+        'gdrive_id': '1zPjjZj9wujBNkAmHHHIikem6_aIjMhXG',
+    }),
+    ('Rebuffi2021Fixing_70_16_cutmix_ddpm', {
+        'model': lambda: DMWideResNet(num_classes=10,
+                                      depth=70,
+                                      width=16,
+                                      activation_fn=Swish,
+                                      mean=CIFAR10_MEAN,
+                                      std=CIFAR10_STD),
+        'gdrive_id': '1-8ECIOYF4JB0ywxJOmhkefnv4TW-KuXp'
+    }),
+    ('Rebuffi2021Fixing_28_10_cutmix_ddpm', {
+        'model': lambda: DMWideResNet(num_classes=10,
+                                      depth=28,
+                                      width=10,
+                                      activation_fn=Swish,
+                                      mean=CIFAR10_MEAN,
+                                      std=CIFAR10_STD),
+      'gdrive_id': '1-DUKcvfDzeWwt0NK7q2XvU-dIi8up8B0'
+    }),
+    ('Rebuffi2021Fixing_70_16_cutmix_extra', {
+        'model': lambda: DMWideResNet(num_classes=10,
+                                      depth=70,
+                                      width=16,
+                                      activation_fn=Swish,
+                                      mean=CIFAR10_MEAN,
+                                      std=CIFAR10_STD),
+        'gdrive_id': '1JX82BDVBNO-Ffa2J37EuB8C-aFCbz708'
+    }),
     ])
 
 common_corruptions = OrderedDict([

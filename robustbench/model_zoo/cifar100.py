@@ -198,18 +198,16 @@ linf = OrderedDict([
     }),
 ])
 
-common_corruptions = OrderedDict([('Hendrycks2020AugMix_WRN', {
-    'model':
-    Hendrycks2020AugMixWRNNet,
-    'gdrive_id':
-    '1XpFFdCdU9LcDtcyNfo6_BV1RZHKKkBVE'
-}),
-                                  ('Hendrycks2020AugMix_ResNeXt', {
-                                      'model':
-                                      Hendrycks2020AugMixResNeXtNet,
-                                      'gdrive_id':
-                                      '1ocnHbvDdOBLvgNr6K7vEYL08hUdkD1Rv'
-                                  })])
+common_corruptions = OrderedDict([
+    ('Hendrycks2020AugMix_WRN', {
+        'model': Hendrycks2020AugMixWRNNet,
+        'gdrive_id': '1XpFFdCdU9LcDtcyNfo6_BV1RZHKKkBVE'
+    }),
+    ('Hendrycks2020AugMix_ResNeXt', {
+      'model': Hendrycks2020AugMixResNeXtNet,
+      'gdrive_id': '1ocnHbvDdOBLvgNr6K7vEYL08hUdkD1Rv'
+    })
+])
 
 cifar_100_models = OrderedDict([(ThreatModel.Linf, linf),
                                 (ThreatModel.corruptions, common_corruptions)])
