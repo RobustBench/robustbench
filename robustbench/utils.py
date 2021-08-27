@@ -426,6 +426,10 @@ def parse_args():
                         type=str,
                         default='./models',
                         help='where to store downloaded models')
+    parser.add_argument('--seed',
+                        type=int,
+                        default=0,
+                        help='random seed')
     parser.add_argument('--device',
                         type=str,
                         default='cuda:0',

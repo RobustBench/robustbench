@@ -77,43 +77,6 @@ def load_imagenet(
         n_examples: Optional[int] = 5000,
         data_dir: str = './data',
         prepr: str = 'Res256Crop224') -> Tuple[torch.Tensor, torch.Tensor]:
-    '''if not os.path.exists(f'{data_dir}/predefined_imgs_{prepr}.pt'):
-        transforms_test = PREPROCESSINGS[prepr]
-        #IMAGENET_SL = 224
-        imagenet = datasets.ImageFolder(data_dir, #IMAGENET_PATH
-                                        transforms_test)
-        torch.manual_seed(0) # to fix the set of images
-
-        test_loader = data.DataLoader(imagenet, batch_size=n_examples,
-            shuffle=True, num_workers=30)
-
-        if True:
-            f = open("test_y", "w")
-            with torch.no_grad():
-                for i, (images, labels) in enumerate(test_loader, 0):
-                    #outputs = model(images)
-                    #_, predicted = torch.max(outputs.data, 1)
-                    sample_fname, _ = test_loader.dataset.samples[i]
-                    print(sample_fname)
-                    f.write("{}, {}\n".format(i, sample_fname))
-                    break
-            f.close()
-            sys.exit()
-        
-        x_test, y_test = next(iter(test_loader))
-
-        if n_examples == 5000:
-            torch.save({'x_test': x_test, 'y_test': y_test},
-                f'./predefined_imgs_{prepr}.pt')
-    
-    else:
-        #raise NotImplemented
-        datapoints = torch.load(f'{data_dir}/predefined_imgs_{prepr}.pt')
-        x_test = datapoints['x_test'][:n_examples]
-        y_test = datapoints['y_test'][:n_examples]
-    
-        if n_examples > x_test.shape[0]:
-            print(f'only {x_test.shape[0]} images are available')'''
     transforms_test = PREPROCESSINGS[prepr]
     imagenet = CustomImageFolder(data_dir, transforms_test)
     

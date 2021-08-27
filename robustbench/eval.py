@@ -3,8 +3,10 @@ from argparse import Namespace
 from pathlib import Path
 from typing import Dict, Optional, Sequence, Tuple, Union
 
+import numpy as np
 import pandas as pd
 import torch
+import random
 from autoattack import AutoAttack
 from torch import nn
 from tqdm import tqdm
@@ -180,6 +182,11 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
 
 
 def main(args: Namespace) -> None:
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed(args.seed)
+    np.random.seed(args.seed)
+    random.seed(args.seed)
+
     model = load_model(args.model_name,
                        model_dir=args.model_dir,
                        dataset=args.dataset,
@@ -203,7 +210,7 @@ def main(args: Namespace) -> None:
 if __name__ == '__main__':
     # Example:
     # python -m robustbench.eval --n_ex=5000 --dataset=imagenet --threat_model=Linf \
-    #                            --model_name=Salman2020Do_R18 --data_dir=/tmldata1/andriush/imagenet/val
+    #                            --model_name=Salman2020Do_R18 --data_dir=/tmldata1/andriush/imagenet/val \
     #                            --batch_size=128 --eps=0.0156862745
     args_ = parse_args()
     main(args_)
