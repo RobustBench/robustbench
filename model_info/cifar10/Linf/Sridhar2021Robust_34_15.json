@@ -10,5 +10,6 @@
   "eps": "8/255",
   "clean_acc": "86.53",
   "reported": "60.41",
-  "autoattack_acc": "60.41"
+  "autoattack_acc": "60.41",
+  "unreliable": false
 }

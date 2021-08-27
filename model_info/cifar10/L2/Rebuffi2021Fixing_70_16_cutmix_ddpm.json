@@ -11,5 +11,6 @@
   "clean_acc": "92.41",
   "reported": "80.42",
   "footnote": "It uses additional 1M synthetic images in training.",
-  "autoattack_acc": "80.42"
+  "autoattack_acc": "80.42",
+  "unreliable": false
 }
