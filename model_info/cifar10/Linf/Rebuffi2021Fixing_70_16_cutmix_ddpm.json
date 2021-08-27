@@ -11,6 +11,6 @@
   "clean_acc": "88.54",
   "reported": "64.20",
   "autoattack_acc": "64.25",
-  "external": "62.20",
-  "footnote": "It uses additional 1M synthetic images in training. 62.20% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)"
+  "external": "64.20",
+  "footnote": "It uses additional 1M synthetic images in training. 64.20% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)"
 }
