@@ -12,5 +12,6 @@
   "reported": "60.73",
   "footnote": "It uses additional 1M synthetic images in training.",
   "autoattack_acc": "60.75",
-  "external": "60.73"
+  "external": "60.73",
+  "footnote": "60.73% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)"
 }
