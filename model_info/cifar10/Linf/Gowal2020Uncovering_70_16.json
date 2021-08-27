@@ -12,5 +12,6 @@
   "reported": "57.14",
   "autoattack_acc": "57.20",
   "external": "57.14",
-  "footnote": "57.14% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)"
+  "footnote": "57.14% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)",
+  "unreliable": false
 }

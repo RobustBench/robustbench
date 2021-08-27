@@ -308,14 +308,20 @@ def get_leaderboard_bibtex(dataset: Union[str, BenchmarkDataset], threat_model: 
     return bibtex_entries, str_entries
 
 
-def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset], threat_model: Union[str, ThreatModel],
-                          l_keys=['clean_acc', 'autoattack_acc',
-                                  'additional_data', 'architecture', 'venue'],
-                          sort_by='autoattack_acc'):
+def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset],
+                          threat_model: Union[str, ThreatModel],
+                          l_keys=['clean_acc', 'external', #'autoattack_acc',
+                                  'additional_data', 'architecture', 'venue',
+                                  'modelzoo_id'],
+                          sort_by='external' #'autoattack_acc'
+                          ):
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
 
-    jsons_dir = Path("../model_info") / dataset_.value / threat_model_.value
+    models = all_models[dataset_][threat_model_]
+    print(models.keys())
+    
+    jsons_dir = Path("./model_info") / dataset_.value / threat_model_.value
     entries = []
 
     for json_path in jsons_dir.glob("*.json"):
@@ -324,14 +330,27 @@ def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset], threat_model: U
         with open(json_path, 'r') as model_info:
             model_dict = json.load(model_info)
 
-        str_curr = '\\cite{{{}}}'.format(model_name) if not model_name in [
+        str_curr = '\\citet{{{}}}'.format(model_name) if not model_name in [
             'Standard'] else model_name
 
         for k in l_keys:
+            if k == 'external' and not 'external' in model_dict.keys():
+                model_dict[k] = model_dict['autoattack_acc']
             if k == 'additional_data':
-                str_curr += ' & {}'.format('Y' if model_dict[k] else 'N')
+                v = 'Y' if model_dict[k] else 'N'
+            elif k == 'architecture':
+                v = model_dict[k].replace('WideResNet', 'WRN')
+                v = v.replace('ResNet', 'RN')
+            elif k == 'modelzoo_id':
+                print(json_path.stem)
+                v = json_path.stem.split('.json')[0]
+                if not v in models.keys():
+                    v = 'N/A'
+                else:
+                    v = v.replace('_', '\\_')
             else:
-                str_curr += ' & {}'.format(model_dict[k])
+                v = model_dict[k]
+            str_curr += ' & {}'.format(v)
         str_curr += '\\\\'
         entries.append((str_curr, float(model_dict[sort_by])))
 

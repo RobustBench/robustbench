@@ -10,6 +10,8 @@
   "eps": "8/255",
   "clean_acc": "85.64",
   "reported": "56.82",
-  "footnote": "We show the robust accuracy reported in the paper since AutoAttack performs slightly worse (56.86%).",
-  "autoattack_acc": "56.82"
+  "autoattack_acc": "56.86",
+  "external": "56.82",
+  "footnote": "56.82% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)",
+  "unreliable": false
 }

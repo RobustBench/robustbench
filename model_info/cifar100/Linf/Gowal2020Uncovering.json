@@ -11,5 +11,6 @@
   "clean_acc": "60.86",
   "reported": "30.67",
   "autoattack_acc": "30.03",
-  "footnote": null
+  "footnote": null,
+  "unreliable": false,
 }
