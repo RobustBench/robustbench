@@ -10,8 +10,7 @@
   "eps": "8/255",
   "clean_acc": "88.54",
   "reported": "64.20",
-  "footnote": "It uses additional 1M synthetic images in training.",
   "autoattack_acc": "64.25",
   "external": "62.20",
-  "footnote": "62.20% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)"
+  "footnote": "It uses additional 1M synthetic images in training. 62.20% robust accuracy is due to the original evaluation (AutoAttack + MultiTargeted)"
 }
