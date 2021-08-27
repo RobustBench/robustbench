@@ -1,3 +1,6 @@
+"""
+This file is based on the code from https://github.com/pytorch/vision/blob/master/torchvision/datasets/folder.py.
+"""
 from torchvision.datasets.vision import VisionDataset
 
 import torch
@@ -10,49 +13,6 @@ import os
 import os.path
 import sys
 import json
-
-
-def has_file_allowed_extension(filename, extensions):
-    """Checks if a file is an allowed extension.
-    Args:
-        filename (string): path to a file
-        extensions (tuple of strings): extensions to consider (lowercase)
-    Returns:
-        bool: True if the filename ends with one of given extensions
-    """
-    return filename.lower().endswith(extensions)
-
-
-def is_image_file(filename):
-    """Checks if a file is an allowed image extension.
-    Args:
-        filename (string): path to a file
-    Returns:
-        bool: True if the filename ends with a known image extension
-    """
-    return has_file_allowed_extension(filename, IMG_EXTENSIONS)
-
-
-def make_dataset(dir, class_to_idx, extensions=None, is_valid_file=None):
-    images = []
-    dir = os.path.expanduser(dir)
-    if not ((extensions is None) ^ (is_valid_file is None)):
-        raise ValueError("Both extensions and is_valid_file cannot be None or not None at the same time")
-    if extensions is not None:
-        def is_valid_file(x):
-            return has_file_allowed_extension(x, extensions)
-    for target in sorted(class_to_idx.keys()):
-        d = os.path.join(dir, target)
-        if not os.path.isdir(d):
-            continue
-        for root, _, fnames in sorted(os.walk(d)):
-            for fname in sorted(fnames):
-                path = os.path.join(root, fname)
-                if is_valid_file(path):
-                    item = (path, class_to_idx[target])
-                    images.append(item)
-
-    return images
 
 
 def make_custom_dataset(root, path_imgs, cls_dict):
@@ -93,12 +53,11 @@ class CustomDatasetFolder(VisionDataset):
         targets (list): The class_index value for each image in the dataset
     """
 
-    def __init__(self, root, loader, extensions=None, transform=None, target_transform=None, is_valid_file=None):
+    def __init__(self, root, loader, extensions=None, transform=None, target_transform=None):
         super(CustomDatasetFolder, self).__init__(root)
         self.transform = transform
         self.target_transform = target_transform
         classes, class_to_idx = self._find_classes(self.root)
-        #samples = make_dataset(self.root, class_to_idx, extensions, is_valid_file)
         samples = make_custom_dataset(self.root, 'robustbench/data/imagenet_test_image_ids.txt',
                                       'robustbench/data/imagenet_class_to_id_map.json')
         if len(samples) == 0:
