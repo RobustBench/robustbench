@@ -297,7 +297,7 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**2**</sub> | <sub><sup>**Salman2020Do_R50**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>64.02%</sub> | <sub>34.96%</sub> | <sub>ResNet-18</sub> | <sub>NeurIPS 2020</sub> |
 | <sub>**3**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>62.56%</sub> | <sub>29.22%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
 | <sub>**4**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>55.62%</sub> | <sub>26.24%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
-| <sub>**5**</sub> | <sub><sup>**Salman2020Do_R18**</sup></sub> | <sub>*[None](None)*</sub> | <sub>0.53%</sub> | <sub>0.25%</sub> | <sub>None</sub> | <sub>None</sub> |
+| <sub>**5**</sub> | <sub><sup>**Salman2020Do_R18**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>52.92%</sub> | <sub>25.32%</sub> | <sub>ResNet-18</sub> | <sub>NeurIPS 2020</sub> |
 | <sub>**6**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>0.00%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
 
 

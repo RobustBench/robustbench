@@ -434,6 +434,6 @@ def parse_args():
                         type=str,
                         default='cuda:0',
                         help='device to use for computations')
-    parser.add_argument('--to_disk', type=bool, default=True)
+    parser.add_argument('--to_disk', type=bool, default=False)
     args = parser.parse_args()
     return args
