@@ -82,9 +82,9 @@ This will also install all the dependencies but `torch` and `torchvision`. We le
 of the most suitable versions for your hardware up to you. We're currently supporting `torch>=1.7.0`
 .
 
-Now let's try to load CIFAR-10 and one of the most robust CIFAR-10 models
-from [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736)
-that achieves 59.53% robust accuracy evaluated with AA under eps=8/255:
+Now let's try to load CIFAR-10 and some quite robust CIFAR-10 models from 
+[Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.53% robust accuracy evaluated with AA under 
+`eps=8/255`:
 
 ```python
 from robustbench.data import load_cifar10
@@ -161,6 +161,8 @@ and explained from the frequency perspective in [A Fourier Perspective on Model 
 However, on average adversarial training *does* help on CIFAR-10-C. One can check this easily by loading all types of corruptions 
 via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on them.
 
+
+
 ## Model Zoo
 In order to use a model, you just need to know its ID, e.g. **Carmon2019Unlabeled**, and to run:
 
@@ -171,11 +173,23 @@ model = load_model(model_name='Carmon2019Unlabeled', dataset='cifar10', threat_m
 ```
 which automatically downloads the model (all models are defined in `model_zoo/models.py`).
 
-You can find all available model IDs in the tables below (note that the full leaderboard contains more models): 
+Reproducing evaluation of models from the Model Zoo can be done directly from the command line. Here is an example of 
+an evaluation of `Salman2020Do_R18` model with AutoAttack on ImageNet for `eps=4/255=0.0156862745`:
+```python
+python -m robustbench.eval --n_ex=5000 --dataset=imagenet --threat_model=Linf --model_name=Salman2020Do_R18 --data_dir=/tmldata1/andriush/imagenet --batch_size=128 --eps=0.0156862745
+```
+Note that the validation set of ImageNet is **not** downloaded automatically (unlike CIFAR-10 and CIFAR-100) due to
+its licensing, so you have to do that in advance. For this, you can obtain the download link [here](https://image-net.org/download.php) 
+(requires just signing up from an academic email, the approval system there is automatic and happens instantly) and then follow
+the instructions [here](https://github.com/soumith/imagenet-multiGPU.torch#data-processing) to extract the validation 
+set in a pytorch-compatible format into folder `val`.
+
+You can find all available model IDs in the tables below (note that the full leaderboard contains a bit more models): 
+
 
 ### CIFAR-10
 
-#### Linf
+#### Linf, eps=8/255
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
@@ -223,7 +237,7 @@ You can find all available model IDs in the tables below (note that the full lea
 
 
 
-#### L2
+#### L2, eps=0.5
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
@@ -253,17 +267,21 @@ You can find all available model IDs in the tables below (note that the full lea
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.83%</sub> | <sub>89.09%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
-| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.08%</sub> | <sub>88.82%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
-| <sub>**3**</sub> | <sub><sup>**Kireev2021Effectiveness_RLATAugMixNoJSD**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.77%</sub> | <sub>88.53%</sub> | <sub>PreActResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**4**</sub> | <sub><sup>**Kireev2021Effectiveness_AugMixNoJSD**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.97%</sub> | <sub>86.60%</sub> | <sub>PreActResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**5**</sub> | <sub><sup>**Kireev2021Effectiveness_Gauss50percent**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.24%</sub> | <sub>85.04%</sub> | <sub>PreActResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**6**</sub> | <sub><sup>**Kireev2021Effectiveness_RLAT**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.10%</sub> | <sub>84.10%</sub> | <sub>PreActResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**7**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>73.46%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
+| <sub>**1**</sub> | <sub><sup>**Kireev2021Effectiveness_RLATAugMix**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.75%</sub> | <sub>89.60%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.83%</sub> | <sub>89.09%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.08%</sub> | <sub>88.82%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
+| <sub>**4**</sub> | <sub><sup>**Kireev2021Effectiveness_RLATAugMixNoJSD**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.77%</sub> | <sub>88.53%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**5**</sub> | <sub><sup>**Rebuffi2021Fixing_70_16_cutmix_extra_L2**</sup></sub> | <sub>*[Fixing Data Augmentation to Improve Adversarial Robustness](https://arxiv.org/abs/2103.01946)*</sub> | <sub>92.23%</sub> | <sub>88.23%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**6**</sub> | <sub><sup>**Kireev2021Effectiveness_AugMixNoJSD**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.97%</sub> | <sub>86.60%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**7**</sub> | <sub><sup>**Kireev2021Effectiveness_Gauss50percent**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.24%</sub> | <sub>85.04%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**8**</sub> | <sub><sup>**Kireev2021Effectiveness_RLAT**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.10%</sub> | <sub>84.10%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**9**</sub> | <sub><sup>**Rebuffi2021Fixing_70_16_cutmix_extra_Linf**</sup></sub> | <sub>*[Fixing Data Augmentation to Improve Adversarial Robustness](https://arxiv.org/abs/2103.01946)*</sub> | <sub>92.23%</sub> | <sub>82.82%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**10**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>73.46%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
-### CIFAR 100
 
-#### Linf
+### CIFAR-100
+
+#### Linf, eps=8/255 
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
@@ -286,8 +304,35 @@ You can find all available model IDs in the tables below (note that the full lea
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.54%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
-| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.63%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.14%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.11%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Gowal2020Uncovering_extra_Linf**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>69.15%</sub> | <sub>56.00%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**4**</sub> | <sub><sup>**Gowal2020Uncovering_Linf**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>60.86%</sub> | <sub>49.46%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+
+
+### ImageNet
+
+#### Linf, eps=4/255
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub><sup>**Salman2020Do_50_2**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>68.46%</sub> | <sub>38.14%</sub> | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**2**</sub> | <sub><sup>**Salman2020Do_R50**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>64.02%</sub> | <sub>34.96%</sub> | <sub>ResNet-50</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>62.56%</sub> | <sub>29.22%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
+| <sub>**4**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>55.62%</sub> | <sub>26.24%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
+| <sub>**5**</sub> | <sub><sup>**Salman2020Do_R18**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>52.92%</sub> | <sub>25.32%</sub> | <sub>ResNet-50</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**6**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>0.00%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
+
+#### Corruptions
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020Many**</sup></sub> | <sub>*[The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization](https://arxiv.org/abs/2006.16241)*</sub> | <sub>76.88%</sub> | <sub>51.61%</sub> | <sub>ResNet-50</sub> | <sub>ICCV 2021</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.98%</sub> | <sub>46.91%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Geirhos2018_SIN_IN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>74.88%</sub> | <sub>44.48%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**4**</sub> | <sub><sup>**Geirhos2018_SIN_IN_IN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>77.44%</sub> | <sub>40.77%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**5**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>38.12%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
+| <sub>**6**</sub> | <sub><sup>**Geirhos2018_SIN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>60.24%</sub> | <sub>37.95%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**7**</sub> | <sub><sup>**Salman2020Do_50_2_Linf**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>68.46%</sub> | <sub>34.60%</sub> | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
+
 
 ## Notebooks
 
@@ -325,26 +370,24 @@ In the following sections there are some tips on how to prepare the claim.
 
 ##### Claim
 
-The claim can be computed in the following way:
+The claim can be computed in the following way (example for `cifar10`, `Linf` threat model):
 
 ```python
 import torch
 
 from robustbench import benchmark
-from myrobust model
-import MyRobustModel
+from myrobust model import MyRobustModel
 
-threat_model = "Linf"  # One of {"Linf", "L2", "corruptions"}
-dataset = "cifar10"  # For the moment "cifar10" only is supported
+threat_model = "Linf"  # one of {"Linf", "L2", "corruptions"}
+dataset = "cifar10"  # one of {"cifar10", "cifar100", "imagenet"}
 
 model = MyRobustModel()
 model_name = "<Name><Year><FirstWordOfTheTitle>"
 device = torch.device("cuda:0")
 
 clean_acc, robust_acc = benchmark(model, model_name=model_name, n_examples=10000, dataset=dataset,
-                                  threat_model=threat_model, eps=8 / 255, device=device,
+                                  threat_model=threat_model, eps=8/255, device=device,
                                   to_disk=True)
-
 ```
 
 In particular, the `to_disk` argument, if `True`, generates a json file at the path
@@ -428,8 +471,8 @@ downloaded automatically from Google Drive:
 
 ```python
     ('Rice2020Overfitting', {
-    'model': Rice2020OverfittingNet(34, 20),
-    'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
+        'model': Rice2020OverfittingNet(34, 20),
+        'gdrive_id': '1vC_Twazji7lBjeMQvAD9uEQxi9Nx2oG-',
 })
 ```
 

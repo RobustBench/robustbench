@@ -4,11 +4,11 @@
   "authors": "Logan Engstrom, Andrew Ilyas, Hadi Salman, Shibani Santurkar, Dimitris Tsipras",
   "additional_data": false,
   "number_forward_passes": 1,
-  "dataset": "cifar10",
-  "venue": "GitHub,<br>Sep 2019",
+  "dataset": "imagenet",
+  "venue": "GitHub,<br>Oct 2019",
   "architecture": "ResNet-50",
-  "eps": "0.5",
-  "clean_acc": "90.83",
-  "reported": "70.11",
-  "autoattack_acc": "69.24"
+  "eps": "4/255",
+  "clean_acc": "62.56",
+  "reported": "33.38",
+  "autoattack_acc": "29.22"
 }

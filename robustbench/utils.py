@@ -70,6 +70,13 @@ def rm_substr_from_state_dict(state_dict, substr):
     return new_state_dict
 
 
+def add_substr_to_state_dict(state_dict, substr):
+    new_state_dict = OrderedDict()
+    for k, v in state_dict.items():
+        new_state_dict[substr + k] = v
+    return new_state_dict
+
+
 def load_model(model_name: str,
                model_dir: Union[str, Path] = './models',
                dataset: Union[str,
@@ -106,6 +113,9 @@ def load_model(model_name: str,
 
     if not isinstance(models[model_name]['gdrive_id'], list):
         model = models[model_name]['model']()
+        if dataset_ == BenchmarkDataset.imagenet and 'Standard' in model_name:
+            return model.eval()
+        
         if not os.path.exists(model_dir_):
             os.makedirs(model_dir_)
         if not os.path.isfile(model_path):
@@ -125,7 +135,11 @@ def load_model(model_name: str,
             state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
             state_dict = rm_substr_from_state_dict(state_dict, 'model.')
 
-        model = _safe_load_state_dict(model, model_name, state_dict)
+        if dataset_ == BenchmarkDataset.imagenet:
+            # so far all models need input normalization, which is added as extra layer
+            state_dict = add_substr_to_state_dict(state_dict, 'model.')
+        
+        model = _safe_load_state_dict(model, model_name, state_dict, dataset_)
 
         return model.eval()
 
@@ -146,32 +160,37 @@ def load_model(model_name: str,
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
             model.models[i] = _safe_load_state_dict(model.models[i],
-                                                    model_name, state_dict)
+                                                    model_name, state_dict,
+                                                    dataset_)
             model.models[i].eval()
 
         return model.eval()
 
 
 def _safe_load_state_dict(model: nn.Module, model_name: str,
-                          state_dict: Dict[str, torch.Tensor]) -> nn.Module:
+                          state_dict: Dict[str, torch.Tensor],
+                          dataset_: BenchmarkDataset) -> nn.Module:
     known_failing_models = {
         "Andriushchenko2020Understanding", "Augustin2020Adversarial",
         "Engstrom2019Robustness", "Pang2020Boosting", "Rice2020Overfitting",
         "Rony2019Decoupling", "Wong2020Fast", "Hendrycks2020AugMix_WRN",
         "Hendrycks2020AugMix_ResNeXt", "Kireev2021Effectiveness_Gauss50percent",
         "Kireev2021Effectiveness_AugMixNoJSD", "Kireev2021Effectiveness_RLAT",
-        "Kireev2021Effectiveness_RLATAugMixNoJSD", "Chen2020Efficient",
+        "Kireev2021Effectiveness_RLATAugMixNoJSD", "Kireev2021Effectiveness_RLATAugMixNoJSD",
+        "Kireev2021Effectiveness_RLATAugMix", "Chen2020Efficient",
         "Wu2020Adversarial", "Augustin2020Adversarial_34_10",
         "Augustin2020Adversarial_34_10_extra"
     }
 
     failure_messages = ['Missing key(s) in state_dict: "mu", "sigma".',
-                        'Unexpected key(s) in state_dict: "model_preact_hl1.1.weight"']
+                        'Unexpected key(s) in state_dict: "model_preact_hl1.1.weight"',
+                        'Missing key(s) in state_dict: "normalize.mean", "normalize.std"']
 
     try:
         model.load_state_dict(state_dict, strict=True)
     except RuntimeError as e:
-        if model_name in known_failing_models and any([msg in str(e) for msg in failure_messages]):
+        if (model_name in known_failing_models or dataset_ == BenchmarkDataset.imagenet
+            ) and any([msg in str(e) for msg in failure_messages]):
             model.load_state_dict(state_dict, strict=False)
         else:
             raise e
@@ -325,13 +344,16 @@ def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset],
     entries = []
 
     for json_path in jsons_dir.glob("*.json"):
-        model_name = json_path.stem.split("_")[0]
-
+        if not json_path.stem.startswith('Standard'):
+            model_name = json_path.stem.split("_")[0]
+        else:
+            model_name = json_path.stem
+        
         with open(json_path, 'r') as model_info:
             model_dict = json.load(model_info)
 
-        str_curr = '\\citet{{{}}}'.format(model_name) if not model_name in [
-            'Standard'] else model_name
+        str_curr = '\\citet{{{}}}'.format(model_name) if not model_name in ['Standard', 'Standard_R50'] \
+            else model_name.replace('_', '\\_')
 
         for k in l_keys:
             if k == 'external' and not 'external' in model_dict.keys():
@@ -342,7 +364,7 @@ def get_leaderboard_latex(dataset: Union[str, BenchmarkDataset],
                 v = model_dict[k].replace('WideResNet', 'WRN')
                 v = v.replace('ResNet', 'RN')
             elif k == 'modelzoo_id':
-                print(json_path.stem)
+                # print(json_path.stem)
                 v = json_path.stem.split('.json')[0]
                 if not v in models.keys():
                     v = 'N/A'
@@ -428,6 +450,10 @@ def parse_args():
                         type=str,
                         default='./models',
                         help='where to store downloaded models')
+    parser.add_argument('--seed',
+                        type=int,
+                        default=0,
+                        help='random seed')
     parser.add_argument('--device',
                         type=str,
                         default='cuda:0',
