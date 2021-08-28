@@ -623,6 +623,10 @@ common_corruptions = OrderedDict([
         'model': Kireev2021EffectivenessNet,
         'gdrive_id': '1hgJuvLPSVQMbUczn8qnIphONlJePsWgU',
     }),
+    ('Kireev2021Effectiveness_RLATAugMix', {
+        'model': Kireev2021EffectivenessNet,
+        'gdrive_id': '19HNTdqJiuNyqFqIarPejniJEjZ3RQ_nj',
+    }),
     ('Standard', {
         'model': lambda: WideResNet(depth=28, widen_factor=10),
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
