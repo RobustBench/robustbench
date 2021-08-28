@@ -51,12 +51,12 @@ common_corruptions = OrderedDict(
             'gdrive_id': '1hLgeY_rQIaOT4R-t_KyOqPNkczfaedgs',
             'preprocessing': 'Res256Crop224'
         }),
-        ('Geirhos2018_SIN_and_IN', {
+        ('Geirhos2018_SIN_IN', {
             'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
             'gdrive_id': '139pWopDnNERObZeLsXUysRcLg6N1iZHK',
             'preprocessing': 'Res256Crop224'
         }),
-        ('Geirhos2018_SIN_and_IN_then_finetuned_on_IN', {
+        ('Geirhos2018_SIN_IN_IN', {
             'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
             'gdrive_id': '1xOvyuxpOZ8I5CZOi0EGYG_R6tu3ZaJdO',
             'preprocessing': 'Res256Crop224'
