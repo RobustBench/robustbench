@@ -255,10 +255,12 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.83%</sub> | <sub>89.09%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
 | <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>95.08%</sub> | <sub>88.82%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
 | <sub>**3**</sub> | <sub><sup>**Kireev2021Effectiveness_RLATAugMixNoJSD**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.77%</sub> | <sub>88.53%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**4**</sub> | <sub><sup>**Kireev2021Effectiveness_AugMixNoJSD**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.97%</sub> | <sub>86.60%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**5**</sub> | <sub><sup>**Kireev2021Effectiveness_Gauss50percent**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.24%</sub> | <sub>85.04%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**6**</sub> | <sub><sup>**Kireev2021Effectiveness_RLAT**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.10%</sub> | <sub>84.10%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
-| <sub>**7**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>73.46%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
+| <sub>**4**</sub> | <sub><sup>**Rebuffi2021Fixing_70_16_cutmix_extra_L2**</sup></sub> | <sub>*[Fixing Data Augmentation to Improve Adversarial Robustness](https://arxiv.org/abs/2103.01946)*</sub> | <sub>92.23%</sub> | <sub>88.23%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**5**</sub> | <sub><sup>**Kireev2021Effectiveness_AugMixNoJSD**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>94.97%</sub> | <sub>86.60%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**6**</sub> | <sub><sup>**Kireev2021Effectiveness_Gauss50percent**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.24%</sub> | <sub>85.04%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**7**</sub> | <sub><sup>**Kireev2021Effectiveness_RLAT**</sup></sub> | <sub>*[On the effectiveness of adversarial training against common corruptions](https://arxiv.org/abs/2103.02325)*</sub> | <sub>93.10%</sub> | <sub>84.10%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**8**</sub> | <sub><sup>**Rebuffi2021Fixing_70_16_cutmix_extra_Linf**</sup></sub> | <sub>*[Fixing Data Augmentation to Improve Adversarial Robustness](https://arxiv.org/abs/2103.01946)*</sub> | <sub>92.23%</sub> | <sub>82.82%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Mar 2021</sub> |
+| <sub>**9**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>73.46%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
 
 ### CIFAR-100
@@ -284,8 +286,10 @@ You can find all available model IDs in the tables below (note that the full lea
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.54%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
-| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.63%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.14%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.11%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Gowal2020Uncovering_extra_Linf**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>69.15%</sub> | <sub>56.00%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
+| <sub>**4**</sub> | <sub><sup>**Gowal2020Uncovering_Linf**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>60.86%</sub> | <sub>49.46%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
 
 
 ### ImageNet
@@ -301,7 +305,18 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**6**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>0.00%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
 
 #### Corruptions
-
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020Many**</sup></sub> | <sub>*[The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization
+](https://arxiv.org/abs/2006.16241)*</sub> | <sub>76.88%</sub> | <sub>51.61%</sub> | <sub>ResNet-50</sub> | <sub>ICCV 2021</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.98%</sub> | <sub>46.91%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Geirhos2018_SIN_and_IN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness
+](https://arxiv.org/abs/1811.12231)*</sub> | <sub>74.88%</sub> | <sub>44.48%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**4**</sub> | <sub><sup>**Geirhos2018_SIN_and_IN_then_finetuned_on_IN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness
+](https://arxiv.org/abs/1811.12231)*</sub> | <sub>77.44%</sub> | <sub>40.77%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**5**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>38.12%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
+| <sub>**6**</sub> | <sub><sup>**Geirhos2018_SIN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness
+](https://arxiv.org/abs/1811.12231)*</sub> | <sub>60.24%</sub> | <sub>37.95%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
 
 
 ## Notebooks
