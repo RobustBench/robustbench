@@ -11,5 +11,6 @@
   "clean_acc": "55.62",
   "reported": "30.18",
   "footnote": "Focuses on fast adversarial training.",
-  "autoattack_acc": "26.24"
+  "autoattack_acc": "26.24",
+  "unreliable": false
 }
