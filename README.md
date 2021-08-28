@@ -313,6 +313,7 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**4**</sub> | <sub><sup>**Geirhos2018_SIN_and_IN_then_finetuned_on_IN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>77.44%</sub> | <sub>40.77%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
 | <sub>**5**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>38.12%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
 | <sub>**6**</sub> | <sub><sup>**Geirhos2018_SIN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>60.24%</sub> | <sub>37.95%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**7**</sub> | <sub><sup>**Salman2020Do_50_2_Linf**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>68.46%</sub> | <sub>34.60%</sub> | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
 
 
 ## Notebooks
