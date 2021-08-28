@@ -10,5 +10,5 @@
   "eps": null,
   "clean_acc": "76.28",
   "reported": "64.1",
-  "corruptions_acc": "64.63"
+  "corruptions_acc": "64.11"
 }

@@ -10,6 +10,6 @@
   "eps": "8/255",
   "clean_acc": "60.86",
   "reported": "",
-  "corruptions_acc": "50.17",
+  "corruptions_acc": "49.46",
   "footnote": "Trained for \\(\\ell_{\\infty} \\) robustness with \\(\\varepsilon = 8/255\\)."
 }
