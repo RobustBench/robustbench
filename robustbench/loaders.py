@@ -53,7 +53,7 @@ class CustomDatasetFolder(VisionDataset):
         targets (list): The class_index value for each image in the dataset
     """
 
-    def __init__(self, root, loader, extensions=None, transform=None, target_transform=None):
+    def __init__(self, root, loader, extensions=None, transform=None, target_transform=None, is_valid_file=None):
         super(CustomDatasetFolder, self).__init__(root)
         self.transform = transform
         self.target_transform = target_transform

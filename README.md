@@ -176,20 +176,20 @@ which automatically downloads the model (all models are defined in `model_zoo/mo
 Reproducing evaluation of models from the Model Zoo can be done directly from the command line. Here is an example of 
 an evaluation of `Salman2020Do_R18` model with AutoAttack on ImageNet for `eps=4/255=0.0156862745`:
 ```python
-python -m robustbench.eval --n_ex=5000 --dataset=imagenet --threat_model=Linf --model_name=Salman2020Do_R18 --data_dir=/tmldata1/andriush/imagenet/val --batch_size=128 --eps=0.0156862745
+python -m robustbench.eval --n_ex=5000 --dataset=imagenet --threat_model=Linf --model_name=Salman2020Do_R18 --data_dir=/tmldata1/andriush/imagenet --batch_size=128 --eps=0.0156862745
 ```
 Note that the validation set of ImageNet is **not** downloaded automatically (unlike CIFAR-10 and CIFAR-100) due to
 its licensing, so you have to do that in advance. For this, you can obtain the download link [here](https://image-net.org/download.php) 
 (requires just signing up from an academic email, the approval system there is automatic and happens instantly) and then follow
 the instructions [here](https://github.com/soumith/imagenet-multiGPU.torch#data-processing) to extract the validation 
-set in a pytorch-compatible format.
+set in a pytorch-compatible format into folder `val`.
 
 You can find all available model IDs in the tables below (note that the full leaderboard contains a bit more models): 
 
 
 ### CIFAR-10
 
-#### Linf
+#### Linf, eps=8/255
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
@@ -229,7 +229,7 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**34**</sub> | <sub><sup>**Ding2020MMA**</sup></sub> | <sub>*[MMA Training: Direct Input Space Margin Maximization through Adversarial Training](https://openreview.net/forum?id=HkeryxBtPB)*</sub> | <sub>84.36%</sub> | <sub>41.44%</sub> | <sub>WideResNet-28-4</sub> | <sub>ICLR 2020</sub> |
 | <sub>**35**</sub> | <sub><sup>**Standard**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>94.78%</sub> | <sub>0.00%</sub> | <sub>WideResNet-28-10</sub> | <sub>N/A</sub> |
 
-#### L2
+#### L2, eps=0.5
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
@@ -263,7 +263,7 @@ You can find all available model IDs in the tables below (note that the full lea
 
 ### CIFAR-100
 
-#### Linf
+#### Linf, eps=8/255 
 
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
@@ -290,7 +290,7 @@ You can find all available model IDs in the tables below (note that the full lea
 
 ### ImageNet
 
-#### Linf
+#### Linf, eps=4/255
 | <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Salman2020Do_50_2**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>68.46%</sub> | <sub>38.14%</sub> | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
@@ -299,6 +299,9 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**4**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>55.62%</sub> | <sub>26.24%</sub> | <sub>ResNet-18</sub> | <sub>ICLR 2020</sub> |
 | <sub>**5**</sub> | <sub><sup>**Salman2020Do_R18**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>52.92%</sub> | <sub>25.32%</sub> | <sub>ResNet-50</sub> | <sub>NeurIPS 2020</sub> |
 | <sub>**6**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>0.00%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
+
+#### Corruptions
+
 
 
 ## Notebooks

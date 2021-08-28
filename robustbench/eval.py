@@ -11,8 +11,8 @@ from autoattack import AutoAttack
 from torch import nn
 from tqdm import tqdm
 
-from robustbench.data import DATASET_CORRUPTIONS, load_clean_dataset, \
-    load_corruptions_dataset
+from robustbench.data import CORRUPTIONS, load_clean_dataset, \
+    CORRUPTION_DATASET_LOADERS
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
 from robustbench.model_zoo import model_dicts as all_models
@@ -73,7 +73,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     if dataset == 'imagenet':
         prepr = all_models[dataset_][threat_model_][model_name]['preprocessing']
     else:
-        prepr = None
+        prepr = 'none'
     
     clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
         data_dir, prepr)
@@ -95,20 +95,19 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                eps=eps,
                                version='standard',
                                device=device)
-        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test,
-            bs=batch_size)
+        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test, bs=batch_size)
         adv_accuracy = clean_accuracy(model,
                                       x_adv,
                                       clean_y_test,
                                       batch_size=batch_size,
                                       device=device)
     elif threat_model_ == ThreatModel.corruptions:
-        corruptions = DATASET_CORRUPTIONS[dataset_]
+        corruptions = CORRUPTIONS
         print(f"Evaluating over {len(corruptions)} corruptions")
         # Save into a dict to make a Pandas DF with nested index
         adv_accuracy = corruptions_evaluation(batch_size, data_dir, dataset_,
                                               device, model, n_examples,
-                                              to_disk, model_name)
+                                              to_disk, prepr, model_name)
     else:
         raise NotImplementedError
     print(f'Adversarial accuracy: {adv_accuracy:.2%}')
@@ -127,21 +126,22 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
 def corruptions_evaluation(batch_size: int, data_dir: str,
                            dataset: BenchmarkDataset, device: torch.device,
                            model: nn.Module, n_examples: int, to_disk: bool,
-                           model_name: Optional[str]) -> float:
+                           prepr: str, model_name: Optional[str]) -> float:
     if to_disk and model_name is None:
         raise ValueError(
             "If `to_disk` is True, `model_name` should be specified.")
 
-    corruptions = DATASET_CORRUPTIONS[dataset]
+    corruptions = CORRUPTIONS
     model_results_dict: Dict[Tuple[str, int], float] = {}
     for corruption in tqdm(corruptions):
         for severity in range(1, 6):
-            x_corrupt, y_corrupt = load_corruptions_dataset(
-                dataset,
+            x_corrupt, y_corrupt = CORRUPTION_DATASET_LOADERS[dataset](
                 n_examples,
                 severity,
                 data_dir,
-                corruptions=[corruption])
+                shuffle=False,
+                corruptions=[corruption],
+                prepr=prepr)
 
             corruption_severity_accuracy = clean_accuracy(
                 model,
@@ -149,6 +149,8 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
                 y_corrupt,
                 batch_size=batch_size,
                 device=device)
+            print('corruption={}, severity={}: {:.2%} accuracy'.format(
+                corruption, severity, corruption_severity_accuracy))
 
             model_results_dict[(corruption,
                                 severity)] = corruption_severity_accuracy

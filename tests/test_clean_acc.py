@@ -35,16 +35,13 @@ def _accuracy_computation(success_criterion: Callable[[str, float, str, str], bo
             for model_name in models:
                 # reload dataset if preprocessing is different for the current model (needed for imagenet)
                 curr_preprocessing = threat_model_dict[model_name]['preprocessing'] \
-                    if 'preprocessing' in threat_model_dict[model_name] else None
+                    if 'preprocessing' in threat_model_dict[model_name] else 'none'
                 if curr_preprocessing != last_preprocessing:
                     x_test, y_test = load_clean_dataset(dataset, n_ex, data_dir, curr_preprocessing)
                     last_preprocessing = curr_preprocessing
 
                 model = load_model(model_name, config["model_dir"], dataset, threat_model).to(device)
                 model.eval()
-
-                # saved_xy = torch.load('data/predefined_imgs_Res256Crop224.pt')
-                # x_test, y_test = saved_xy['x_test'], saved_xy['y_test']
 
                 acc = clean_accuracy(model, x_test, y_test,
                                      batch_size=config["batch_size"], device=device)

@@ -44,6 +44,46 @@ linf = OrderedDict(
         }),
     ])
 
-imagenet_models = OrderedDict([(ThreatModel.Linf, linf)])
+common_corruptions = OrderedDict(
+    [
+        ('Geirhos2018_SIN', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '1hLgeY_rQIaOT4R-t_KyOqPNkczfaedgs',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Geirhos2018_SIN_and_IN', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '139pWopDnNERObZeLsXUysRcLg6N1iZHK',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Geirhos2018_SIN_and_IN_then_finetuned_on_IN', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '1xOvyuxpOZ8I5CZOi0EGYG_R6tu3ZaJdO',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Hendrycks2020Many', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '1kylueoLtYtxkpVzoOA1B6tqdbRl2xt9X',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Hendrycks2020AugMix', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '1xRMj1GlO93tLoCMm0e5wEvZwqhIjxhoJ',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Salman2020Do_50_2', {
+            'model': lambda: normalize_model(pt_models.wide_resnet50_2(), mu, sigma),
+            'gdrive_id': '1OT7xaQYljrTr3vGbM37xK9SPoPJvbSKB',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Standard_R50', {
+            'model': lambda: normalize_model(pt_models.resnet50(pretrained=True), mu, sigma),
+            'gdrive_id': '',
+            'preprocessing': 'Res256Crop224'
+        }),
+    ])
+
+imagenet_models = OrderedDict([(ThreatModel.Linf, linf),
+                               (ThreatModel.corruptions, common_corruptions)])
 
 

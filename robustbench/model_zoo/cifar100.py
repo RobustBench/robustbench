@@ -199,6 +199,28 @@ linf = OrderedDict([
 ])
 
 common_corruptions = OrderedDict([
+    ('Gowal2020Uncovering_Linf', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=70,
+                             width=16,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        "16I86x2Vv_HCRKROC86G4dQKgO3Po5mT3"
+    }),
+    ('Gowal2020Uncovering_extra_Linf', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=70,
+                             width=16,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        "1LQBdwO2b391mg7VKcP6I0HIOpC6O83gn"
+    }),
     ('Hendrycks2020AugMix_WRN', {
         'model': Hendrycks2020AugMixWRNNet,
         'gdrive_id': '1XpFFdCdU9LcDtcyNfo6_BV1RZHKKkBVE'
