@@ -344,10 +344,6 @@ linf = OrderedDict(
             'gdrive_id':
             '1kB2qqPQ8qUNmK8VKuTOhT1X4GT46kAoA',
         }),
-        ('Standard', {
-            'model': lambda: WideResNet(depth=28, widen_factor=10),
-            'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
-        }),
         ('Zhang2020Attacks', {
             'model':
             lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
@@ -493,7 +489,11 @@ linf = OrderedDict(
             'model':
             lambda: WideResNet(depth=34, widen_factor=15, sub_block1=True),
             'gdrive_id': '1-3ii3GX93YqIcmJ3VNsOgYA7ecdnSZ0Z',
-        })
+        }),
+        ('Standard', {
+            'model': lambda: WideResNet(depth=28, widen_factor=10),
+            'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
+        }),
     ])
 
 l2 = OrderedDict([
@@ -512,10 +512,6 @@ l2 = OrderedDict([
     ('Rony2019Decoupling', {
         'model': Rony2019DecouplingNet,
         'gdrive_id': '1Oua2ZYSxNvoDrtlY9vTtRzyBWHziE4Uy',
-    }),
-    ('Standard', {
-        'model': lambda: WideResNet(depth=28, widen_factor=10),
-        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     }),
     ('Ding2020MMA', {
         'model': Ding2020MMANet,
@@ -578,7 +574,11 @@ l2 = OrderedDict([
                                       std=CIFAR10_STD),
         'gdrive_id': '1JX82BDVBNO-Ffa2J37EuB8C-aFCbz708'
     }),
-    ])
+    ('Standard', {
+        'model': lambda: WideResNet(depth=28, widen_factor=10),
+        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
+    }),
+])
 
 common_corruptions = OrderedDict([
     ('Rebuffi2021Fixing_70_16_cutmix_extra_Linf', {

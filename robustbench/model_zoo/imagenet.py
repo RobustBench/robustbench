@@ -71,7 +71,7 @@ common_corruptions = OrderedDict(
             'gdrive_id': '1xRMj1GlO93tLoCMm0e5wEvZwqhIjxhoJ',
             'preprocessing': 'Res256Crop224'
         }),
-        ('Salman2020Do_50_2', {
+        ('Salman2020Do_50_2_Linf', {
             'model': lambda: normalize_model(pt_models.wide_resnet50_2(), mu, sigma),
             'gdrive_id': '1OT7xaQYljrTr3vGbM37xK9SPoPJvbSKB',
             'preprocessing': 'Res256Crop224'
