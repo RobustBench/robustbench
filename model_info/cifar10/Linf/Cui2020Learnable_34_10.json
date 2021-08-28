@@ -11,5 +11,6 @@
   "clean_acc": "88.22",
   "reported": "52.86",
   "footnote": "Uses \\(\\ell_{\\infty} \\) = 0.031 \u2248 7.9/255 instead of 8/255",
-  "autoattack_acc": "52.86"
+  "autoattack_acc": "52.86",
+  "unreliable": false
 }
