@@ -38,10 +38,10 @@ To prevent potential overadaptation of new defenses to AutoAttack, we also welco
 
 ## FAQ
 
-**Q**: How does RobustBench leaderboard differ from the [AutoAttack leaderboard](https://github.com/fra31/auto-attack)? 🤔 \
+**Q**: How does the RobustBench leaderboard differ from the [AutoAttack leaderboard](https://github.com/fra31/auto-attack)? 🤔 \
 **A**: The [AutoAttack leaderboard](https://github.com/fra31/auto-attack) was the starting point of RobustBench. Now only the [RobustBench leaderboard](https://robustbench.github.io/) is actively maintained.
 
-**Q**: How is RobustBench different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
+**Q**: How does the RobustBench leaderboard differ from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
 **A**: [robust-ml.org](https://www.robust-ml.org/) focuses on *adaptive* evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
 have been very useful (e.g., see [Tramer et al., 2020](https://arxiv.org/abs/2002.08347)) but they are also very time-consuming and not standardized by definition. Instead, we argue that one can estimate robustness accurately mostly *without* adaptive attacks but for this one has to introduce some restrictions on the considered models. However, we do welcome adaptive evaluations and we are always interested in showing the best known robust accuracy.
 
