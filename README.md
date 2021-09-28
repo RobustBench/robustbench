@@ -15,7 +15,7 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
   
 The goal of **`RobustBench`** is to systematically track the *real* progress in adversarial robustness. 
 There are already [more than 3'000 papers](https://nicholas.carlini.com/writing/2019/all-adversarial-example-papers.html) 
-on this topic, but it is still unclear which approaches really work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
+on this topic, but it is still often unclear which approaches really work and which only lead to [overestimated robustness](https://arxiv.org/abs/1802.00420).
 We start from benchmarking the Linf, L2, and common corruption robustness since these are the most studied settings in the literature. 
 
 Evaluation of the robustness to Lp perturbations *in general* is not straightforward and requires adaptive attacks ([Tramer et al., (2020)](https://arxiv.org/abs/2002.08347)).
@@ -23,7 +23,9 @@ Thus, in order to establish a reliable *standardized* benchmark, we need to impo
 In particular, **we accept only defenses that are (1) have in general non-zero gradients wrt the inputs, (2) have a fully deterministic forward pass (i.e. no randomness) that
 (3) does not have an optimization loop.** Often, defenses that violate these 3 principles only make gradient-based attacks 
 harder but do not substantially improve robustness ([Carlini et al., (2019)](https://arxiv.org/abs/1902.06705)) except those
-that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)).
+that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https://arxiv.org/abs/1902.02918)). 
+
+To prevent potential overadaptation of new defenses to AutoAttack, we also welcome external evaluations based on **adaptive attacks**, especially where AutoAttack [flags](https://github.com/fra31/auto-attack/blob/master/flags_doc.md) a potential overestimation of robustness. For each model, we are interested in the best known robust accuracy and see AutoAttack and adaptive attacks as complementary to each other.
 
 **`RobustBench`** consists of two parts: 
 - a website [https://robustbench.github.io/](https://robustbench.github.io/) with the leaderboard based on many recent papers (plots below 👇)
@@ -33,14 +35,15 @@ that can present concrete provable guarantees (e.g. [Cohen et al., (2019)](https
 <!-- <p align="center"><img src="images/aa_robustness_vs_reported.png" height="260">  <img src="images/aa_robustness_vs_standard.png" height="260"></p> -->
 <p align="center"><img src="images/plots_analysis_jsons.png" width="800"></p>
 
+
 ## FAQ
 
-**Q**: Wait, how does this leaderboard differ from the [AutoAttack leaderboard](https://github.com/fra31/auto-attack)? 🤔 \
-**A**: The [AutoAttack leaderboard](https://github.com/fra31/auto-attack) is maintained simultaneously with the `RobustBench` L2 / Linf leaderboards by [Francesco Croce](https://github.com/fra31/), and all the changes to either of them will be synchronized (given that the 3 restrictions on the models are met for the `RobustBench` leaderboard). One can see the current L2 / Linf `RobustBench` leaderboard as a continuously updated fork of the [AutoAttack leaderboard](https://github.com/fra31/auto-attack) extended by adaptive evaluations, Model Zoo, clear restrictions on the models we accept, and a new leaderboard for common corruptions. And in the future, we will extend `RobustBench` with other threat models and potentially with a different standardized attack if it's shown to perform better than AutoAttack.
+**Q**: How does RobustBench leaderboard differ from the [AutoAttack leaderboard](https://github.com/fra31/auto-attack)? 🤔 \
+**A**: The [AutoAttack leaderboard](https://github.com/fra31/auto-attack) was the starting point of RobustBench. Now only the [RobustBench leaderboard](https://robustbench.github.io/) is actively maintained.
 
-**Q**: Wait, how is it different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
+**Q**: How is RobustBench different from [robust-ml.org](https://www.robust-ml.org/)? 🤔 \
 **A**: [robust-ml.org](https://www.robust-ml.org/) focuses on *adaptive* evaluations, but we provide a **standardized benchmark**. Adaptive evaluations
-are great (e.g., see [Tramer et al., 2020](https://arxiv.org/abs/2002.08347)) but very time consuming and not standardized. Instead, we argue that one can estimate robustness accurately *without* adaptive attacks but for this one has to introduce some restrictions on the considered models.
+have been very useful (e.g., see [Tramer et al., 2020](https://arxiv.org/abs/2002.08347)) but they are also very time-consuming and not standardized by definition. Instead, we argue that one can estimate robustness accurately mostly *without* adaptive attacks but for this one has to introduce some restrictions on the considered models. However, we do welcome adaptive evaluations and we are always interested in showing the best known robust accuracy.
 
 **Q**: How is it related to libraries like `foolbox` / `cleverhans` / `advertorch`? 🤔 \
 **A**: These libraries provide implementations of different *attacks*. Besides the standardized benchmark, **`RobustBench`** 
@@ -57,13 +60,15 @@ robustness to unseen perturbations ([Xie et al. (2019)](https://arxiv.org/abs/19
 stabilization of GAN training ([Zhong et al. (2020)](https://arxiv.org/abs/2008.03364)).
 
 **Q**: What about verified adversarial robustness? 🤔 \
-**A**: We specifically focus on defenses which improve empirical robustness, given the lack of clarity regarding 
+**A**: We mostly focus on defenses which improve empirical robustness, given the lack of clarity regarding 
 which approaches really improve robustness and which only make some particular attacks unsuccessful.
+However, we do not restrict submissions of verifiably robust models (e.g., we have [Zhang et al. (2019)](https://arxiv.org/abs/1906.06316) in our CIFAR-10 Linf leaderboard).
 For methods targeting verified robustness, we encourage the readers to check out [Salman et al. (2019)](https://arxiv.org/abs/1902.08722) 
 and [Li et al. (2020)](https://arxiv.org/abs/2009.04131).
 
 **Q**: What if I have a better attack than the one used in this benchmark? 🤔 \
 **A**: We will be happy to add a better attack or any adaptive evaluation that would complement our default standardized attacks.
+
 
 ## Model Zoo: quick tour
 
@@ -348,23 +353,31 @@ Feel free to suggest a new notebook based on the **Model Zoo** or the jsons from
 are very interested in collecting new insights about benefits and tradeoffs between different
 perturbation types.
 
+
 ## How to contribute
 
 Contributions to **`RobustBench`** are very welcome! You can help to improve **`RobustBench`**:
 
 - Are you an author of a recent paper focusing on improving adversarial robustness? Consider adding
   new models (see the instructions below 👇).
-- Do you have in mind some better *standardized* attack or an adaptive evaluation? Do you want to
+- Do you have in mind some better *standardized* attack? Do you want to
   extend **`RobustBench`** to other threat models? We'll be glad to discuss that!
 - Do you have an idea how to make the existing codebase better? Just open a pull request or create
   an issue and we'll be happy to discuss potential changes.
+
+
+## Adding a new evaluation
+
+In case you have some new (potentially, adaptive) evaluation that leads to a _lower_ robust accuracy than AutoAttack, we will be happy to add it to the leaderboard.
+The easiest way is to **open an issue with the "New external evaluation(s)" template** and fill in all the fields.
+
 
 ## Adding a new model
 
 #### Public model submission (Leaderboard + Model Zoo)
 
 The easiest way to add new models to the leaderboard and/or to the model zoo, is by **opening an issue
-with the "New Model(s)" template**, and fill in all the fields.
+with the "New Model(s)" template** and fill in all the fields.
 
 In the following sections there are some tips on how to prepare the claim.
 
