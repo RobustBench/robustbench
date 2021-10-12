@@ -39,7 +39,7 @@ preferred-citation:
     given-names: "Prateek"
   - family-names: "Hein"
     given-names: "Matthias"
-  booktitle: "Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track"
+  volume-title: "Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track"
   title: "RobustBench: a standardized adversarial robustness benchmark"
   url: https://openreview.net/forum?id=SSKZPJCt7B
   year: 2021
