@@ -519,12 +519,14 @@ running the tests.
 
 Would you like to reference the **`RobustBench`** leaderboard or you are using models from the **Model Zoo**? \
 Then consider citing our [whitepaper](https://arxiv.org/abs/2010.09670):
-```
-@article{croce2020robustbench,
-    title={RobustBench: a standardized adversarial robustness benchmark},
-    author={Croce, Francesco and Andriushchenko, Maksym and Sehwag, Vikash and Debenedetti, Edoardo and Flammarion, Nicolas and Chiang, Mung and Mittal, Prateek and Matthias Hein},
-    journal={arXiv preprint arXiv:2010.09670},
-    year={2020}
+
+```bibtex
+@inproceedings{croce2021robustbench,
+  title     = {RobustBench: a standardized adversarial robustness benchmark},
+  author    = {Croce, Francesco and Andriushchenko, Maksym and Sehwag, Vikash and Debenedetti, Edoardo and Flammarion, Nicolas and Chiang, Mung and Mittal, Prateek and Matthias Hein},
+  booktitle = {Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+  year      = {2021},
+  url       = {https://openreview.net/forum?id=SSKZPJCt7B}
 }
 ```
 
