@@ -12,7 +12,10 @@ from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChe
     PreActBlockV2, PreActResNet, ResNet, ResNet18
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, \
     ResNeXtBottleneck
-from robustbench.model_zoo.architectures.wide_resnet import WideResNet, NetworkBlock, BasicBlock
+from robustbench.model_zoo.architectures.wide_resnet import WideResNet
+from robustbench.model_zoo.architectures.robust_wide_resnet import RobustWideResNet
+from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWideResNet
+
 from robustbench.model_zoo.enums import ThreatModel
 
 
@@ -117,34 +120,6 @@ class Chen2020AdversarialNet(nn.Module):
 
         return (prob1 + prob2 + prob3) / 3
 
-
-class Pang2020BoostingNet(WideResNet):
-    def __init__(self, depth=34, widen_factor=20):
-        super(Pang2020BoostingNet, self).__init__(depth=depth,
-                                                  widen_factor=widen_factor,
-                                                  sub_block1=True,
-                                                  bias_last=False)
-        self.register_buffer(
-            'mu',
-            torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
-        self.register_buffer(
-            'sigma',
-            torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
-
-    def forward(self, x):
-        x = (x - self.mu) / self.sigma
-        out = self.conv1(x)
-        out = self.block1(out)
-        out = self.block2(out)
-        out = self.block3(out)
-        out = self.relu(self.bn1(out))
-        out = F.avg_pool2d(out, 8)
-        out = out.view(-1, self.nChannels)
-        out = F.normalize(out, p=2, dim=1)
-        for _, module in self.fc.named_modules():
-            if isinstance(module, nn.Linear):
-                module.weight.data = F.normalize(module.weight, p=2, dim=1)
-        return self.fc(out)
 
 
 class Wong2020FastNet(PreActResNet):
@@ -288,54 +263,6 @@ class Chen2020EfficientNet(WideResNet):
         return super().forward(x)
 
 
-class RobustWideResNet(nn.Module):
-    def __init__(self, num_classes=10, channel_configs=[16, 160, 320, 640],
-                 depth_configs=[5, 5, 5], stride_config=[1, 2, 2],
-                 drop_rate_config=[0.0, 0.0, 0.0]):
-        super(RobustWideResNet, self).__init__()
-        assert len(channel_configs) - 1 == len(depth_configs) == len(stride_config) == len(drop_rate_config)
-        self.channel_configs = channel_configs
-        self.depth_configs = depth_configs
-        self.stride_config = stride_config
-
-        self.stem_conv = nn.Conv2d(3, channel_configs[0], kernel_size=3,
-                                   stride=1, padding=1, bias=False)
-        self.blocks = nn.ModuleList([])
-        for i, stride in enumerate(stride_config):
-            self.blocks.append(NetworkBlock(block=BasicBlock,
-                                            nb_layers=depth_configs[i],
-                                            in_planes=channel_configs[i],
-                                            out_planes=channel_configs[i+1],
-                                            stride=stride,
-                                            dropRate=drop_rate_config[i],))
-
-        # global average pooling and classifier
-        self.bn1 = nn.BatchNorm2d(channel_configs[-1])
-        self.relu = nn.ReLU(inplace=True)
-        self.global_pooling = nn.AdaptiveAvgPool2d(1)
-        self.fc = nn.Linear(channel_configs[-1], num_classes)
-        self.fc_size = channel_configs[-1]
-
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                m.weight.data.normal_(0, math.sqrt(2. / n))
-            elif isinstance(m, nn.BatchNorm2d) or isinstance(m, nn.GroupNorm):
-                m.weight.data.fill_(1)
-                m.bias.data.zero_()
-            elif isinstance(m, nn.Linear):
-                m.bias.data.zero_()
-
-    def forward(self, x):
-        out = self.stem_conv(x)
-        for i, block in enumerate(self.blocks):
-            out = block(out)
-        out = self.relu(self.bn1(out))
-        out = self.global_pooling(out)
-        out = out.view(-1, self.fc_size)
-        out = self.fc(out)
-        return out
-
 
 linf = OrderedDict(
     [
@@ -397,7 +324,7 @@ linf = OrderedDict(
             '1nInDeIyZe2G-mJFxQJ3UoclQNomWjMgm',
         }),
         ('Pang2020Boosting', {
-            'model': Pang2020BoostingNet,
+            'model': BoostingWideResNet,
             'gdrive_id': '1iNWOj3MP7kGe8yTAS4XnDaDXDLt0mwqw',
         }),
         ('Wong2020Fast', {

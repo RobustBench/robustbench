@@ -11,5 +11,6 @@
   "clean_acc": "91.23",
   "reported": "62.54",
   "autoattack_acc": "62.54",
+  "footnote": "Uses exponential moving average (EMA)",
   "unreliable": false
 }
