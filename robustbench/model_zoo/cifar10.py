@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 import torch
+import math
 import torch.nn.functional as F
 from torch import nn
 
@@ -12,6 +13,9 @@ from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChe
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, \
     ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
+from robustbench.model_zoo.architectures.robust_wide_resnet import RobustWideResNet
+from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWideResNet
+
 from robustbench.model_zoo.enums import ThreatModel
 
 
@@ -116,34 +120,6 @@ class Chen2020AdversarialNet(nn.Module):
 
         return (prob1 + prob2 + prob3) / 3
 
-
-class Pang2020BoostingNet(WideResNet):
-    def __init__(self, depth=34, widen_factor=20):
-        super(Pang2020BoostingNet, self).__init__(depth=depth,
-                                                  widen_factor=widen_factor,
-                                                  sub_block1=True,
-                                                  bias_last=False)
-        self.register_buffer(
-            'mu',
-            torch.tensor([0.4914, 0.4822, 0.4465]).view(1, 3, 1, 1))
-        self.register_buffer(
-            'sigma',
-            torch.tensor([0.2471, 0.2435, 0.2616]).view(1, 3, 1, 1))
-
-    def forward(self, x):
-        x = (x - self.mu) / self.sigma
-        out = self.conv1(x)
-        out = self.block1(out)
-        out = self.block2(out)
-        out = self.block3(out)
-        out = self.relu(self.bn1(out))
-        out = F.avg_pool2d(out, 8)
-        out = out.view(-1, self.nChannels)
-        out = F.normalize(out, p=2, dim=1)
-        for _, module in self.fc.named_modules():
-            if isinstance(module, nn.Linear):
-                module.weight.data = F.normalize(module.weight, p=2, dim=1)
-        return self.fc(out)
 
 
 class Wong2020FastNet(PreActResNet):
@@ -287,6 +263,7 @@ class Chen2020EfficientNet(WideResNet):
         return super().forward(x)
 
 
+
 linf = OrderedDict(
     [
         ('Andriushchenko2020Understanding', {
@@ -347,7 +324,7 @@ linf = OrderedDict(
             '1nInDeIyZe2G-mJFxQJ3UoclQNomWjMgm',
         }),
         ('Pang2020Boosting', {
-            'model': Pang2020BoostingNet,
+            'model': BoostingWideResNet,
             'gdrive_id': '1iNWOj3MP7kGe8yTAS4XnDaDXDLt0mwqw',
         }),
         ('Wong2020Fast', {
@@ -560,6 +537,21 @@ linf = OrderedDict(
                                  std=CIFAR10_STD),
             'gdrive_id': '1AOF6LxnwgS5fCz_lVLYqs_wnUYuv6O7z'
         }),
+        ('Huang2021Exploring', {
+            'model':
+            lambda: RobustWideResNet(num_classes=10,
+                                     channel_configs=[16, 320, 640, 512],
+                                     depth_configs=[5, 5, 5]),
+            'gdrive_id': '1-2ram-xtoEidOh1SCYY5KTiyKieINkZe'
+        }),
+        ('Huang2021Exploring_ema', {
+            'model':
+            lambda: RobustWideResNet(num_classes=10,
+                                     channel_configs=[16, 320, 640, 512],
+                                     depth_configs=[5, 5, 5]),
+            'gdrive_id': '1-GRwO5t9HxOS2y6RFK8QEsDXjdcgmVu6'
+        }),
+
 ])
 
 l2 = OrderedDict([
