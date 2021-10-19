@@ -11,7 +11,7 @@ from torch.utils.data import Dataset
 
 from robustbench.model_zoo.enums import BenchmarkDataset
 from robustbench.zenodo_download import DownloadError, zenodo_download
-from robustbench.loaders import CustomImageFolder
+# from robustbench.loaders import CustomImageFolder
 
 
 PREPROCESSINGS = {
