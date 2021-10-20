@@ -143,7 +143,7 @@ def load_model(model_name: str,
 
         return model.eval()
 
-    # If we have an ensemble of models (e.g., Chen2020Adversarial)
+    # If we have an ensemble of models (e.g., Chen2020Adversarial, Diffenderfer2021Winning_LRR_CARD_Deck)
     else:
         model = models[model_name]['model']()
         if not os.path.exists(model_dir_):
@@ -163,6 +163,7 @@ def load_model(model_name: str,
                                                     model_name, state_dict,
                                                     dataset_)
             model.models[i].eval()
+            model.models[i].cuda()  # Necessary for running ensembles on GPU; ideally load_model would have device argument
 
         return model.eval()
 
@@ -179,12 +180,15 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
         "Kireev2021Effectiveness_RLATAugMixNoJSD", "Kireev2021Effectiveness_RLATAugMixNoJSD",
         "Kireev2021Effectiveness_RLATAugMix", "Chen2020Efficient",
         "Wu2020Adversarial", "Augustin2020Adversarial_34_10",
-        "Augustin2020Adversarial_34_10_extra"
+        "Augustin2020Adversarial_34_10_extra", "Diffenderfer2021Winning_LRR",
+        "Diffenderfer2021Winning_LRR_CARD_Deck", "Diffenderfer2021Winning_Binary",
+        "Diffenderfer2021Winning_Binary_CARD_Deck"
     }
 
     failure_messages = ['Missing key(s) in state_dict: "mu", "sigma".',
                         'Unexpected key(s) in state_dict: "model_preact_hl1.1.weight"',
-                        'Missing key(s) in state_dict: "normalize.mean", "normalize.std"']
+                        'Missing key(s) in state_dict: "normalize.mean", "normalize.std"',
+                        'Unexpected key(s) in state_dict: "conv1.scores"']
 
     try:
         model.load_state_dict(state_dict, strict=True)
