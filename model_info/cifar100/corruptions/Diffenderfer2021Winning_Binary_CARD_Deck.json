@@ -6,7 +6,7 @@
   "number_forward_passes": 6,
   "dataset": "cifar100",
   "venue": "NeurIPS 2021",
-  "architecture": "WideResNet-18",
+  "architecture": "WideResNet-18-2",
   "eps": null,
   "clean_acc": "78.50",
   "reported": "69.09",
