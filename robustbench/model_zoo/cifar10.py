@@ -17,6 +17,7 @@ from robustbench.model_zoo.architectures.robust_wide_resnet import RobustWideRes
 from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWideResNet
 
 from robustbench.model_zoo.enums import ThreatModel
+from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreActResNet
 
 
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
@@ -261,6 +262,83 @@ class Chen2020EfficientNet(WideResNet):
     def forward(self, x):
         x = (x - self.mu) / self.sigma
         return super().forward(x)
+
+class Diffenderfer2021CARD(LRR_ResNet):
+    def __init__(self, width=128):
+        super(Diffenderfer2021CARD, self).__init__(width=width)
+        self.register_buffer('mu', torch.tensor([0.491, 0.482, 0.447]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.247, 0.243, 0.262]).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
+
+
+class Diffenderfer2021CARD_Deck(nn.Module):
+    def __init__(self, width=128):
+        super(Diffenderfer2021CARD_Deck, self).__init__()
+        self.num_cards = 6
+        self.models = []
+
+        for i in range(self.num_cards):
+            self.models.append(LRR_ResNet(width=width))
+
+        self.register_buffer('mu', torch.tensor([0.491, 0.482, 0.447]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.247, 0.243, 0.262]).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+
+        x_cl = x.clone() # clone to make sure x is not changed by inplace methods
+        out_list = []
+        for i in range(self.num_cards):
+          # Evaluate model i at input
+          out = self.models[i](x_cl)
+          # Compute softmax
+          out = torch.softmax(out,dim=1)
+          # Append output to list of logits
+          out_list.append(out)
+
+        return torch.mean(torch.stack(out_list),dim=0)
+
+
+class Diffenderfer2021CARD_Binary(WidePreActResNet):
+    def __init__(self, num_classes=10):
+        super(Diffenderfer2021CARD_Binary, self).__init__(num_classes=num_classes)
+        self.register_buffer('mu', torch.tensor([0.491, 0.482, 0.447]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.247, 0.243, 0.262]).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
+
+
+class Diffenderfer2021CARD_Deck_Binary(torch.nn.Module):
+    def __init__(self, num_classes=10):
+        super(Diffenderfer2021CARD_Deck_Binary, self).__init__()
+        self.num_cards = 6
+        self.models = []
+
+        for i in range(self.num_cards):
+            self.models.append(WidePreActResNet(num_classes=num_classes))
+
+        self.register_buffer('mu', torch.tensor([0.491, 0.482, 0.447]).view(1, 3, 1, 1))
+        self.register_buffer('sigma', torch.tensor([0.247, 0.243, 0.262]).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+
+        x_cl = x.clone() # clone to make sure x is not changed by inplace methods
+        out_list = []
+        for i in range(self.num_cards):
+          # Evaluate model i at input
+          out = self.models[i](x_cl)
+          # Compute softmax
+          out = torch.softmax(out,dim=1)
+          # Append output to list of logits
+          out_list.append(out)
+
+        return torch.mean(torch.stack(out_list),dim=0)
 
 
 
@@ -689,6 +767,38 @@ l2 = OrderedDict([
 
 
 common_corruptions = OrderedDict([
+
+ ('Diffenderfer2021Winning_LRR', {
+        'model': Diffenderfer2021CARD,
+        'gdrive_id': '1-NFL1OxfXgC0peeAV7G60ohhESO-8G0c'
+    }),
+    ('Diffenderfer2021Winning_LRR_CARD_Deck', {
+        'model': Diffenderfer2021CARD_Deck,
+        'gdrive_id': [
+            '1-R56enDUZ3oY74zfmj8M5ogBsV2SEHFR', 
+            '1-_3eqvtBxTn-Afvg4fB5d4lx1cDi_AqC', 
+            '1-cY0IYzLQrXzTa3LQvl6d26KnocsSurs', 
+            '1-phHz-8gnNjN-m08pT_dagsW7Fa5-aTQ', 
+            '1-ryE4owBqQ1HiWS6L60eW5YTPII_88MH', 
+            '1-vka-h7krlJOjN7SRKMW5aDY73_WuZI2'
+        ],
+    }),
+    ('Diffenderfer2021Winning_Binary', {
+        'model': Diffenderfer2021CARD_Binary,
+        'gdrive_id': '101VSovRuFA0M7idR9ioeVn-UxROdJUYu'
+    }),
+    ('Diffenderfer2021Winning_Binary_CARD_Deck', {
+        'model': Diffenderfer2021CARD_Deck_Binary,
+        'gdrive_id': [
+            '10BOwYD-JdPguAp3dc4owWcyTI_MRWzmG', 
+            '10IuU66vHBNXVmzeY3VCfpRjGoMOpsGkl', 
+            '10WGSGQ0EHaJ0QZcoS0fAPqzlqwzGY-o2', 
+            '10X1mo5I6fKhlZzQQeLFbjnHvOHJupHeC', 
+            '10d8-swRiQutUSbSKksGwKeZfn8poYF3y', 
+            '10ilDm_fojXiQve_LaHApbNalBpk6v53Z'  
+        ],
+    }),
+
     ('Rebuffi2021Fixing_70_16_cutmix_extra_Linf', {
         'model': lambda: DMWideResNet(num_classes=10,
                                       depth=70,
