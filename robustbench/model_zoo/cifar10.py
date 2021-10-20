@@ -629,6 +629,16 @@ linf = OrderedDict(
                                      depth_configs=[5, 5, 5]),
             'gdrive_id': '1-GRwO5t9HxOS2y6RFK8QEsDXjdcgmVu6'
         }),
+        ('Gowal2021Improving_70_16_ddpm_100m', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=70,
+                                 width=16,
+                                 activation_fn=Swish,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id': '10qBoDG_NomJBrRFeTsSwEcJF1GA-sjC4'
+        }),
 
 ])
 
