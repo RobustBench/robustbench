@@ -629,29 +629,30 @@ linf = OrderedDict([
         'gdrive_id': '1-GRwO5t9HxOS2y6RFK8QEsDXjdcgmVu6'
     }),
     ( 'Addepalli2021Towards_RN18', {
-     'model':
-     lambda:  ResNet18(),
-     'gdrive_id': '1-1DxecXz5U_xZ54DVdE-GVm71Tiox-Ri'
+         'model': 
+          lambda: ResNet18(),
+         'gdrive_id': '1-1DxecXz5U_xZ54DVdE-GVm71Tiox-Ri'
     }),
     ( 'Addepalli2021Towards_WRN34', {
-     'model':
-      lambda:  WideResNet(num_classes=10, depth=34, sub_block1 = True),
-     'gdrive_id': '1-3vgjTNfSq7LSMKuayEQ-jLflAP196dB'
+         'model':
+          lambda: WideResNet(num_classes=10, depth=34, sub_block1 = True),
+         'gdrive_id': '1-3vgjTNfSq7LSMKuayEQ-jLflAP196dB'
     }),
     ('Gowal2021Improving_70_16_ddpm_100m', {
-        'model':
-        lambda: DMWideResNet(num_classes=10,
+         'model':
+         lambda: DMWideResNet(num_classes=10,
                              depth=70,
                              width=16,
                              activation_fn=Swish,
                              mean=CIFAR10_MEAN,
                              std=CIFAR10_STD),
-        'gdrive_id': '10qBoDG_NomJBrRFeTsSwEcJF1GA-sjC4'
+         'gdrive_id': '10qBoDG_NomJBrRFeTsSwEcJF1GA-sjC4'
     }),
     ('Dai2021Parameterizing', {
-     'model': lambda: pssilu_wrn_28_10(num_classes=10),
-      'gdrive_id': '1eO-MNXQSAoCuNFjIbdCheprT4Beqo9Zv' 
-      })
+         'model': 
+          lambda: pssilu_wrn_28_10(num_classes=10),
+         'gdrive_id': '1eO-MNXQSAoCuNFjIbdCheprT4Beqo9Zv' 
+          })
 ])
 
 l2 = OrderedDict([
@@ -863,9 +864,9 @@ common_corruptions = OrderedDict([
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     }),
     ( 'Addepalli2021Towards_WRN34', {
-     'model':
-     lambda:  WideResNet(num_classes=10, depth=34, sub_block1 = True),
-     'gdrive_id': '1-3vgjTNfSq7LSMKuayEQ-jLflAP196dB'
+         'model':
+         lambda:  WideResNet(num_classes=10, depth=34, sub_block1 = True),
+         'gdrive_id': '1-3vgjTNfSq7LSMKuayEQ-jLflAP196dB'
     })
 ])
 
