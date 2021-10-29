@@ -633,7 +633,6 @@ linf = OrderedDict(
          lambda:  ResNet18(),
          'gdrive_id': '1-1DxecXz5U_xZ54DVdE-GVm71Tiox-Ri'
         }),
-
         ( 'Addepalli2021Towards_WRN34', {
          'model':
           lambda:  WideResNet(num_classes=10, depth=34, sub_block1 = True),
@@ -653,7 +652,6 @@ linf = OrderedDict(
          'model': lambda: pssilu_wrn_28_10(num_classes=10),
           'gdrive_id': '1eO-MNXQSAoCuNFjIbdCheprT4Beqo9Zv' 
           })
-
 ])
 
 l2 = OrderedDict([
