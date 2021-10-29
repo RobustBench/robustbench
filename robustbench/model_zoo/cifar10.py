@@ -19,7 +19,6 @@ from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWid
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreActResNet
 
-
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
     def __init__(self, depth=29, num_classes=10, cardinality=4, base_width=32):
         super().__init__(ResNeXtBottleneck,
@@ -629,17 +628,17 @@ linf = OrderedDict(
                                      depth_configs=[5, 5, 5]),
             'gdrive_id': '1-GRwO5t9HxOS2y6RFK8QEsDXjdcgmVu6'
         }),
-        ( 'Addepalli2021OAAT_RN18', {
+        ( 'Addepalli2021Towards_RN18', {
          'model':
          lambda:  ResNet18(),
          'gdrive_id': '1-1DxecXz5U_xZ54DVdE-GVm71Tiox-Ri'
         }),
 
-        ( 'Addepalli2021OAAT_WRN34', {
+        ( 'Addepalli2021Towards_WRN34', {
          'model':
           lambda:  WideResNet(num_classes=10, depth=34, sub_block1 = True),
          'gdrive_id': '1-3vgjTNfSq7LSMKuayEQ-jLflAP196dB'
-        }),
+        })
 
 ])
 
@@ -850,7 +849,7 @@ common_corruptions = OrderedDict([
         'model': lambda: WideResNet(depth=28, widen_factor=10),
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
     }),
-    ( 'Addepalli2021OAAT_WRN34', {
+    ( 'Addepalli2021Towards_WRN34', {
      'model':
      lambda:  WideResNet(num_classes=10, depth=34, sub_block1 = True),
      'gdrive_id': '1-3vgjTNfSq7LSMKuayEQ-jLflAP196dB'
