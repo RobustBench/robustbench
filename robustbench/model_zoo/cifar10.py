@@ -18,7 +18,7 @@ from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWid
 
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreActResNet
-
+from robustbench.model_zoo.architectures.paf_wide_resnet import pssilu_wrn_28_10
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
     def __init__(self, depth=29, num_classes=10, cardinality=4, base_width=32):
         super().__init__(ResNeXtBottleneck,
@@ -648,7 +648,11 @@ linf = OrderedDict(
                                  mean=CIFAR10_MEAN,
                                  std=CIFAR10_STD),
             'gdrive_id': '10qBoDG_NomJBrRFeTsSwEcJF1GA-sjC4'
-        })
+        }),
+        ('Dai2021Parameterizing', {
+         'model': lambda: pssilu_wrn_28_10(num_classes=10),
+          'gdrive_id': '1eO-MNXQSAoCuNFjIbdCheprT4Beqo9Zv' 
+          })
 
 ])
 
