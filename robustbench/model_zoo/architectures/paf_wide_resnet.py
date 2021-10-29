@@ -20,7 +20,7 @@ class PAF_BasicBlock(nn.Module):
             in_planes, out_planes, kernel_size=3, stride=stride, padding=1, bias=False
         )
         self.bn2 = nn.BatchNorm2d(out_planes)
-
+        
         self.conv2 = nn.Conv2d(
             out_planes, out_planes, kernel_size=3, stride=1, padding=1, bias=False
         )
@@ -122,3 +122,4 @@ class PAF_WideResNet(nn.Module):
 def pssilu_wrn_28_10(**kwargs):
     act = PSSiLU()
     return PAF_WideResNet(act, depth=28, widen_factor=10, **kwargs)
+
