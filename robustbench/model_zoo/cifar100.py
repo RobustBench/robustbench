@@ -137,12 +137,12 @@ class Diffenderfer2021CARD_Deck(torch.nn.Module):
         x_cl = x.clone() # clone to make sure x is not changed by inplace methods
         out_list = []
         for i in range(self.num_cards):
-          # Evaluate model i at input
-          out = self.models[i](x_cl)
-          # Compute softmax
-          out = torch.softmax(out,dim=1)
-          # Append output to list of logits
-          out_list.append(out)
+            # Evaluate model i at input
+            out = self.models[i](x_cl)
+            # Compute softmax
+            out = torch.softmax(out,dim=1)
+            # Append output to list of logits
+            out_list.append(out)
 
         return torch.mean(torch.stack(out_list),dim=0)
 
@@ -176,12 +176,12 @@ class Diffenderfer2021CARD_Deck_Binary(torch.nn.Module):
         x_cl = x.clone() # clone to make sure x is not changed by inplace methods
         out_list = []
         for i in range(self.num_cards):
-          # Evaluate model i at input
-          out = self.models[i](x_cl)
-          # Compute softmax
-          out = torch.softmax(out,dim=1)
-          # Append output to list of logits
-          out_list.append(out)
+            # Evaluate model i at input
+            out = self.models[i](x_cl)
+            # Compute softmax
+            out = torch.softmax(out,dim=1)
+            # Append output to list of logits
+            out_list.append(out)
 
         return torch.mean(torch.stack(out_list),dim=0)
 
@@ -293,14 +293,14 @@ linf = OrderedDict([
         'gdrive_id': '1-qUvfOjq6x4I8mZynfGtzzCH_nvqS_VQ'
     }),
     ('Addepalli2021Towards_PARN18', {
-    'model':
-    lambda: PreActResNet(PreActBlockV2, [2, 2, 2, 2], num_classes=100, bn_before_fc=True),
-    'gdrive_id':'1-FwVya1sDvdFXr0_ZBoXEJW9ukGC7hPK',
+        'model': lambda: PreActResNet(PreActBlockV2, [2, 2, 2, 2],
+                                      num_classes=100, bn_before_fc=True),
+        'gdrive_id': '1-FwVya1sDvdFXr0_ZBoXEJW9ukGC7hPK',
     }),
-    ( 'Addepalli2021Towards_WRN34', {
-         'model':
-         lambda:  WideResNet(num_classes=100, depth=34, sub_block1 = True),
-         'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
+    ('Addepalli2021Towards_WRN34', {
+        'model':
+        lambda: WideResNet(num_classes=100, depth=34, sub_block1=True),
+        'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
     }),
 ])
 
@@ -362,17 +362,17 @@ common_corruptions = OrderedDict([
         'gdrive_id': '1XpFFdCdU9LcDtcyNfo6_BV1RZHKKkBVE'
     }),
     ('Hendrycks2020AugMix_ResNeXt', {
-      'model': Hendrycks2020AugMixResNeXtNet,
-      'gdrive_id': '1ocnHbvDdOBLvgNr6K7vEYL08hUdkD1Rv'
+        'model': Hendrycks2020AugMixResNeXtNet,
+        'gdrive_id': '1ocnHbvDdOBLvgNr6K7vEYL08hUdkD1Rv'
     }),
     ('Addepalli2021Towards_PARN18', {
-    'model':
-    lambda: PreActResNet(PreActBlockV2,[2, 2, 2, 2],num_classes=100, bn_before_fc=True),
-    'gdrive_id':'1-FwVya1sDvdFXr0_ZBoXEJW9ukGC7hPK',
+        'model': lambda: PreActResNet(PreActBlockV2, [2, 2, 2, 2],
+                                      num_classes=100, bn_before_fc=True),
+        'gdrive_id':'1-FwVya1sDvdFXr0_ZBoXEJW9ukGC7hPK',
     }),
-    ( 'Addepalli2021Towards_WRN34', {
+    ('Addepalli2021Towards_WRN34', {
          'model':
-         lambda:  WideResNet(num_classes=100, depth=34, sub_block1 = True),
+         lambda: WideResNet(num_classes=100, depth=34, sub_block1=True),
          'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
     }),
 ])
