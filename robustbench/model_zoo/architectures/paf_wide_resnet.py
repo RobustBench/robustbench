@@ -123,4 +123,3 @@ def pssilu_wrn_28_10(**kwargs):
     act = PSSiLU()
     return PAF_WideResNet(act, depth=28, widen_factor=10, **kwargs)
 
-

@@ -4,7 +4,7 @@ import torch
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
     DMWideResNet, Swish, DMPreActResNet
-from robustbench.model_zoo.architectures.resnet import PreActBlock, PreActResNet
+from robustbench.model_zoo.architectures.resnet import PreActBlock, PreActResNet,PreActBlockV2
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
@@ -292,6 +292,16 @@ linf = OrderedDict([
                                std=CIFAR100_STD),
         'gdrive_id': '1-qUvfOjq6x4I8mZynfGtzzCH_nvqS_VQ'
     }),
+    ('Addepalli2021Towards_PARN18', {
+    'model':
+    lambda: PreActResNet(PreActBlockV2, [2, 2, 2, 2], num_classes=100, bn_before_fc=True),
+    'gdrive_id':'1-FwVya1sDvdFXr0_ZBoXEJW9ukGC7hPK',
+    }),
+    ( 'Addepalli2021Towards_WRN34', {
+         'model':
+         lambda:  WideResNet(num_classes=100, depth=34, sub_block1 = True),
+         'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
+    }),
 ])
 
 common_corruptions = OrderedDict([
@@ -354,7 +364,17 @@ common_corruptions = OrderedDict([
     ('Hendrycks2020AugMix_ResNeXt', {
       'model': Hendrycks2020AugMixResNeXtNet,
       'gdrive_id': '1ocnHbvDdOBLvgNr6K7vEYL08hUdkD1Rv'
-    })
+    }),
+    ('Addepalli2021Towards_PARN18', {
+    'model':
+    lambda: PreActResNet(PreActBlockV2,[2, 2, 2, 2],num_classes=100, bn_before_fc=True),
+    'gdrive_id':'1-FwVya1sDvdFXr0_ZBoXEJW9ukGC7hPK',
+    }),
+    ( 'Addepalli2021Towards_WRN34', {
+         'model':
+         lambda:  WideResNet(num_classes=100, depth=34, sub_block1 = True),
+         'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
+    }),
 ])
 
 cifar_100_models = OrderedDict([(ThreatModel.Linf, linf),
