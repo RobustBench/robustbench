@@ -6,7 +6,7 @@
   "number_forward_passes": 1,
   "dataset": "cifar10",
   "venue": "arXiv, Oct 2021",
-  "architecture": "WRN-28-10-PSSiLU",
+  "architecture": "WideResNet-28-10-PSSiLU",
   "eps": "8/255",
   "clean_acc": "87.02",
   "reported": "61.55",
