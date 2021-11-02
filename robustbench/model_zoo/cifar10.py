@@ -650,6 +650,26 @@ linf = OrderedDict([
     ('Dai2021Parameterizing', {
         'model': lambda: pssilu_wrn_28_10(num_classes=10),
         'gdrive_id': '1eO-MNXQSAoCuNFjIbdCheprT4Beqo9Zv' 
+    }),
+    ('Gowal2021Improving_28_10_ddpm_100m', {
+        'model':
+        lambda: DMWideResNet(num_classes=10,
+                             depth=28,
+                             width=10,
+                             activation_fn=Swish,
+                             mean=CIFAR10_MEAN,
+                             std=CIFAR10_STD),
+        'gdrive_id': '12L8YE6VBgUDKyW6GMSNefSYj2gg4LEKx'
+    }),
+    ('Gowal2021Improving_R18_ddpm_100m', {
+        'model':
+        lambda: DMPreActResNet(num_classes=10,
+                               depth=18,
+                               width=0,
+                               activation_fn=Swish,
+                               mean=CIFAR10_MEAN,
+                               std=CIFAR10_STD),
+        'gdrive_id': '1-0EuCJashqSXEkkd1DOzFA4tH8KL2kim'
     })
 ])
 
