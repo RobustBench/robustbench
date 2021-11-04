@@ -670,7 +670,11 @@ linf = OrderedDict([
                                mean=CIFAR10_MEAN,
                                std=CIFAR10_STD),
         'gdrive_id': '1-0EuCJashqSXEkkd1DOzFA4tH8KL2kim'
-    })
+    }),
+    ('Standard', {
+        'model': lambda: WideResNet(depth=28, widen_factor=10),
+        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
+    }),
 ])
 
 l2 = OrderedDict([
@@ -791,10 +795,7 @@ l2 = OrderedDict([
                                std=CIFAR10_STD),
         'gdrive_id': '1VWrStAYy5CrUR18sjcpq_LKLpeqgUaoQ'
     }),
-    ('Standard', {
-        'model': lambda: WideResNet(depth=28, widen_factor=10),
-        'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
-    })
+
 ])
 
 
@@ -830,7 +831,6 @@ common_corruptions = OrderedDict([
             '10ilDm_fojXiQve_LaHApbNalBpk6v53Z'  
         ],
     }),
-
     ('Rebuffi2021Fixing_70_16_cutmix_extra_Linf', {
         'model': lambda: DMWideResNet(num_classes=10,
                                       depth=70,
