@@ -8,7 +8,7 @@
   "venue": "arXiv, Mar 2021",
   "architecture": "WideResNet-70-16",
   "eps": "8/255",
-  "clean_acc": "92.23",
+  "clean_acc": "95.74",
   "reported": "",
   "corruptions_acc": "88.23",
   "footnote": "Trained for \\(\\ell_2 \\) robustness with \\(\\varepsilon = 0.5\\)."
