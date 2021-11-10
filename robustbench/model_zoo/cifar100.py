@@ -302,6 +302,12 @@ linf = OrderedDict([
         lambda: WideResNet(num_classes=100, depth=34, sub_block1=True),
         'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
     }),
+    ('Chen2021LTD_WRN34_10', {
+        'model':
+        lambda: WideResNet(
+            depth=34, widen_factor=10, num_classes=100, sub_block1=True),
+        'gdrive_id':  '1-I4NZyULdEWH46b4EaCTxuuRo4eFXsg_'
+    })
 ])
 
 common_corruptions = OrderedDict([
