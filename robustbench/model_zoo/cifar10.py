@@ -671,12 +671,12 @@ linf = OrderedDict([
                                std=CIFAR10_STD),
         'gdrive_id': '1-0EuCJashqSXEkkd1DOzFA4tH8KL2kim'
     }),
-    ('Chen2021Low_WRN34_10', {
+    ('Chen2021LTD_WRN34_10', {
         'model':
         lambda: WideResNet(depth=34, widen_factor=10, sub_block1=False),
         'gdrive_id': '1-0RoQKYvHLNh7hZ71wJjSit1XtrJQo9D'
     }),
-    ('Chen2021Low_WRN34_20', {
+    ('Chen2021LTD_WRN34_20', {
         'model':
         lambda: WideResNet(depth=34, widen_factor=20, sub_block1=False),
         'gdrive_id': '1-5JmY9rapuGwCUc2nPvy7Rb_sn_dHhFm'
