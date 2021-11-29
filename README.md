@@ -77,10 +77,16 @@ out our Colab notebook here
 👉 [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV)
 for a quick introduction. It is also summarized below 👇.
 
-First, install **`RobustBench`**:
+First, install the latest version of **`RobustBench`**:
 
 ```bash
-pip install git+https://github.com/RobustBench/robustbench.git@v0.2.1
+pip install git+https://github.com/RobustBench/robustbench.git
+```
+
+or the latest *stable* version of **`RobustBench`**:
+
+```bash
+pip install git+https://github.com/RobustBench/robustbench.git@v1.0
 ```
 
 This will also install all the dependencies but `torch` and `torchvision`. We leave the installation
