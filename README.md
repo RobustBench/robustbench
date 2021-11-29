@@ -89,10 +89,6 @@ or the latest *stable* version of **`RobustBench`**:
 pip install git+https://github.com/RobustBench/robustbench.git@v1.0
 ```
 
-This will also install all the dependencies but `torch` and `torchvision`. We leave the installation
-of the most suitable versions for your hardware up to you. We're currently supporting `torch>=1.7.0`
-.
-
 Now let's try to load CIFAR-10 and some quite robust CIFAR-10 models from 
 [Carmon2019Unlabeled](https://arxiv.org/abs/1905.13736) that achieves 59.53% robust accuracy evaluated with AA under 
 `eps=8/255`:
