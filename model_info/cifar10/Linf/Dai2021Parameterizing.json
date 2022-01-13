@@ -8,9 +8,9 @@
   "venue": "arXiv, Oct 2021",
   "architecture": "WideResNet-28-10-PSSiLU",
   "eps": "8/255",
-  "clean_acc": "87.02",
-  "reported": "61.55",
-  "autoattack_acc": "61.55",
+  "clean_acc": "86.87",
+  "reported": "61.96",
+  "autoattack_acc": "61.96",
   "footnote": "It uses additional ~6M synthetic images in training.",
   "unreliable": false
 }
