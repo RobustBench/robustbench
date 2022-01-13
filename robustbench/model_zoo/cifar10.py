@@ -340,7 +340,7 @@ class Diffenderfer2021CARD_Deck_Binary(torch.nn.Module):
         return torch.mean(torch.stack(out_list),dim=0)
 
 
-class Modas2021PRIME_ResNet18(ResNet):
+class Modas2021PRIMEResNet18(ResNet):
     def __init__(self, num_classes=10):
         super().__init__(BasicBlock, [2, 2, 2, 2], num_classes=num_classes)
 
@@ -910,8 +910,8 @@ common_corruptions = OrderedDict([
         lambda: WideResNet(num_classes=10, depth=34, sub_block1 = True),
         'gdrive_id': '1-3vgjTNfSq7LSMKuayEQ-jLflAP196dB'
     }),
-    ('Modas2021PRIME_RN18', {
-        'model': Modas2021PRIME_ResNet18,
+    ('Modas2021PRIMEResNet18', {
+        'model': Modas2021PRIMEResNet18,
         'gdrive_id': '13oDyqi16FeXy5j4Vm6IghnjTVqp_XF5U'
     }),
 ])
