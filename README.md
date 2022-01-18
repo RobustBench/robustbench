@@ -332,34 +332,6 @@ You can find all available model IDs in the tables below (note that the full lea
 |:---:|---|---|:---:|:---:|:---:|:---:|
 | <sub>**1**</sub> | <sub><sup>**Diffenderfer2021Winning_LRR_CARD_Deck**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>79.93%</sub> | <sub>71.08%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
 | <sub>**2**</sub> | <sub><sup>**Diffenderfer2021Winning_Binary_CARD_Deck**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>78.50%</sub> | <sub>69.09%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
-| <sub>**3**</sub> | <sub><sup>**Diffenderfer2021Winning_LRR**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>78.41%</sub> | <sub>66.45%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
-| <sub>**4**</sub> | <sub><sup>**Diffenderfer2021Winning_Binary**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>77.69%</sub> | <sub>65.26%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
-| <sub>**5**</sub> | <sub><sup>**Hendrycks2020AugMix_ResNeXt**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>78.90%</sub> | <sub>65.14%</sub> | <sub>ResNeXt29_32x4d</sub> | <sub>ICLR 2020</sub> |
-| <sub>**6**</sub> | <sub><sup>**Hendrycks2020AugMix_WRN**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.28%</sub> | <sub>64.11%</sub> | <sub>WideResNet-40-2</sub> | <sub>ICLR 2020</sub> |
-| <sub>**7**</sub> | <sub><sup>**Gowal2020Uncovering_extra_Linf**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>69.15%</sub> | <sub>56.00%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
-| <sub>**8**</sub> | <sub><sup>**Addepalli2021Towards_WRN34**</sup></sub> | <sub>*[Towards Achieving Adversarial Robustness Beyond Perceptual Limits](https://openreview.net/forum?id=SHB_znlW5G7)*</sub> | <sub>65.73%</sub> | <sub>54.88%</sub> | <sub>WideResNet-34-10</sub> | <sub>OpenReview, Jun 2021</sub> |
-| <sub>**9**</sub> | <sub><sup>**Addepalli2021Towards_PARN18**</sup></sub> | <sub>*[Towards Achieving Adversarial Robustness Beyond Perceptual Limits](https://openreview.net/forum?id=SHB_znlW5G7)*</sub> | <sub>62.02%</sub> | <sub>51.77%</sub> | <sub>PreActResNet-18</sub> | <sub>OpenReview, Jun 2021</sub> |
-| <sub>**10**</sub> | <sub><sup>**Gowal2020Uncovering_Linf**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>60.86%</sub> | <sub>49.46%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
-
-
-
-### ImageNet
-
-#### Linf, eps=4/255
-| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
-|:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub><sup>**Salman2020Do_50_2**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>68.46%</sub> | <sub>38.14%</sub> | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**2**</sub> | <sub><sup>**Salman2020Do_R50**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>64.02%</sub> | <sub>34.96%</sub> | <sub>ResNet-50</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**3**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>62.56%</sub> | <sub>29.22%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
-| <sub>**4**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>55.62%</sub> | <sub>26.24%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2020</sub> |
-| <sub>**5**</sub> | <sub><sup>**Salman2020Do_R18**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>52.92%</sub> | <sub>25.32%</sub> | <sub>ResNet-18</sub> | <sub>NeurIPS 2020</sub> |
-| <sub>**6**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>0.00%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
-
-#### Corruptions
-| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
-|:---:|---|---|:---:|:---:|:---:|:---:|
-| <sub>**1**</sub> | <sub><sup>**Diffenderfer2021Winning_LRR_CARD_Deck**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>79.93%</sub> | <sub>71.08%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
-| <sub>**2**</sub> | <sub><sup>**Diffenderfer2021Winning_Binary_CARD_Deck**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>78.50%</sub> | <sub>69.09%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
 | <sub>**3**</sub> | <sub><sup>**Modas2021PRIMEResNet18**</sup></sub> | <sub>*[PRIME: A Few Primitives Can Boost Robustness to Common Corruptions](https://arxiv.org/abs/2112.13547)*</sub> | <sub>77.60%</sub> | <sub>68.28%</sub> | <sub>ResNet-18</sub> | <sub>arXiv, Dec 2021</sub> |
 | <sub>**4**</sub> | <sub><sup>**Diffenderfer2021Winning_LRR**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>78.41%</sub> | <sub>66.45%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
 | <sub>**5**</sub> | <sub><sup>**Diffenderfer2021Winning_Binary**</sup></sub> | <sub>*[A Winning Hand: Compressing Deep Networks Can Improve Out-Of-Distribution Robustness](https://arxiv.org/abs/2106.09129)*</sub> | <sub>77.69%</sub> | <sub>65.26%</sub> | <sub>WideResNet-18-2</sub> | <sub>NeurIPS 2021</sub> |
@@ -371,6 +343,32 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**11**</sub> | <sub><sup>**Gowal2020Uncovering_Linf**</sup></sub> | <sub>*[Uncovering the Limits of Adversarial Training against Norm-Bounded Adversarial Examples](https://arxiv.org/abs/2010.03593)*</sub> | <sub>60.86%</sub> | <sub>49.46%</sub> | <sub>WideResNet-70-16</sub> | <sub>arXiv, Oct 2020</sub> |
 
 
+
+
+### ImageNet
+
+#### Linf, eps=4/255
+
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub><sup>**Salman2020Do_50_2**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>68.46%</sub> | <sub>38.14%</sub> | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**2**</sub> | <sub><sup>**Salman2020Do_R50**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>64.02%</sub> | <sub>34.96%</sub> | <sub>ResNet-50</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Engstrom2019Robustness**</sup></sub> | <sub>*[Robustness library](https://github.com/MadryLab/robustness)*</sub> | <sub>62.56%</sub> | <sub>29.22%</sub> | <sub>ResNet-50</sub> | <sub>GitHub,<br>Oct 2019</sub> |
+| <sub>**4**</sub> | <sub><sup>**Wong2020Fast**</sup></sub> | <sub>*[Fast is better than free: Revisiting adversarial training](https://arxiv.org/abs/2001.03994)*</sub> | <sub>55.62%</sub> | <sub>26.24%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2020</sub> |
+| <sub>**5**</sub> | <sub><sup>**Salman2020Do_R18**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>52.92%</sub> | <sub>25.32%</sub> | <sub>ResNet-18</sub> | <sub>NeurIPS 2020</sub> |
+| <sub>**6**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>0.00%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
+
+#### Corruptions
+
+| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |
+|:---:|---|---|:---:|:---:|:---:|:---:|
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020Many**</sup></sub> | <sub>*[The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization](https://arxiv.org/abs/2006.16241)*</sub> | <sub>76.88%</sub> | <sub>51.61%</sub> | <sub>ResNet-50</sub> | <sub>ICCV 2021</sub> |
+| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix**</sup></sub> | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub> | <sub>76.98%</sub> | <sub>46.91%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2020</sub> |
+| <sub>**3**</sub> | <sub><sup>**Geirhos2018_SIN_IN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>74.88%</sub> | <sub>44.48%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**4**</sub> | <sub><sup>**Geirhos2018_SIN_IN_IN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>77.44%</sub> | <sub>40.77%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**5**</sub> | <sub><sup>**Standard_R50**</sup></sub> | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub> | <sub>76.52%</sub> | <sub>38.12%</sub> | <sub>ResNet-50</sub> | <sub>N/A</sub> |
+| <sub>**6**</sub> | <sub><sup>**Geirhos2018_SIN**</sup></sub> | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> | <sub>60.24%</sub> | <sub>37.95%</sub> | <sub>ResNet-50</sub> | <sub>ICLR 2019</sub> |
+| <sub>**7**</sub> | <sub><sup>**Salman2020Do_50_2_Linf**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub> | <sub>68.46%</sub> | <sub>34.60%</sub> | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
 
 ## Notebooks
 
