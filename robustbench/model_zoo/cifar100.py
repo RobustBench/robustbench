@@ -4,7 +4,8 @@ import torch
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
     DMWideResNet, Swish, DMPreActResNet
-from robustbench.model_zoo.architectures.resnet import PreActBlock, PreActResNet,PreActBlockV2
+from robustbench.model_zoo.architectures.resnet import PreActBlock, PreActResNet,PreActBlockV2, \
+    ResNet, BasicBlock
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, ResNeXtBottleneck
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
@@ -184,6 +185,21 @@ class Diffenderfer2021CARD_Deck_Binary(torch.nn.Module):
             out_list.append(out)
 
         return torch.mean(torch.stack(out_list),dim=0)
+
+
+class Modas2021PRIMEResNet18(ResNet):
+    def __init__(self, num_classes=100):
+        super().__init__(BasicBlock, [2, 2, 2, 2], num_classes=num_classes)
+        # mu & sigma are updated from weights
+        self.register_buffer(
+            'mu', torch.tensor([0.5]*3).view(1, 3, 1, 1))
+        self.register_buffer(
+            'sigma', torch.tensor([0.5]*3).view(1, 3, 1, 1))
+
+    def forward(self, x):
+        x = (x - self.mu) / self.sigma
+        return super().forward(x)
+
 
 linf = OrderedDict([
     ('Gowal2020Uncovering', {
@@ -380,6 +396,10 @@ common_corruptions = OrderedDict([
          'model':
          lambda: WideResNet(num_classes=100, depth=34, sub_block1=True),
          'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
+    }),
+    ('Modas2021PRIMEResNet18', {
+        'model': Modas2021PRIMEResNet18,
+        'gdrive_id': '1kcohb2tBuJHa5pGSi4nAkvK-hXPSI6Hr'
     }),
 ])
 
