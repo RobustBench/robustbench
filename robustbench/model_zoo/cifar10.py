@@ -277,7 +277,7 @@ class Diffenderfer2021CARD_Deck(nn.Module):
     def __init__(self, width=128):
         super(Diffenderfer2021CARD_Deck, self).__init__()
         self.num_cards = 6
-        self.models = []
+        self.models = nn.ModuleList() 
 
         for i in range(self.num_cards):
             self.models.append(LRR_ResNet(width=width))
