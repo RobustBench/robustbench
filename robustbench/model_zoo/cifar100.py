@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 import torch
+from torch import nn
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
     DMWideResNet, Swish, DMPreActResNet
@@ -124,7 +125,7 @@ class Diffenderfer2021CARD_Deck(torch.nn.Module):
     def __init__(self, width=128, num_classes=100):
         super(Diffenderfer2021CARD_Deck, self).__init__()
         self.num_cards = 6
-        self.models = []
+        self.models = nn.ModuleList()
 
         for i in range(self.num_cards):
             self.models.append(LRR_ResNet(width=width, num_classes=num_classes))
@@ -163,7 +164,7 @@ class Diffenderfer2021CARD_Deck_Binary(torch.nn.Module):
     def __init__(self, num_classes=100):
         super(Diffenderfer2021CARD_Deck_Binary, self).__init__()
         self.num_cards = 6
-        self.models = []
+        self.models = nn.ModuleList()
 
         for i in range(self.num_cards):
             self.models.append(WidePreActResNet(num_classes=num_classes))
