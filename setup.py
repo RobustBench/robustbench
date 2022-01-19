@@ -17,7 +17,7 @@ setuptools.setup(
         'torch>=1.7.1',
         'torchvision>=0.8.2',
         'requests~=2.25.0',
-        'numpy~=1.19.4',
+        'numpy>=1.19.4',
         'Jinja2~=2.11.2',
         'tqdm~=4.56.1',
         'pandas~=1.2.0',

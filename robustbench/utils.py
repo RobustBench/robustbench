@@ -163,7 +163,6 @@ def load_model(model_name: str,
                                                     model_name, state_dict,
                                                     dataset_)
             model.models[i].eval()
-            model.models[i].cuda()  # Necessary for running ensembles on GPU; ideally load_model would have device argument
 
         return model.eval()
 

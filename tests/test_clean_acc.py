@@ -76,7 +76,8 @@ class CleanAccTester(unittest.TestCase):
 
             with open(model_info_path) as model_info:
                 json_dict = json.load(model_info)
-
+            if abs(round(acc * 100., 2) - float(json_dict['clean_acc'])) > 0.05:
+                print(f"{model_name} accuracy test failed, {round(acc * 100., 2)} vs. {json_dict['clean_acc']}")
             self.assertLessEqual(abs(round(acc * 100., 2) - float(json_dict['clean_acc'])), 0.05)
 
             return abs(round(acc * 100., 2) - float(json_dict['clean_acc'])) <= 0.05
