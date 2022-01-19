@@ -1,8 +1,6 @@
 from collections import OrderedDict
 
 import torch
-import math
-import torch.nn.functional as F
 from torch import nn
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, \

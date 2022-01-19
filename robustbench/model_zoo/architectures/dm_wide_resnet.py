@@ -145,6 +145,8 @@ class DMWideResNet(nn.Module):
                  padding: int = 0,
                  num_input_channels: int = 3):
         super().__init__()
+        # persistent=False to not put these tensors in the module's state_dict and not try to
+        # load it from the checkpoint
         self.register_buffer('mean', torch.tensor(mean).view(num_input_channels, 1, 1),
                              persistent=False)
         self.register_buffer('std', torch.tensor(std).view(num_input_channels, 1, 1),
@@ -246,6 +248,8 @@ class DMPreActResNet(nn.Module):
         super().__init__()
         if width != 0:
             raise ValueError('Unsupported `width`.')
+        # persistent=False to not put these tensors in the module's state_dict and not try to
+        # load it from the checkpoint
         self.register_buffer('mean', torch.tensor(mean).view(num_input_channels, 1, 1),
                              persistent=False)
         self.register_buffer('std', torch.tensor(std).view(num_input_channels, 1, 1),
