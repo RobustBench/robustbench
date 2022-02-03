@@ -1,6 +1,8 @@
 """
 This file is based on the code from https://github.com/pytorch/vision/blob/master/torchvision/datasets/folder.py.
 """
+import pkg_resources
+
 from torchvision.datasets.vision import VisionDataset
 
 import torch
@@ -16,11 +18,13 @@ import json
 
 
 def make_custom_dataset(root, path_imgs, cls_dict):
-    with open(path_imgs, 'r') as f:
+    with open(pkg_resources.resource_filename(__name__, path_imgs), 'r') as f:
         fnames = f.readlines()
-    with open(cls_dict, 'r') as f:
+    with open(pkg_resources.resource_filename(__name__, cls_dict), 'r') as f:
         class_to_idx = json.load(f)
-    images = [(os.path.join(root, c.split('\n')[0]), class_to_idx[c.split('/')[0]]) for c in fnames]
+    images = [(os.path.join(root,
+                            c.split('\n')[0]), class_to_idx[c.split('/')[0]])
+              for c in fnames]
 
     return images
 
@@ -53,16 +57,25 @@ class CustomDatasetFolder(VisionDataset):
         targets (list): The class_index value for each image in the dataset
     """
 
-    def __init__(self, root, loader, extensions=None, transform=None, target_transform=None, is_valid_file=None):
+    def __init__(self,
+                 root,
+                 loader,
+                 extensions=None,
+                 transform=None,
+                 target_transform=None,
+                 is_valid_file=None):
         super(CustomDatasetFolder, self).__init__(root)
         self.transform = transform
         self.target_transform = target_transform
         classes, class_to_idx = self._find_classes(self.root)
-        samples = make_custom_dataset(self.root, 'robustbench/data/imagenet_test_image_ids.txt',
-                                      'robustbench/data/imagenet_class_to_id_map.json')
+        samples = make_custom_dataset(
+            self.root, 'data/imagenet_test_image_ids.txt',
+            'data/imagenet_class_to_id_map.json')
         if len(samples) == 0:
-            raise (RuntimeError("Found 0 files in subfolders of: " + self.root + "\n"
-                                "Supported extensions are: " + ",".join(extensions)))
+            raise (RuntimeError("Found 0 files in subfolders of: " +
+                                self.root + "\n"
+                                "Supported extensions are: " +
+                                ",".join(extensions)))
 
         self.loader = loader
         self.extensions = extensions
@@ -86,7 +99,10 @@ class CustomDatasetFolder(VisionDataset):
             # Faster and available in Python 3.5 and above
             classes = [d.name for d in os.scandir(dir) if d.is_dir()]
         else:
-            classes = [d for d in os.listdir(dir) if os.path.isdir(os.path.join(dir, d))]
+            classes = [
+                d for d in os.listdir(dir)
+                if os.path.isdir(os.path.join(dir, d))
+            ]
         classes.sort()
         class_to_idx = {classes[i]: i for i in range(len(classes))}
         return classes, class_to_idx
@@ -110,7 +126,8 @@ class CustomDatasetFolder(VisionDataset):
         return len(self.samples)
 
 
-IMG_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.ppm', '.bmp', '.pgm', '.tif', '.tiff', '.webp')
+IMG_EXTENSIONS = ('.jpg', '.jpeg', '.png', '.ppm', '.bmp', '.pgm', '.tif',
+                  '.tiff', '.webp')
 
 
 def pil_loader(path):
@@ -160,28 +177,42 @@ class CustomImageFolder(CustomDatasetFolder):
         imgs (list): List of (image path, class_index) tuples
     """
 
-    def __init__(self, root, transform=None, target_transform=None,
-                 loader=default_loader, is_valid_file=None):
-        super(CustomImageFolder, self).__init__(root, loader, IMG_EXTENSIONS if is_valid_file is None else None,
-                                                transform=transform,
-                                                target_transform=target_transform,
-                                                is_valid_file=is_valid_file)
-                                          
+    def __init__(self,
+                 root,
+                 transform=None,
+                 target_transform=None,
+                 loader=default_loader,
+                 is_valid_file=None):
+        super(CustomImageFolder,
+              self).__init__(root,
+                             loader,
+                             IMG_EXTENSIONS if is_valid_file is None else None,
+                             transform=transform,
+                             target_transform=target_transform,
+                             is_valid_file=is_valid_file)
+
         self.imgs = self.samples
-        
+
 
 if __name__ == '__main__':
-    data_dir = '/home/scratch/datasets/imagenet/val'
-    imagenet = CustomImageFolder(data_dir, transforms.Compose([
-        transforms.Resize(256), transforms.CenterCrop(224), transforms.ToTensor()]))
-    
+    data_dir = '~/imagenet/val'
+    imagenet = CustomImageFolder(
+        data_dir,
+        transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor()
+        ]))
+
     torch.manual_seed(0)
-    
-    test_loader = data.DataLoader(imagenet, batch_size=5000, shuffle=True, num_workers=30)
+
+    test_loader = data.DataLoader(imagenet,
+                                  batch_size=5000,
+                                  shuffle=True,
+                                  num_workers=30)
 
     x, y, path = next(iter(test_loader))
 
     with open('path_imgs_2.txt', 'w') as f:
         f.write('\n'.join(path))
         f.flush()
-
