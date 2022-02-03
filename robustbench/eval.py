@@ -1,7 +1,7 @@
 import warnings
 from argparse import Namespace
 from pathlib import Path
-from typing import Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -11,27 +11,27 @@ from autoattack import AutoAttack
 from torch import nn
 from tqdm import tqdm
 
-from robustbench.data import CORRUPTIONS, load_clean_dataset, \
+from robustbench.data import CORRUPTIONS, get_preprocessing, load_clean_dataset, \
     CORRUPTION_DATASET_LOADERS
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
 from robustbench.model_zoo import model_dicts as all_models
 
 
-def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
-              n_examples: int = 10000,
-              dataset: Union[str,
-                             BenchmarkDataset] = BenchmarkDataset.cifar_10,
-              threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
-              to_disk: bool = False,
-              model_name: Optional[str] = None,
-              data_dir: str = "./data",
-              device: Optional[Union[torch.device,
-                                     Sequence[torch.device]]] = None,
-              batch_size: int = 32,
-              eps: Optional[float] = None,
-              log_path: Optional[str] = None,
-              preprocessing: Optional[str] = None) -> Tuple[float, float]:
+def benchmark(
+    model: Union[nn.Module, Sequence[nn.Module]],
+    n_examples: int = 10000,
+    dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
+    threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
+    to_disk: bool = False,
+    model_name: Optional[str] = None,
+    data_dir: str = "./data",
+    device: Optional[Union[torch.device, Sequence[torch.device]]] = None,
+    batch_size: int = 32,
+    eps: Optional[float] = None,
+    log_path: Optional[str] = None,
+    preprocessing: Optional[Union[str,
+                                  Callable]] = None) -> Tuple[float, float]:
     """Benchmarks the given model(s).
 
     It is possible to benchmark on 3 different threat models, and to save the results on disk. In
@@ -74,19 +74,8 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    if dataset == 'imagenet':
-        if model_name is not None and model_name in all_models[dataset_][
-                threat_model_]:
-            prepr = all_models[dataset_][threat_model_][model_name][
-                'preprocessing']
-        elif preprocessing is not None:
-            prepr = preprocessing
-        else:
-            raise Exception(
-                "Preprocessing should be specified if the model is not already in the model zoo"
-            )
-    else:
-        prepr = 'none'
+    prepr = get_preprocessing(dataset_, threat_model_, model_name,
+                              preprocessing)
 
     clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
                                                     data_dir, prepr)
