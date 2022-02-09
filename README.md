@@ -463,6 +463,19 @@ If the given `threat_model` is `corruptions`, we also save unaggregated results 
 combinations of corruption types and severities in
 [this csv file](model_info/cifar10/corruptions/unaggregated_results.csv) (for CIFAR-10).
 
+For ImageNet benchmarks, the users should specify what preprocessing should be used (e.g. resize and crop to the needed resolution). There are some preprocessings already defined in [`robustbench.data.PREPROCESSINGS`](https://github.com/RobustBench/robustbench/blob/imagenet-preprocessing/robustbench/data.py#L18), which can be used by specifying the key as the `preprocessing` parameter of `benchmark`. Otherwise, it's possible to pass an arbitrary torchvision transform (or torchvision-compatible transform), e.g.:
+
+```python
+transform = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor()
+    ])
+clean_acc, robust_acc = benchmark(model, model_name=model_name, n_examples=10000, dataset=dataset,
+                                  threat_model=threat_model, eps=8/255, device=device,
+                                  to_disk=True, preprocessing=transform)
+```
+
 ##### Model definition
 
 In case you want to add a model in the Model Zoo by yourself, then you should also open a PR with

@@ -1,7 +1,7 @@
 import warnings
 from argparse import Namespace
 from pathlib import Path
-from typing import Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -11,26 +11,27 @@ from autoattack import AutoAttack
 from torch import nn
 from tqdm import tqdm
 
-from robustbench.data import CORRUPTIONS, load_clean_dataset, \
+from robustbench.data import CORRUPTIONS, get_preprocessing, load_clean_dataset, \
     CORRUPTION_DATASET_LOADERS
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
 from robustbench.model_zoo import model_dicts as all_models
 
 
-def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
-              n_examples: int = 10000,
-              dataset: Union[str,
-                             BenchmarkDataset] = BenchmarkDataset.cifar_10,
-              threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
-              to_disk: bool = False,
-              model_name: Optional[str] = None,
-              data_dir: str = "./data",
-              device: Optional[Union[torch.device,
-                                     Sequence[torch.device]]] = None,
-              batch_size: int = 32,
-              eps: Optional[float] = None,
-              log_path: Optional[str] = None) -> Tuple[float, float]:
+def benchmark(
+    model: Union[nn.Module, Sequence[nn.Module]],
+    n_examples: int = 10000,
+    dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
+    threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
+    to_disk: bool = False,
+    model_name: Optional[str] = None,
+    data_dir: str = "./data",
+    device: Optional[Union[torch.device, Sequence[torch.device]]] = None,
+    batch_size: int = 32,
+    eps: Optional[float] = None,
+    log_path: Optional[str] = None,
+    preprocessing: Optional[Union[str,
+                                  Callable]] = None) -> Tuple[float, float]:
     """Benchmarks the given model(s).
 
     It is possible to benchmark on 3 different threat models, and to save the results on disk. In
@@ -50,6 +51,8 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     evaluation.
     :param eps: The epsilon to use for L2 and Linf threat models. Must not be specified for
     corruptions threat model.
+    :param preprocessing: The preprocessing that should be used for ImageNet benchmarking. Should be
+    specified if `dataset` is `imageget`.
 
     :return: A Tuple with the clean accuracy and the accuracy in the given threat model.
     """
@@ -71,13 +74,11 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    if dataset == 'imagenet':
-        prepr = all_models[dataset_][threat_model_][model_name]['preprocessing']
-    else:
-        prepr = 'none'
-    
+    prepr = get_preprocessing(dataset_, threat_model_, model_name,
+                              preprocessing)
+
     clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
-        data_dir, prepr)
+                                                    data_dir, prepr)
 
     accuracy = clean_accuracy(model,
                               clean_x_test,
@@ -85,7 +86,7 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                               batch_size=batch_size,
                               device=device)
     print(f'Clean accuracy: {accuracy:.2%}')
-    
+
     if threat_model_ in {ThreatModel.Linf, ThreatModel.L2}:
         if eps is None:
             raise ValueError(
@@ -97,7 +98,9 @@ def benchmark(model: Union[nn.Module, Sequence[nn.Module]],
                                version='standard',
                                device=device,
                                log_path=log_path)
-        x_adv = adversary.run_standard_evaluation(clean_x_test, clean_y_test, bs=batch_size)
+        x_adv = adversary.run_standard_evaluation(clean_x_test,
+                                                  clean_y_test,
+                                                  bs=batch_size)
         adv_accuracy = clean_accuracy(model,
                                       x_adv,
                                       clean_y_test,
