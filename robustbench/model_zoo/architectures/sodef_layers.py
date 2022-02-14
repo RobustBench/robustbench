@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import geotorch
 from torch.nn.parameter import Parameter
+from torchdiffeq import odeint_adjoint as odeint
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, \
     DMWideResNet, Swish
@@ -15,8 +16,6 @@ class Identity(nn.Module):
         
     def forward(self, x):
         return x
-    
-from torchdiffeq import odeint_adjoint as odeint
 
 
 class ConcatFC(nn.Module):
@@ -28,7 +27,7 @@ class ConcatFC(nn.Module):
         return self._layer(x)
 
 
-class ODEfunc_mlp(nn.Module): #resnet4/dense1
+class ODEfunc_mlp(nn.Module):
 
     def __init__(self, dim):
         super(ODEfunc_mlp, self).__init__()
@@ -79,7 +78,6 @@ class newLinear(nn.Module):
         self.in_features = in_features
         self.out_features = out_features
         self.weight = Parameter(torch.Tensor(in_features,out_features))
-#         self.weight = self.weighttemp.T
         if bias:
             self.bias = Parameter(torch.Tensor(out_features))
         else:
@@ -136,7 +134,7 @@ def rebuffi_sodef():
     odefunc = ODEfunc_mlp(0)
     odefeature_layers = ODEBlock(odefunc)
     odefc_layers = MLP_OUT_LINEAR()
-    model_dense = nn.Sequential( odefeature_layers, odefc_layers)
+    model_dense = nn.Sequential(odefeature_layers, odefc_layers)
     new_model = nn.Sequential(model, fc_features, model_dense)
     
     return new_model
