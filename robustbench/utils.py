@@ -43,7 +43,7 @@ def download_gdrive(gdrive_id, fname_save):
     print('Download started: path={} (gdrive_id={})'.format(
         fname_save, gdrive_id))
 
-    url_base = "https://docs.google.com/uc?export=download"
+    url_base = "https://docs.google.com/uc?export=download&confirm=t"
     session = requests.Session()
 
     response = session.get(url_base, params={'id': gdrive_id}, stream=True)
