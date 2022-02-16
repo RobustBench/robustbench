@@ -7,6 +7,8 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
 
 **Paper:** [https://arxiv.org/abs/2010.09670](https://arxiv.org/abs/2010.09670)
 
+**❗Note❗: if you experience problems with the automatic downloading of the models from Google Drive, install the latest version of `RobustBench` via `pip install git+https://github.com/RobustBench/robustbench.git`.**
+
 <p align="center"><img src="images/leaderboard_screenshot_linf.png" width="700">
 <p align="center"><img src="images/leaderboard_screenshot_l2.png" width="700">
 <p align="center"><img src="images/leaderboard_screenshot_corruptions.png" width="700">
@@ -77,13 +79,13 @@ out our Colab notebook here
 👉 [RobustBench: quick start](https://colab.research.google.com/drive/1MQY_7O9vj7ixD5ilVRbdQwlNPFvxifHV)
 for a quick introduction. It is also summarized below 👇.
 
-First, install the latest version of **`RobustBench`**:
+First, install the latest version of **`RobustBench`** (recommended):
 
 ```bash
 pip install git+https://github.com/RobustBench/robustbench.git
 ```
 
-or the latest *stable* version of **`RobustBench`**:
+or the latest *stable* version of **`RobustBench`** (it is possible that automatic downloading of the models may not work):
 
 ```bash
 pip install git+https://github.com/RobustBench/robustbench.git@v1.0
