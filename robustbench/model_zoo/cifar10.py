@@ -15,6 +15,7 @@ from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWid
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreActResNet
 from robustbench.model_zoo.architectures.paf_wide_resnet import pssilu_wrn_28_10
+from robustbench.model_zoo.architectures.sodef_layers import rebuffi_sodef
 
 
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
@@ -259,6 +260,7 @@ class Chen2020EfficientNet(WideResNet):
     def forward(self, x):
         x = (x - self.mu) / self.sigma
         return super().forward(x)
+
 
 class Diffenderfer2021CARD(LRR_ResNet):
     def __init__(self, width=128):
@@ -696,6 +698,10 @@ linf = OrderedDict([
     ('Standard', {
         'model': lambda: WideResNet(depth=28, widen_factor=10),
         'gdrive_id': '1t98aEuzeTL8P7Kpd5DIrCoCL21BNZUhC',
+    }),
+    ('Kang2021Stable', {
+        'model': rebuffi_sodef,
+        'gdrive_id': '1-HjG9f7wJDnNRdMQSiz8dlCI3sq5mfqj',
     }),
 ])
 
