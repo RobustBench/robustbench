@@ -223,6 +223,15 @@ def clean_accuracy(model: nn.Module,
     return acc.item() / x.shape[0]
 
 
+def get_key(x, keys):
+    if isinstance(keys, str):
+        return float(x[keys])
+    else:
+        for k in keys:
+            if k in x.keys():
+                return float(x[k])
+
+
 def list_available_models(
         dataset: Union[str, BenchmarkDataset] = BenchmarkDataset.cifar_10,
         threat_model: Union[str, ThreatModel] = ThreatModel.Linf,
@@ -267,7 +276,7 @@ def list_available_models(
         json_dict['clean_acc'] = float(json_dict['clean_acc']) / 100
         json_dicts.append(json_dict)
 
-    json_dicts = sorted(json_dicts, key=lambda d: -d[acc_field])
+    json_dicts = sorted(json_dicts, key=lambda d: -get_key(d, acc_field))
     print('| <sub>#</sub> | <sub>Model ID</sub> | <sub>Paper</sub> | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> | <sub>Architecture</sub> | <sub>Venue</sub> |')
     print('|:---:|---|---|:---:|:---:|:---:|:---:|')
     for i, json_dict in enumerate(json_dicts):
@@ -279,13 +288,13 @@ def list_available_models(
                 '| <sub>**{}**</sub> | <sub><sup>**{}**</sup></sub> | <sub>*[{}]({})*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
                 .format(i + 1, json_dict['model_name'], json_dict['name'],
                         json_dict['link'], json_dict['clean_acc'],
-                        json_dict[acc_field], json_dict['architecture'],
+                        get_key(json_dict, acc_field), json_dict['architecture'],
                         json_dict['venue']))
         else:
             print(
                 '| <sub>**{}**</sub> | <sub><sup>**{}**</sup></sub> | <sub>*{}*</sub> | <sub>{:.2%}</sub> | <sub>{:.2%}</sub> | <sub>{}</sub> | <sub>{}</sub> |'
                 .format(i + 1, json_dict['model_name'], json_dict['name'],
-                        json_dict['clean_acc'], json_dict[acc_field],
+                        json_dict['clean_acc'], get_key(json_dict, acc_field),
                         json_dict['architecture'], json_dict['venue']))
 
 
@@ -401,6 +410,8 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
         json_path.parent.mkdir(parents=True, exist_ok=True)
 
     acc_field = ACC_FIELDS[threat_model]
+    if isinstance(acc_field, tuple):
+        acc_field = acc_field[-1]
 
     acc_field_kwarg = {acc_field: adv_accuracy}
 
