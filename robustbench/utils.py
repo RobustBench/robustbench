@@ -18,8 +18,8 @@ from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 
 ACC_FIELDS = {
     ThreatModel.corruptions: "corruptions_acc",
-    ThreatModel.L2: "autoattack_acc",
-    ThreatModel.Linf: "autoattack_acc"
+    ThreatModel.L2: ("external", "autoattack_acc"),
+    ThreatModel.Linf: ("external", "autoattack_acc")
 }
 
 
@@ -43,7 +43,7 @@ def download_gdrive(gdrive_id, fname_save):
     print('Download started: path={} (gdrive_id={})'.format(
         fname_save, gdrive_id))
 
-    url_base = "https://docs.google.com/uc?export=download"
+    url_base = "https://docs.google.com/uc?export=download&confirm=t"
     session = requests.Session()
 
     response = session.get(url_base, params={'id': gdrive_id}, stream=True)
@@ -258,7 +258,12 @@ def list_available_models(
         json_dict['model_name'] = model_name
         json_dict['venue'] = 'Unpublished' if json_dict[
             'venue'] == '' else json_dict['venue']
-        json_dict[acc_field] = float(json_dict[acc_field]) / 100
+        if isinstance(acc_field, str):
+            json_dict[acc_field] = float(json_dict[acc_field]) / 100
+        else:
+            for k in acc_field:
+                if k in json_dict.keys():
+                    json_dict[k] = float(json_dict[k]) / 100
         json_dict['clean_acc'] = float(json_dict['clean_acc']) / 100
         json_dicts.append(json_dict)
 

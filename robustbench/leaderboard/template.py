@@ -58,14 +58,23 @@ def generate_leaderboard(dataset: Union[str, BenchmarkDataset],
 
         models.append(model)
 
-    models.sort(key=lambda x: x[acc_field], reverse=True)
+    #models.sort(key=lambda x: x[acc_field], reverse=True)
+    def get_key(x):
+        if isinstance(acc_field, str):
+            return float(x[acc_field])
+        else:
+            for k in acc_field:
+                if k in x.keys():
+                    return float(x[k])
+    models.sort(key=get_key, reverse=True)
 
     env = Environment(loader=PackageLoader('robustbench', 'leaderboard'),
                       autoescape=select_autoescape(['html', 'xml']))
 
     template = env.get_template('leaderboard.html.j2')
 
-    result = template.render(threat_model=threat_model, dataset=dataset, models=models, acc_field=acc_field)
+    result = template.render(threat_model=threat_model, dataset=dataset,
+        models=models, acc_field=acc_field if isinstance(acc_field, str) else acc_field[-1])
     print(result)
     return result
 
