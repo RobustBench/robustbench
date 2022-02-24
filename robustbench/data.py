@@ -181,7 +181,7 @@ def load_imagenetc(
     data_dir: str = './data',
     shuffle: bool = False,
     corruptions: Sequence[str] = CORRUPTIONS,
-    transforms_test: Callable = PREPROCESSINGS['Res256Crop224']
+    prepr: Callable = PREPROCESSINGS['Res256Crop224']
 ) -> Tuple[torch.Tensor, torch.Tensor]:
 
     assert len(
@@ -193,7 +193,7 @@ def load_imagenetc(
 
     data_folder_path = Path(data_dir) / CORRUPTIONS_DIR_NAMES[
         BenchmarkDataset.imagenet] / corruptions[0] / str(severity)
-    imagenet = CustomImageFolder(data_folder_path, transforms_test)
+    imagenet = CustomImageFolder(data_folder_path, prepr)
 
     test_loader = data.DataLoader(imagenet,
                                   batch_size=n_examples,
