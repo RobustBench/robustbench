@@ -9,6 +9,7 @@ from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChe
     PreActBlock, PreActBlockV2, PreActResNet, ResNet, ResNet18, BasicBlock
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, \
     ResNeXtBottleneck
+from robustbench.model_zoo.architectures.resnest import ResNest152
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.architectures.robust_wide_resnet import RobustWideResNet
 from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWideResNet
@@ -499,6 +500,10 @@ linf = OrderedDict([
     ('Sehwag2021Proxy_R18', {
         'model': ResNet18,
         'gdrive_id': '1-ZgoSlD_AMhtXdnUElilxVXnzK2DcHuu',
+    }),
+    ('Sehwag2021Proxy_ResNest152', {
+        'model': ResNest152,
+        'gdrive_id': '1XSjtJZAvDlua6wTM6WRLvW_jON-DqLgT',
     }),
     ('Sitawarin2020Improving', {
         'model':
