@@ -328,6 +328,28 @@ linf = OrderedDict([
         lambda: WideResNet(
             depth=34, widen_factor=10, num_classes=100, sub_block1=True),
         'gdrive_id':  '1-I4NZyULdEWH46b4EaCTxuuRo4eFXsg_'
+    }),
+    ('Pang2022Robustness_WRN28_10', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=28,
+                             width=10,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        "1VDDM_j5M4b6sZpt1Nnhkr8FER3kjE33M"
+    }),
+    ('Pang2022Robustness_WRN70_16', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=70,
+                             width=16,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        "1F3kn8KIdBVls8QuTWc3BbB83htkQeVQD"
     })
 ])
 
