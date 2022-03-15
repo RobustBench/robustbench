@@ -254,6 +254,10 @@ linf = OrderedDict([
         'model': Wu2020AdversarialNet,
         'gdrive_id': '1yWGvHmrgjtd9vOpV5zVDqZmeGhCgVYq7'
     }),
+    ('Sehwag2021Proxy', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=False),
+        'gdrive_id': '1ejMNF2O4xkSdrjtZt2UXUeim-y9F7Req',
+    }),
     ('Sitawarin2020Improving', {
         'model':
         lambda: WideResNet(
