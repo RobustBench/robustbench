@@ -708,6 +708,26 @@ linf = OrderedDict([
         'model': rebuffi_sodef,
         'gdrive_id': '1-HjG9f7wJDnNRdMQSiz8dlCI3sq5mfqj',
     }),
+    ('Pang2022Robustness_WRN28_10', {
+        'model':
+        lambda: DMWideResNet(num_classes=10,
+                             depth=28,
+                             width=10,
+                             activation_fn=Swish,
+                             mean=CIFAR10_MEAN,
+                             std=CIFAR10_STD),
+        'gdrive_id': '16ChNkterCp17BXv-xxqpfedb4u2_CjjS'
+    }),
+    ('Pang2022Robustness_WRN70_16', {
+        'model':
+        lambda: DMWideResNet(num_classes=10,
+                             depth=70,
+                             width=16,
+                             activation_fn=Swish,
+                             mean=CIFAR10_MEAN,
+                             std=CIFAR10_STD),
+        'gdrive_id': '1uQZYUuUiL9BzaQUeXLhjr_RhoyFRrHe3'
+    })
 ])
 
 l2 = OrderedDict([
