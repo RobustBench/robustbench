@@ -703,6 +703,14 @@ linf = OrderedDict([
         'model': rebuffi_sodef,
         'gdrive_id': '1-HjG9f7wJDnNRdMQSiz8dlCI3sq5mfqj',
     }),
+    ('Jia2022LAS-AT_34_10', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10),
+        'gdrive_id': '1-3l7xKhIPyes3O4QSz0HU6L-hfOoS0xD',
+    }),
+    ('Jia2022LAS-AT_70_16', {
+        'model': lambda: WideResNet(depth=70, widen_factor=16),
+        'gdrive_id': '1-4p-Gr0hjl8wq6qvvTza4x4a5Rmu-Bfr',
+    }),
 ])
 
 l2 = OrderedDict([

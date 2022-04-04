@@ -317,13 +317,23 @@ linf = OrderedDict([
     ('Addepalli2021Towards_WRN34', {
         'model':
         lambda: WideResNet(num_classes=100, depth=34, sub_block1=True),
-        'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y'
+        'gdrive_id': '1-9GAld_105-jWBLXL73btmfOCwAqvz7Y',
     }),
     ('Chen2021LTD_WRN34_10', {
         'model':
         lambda: WideResNet(
             depth=34, widen_factor=10, num_classes=100, sub_block1=True),
-        'gdrive_id':  '1-I4NZyULdEWH46b4EaCTxuuRo4eFXsg_'
+        'gdrive_id': '1-I4NZyULdEWH46b4EaCTxuuRo4eFXsg_',
+    }),
+    ('Jia2022LAS-AT_34_10', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10,
+            num_classes=100, sub_block1=True),
+        'gdrive_id': '1-338K2PUf5FTwk4cbUUeTNz247GrXaMG',
+    }),
+    ('Jia2022LAS-AT_34_20', {
+        'model': lambda: WideResNet(depth=34, widen_factor=20,
+            num_classes=100),
+        'gdrive_id': '1WhRq01Yl1v8O3skkrGUBuySlptidc5a6',
     })
 ])
 
