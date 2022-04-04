@@ -9,6 +9,7 @@ from robustbench.model_zoo.architectures.resnet import Bottleneck, BottleneckChe
     PreActBlock, PreActBlockV2, PreActResNet, ResNet, ResNet18, BasicBlock
 from robustbench.model_zoo.architectures.resnext import CifarResNeXt, \
     ResNeXtBottleneck
+from robustbench.model_zoo.architectures.resnest import ResNest152
 from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.architectures.robust_wide_resnet import RobustWideResNet
 from robustbench.model_zoo.architectures.boosting_wide_resnet import BoostingWideResNet
@@ -500,6 +501,10 @@ linf = OrderedDict([
         'model': ResNet18,
         'gdrive_id': '1-ZgoSlD_AMhtXdnUElilxVXnzK2DcHuu',
     }),
+    ('Sehwag2021Proxy_ResNest152', {
+        'model': ResNest152,
+        'gdrive_id': '1XSjtJZAvDlua6wTM6WRLvW_jON-DqLgT',
+    }),
     ('Sitawarin2020Improving', {
         'model':
         lambda: WideResNet(depth=34, widen_factor=10, sub_block1=True),
@@ -710,6 +715,26 @@ linf = OrderedDict([
     ('Jia2022LAS-AT_70_16', {
         'model': lambda: WideResNet(depth=70, widen_factor=16),
         'gdrive_id': '1-4p-Gr0hjl8wq6qvvTza4x4a5Rmu-Bfr',
+    }),
+    ('Pang2022Robustness_WRN28_10', {
+        'model':
+        lambda: DMWideResNet(num_classes=10,
+                             depth=28,
+                             width=10,
+                             activation_fn=Swish,
+                             mean=CIFAR10_MEAN,
+                             std=CIFAR10_STD),
+        'gdrive_id': '16ChNkterCp17BXv-xxqpfedb4u2_CjjS'
+    }),
+    ('Pang2022Robustness_WRN70_16', {
+        'model':
+        lambda: DMWideResNet(num_classes=10,
+                             depth=70,
+                             width=16,
+                             activation_fn=Swish,
+                             mean=CIFAR10_MEAN,
+                             std=CIFAR10_STD),
+        'gdrive_id': '1uQZYUuUiL9BzaQUeXLhjr_RhoyFRrHe3'
     }),
 ])
 

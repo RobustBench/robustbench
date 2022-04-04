@@ -254,6 +254,10 @@ linf = OrderedDict([
         'model': Wu2020AdversarialNet,
         'gdrive_id': '1yWGvHmrgjtd9vOpV5zVDqZmeGhCgVYq7'
     }),
+    ('Sehwag2021Proxy', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100, sub_block1=False),
+        'gdrive_id': '1ejMNF2O4xkSdrjtZt2UXUeim-y9F7Req',
+    }),
     ('Sitawarin2020Improving', {
         'model':
         lambda: WideResNet(
@@ -323,7 +327,29 @@ linf = OrderedDict([
         'model':
         lambda: WideResNet(
             depth=34, widen_factor=10, num_classes=100, sub_block1=True),
-        'gdrive_id': '1-I4NZyULdEWH46b4EaCTxuuRo4eFXsg_',
+        'gdrive_id':  '1-I4NZyULdEWH46b4EaCTxuuRo4eFXsg_'
+    }),
+    ('Pang2022Robustness_WRN28_10', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=28,
+                             width=10,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        "1VDDM_j5M4b6sZpt1Nnhkr8FER3kjE33M"
+    }),
+    ('Pang2022Robustness_WRN70_16', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=70,
+                             width=16,
+                             activation_fn=Swish,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        "1F3kn8KIdBVls8QuTWc3BbB83htkQeVQD",
     }),
     ('Jia2022LAS-AT_34_10', {
         'model': lambda: WideResNet(depth=34, widen_factor=10,
@@ -334,7 +360,7 @@ linf = OrderedDict([
         'model': lambda: WideResNet(depth=34, widen_factor=20,
             num_classes=100),
         'gdrive_id': '1WhRq01Yl1v8O3skkrGUBuySlptidc5a6',
-    })
+    }),
 ])
 
 common_corruptions = OrderedDict([
