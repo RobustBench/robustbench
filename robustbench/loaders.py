@@ -14,14 +14,11 @@ from PIL import Image
 import os
 import os.path
 import sys
-import json
 
 
-def make_custom_dataset(root, path_imgs, cls_dict):
+def make_custom_dataset(root, path_imgs, class_to_idx):
     with open(pkg_resources.resource_filename(__name__, path_imgs), 'r') as f:
         fnames = f.readlines()
-    with open(pkg_resources.resource_filename(__name__, cls_dict), 'r') as f:
-        class_to_idx = json.load(f)
     images = [(os.path.join(root,
                             c.split('\n')[0]), class_to_idx[c.split('/')[0]])
               for c in fnames]
@@ -70,7 +67,7 @@ class CustomDatasetFolder(VisionDataset):
         classes, class_to_idx = self._find_classes(self.root)
         samples = make_custom_dataset(
             self.root, 'data/imagenet_test_image_ids.txt',
-            'data/imagenet_class_to_id_map.json')
+            class_to_idx)
         if len(samples) == 0:
             raise (RuntimeError("Found 0 files in subfolders of: " +
                                 self.root + "\n"
