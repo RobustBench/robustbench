@@ -200,7 +200,7 @@ for model_name in ['Standard_R50']:
     for corruption in corruptions_3dcc:
         corrs_curr = []
         for s in [1,2,3,4,5]: # 5 severity levels
-            x_test, y_test = load_imagenetc(n_examples=5000, corruptions=[corruption], severity=s, data_dir='/datasets/home/oguzhan/release_3dcc/3dcc_data')
+            x_test, y_test = load_imagenet3dcc(n_examples=5000, corruptions=[corruption], severity=s, data_dir='/datasets/home/oguzhan/release_3dcc/3dcc_data')
             x_test, y_test = x_test.to(device), y_test.to(device)
         
             acc = clean_accuracy(model, x_test, y_test, device=device)
