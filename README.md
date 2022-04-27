@@ -187,7 +187,9 @@ from robustbench.data import load_imagenet3dcc
 from robustbench.utils import clean_accuracy
 from robustbench.utils import load_model
 
-corruptions_3dcc = ['near_focus', 'far_focus', 'bit_error', 'color_quant', 'flash', 'fog_3d', 'h265_abr', 'h265_crf', 'iso_noise', 'low_light', 'xy_motion_blur', 'z_motion_blur'] # 12 corruptions in ImageNet-3DCC
+corruptions_3dcc = ['near_focus', 'far_focus', 'bit_error', 'color_quant', 
+                   'flash', 'fog_3d', 'h265_abr', 'h265_crf',
+                   'iso_noise', 'low_light', 'xy_motion_blur', 'z_motion_blur'] # 12 corruptions in ImageNet-3DCC
 
 device = torch.device("cuda:0")
 
