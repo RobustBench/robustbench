@@ -186,7 +186,7 @@ def load_imagenetc(
     data_dir: str = './data',
     shuffle: bool = False,
     corruptions: Sequence[str] = CORRUPTIONS,
-    prepr: Callable = PREPROCESSINGS['Res256Crop224']
+    prepr: Callable = PREPROCESSINGS[None]
 ) -> Tuple[torch.Tensor, torch.Tensor]:
 
     assert len(
@@ -216,7 +216,7 @@ def load_imagenet3dcc(
     data_dir: str = './data',
     shuffle: bool = False,
     corruptions: Sequence[str] = CORRUPTIONS_3DCC,
-    prepr: Callable = PREPROCESSINGS['Res256Crop224']
+    prepr: Callable = PREPROCESSINGS[None]
 ) -> Tuple[torch.Tensor, torch.Tensor]:
 
     assert len(
