@@ -171,15 +171,15 @@ However, on average adversarial training *does* help on CIFAR-10-C. One can chec
 via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on them.
 
 
-### **New**: Evaluating robustness of ImageNet models using 3D Common Corruptions benchmark (ImageNet-3DCC)
+### **\*New\***: Evaluating robustness of ImageNet models against 3D Common Corruptions (ImageNet-3DCC)
 
-3D Common Corruptions (3DCC) is a recent benchmark to generate more realistic corruptions using scene geometry. Please visit the [project website](https://3dcommoncorruptions.epfl.ch/) for more information.
+3D Common Corruptions (3DCC) is a recent benchmark by Kar et al. (CVPR 2022) using scene geometry to generate more realistic corruptions. Please visit the [project website](https://3dcommoncorruptions.epfl.ch/) for more information.
 
 You can evaluate robustness of a standard ResNet-50 against ImageNet-3DCC by following these steps:
 
-1. Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool.
+1. Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
 
-2. Sample evaluation script to obtain accuracies and save them in a pickle file:
+2. Run the sample evaluation script to obtain accuracies and save them in a pickle file:
 ```python
 import pickle as pkl
 import torch 
@@ -200,7 +200,7 @@ for model_name in ['Standard_R50']:
     for corruption in corruptions_3dcc:
         corrs_curr = []
         for s in [1,2,3,4,5]: # 5 severity levels
-            x_test, y_test = load_imagenet3dcc(n_examples=5000, corruptions=[corruption], severity=s, data_dir='/datasets/home/oguzhan/release_3dcc/3dcc_data')
+            x_test, y_test = load_imagenet3dcc(n_examples=5000, corruptions=[corruption], severity=s, data_dir=$PATH_ImageNet_3DCC)
             x_test, y_test = x_test.to(device), y_test.to(device)
         
             acc = clean_accuracy(model, x_test, y_test, device=device)
