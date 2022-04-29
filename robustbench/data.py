@@ -152,8 +152,8 @@ ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
 CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
     BenchmarkDataset.cifar_10: "CIFAR-10-C",
     BenchmarkDataset.cifar_100: "CIFAR-100-C",
-    BenchmarkDataset.imagenet: "imagenet-c", #"ImageNet-C",
-    BenchmarkDataset.imagenet_3d: "imagenet_3dcc_omnidata"#"ImageNet-3DCC"
+    BenchmarkDataset.imagenet: "ImageNet-C",
+    BenchmarkDataset.imagenet_3d: "ImageNet-3DCC"
 }
 
 
