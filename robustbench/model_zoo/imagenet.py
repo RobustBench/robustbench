@@ -46,6 +46,11 @@ linf = OrderedDict(
 
 common_corruptions = OrderedDict(
     [
+        ('Erichson2022NoisyMix', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '1wFsiB5h4Fgv6HqOkI_1jR1SZOB_eNK9r',
+            'preprocessing': 'Res256Crop224'
+        }),
         ('Geirhos2018_SIN', {
             'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
             'gdrive_id': '1hLgeY_rQIaOT4R-t_KyOqPNkczfaedgs',
@@ -78,6 +83,11 @@ common_corruptions = OrderedDict(
         }),
         ('Standard_R50', {
             'model': lambda: normalize_model(pt_models.resnet50(pretrained=True), mu, sigma),
+            'gdrive_id': '',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('AlexNet', {
+            'model': lambda: normalize_model(pt_models.alexnet(pretrained=True), mu, sigma),
             'gdrive_id': '',
             'preprocessing': 'Res256Crop224'
         }),
