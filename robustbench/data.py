@@ -153,7 +153,7 @@ CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
     BenchmarkDataset.cifar_10: "CIFAR-10-C",
     BenchmarkDataset.cifar_100: "CIFAR-100-C",
     BenchmarkDataset.imagenet: "ImageNet-C",
-    BenchmarkDataset.imagenet: "ImageNet-3DCC"
+    BenchmarkDataset.imagenet: "imagenet_3dcc_omnidata"#"ImageNet-3DCC"
 }
 
 
