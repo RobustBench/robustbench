@@ -14,7 +14,7 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
 <p align="center"><img src="images/leaderboard_screenshot_corruptions.png" width="700">
 
 ## News
-  (May 2022): 3D Common Corruptions benchmark for ImageNet (ImageNet-3DCC) is live. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc).
+  (May 2022): [3D Common Corruptions](https://3dcommoncorruptions.epfl.ch/) benchmark for ImageNet (ImageNet-3DCC) is live. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc).
   
   
 ## Main idea
@@ -177,7 +177,7 @@ via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on th
 
 ### **\*New\***: Evaluating robustness of ImageNet models against 3D Common Corruptions (ImageNet-3DCC)
 
-3D Common Corruptions (3DCC) is a recent benchmark by Kar et al. (CVPR 2022) using scene geometry to generate more realistic corruptions. Please visit the [project website](https://3dcommoncorruptions.epfl.ch/) for more information.
+3D Common Corruptions (3DCC) is a recent benchmark by Kar et al. (CVPR 2022) using scene geometry to generate realistic corruptions. Please visit the [project website](https://3dcommoncorruptions.epfl.ch/) for more information.
 
 You can evaluate robustness of a standard ResNet-50 against ImageNet-3DCC by following these steps:
 
