@@ -242,7 +242,7 @@ its licensing, so you have to do that in advance. For this, you can obtain the d
 the instructions [here](https://github.com/soumith/imagenet-multiGPU.torch#data-processing) to extract the validation 
 set in a pytorch-compatible format into folder `val`.
 
-### Downloading ImageNet-C and ImageNet-3DCC:
+#### Downloading ImageNet-C and ImageNet-3DCC:
 ImageNet-C: Please visit [here](https://github.com/hendrycks/robustness).
 
 ImageNet-3DCC: Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
