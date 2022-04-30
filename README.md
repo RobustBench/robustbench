@@ -14,7 +14,11 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
 <p align="center"><img src="images/leaderboard_screenshot_corruptions.png" width="700">
 
 ## News
-  (May 2022): [3D Common Corruptions](https://3dcommoncorruptions.epfl.ch/) benchmark for ImageNet (ImageNet-3DCC) is live. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc).
+  May 2022:
+  
+  -We have extended the common corruptions leaderboard on ImageNet with [3D Common Corruptions](https://3dcommoncorruptions.epfl.ch/)      (ImageNet-3DCC). ImageNet-3DCC evaluations can be informative as (1) it includes more realistic corruptions and (2) it can be used to assess generalization of the existing models which may have overfitted to ImageNet-C. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc). Note that the entries in leaderboard are still sorted according to ImageNet-C performance.
+  
+  -We fixed the preprocessing issue for ImageNet corruption evaluations. This changed the ranking between the top-1 and top-2 entries.
   
   
 ## Main idea
@@ -238,6 +242,11 @@ its licensing, so you have to do that in advance. For this, you can obtain the d
 the instructions [here](https://github.com/soumith/imagenet-multiGPU.torch#data-processing) to extract the validation 
 set in a pytorch-compatible format into folder `val`.
 
+### Downloading ImageNet-C and ImageNet-3DCC:
+ImageNet-C: Please visit [here](https://github.com/hendrycks/robustness).
+
+ImageNet-3DCC: Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
+
 You can find all available model IDs in the tables below (note that the full leaderboard contains a bit more models): 
 
 
@@ -417,7 +426,7 @@ You can find all available model IDs in the tables below (note that the full lea
 
 #### Corruptions (ImageNet-C & ImageNet-3DCC)
 
-|   <sub>#</sub>   | <sub>Model ID</sub>                              | <sub>Paper</sub>                                                                                                                                          | <sub>Clean accuracy</sub> | <sub>Robust accuracy (ImageNet-C)</sub> |  <sub>Robust accuracy (ImageNet-3DCC)</sub> | <sub>mCE (ImageNet-C)</sub> |  <sub>mCE (ImageNet-3DCC)</sub> |  <sub>Architecture</sub>   |    <sub>Venue</sub>     |
+|   <sub>#</sub>   | <sub>Model ID</sub>                              | <sub>Paper</sub>                                                                                                                                          | <sub>Clean accuracy</sub> | <sub>Robust accuracy (IN-C)</sub> |  <sub>Robust accuracy (IN-3DCC)</sub> | <sub>mCE (IN-C)</sub> |  <sub>mCE (IN-3DCC)</sub> |  <sub>Architecture</sub>   |    <sub>Venue</sub>     |
 | :--------------: | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------: | :------------------------: | :-----------------------: | :------------------------: | :------------------------: | :------------------------: | :---------------------: |
 | <sub>**1**</sub> | <sub><sup>**Hendrycks2020Many**</sup></sub>      | <sub>*[The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization](https://arxiv.org/abs/2006.16241)*</sub>                  |     <sub>76.88%</sub>     |     <sub>52.65%</sub>      |  <sub>54.13%</sub>      |  <sub>60.32%</sub>     |     <sub>61.02%</sub>      |  <sub>ResNet-50</sub>    |  <sub>ICCV 2021</sub>   |
 | <sub>**2**</sub> | <sub><sup>**Erichson2022NoisyMix**</sup></sub>    | <sub>*[NoisyMix: Boosting Robustness by Combining Data Augmentations, Stability Training, and Noise Injections](https://arxiv.org/pdf/2202.01263.pdf)*</sub>                            |     <sub>77.14%</sub>     |     <sub>52.25%</sub>      |  <sub>53.10%</sub>      | <sub>60.70%</sub>     |     <sub>62.33%</sub>      | <sub>ResNet-50</sub>    |  <sub>arXiv 2022</sub>   |
