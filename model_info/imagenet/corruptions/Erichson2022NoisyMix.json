@@ -10,8 +10,5 @@
   "eps": null,
   "clean_acc": "77.14",
   "reported": "52.25",
-  "corruptions_acc_2d": "52.25",
-  "corruptions_acc_3d": "53.10",
-  "corruptions_mce_2d": "60.70",
-  "corruptions_mce_3d": "62.33"
+  "corruptions_acc": "52.25"
 }

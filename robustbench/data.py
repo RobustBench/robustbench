@@ -153,7 +153,7 @@ CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
     BenchmarkDataset.cifar_10: "CIFAR-10-C",
     BenchmarkDataset.cifar_100: "CIFAR-100-C",
     BenchmarkDataset.imagenet: "ImageNet-C",
-    BenchmarkDataset.imagenet_3d: "ImageNet-3DCC"
+    BenchmarkDataset.imagenet: "ImageNet-3DCC"
 }
 
 
@@ -199,7 +199,7 @@ def load_imagenetc(
     data_folder_path = Path(data_dir) / CORRUPTIONS_DIR_NAMES[
         BenchmarkDataset.imagenet] / corruptions[0] / str(severity)
     imagenet = CustomImageFolder(data_folder_path, prepr)
-    print(data_folder_path)    
+
     test_loader = data.DataLoader(imagenet,
                                   batch_size=n_examples,
                                   shuffle=shuffle,
@@ -227,9 +227,9 @@ def load_imagenet3dcc(
     #  at once -- perhaps this is a cleaner solution)
 
     data_folder_path = Path(data_dir) / CORRUPTIONS_DIR_NAMES[
-        BenchmarkDataset.imagenet_3d] / corruptions[0] / str(severity)
+        BenchmarkDataset.imagenet] / corruptions[0] / str(severity)
     imagenet = CustomImageFolder(data_folder_path, prepr)
-    print(data_folder_path)   
+
     test_loader = data.DataLoader(imagenet,
                                   batch_size=n_examples,
                                   shuffle=shuffle,
@@ -246,7 +246,7 @@ CORRUPTION_DATASET_LOADERS: Dict[BenchmarkDataset, CorruptDatasetLoader] = {
     BenchmarkDataset.cifar_10: load_cifar10c,
     BenchmarkDataset.cifar_100: load_cifar100c,
     BenchmarkDataset.imagenet: load_imagenetc,
-    BenchmarkDataset.imagenet_3d: load_imagenet3dcc,
+    BenchmarkDataset.imagenet: load_imagenet3dcc,
 }
 
 
