@@ -10,6 +10,9 @@
   "eps": null,
   "clean_acc": "74.88",
   "reported": "",
-  "corruptions_acc": "44.48",
+  "corruptions_acc_2d": "45.52",
+  "corruptions_acc_3d": "48.09",
+  "corruptions_mce_2d": "68.95",
+  "corruptions_mce_3d": "68.89",
   "footnote": "Model B: trained on Stylized ImageNet and standard ImageNet."
 }

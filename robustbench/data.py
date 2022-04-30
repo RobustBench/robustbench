@@ -140,6 +140,10 @@ CORRUPTIONS = ("shot_noise", "motion_blur", "snow", "pixelate",
                "zoom_blur", "frost", "glass_blur", "impulse_noise", "contrast",
                "jpeg_compression", "elastic_transform")
 
+CORRUPTIONS_3DCC = ('near_focus', 'far_focus', 'bit_error', 'color_quant', 
+                    'flash', 'fog_3d', 'h265_abr', 'h265_crf', 'iso_noise', 
+                    'low_light', 'xy_motion_blur', 'z_motion_blur')
+
 ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
     BenchmarkDataset.cifar_10: ("2535967", {"CIFAR-10-C.tar"}),
     BenchmarkDataset.cifar_100: ("3555552", {"CIFAR-100-C.tar"})
@@ -148,7 +152,8 @@ ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
 CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
     BenchmarkDataset.cifar_10: "CIFAR-10-C",
     BenchmarkDataset.cifar_100: "CIFAR-100-C",
-    BenchmarkDataset.imagenet: "ImageNet-C"
+    BenchmarkDataset.imagenet: "ImageNet-C",
+    BenchmarkDataset.imagenet_3d: "ImageNet-3DCC"
 }
 
 
@@ -181,7 +186,7 @@ def load_imagenetc(
     data_dir: str = './data',
     shuffle: bool = False,
     corruptions: Sequence[str] = CORRUPTIONS,
-    prepr: Callable = PREPROCESSINGS['Res256Crop224']
+    prepr: Callable = PREPROCESSINGS[None]
 ) -> Tuple[torch.Tensor, torch.Tensor]:
 
     assert len(
@@ -194,7 +199,37 @@ def load_imagenetc(
     data_folder_path = Path(data_dir) / CORRUPTIONS_DIR_NAMES[
         BenchmarkDataset.imagenet] / corruptions[0] / str(severity)
     imagenet = CustomImageFolder(data_folder_path, prepr)
+    print(data_folder_path)    
+    test_loader = data.DataLoader(imagenet,
+                                  batch_size=n_examples,
+                                  shuffle=shuffle,
+                                  num_workers=2)
 
+    x_test, y_test, paths = next(iter(test_loader))
+
+    return x_test, y_test
+
+
+def load_imagenet3dcc(
+    n_examples: Optional[int] = 5000,
+    severity: int = 5,
+    data_dir: str = './data',
+    shuffle: bool = False,
+    corruptions: Sequence[str] = CORRUPTIONS_3DCC,
+    prepr: Callable = PREPROCESSINGS[None]
+) -> Tuple[torch.Tensor, torch.Tensor]:
+
+    assert len(
+        corruptions
+    ) == 1, "so far only one corruption is supported (that's how this function is called in eval.py"
+    # TODO: generalize this (although this would probably require writing a function similar to `load_corruptions_cifar`
+    #  or alternatively creating yet another CustomImageFolder class that fetches images from multiple corruption types
+    #  at once -- perhaps this is a cleaner solution)
+
+    data_folder_path = Path(data_dir) / CORRUPTIONS_DIR_NAMES[
+        BenchmarkDataset.imagenet_3d] / corruptions[0] / str(severity)
+    imagenet = CustomImageFolder(data_folder_path, prepr)
+    print(data_folder_path)   
     test_loader = data.DataLoader(imagenet,
                                   batch_size=n_examples,
                                   shuffle=shuffle,
@@ -211,6 +246,7 @@ CORRUPTION_DATASET_LOADERS: Dict[BenchmarkDataset, CorruptDatasetLoader] = {
     BenchmarkDataset.cifar_10: load_cifar10c,
     BenchmarkDataset.cifar_100: load_cifar100c,
     BenchmarkDataset.imagenet: load_imagenetc,
+    BenchmarkDataset.imagenet_3d: load_imagenet3dcc,
 }
 
 
