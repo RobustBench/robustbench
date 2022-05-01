@@ -13,12 +13,11 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
 <p align="center"><img src="images/leaderboard_screenshot_l2.png" width="700">
 <p align="center"><img src="images/leaderboard_screenshot_corruptions.png" width="700">
 
+  
 ## News
-  May 2022:
+- **May 2022**: We have extended the common corruptions leaderboard on ImageNet with [3D Common Corruptions](https://3dcommoncorruptions.epfl.ch/) (ImageNet-3DCC). ImageNet-3DCC evaluation is interesting since (1) it includes more realistic corruptions and (2) it can be used to assess generalization of the existing models which may have overfitted to ImageNet-C. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc). Note that the entries in leaderboard are still sorted according to ImageNet-C performance.
   
-  -We have extended the common corruptions leaderboard on ImageNet with [3D Common Corruptions](https://3dcommoncorruptions.epfl.ch/)      (ImageNet-3DCC). ImageNet-3DCC evaluations can be informative as (1) it includes more realistic corruptions and (2) it can be used to assess generalization of the existing models which may have overfitted to ImageNet-C. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc). Note that the entries in leaderboard are still sorted according to ImageNet-C performance.
-  
-  -We fixed the preprocessing issue for ImageNet corruption evaluations. This changed the ranking between the top-1 and top-2 entries.
+- **May 2022**: We fixed the preprocessing issue for ImageNet corruption evaluations: previously we used resize to 256x256 and central crop to 224x224 which was a mistake since the ImageNet-C images are already 224x224 and we cropped them further losing information. Note that this changed the ranking between the top-1 and top-2 entries.
   
   
 ## Main idea
@@ -181,42 +180,27 @@ via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on th
 
 ### **\*New\***: Evaluating robustness of ImageNet models against 3D Common Corruptions (ImageNet-3DCC)
 
-3D Common Corruptions (3DCC) is a recent benchmark by Kar et al. (CVPR 2022) using scene geometry to generate realistic corruptions. Please visit the [project website](https://3dcommoncorruptions.epfl.ch/) for more information.
-
-You can evaluate robustness of a standard ResNet-50 against ImageNet-3DCC by following these steps:
+3D Common Corruptions (3DCC) is a recent benchmark by [Kar et al. (CVPR 2022)](https://3dcommoncorruptions.epfl.ch/) using scene geometry to generate realistic corruptions. You can evaluate robustness of a standard ResNet-50 against ImageNet-3DCC by following these steps:
 
 1. Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
 
 2. Run the sample evaluation script to obtain accuracies and save them in a pickle file:
 ```python
-import pickle as pkl
 import torch 
 from robustbench.data import load_imagenet3dcc
-from robustbench.utils import clean_accuracy
-from robustbench.utils import load_model
+from robustbench.utils import clean_accuracy, load_model
 
 corruptions_3dcc = ['near_focus', 'far_focus', 'bit_error', 'color_quant', 
                    'flash', 'fog_3d', 'h265_abr', 'h265_crf',
                    'iso_noise', 'low_light', 'xy_motion_blur', 'z_motion_blur'] # 12 corruptions in ImageNet-3DCC
 
 device = torch.device("cuda:0")
-
-for model_name in ['Standard_R50']:
-    corrs_all = {}
-    model = load_model(model_name, dataset='imagenet', threat_model='corruptions')
-    model.to(device)
-    for corruption in corruptions_3dcc:
-        corrs_curr = []
-        for s in [1,2,3,4,5]: # 5 severity levels
-            x_test, y_test = load_imagenet3dcc(n_examples=5000, corruptions=[corruption], severity=s, data_dir=$PATH_ImageNet_3DCC)
-            x_test, y_test = x_test.to(device), y_test.to(device)
-        
-            acc = clean_accuracy(model, x_test, y_test, device=device)
-            print(f'Model: {model_name}, ImageNet-3DCC corruption: {corruption} severity: {s} accuracy: {acc:.1%}')
-            corrs_curr.append(acc)
-        corrs_all[corruption] = corrs_curr
-        pkl.dump(corrs_all,open(f'eval_imagenet_3dcc_{model_name}.pkl','wb'))
-
+model = load_model('Standard_R50', dataset='imagenet', threat_model='corruptions').to(device)
+for corruption in corruptions_3dcc:
+    for s in [1, 2, 3, 4, 5]:  # 5 severity levels
+        x_test, y_test = load_imagenet3dcc(n_examples=5000, corruptions=[corruption], severity=s, data_dir=$PATH_IMAGENET_3DCC)
+        acc = clean_accuracy(model, x_test.to(device), y_test.to(device), device=device)
+        print(f'Model: {model_name}, ImageNet-3DCC corruption: {corruption} severity: {s} accuracy: {acc:.1%}')
 ```
 
 
@@ -236,18 +220,15 @@ an evaluation of `Salman2020Do_R18` model with AutoAttack on ImageNet for `eps=4
 ```python
 python -m robustbench.eval --n_ex=5000 --dataset=imagenet --threat_model=Linf --model_name=Salman2020Do_R18 --data_dir=/tmldata1/andriush/imagenet --batch_size=128 --eps=0.0156862745
 ```
-Note that the validation set of ImageNet is **not** downloaded automatically (unlike CIFAR-10 and CIFAR-100) due to
-its licensing, so you have to do that in advance. For this, you can obtain the download link [here](https://image-net.org/download.php) 
+The CIFAR-10, CIFAR-10-C, CIFAR-100, and CIFAR-100-C datasets are downloaded automatically. However, the ImageNet datasets should be downloaded manually due to their licensing:
+- ImageNet: Obtain the download link [here](https://image-net.org/download.php) 
 (requires just signing up from an academic email, the approval system there is automatic and happens instantly) and then follow
 the instructions [here](https://github.com/soumith/imagenet-multiGPU.torch#data-processing) to extract the validation 
 set in a pytorch-compatible format into folder `val`.
+- ImageNet-C: Please visit [here](https://github.com/hendrycks/robustness#imagenet-c) for the instructions.
+- ImageNet-3DCC: Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
 
-#### Downloading ImageNet-C and ImageNet-3DCC:
-ImageNet-C: Please visit [here](https://github.com/hendrycks/robustness).
-
-ImageNet-3DCC: Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
-
-You can find all available model IDs in the tables below (note that the full leaderboard contains a bit more models): 
+In order to use the models from the Model Zoo, you can find all available model IDs in the tables below. Note that the full [leaderboard](https://robustbench.github.io/) contains a bit more models which we either have not yet added to the Model Zoo or their authors don't want them to appear in the Model Zoo.
 
 
 ### CIFAR-10
