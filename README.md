@@ -17,7 +17,7 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
 ## News
 - **May 2022**: We have extended the common corruptions leaderboard on ImageNet with [3D Common Corruptions](https://3dcommoncorruptions.epfl.ch/) (ImageNet-3DCC). ImageNet-3DCC evaluation is interesting since (1) it includes more realistic corruptions and (2) it can be used to assess generalization of the existing models which may have overfitted to ImageNet-C. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc). Note that the entries in leaderboard are still sorted according to ImageNet-C performance.
   
-- **May 2022**: We fixed the preprocessing issue for ImageNet corruption evaluations: previously we used resize to 256x256 and central crop to 224x224 which was a mistake since the ImageNet-C images are already 224x224 and we cropped them further losing information. Note that this changed the ranking between the top-1 and top-2 entries.
+- **May 2022**: We fixed the preprocessing issue for ImageNet corruption evaluations: previously we used resize to 256x256 and central crop to 224x224 which wasn't necessary since the ImageNet-C images are already 224x224 (see [this issue](https://github.com/RobustBench/robustbench/issues/59)). Note that this changed the ranking between the top-1 and top-2 entries.
   
   
 ## Main idea
