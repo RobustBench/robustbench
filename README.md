@@ -13,6 +13,13 @@ Nicolas Flammarion (EPFL), Mung Chiang (Purdue University), Prateek Mittal (Prin
 <p align="center"><img src="images/leaderboard_screenshot_l2.png" width="700">
 <p align="center"><img src="images/leaderboard_screenshot_corruptions.png" width="700">
 
+  
+## News
+- **May 2022**: We have extended the common corruptions leaderboard on ImageNet with [3D Common Corruptions](https://3dcommoncorruptions.epfl.ch/) (ImageNet-3DCC). ImageNet-3DCC evaluation is interesting since (1) it includes more realistic corruptions and (2) it can be used to assess generalization of the existing models which may have overfitted to ImageNet-C. For a quickstart, click [here](#new-evaluating-robustness-of-imagenet-models-against-3d-common-corruptions-imagenet-3dcc). Note that the entries in leaderboard are still sorted according to ImageNet-C performance.
+  
+- **May 2022**: We fixed the preprocessing issue for ImageNet corruption evaluations: previously we used resize to 256x256 and central crop to 224x224 which wasn't necessary since the ImageNet-C images are already 224x224 (see [this issue](https://github.com/RobustBench/robustbench/issues/59)). Note that this changed the ranking between the top-1 and top-2 entries.
+  
+  
 ## Main idea
   
 The goal of **`RobustBench`** is to systematically track the *real* progress in adversarial robustness. 
@@ -171,6 +178,32 @@ However, on average adversarial training *does* help on CIFAR-10-C. One can chec
 via `load_cifar10c(n_examples=1000, severity=5)`, and repeating evaluation on them.
 
 
+### **\*New\***: Evaluating robustness of ImageNet models against 3D Common Corruptions (ImageNet-3DCC)
+
+3D Common Corruptions (3DCC) is a recent benchmark by [Kar et al. (CVPR 2022)](https://3dcommoncorruptions.epfl.ch/) using scene geometry to generate realistic corruptions. You can evaluate robustness of a standard ResNet-50 against ImageNet-3DCC by following these steps:
+
+1. Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
+
+2. Run the sample evaluation script to obtain accuracies and save them in a pickle file:
+```python
+import torch 
+from robustbench.data import load_imagenet3dcc
+from robustbench.utils import clean_accuracy, load_model
+
+corruptions_3dcc = ['near_focus', 'far_focus', 'bit_error', 'color_quant', 
+                   'flash', 'fog_3d', 'h265_abr', 'h265_crf',
+                   'iso_noise', 'low_light', 'xy_motion_blur', 'z_motion_blur'] # 12 corruptions in ImageNet-3DCC
+
+device = torch.device("cuda:0")
+model = load_model('Standard_R50', dataset='imagenet', threat_model='corruptions').to(device)
+for corruption in corruptions_3dcc:
+    for s in [1, 2, 3, 4, 5]:  # 5 severity levels
+        x_test, y_test = load_imagenet3dcc(n_examples=5000, corruptions=[corruption], severity=s, data_dir=$PATH_IMAGENET_3DCC)
+        acc = clean_accuracy(model, x_test.to(device), y_test.to(device), device=device)
+        print(f'Model: {model_name}, ImageNet-3DCC corruption: {corruption} severity: {s} accuracy: {acc:.1%}')
+```
+
+
 
 ## Model Zoo
 In order to use a model, you just need to know its ID, e.g. **Carmon2019Unlabeled**, and to run:
@@ -187,13 +220,15 @@ an evaluation of `Salman2020Do_R18` model with AutoAttack on ImageNet for `eps=4
 ```python
 python -m robustbench.eval --n_ex=5000 --dataset=imagenet --threat_model=Linf --model_name=Salman2020Do_R18 --data_dir=/tmldata1/andriush/imagenet --batch_size=128 --eps=0.0156862745
 ```
-Note that the validation set of ImageNet is **not** downloaded automatically (unlike CIFAR-10 and CIFAR-100) due to
-its licensing, so you have to do that in advance. For this, you can obtain the download link [here](https://image-net.org/download.php) 
+The CIFAR-10, CIFAR-10-C, CIFAR-100, and CIFAR-100-C datasets are downloaded automatically. However, the ImageNet datasets should be downloaded manually due to their licensing:
+- ImageNet: Obtain the download link [here](https://image-net.org/download.php) 
 (requires just signing up from an academic email, the approval system there is automatic and happens instantly) and then follow
 the instructions [here](https://github.com/soumith/imagenet-multiGPU.torch#data-processing) to extract the validation 
 set in a pytorch-compatible format into folder `val`.
+- ImageNet-C: Please visit [here](https://github.com/hendrycks/robustness#imagenet-c) for the instructions.
+- ImageNet-3DCC: Download the data from [here](https://github.com/EPFL-VILAB/3DCommonCorruptions#3dcc-data) using the provided tool. The data will be saved into a folder named `ImageNet-3DCC`.
 
-You can find all available model IDs in the tables below (note that the full leaderboard contains a bit more models): 
+In order to use the models from the Model Zoo, you can find all available model IDs in the tables below. Note that the full [leaderboard](https://robustbench.github.io/) contains a bit more models which we either have not yet added to the Model Zoo or their authors don't want them to appear in the Model Zoo.
 
 
 ### CIFAR-10
@@ -370,17 +405,20 @@ You can find all available model IDs in the tables below (note that the full lea
 | <sub>**5**</sub> | <sub><sup>**Salman2020Do_R18**</sup></sub>       | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub>  |     <sub>52.92%</sub>     |     <sub>25.32%</sub>      |    <sub>ResNet-18</sub>    |    <sub>NeurIPS 2020</sub>     |
 | <sub>**6**</sub> | <sub><sup>**Standard_R50**</sup></sub>           | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub>                       |     <sub>76.52%</sub>     |      <sub>0.00%</sub>      |    <sub>ResNet-50</sub>    |         <sub>N/A</sub>         |
 
-#### Corruptions
+#### Corruptions (ImageNet-C & ImageNet-3DCC)
 
-|   <sub>#</sub>   | <sub>Model ID</sub>                              | <sub>Paper</sub>                                                                                                                                          | <sub>Clean accuracy</sub> | <sub>Robust accuracy</sub> |  <sub>Architecture</sub>   |    <sub>Venue</sub>     |
-| :--------------: | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------: | :------------------------: | :------------------------: | :---------------------: |
-| <sub>**1**</sub> | <sub><sup>**Hendrycks2020Many**</sup></sub>      | <sub>*[The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization](https://arxiv.org/abs/2006.16241)*</sub>                  |     <sub>76.88%</sub>     |     <sub>51.61%</sub>      |    <sub>ResNet-50</sub>    |  <sub>ICCV 2021</sub>   |
-| <sub>**2**</sub> | <sub><sup>**Hendrycks2020AugMix**</sup></sub>    | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub>                            |     <sub>76.98%</sub>     |     <sub>46.91%</sub>      |    <sub>ResNet-50</sub>    |  <sub>ICLR 2020</sub>   |
-| <sub>**3**</sub> | <sub><sup>**Geirhos2018_SIN_IN**</sup></sub>     | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> |     <sub>74.88%</sub>     |     <sub>44.48%</sub>      |    <sub>ResNet-50</sub>    |  <sub>ICLR 2019</sub>   |
-| <sub>**4**</sub> | <sub><sup>**Geirhos2018_SIN_IN_IN**</sup></sub>  | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> |     <sub>77.44%</sub>     |     <sub>40.77%</sub>      |    <sub>ResNet-50</sub>    |  <sub>ICLR 2019</sub>   |
-| <sub>**5**</sub> | <sub><sup>**Standard_R50**</sup></sub>           | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub>                                                                      |     <sub>76.52%</sub>     |     <sub>38.12%</sub>      |    <sub>ResNet-50</sub>    |     <sub>N/A</sub>      |
-| <sub>**6**</sub> | <sub><sup>**Geirhos2018_SIN**</sup></sub>        | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> |     <sub>60.24%</sub>     |     <sub>37.95%</sub>      |    <sub>ResNet-50</sub>    |  <sub>ICLR 2019</sub>   |
-| <sub>**7**</sub> | <sub><sup>**Salman2020Do_50_2_Linf**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub>                                                 |     <sub>68.46%</sub>     |     <sub>34.60%</sub>      | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
+|   <sub>#</sub>   | <sub>Model ID</sub>                              | <sub>Paper</sub>                                                                                                                                          | <sub>Clean accuracy</sub> | <sub>Robust accuracy (IN-C)&#8593;</sub> |  <sub>Robust accuracy (IN-3DCC)&#8593;</sub> | <sub>mCE (IN-C)&#8595;</sub> |  <sub>mCE (IN-3DCC)&#8595;</sub> |  <sub>Architecture</sub>   |    <sub>Venue</sub>     |
+| :--------------: | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- | :-----------------------: | :------------------------: | :-----------------------: | :------------------------: | :------------------------: | :------------------------: | :---------------------: |
+| <sub>**1**</sub> | <sub><sup>**Hendrycks2020Many**</sup></sub>      | <sub>*[The Many Faces of Robustness: A Critical Analysis of Out-of-Distribution Generalization](https://arxiv.org/abs/2006.16241)*</sub>                  |     <sub>76.88%</sub>     |     <sub>52.65%</sub>      |  <sub>54.13%</sub>      |  <sub>60.32%</sub>     |     <sub>61.02%</sub>      |  <sub>ResNet-50</sub>    |  <sub>ICCV 2021</sub>   |
+| <sub>**2**</sub> | <sub><sup>**Erichson2022NoisyMix**</sup></sub>    | <sub>*[NoisyMix: Boosting Robustness by Combining Data Augmentations, Stability Training, and Noise Injections](https://arxiv.org/pdf/2202.01263.pdf)*</sub>                            |     <sub>77.14%</sub>     |     <sub>52.25%</sub>      |  <sub>53.10%</sub>      | <sub>60.70%</sub>     |     <sub>62.33%</sub>      | <sub>ResNet-50</sub>    |  <sub>arXiv 2022</sub>   |
+| <sub>**3**</sub> | <sub><sup>**Hendrycks2020AugMix**</sup></sub>    | <sub>*[AugMix: A Simple Data Processing Method to Improve Robustness and Uncertainty](https://arxiv.org/abs/1912.02781)*</sub>                            |     <sub>76.98%</sub>     |     <sub>48.31%</sub>      | <sub>51.35%</sub>      |   <sub>65.33%</sub>     |     <sub>64.51%</sub>      |    <sub>ResNet-50</sub>    |  <sub>ICLR 2020</sub>   |
+| <sub>**4**</sub> | <sub><sup>**Geirhos2018_SIN_IN**</sup></sub>     | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> |     <sub>74.88%</sub>     |     <sub>45.52%</sub>      | <sub>48.09%</sub>      |  <sub>68.95%</sub>     |     <sub>68.89%</sub>      |   <sub>ResNet-50</sub>    |  <sub>ICLR 2019</sub>   |
+| <sub>**5**</sub> | <sub><sup>**Geirhos2018_SIN_IN_IN**</sup></sub>  | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> |     <sub>77.44%</sub>     |     <sub>41.72%</sub>      | <sub>46.92%</sub>      |   <sub>73.52%</sub>     |     <sub>70.11%</sub>      |  <sub>ResNet-50</sub>    |  <sub>ICLR 2019</sub>   |
+| <sub>**6**</sub> | <sub><sup>**Geirhos2018_SIN**</sup></sub>        | <sub>*[ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness](https://arxiv.org/abs/1811.12231)*</sub> |     <sub>60.24%</sub>     |     <sub>39.53%</sub>      | <sub>37.80%</sub>      |   <sub>77.14%</sub>     |     <sub>83.33%</sub>      |  <sub>ResNet-50</sub>    |  <sub>ICLR 2019</sub>   |
+| <sub>**7**</sub> | <sub><sup>**Standard_R50**</sup></sub>           | <sub>*[Standardly trained model](https://github.com/RobustBench/robustbench/)*</sub>                                                                      |     <sub>76.52%</sub>     |     <sub>39.23%</sub>      |   <sub>44.77%</sub>      |   <sub>76.64%</sub>     |     <sub>72.95%</sub>      |  <sub>ResNet-50</sub>    |     <sub>N/A</sub>      |
+| <sub>**8**</sub> | <sub><sup>**Salman2020Do_50_2_Linf**</sup></sub> | <sub>*[Do Adversarially Robust ImageNet Models Transfer Better?](https://arxiv.org/abs/2007.08489)*</sub>                                                 |     <sub>68.46%</sub>     |     <sub>35.69%</sub>      | <sub>39.71%</sub>      |   <sub>80.42%</sub>     |     <sub>79.65%</sub>      | <sub>WideResNet-50-2</sub> | <sub>NeurIPS 2020</sub> |
+
+
 
 ## Notebooks
 
