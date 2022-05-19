@@ -5,7 +5,7 @@
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
-  "venue": "arXiv, Feb 2022",
+  "venue": "ICML 2022",
   "architecture": "WideResNet-28-10",
   "eps": "8/255",
   "clean_acc": "88.61",
