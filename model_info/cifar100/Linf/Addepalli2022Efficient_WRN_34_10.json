@@ -11,5 +11,5 @@
   "clean_acc": "68.75",
   "reported": "31.85",
   "autoattack_acc": "31.85",
-  "unreliable": false,
+  "unreliable": false
 }
