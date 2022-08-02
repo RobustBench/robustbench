@@ -66,7 +66,7 @@ class CustomDatasetFolder(VisionDataset):
         self.target_transform = target_transform
         classes, class_to_idx = self._find_classes(self.root)
         samples = make_custom_dataset(
-            self.root, 'data/imagenet_test_image_ids.txt',
+            self.root, 'helper_files/imagenet_test_image_ids.txt',
             class_to_idx)
         if len(samples) == 0:
             raise (RuntimeError("Found 0 files in subfolders of: " +
