@@ -1,2 +1,2 @@
-include helper_files/imagenet_class_to_id_map.json
-include helper_files/imagenet_test_image_ids.txt
+include robustbench/helper_files/imagenet_class_to_id_map.json
+include robustbench/helper_files/imagenet_test_image_ids.txt
