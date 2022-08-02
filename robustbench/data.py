@@ -108,6 +108,10 @@ def load_imagenet(
     data_dir: str = './data',
     transforms_test: Callable = PREPROCESSINGS['Res256Crop224']
 ) -> Tuple[torch.Tensor, torch.Tensor]:
+    if n_examples > 5000:
+        raise ValueError(
+            'The evaluation is currently possible on at most 5000 points-')
+
     imagenet = CustomImageFolder(data_dir + '/val', transforms_test)
 
     test_loader = data.DataLoader(imagenet,
@@ -188,6 +192,9 @@ def load_imagenetc(
     corruptions: Sequence[str] = CORRUPTIONS,
     prepr: Callable = PREPROCESSINGS[None]
 ) -> Tuple[torch.Tensor, torch.Tensor]:
+    if n_examples > 5000:
+        raise ValueError(
+            'The evaluation is currently possible on at most 5000 points.')
 
     assert len(
         corruptions
@@ -217,6 +224,9 @@ def load_imagenet3dcc(
     corruptions: Sequence[str] = CORRUPTIONS_3DCC,
     prepr: Callable = PREPROCESSINGS[None]
 ) -> Tuple[torch.Tensor, torch.Tensor]:
+    if n_examples > 5000:
+        raise ValueError(
+            'The evaluation is currently possible on at most 5000 points.')
 
     assert len(
         corruptions
