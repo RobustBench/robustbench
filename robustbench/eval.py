@@ -3,6 +3,7 @@ from argparse import Namespace
 from pathlib import Path
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+import logging
 import numpy as np
 import pandas as pd
 import torch
@@ -60,6 +61,8 @@ def benchmark(
         # Multiple models evaluation in parallel not yet implemented
         raise NotImplementedError
 
+    logger = logging.getLogger("robustbench")
+
     try:
         if model.training:
             warnings.warn(Warning("The given model is *not* in eval mode."))
@@ -85,7 +88,7 @@ def benchmark(
                               clean_y_test,
                               batch_size=batch_size,
                               device=device)
-    print(f'Clean accuracy: {accuracy:.2%}')
+    logger.info(f'Clean accuracy: {accuracy:.2%}')
 
     if threat_model_ in {ThreatModel.Linf, ThreatModel.L2}:
         if eps is None:
@@ -108,14 +111,14 @@ def benchmark(
                                       device=device)
     elif threat_model_ == ThreatModel.corruptions:
         corruptions = CORRUPTIONS
-        print(f"Evaluating over {len(corruptions)} corruptions")
+        logger.info(f"Evaluating over {len(corruptions)} corruptions")
         # Save into a dict to make a Pandas DF with nested index
         adv_accuracy = corruptions_evaluation(batch_size, data_dir, dataset_,
                                               device, model, n_examples,
                                               to_disk, prepr, model_name)
     else:
         raise NotImplementedError
-    print(f'Adversarial accuracy: {adv_accuracy:.2%}')
+    logger.info(f'Adversarial accuracy: {adv_accuracy:.2%}')
 
     if to_disk:
         if model_name is None:
@@ -136,6 +139,8 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
         raise ValueError(
             "If `to_disk` is True, `model_name` should be specified.")
 
+    logger = logging.getLogger("robustbench")
+
     corruptions = CORRUPTIONS
     model_results_dict: Dict[Tuple[str, int], float] = {}
     for corruption in tqdm(corruptions):
@@ -154,7 +159,7 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
                 y_corrupt,
                 batch_size=batch_size,
                 device=device)
-            print('corruption={}, severity={}: {:.2%} accuracy'.format(
+            logger.info('corruption={}, severity={}: {:.2%} accuracy'.format(
                 corruption, severity, corruption_severity_accuracy))
 
             model_results_dict[(corruption,
