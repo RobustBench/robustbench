@@ -1,9 +1,11 @@
 from collections import OrderedDict
 
+import timm
 from torchvision import models as pt_models
 
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.utils_architectures import normalize_model
+from robustbench.model_zoo.architectures import xcit
 
 
 mu = (0.485, 0.456, 0.406)
@@ -41,6 +43,24 @@ linf = OrderedDict(
             'model': lambda: normalize_model(pt_models.resnet50(pretrained=True), mu, sigma),
             'gdrive_id': '',
             'preprocessing': 'Res256Crop224'
+        }),
+        ('Debenedetti2022Light_XCiT-S12', {
+            'model': (lambda: timm.create_model(
+                'debenedetti2020light_xcit_s_imagenet_linf', pretrained=True)),
+            'gdrive_id':
+            None
+        }),
+        ('Debenedetti2022Light_XCiT-M12', {
+            'model': (lambda: timm.create_model(
+                'debenedetti2020light_xcit_m_imagenet_linf', pretrained=True)),
+            'gdrive_id':
+            None
+        }),
+        ('Debenedetti2022Light_XCiT-L12', {
+            'model': (lambda: timm.create_model(
+                'debenedetti2020light_xcit_l_imagenet_linf', pretrained=True)),
+            'gdrive_id':
+            None
         }),
     ])
 

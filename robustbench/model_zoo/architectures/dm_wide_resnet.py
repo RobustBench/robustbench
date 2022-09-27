@@ -239,7 +239,7 @@ class DMPreActResNet(nn.Module):
                  num_classes: int = 10,
                  depth: int = 18,
                  width: int = 0,  # Used to make the constructor consistent.
-                 activation_fn: nn.Module = nn.ReLU,
+                 activation_fn: Type[nn.Module] = nn.ReLU,
                  mean: Union[Tuple[float, ...], float] = CIFAR10_MEAN,
                  std: Union[Tuple[float, ...], float] = CIFAR10_STD,
                  padding: int = 0,
