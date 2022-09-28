@@ -37,9 +37,6 @@ Add here the claim for your model(s). Copy and paste the following subsection fo
 # Model Zoo:
 
 - [ ] I want to add my models to the Model Zoo (check if true)
-- [ ] I use an architecture that is **not** included among
-  those [here](https://github.com/RobustBench/robustbench/tree/master/robustbench/model_zoo/architectures) (
-  check if true).
-- [ ] I agree to release my model(s) under MIT license (check if true) **OR**
-- [ ] I want my models to be released under a custom license, located here: (custom license URL
-  here)
+- [ ] I use an architecture that is included among
+  those [here](https://github.com/RobustBench/robustbench/tree/master/robustbench/model_zoo/architectures) or in `timm`. If not, I added the link to the architecture implementation so that it can be added.
+- [ ] I agree to release my model(s) under MIT license (check if true) **OR** under a custom license, located here: (put the custom license URL here if a custom license is needed. If no URL is specified, we assume that you are fine with MIT)

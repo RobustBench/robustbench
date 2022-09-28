@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Dict, Optional, Union
 
 import requests
+import timm
 import torch
 from torch import nn
 
@@ -97,6 +98,9 @@ def load_model(model_name: str,
     :return: A ready-to-used trained model.
     """
 
+    if model_name in timm.list_models():
+        return timm.create_model(model_name, pretrained=True).eval()
+
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     if norm is None:
         threat_model_: ThreatModel = ThreatModel(threat_model)
@@ -110,6 +114,9 @@ def load_model(model_name: str,
     model_path = model_dir_ / f'{model_name}.pt'
 
     models = all_models[dataset_][threat_model_]
+    
+    if models[model_name]['gdrive_id'] is None:
+        raise ValueError(f"Model `{model_name}` is not a timm model and has no `gdrive_id` specified.")
 
     if not isinstance(models[model_name]['gdrive_id'], list):
         model = models[model_name]['model']()
