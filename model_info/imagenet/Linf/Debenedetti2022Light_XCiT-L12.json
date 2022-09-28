@@ -4,7 +4,7 @@
   "authors": "Edoardo Debenedetti, Vikash Sehwag, Prateek Mittal",
   "additional_data": false,
   "number_forward_passes": 1,
-  "dataset": "cifar10",
+  "dataset": "imagenet",
   "venue": "arXiv, Sep 2022",
   "architecture": "XCiT-L12",
   "eps": "4/255",
