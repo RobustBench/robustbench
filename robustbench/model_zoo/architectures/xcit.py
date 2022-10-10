@@ -6,59 +6,59 @@ from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIF
 from .utils_architectures import normalize_timm_model
 
 default_cfgs = {
-    'debenedetti2020light_xcit_s_imagenet_linf':
+    'debenedetti2022light_xcit_s12_imagenet_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-s-imagenet-linf.pth.tar"
     ),
-    'debenedetti2020light_xcit_s_cifar10_linf':
+    'debenedetti2022light_xcit_s12_cifar10_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-s-cifar10-linf.pth.tar",
         input_size=(3, 32, 32),
         mean=CIFAR10_MEAN,
         std=CIFAR10_STD),
-    'debenedetti2020light_xcit_s_cifar100_linf':
+    'debenedetti2022light_xcit_s12_cifar100_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-s-cifar100-linf.pth.tar",
         input_size=(3, 32, 32),
         mean=CIFAR100_MEAN,
         std=CIFAR100_STD),
-    'debenedetti2020light_xcit_m_cifar10_linf':
+    'debenedetti2022light_xcit_m12_cifar10_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-m-cifar10-linf.pth.tar",
         input_size=(3, 32, 32),
         mean=CIFAR10_MEAN,
         std=CIFAR10_STD),
-    'debenedetti2020light_xcit_m_cifar100_linf':
+    'debenedetti2022light_xcit_m12_cifar100_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-m-cifar100-linf.pth.tar",
         input_size=(3, 32, 32),
         mean=CIFAR100_MEAN,
         std=CIFAR100_STD),
-    'debenedetti2020light_xcit_m_imagenet_linf':
+    'debenedetti2022light_xcit_m12_imagenet_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-m-imagenet-linf.pth.tar"
     ),
-    'debenedetti2020light_xcit_l_cifar10_linf':
+    'debenedetti2022light_xcit_l12_cifar10_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-l-cifar10-linf.pth.tar",
         input_size=(3, 32, 32),
         mean=CIFAR10_MEAN,
         std=CIFAR10_STD),
-    'debenedetti2020light_xcit_l_cifar100_linf':
+    'debenedetti2022light_xcit_l12_cifar100_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-l-cifar100-linf.pth.tar",
         input_size=(3, 32, 32),
         mean=CIFAR100_MEAN,
         std=CIFAR100_STD),
-    'debenedetti2020light_xcit_l_imagenet_linf':
+    'debenedetti2022light_xcit_l12_imagenet_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-l-imagenet-linf.pth.tar"
@@ -80,7 +80,7 @@ def adapt_model_patches(model: xcit.XCiT, new_patch_size: int):
 
 
 @register_model
-def debenedetti2020light_xcit_s_imagenet_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_s12_imagenet_linf(pretrained=False, **kwargs):
     model_kwargs = dict(patch_size=16,
                         embed_dim=384,
                         depth=12,
@@ -88,7 +88,7 @@ def debenedetti2020light_xcit_s_imagenet_linf(pretrained=False, **kwargs):
                         eta=1.0,
                         tokens_norm=True,
                         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_s_imagenet_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_s12_imagenet_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -97,7 +97,7 @@ def debenedetti2020light_xcit_s_imagenet_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_m_imagenet_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_m12_imagenet_linf(pretrained=False, **kwargs):
     model_kwargs = dict(patch_size=16,
                         embed_dim=512,
                         depth=12,
@@ -105,7 +105,7 @@ def debenedetti2020light_xcit_m_imagenet_linf(pretrained=False, **kwargs):
                         eta=1.0,
                         tokens_norm=True,
                         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_m_imagenet_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_m12_imagenet_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -114,7 +114,7 @@ def debenedetti2020light_xcit_m_imagenet_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_l_imagenet_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_l12_imagenet_linf(pretrained=False, **kwargs):
     model_kwargs = dict(patch_size=16,
                         embed_dim=768,
                         depth=12,
@@ -122,7 +122,7 @@ def debenedetti2020light_xcit_l_imagenet_linf(pretrained=False, **kwargs):
                         eta=1.0,
                         tokens_norm=True,
                         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_l_imagenet_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_l12_imagenet_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -131,7 +131,7 @@ def debenedetti2020light_xcit_l_imagenet_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_s_cifar10_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_s12_cifar10_linf(pretrained=False, **kwargs):
     model_kwargs = dict(
         patch_size=16,  # 16 because the pre-trained model has 16
         embed_dim=384,
@@ -140,7 +140,7 @@ def debenedetti2020light_xcit_s_cifar10_linf(pretrained=False, **kwargs):
         eta=1.0,
         tokens_norm=True,
         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_s_cifar10_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_s12_cifar10_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -150,7 +150,7 @@ def debenedetti2020light_xcit_s_cifar10_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_s_cifar100_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_s12_cifar100_linf(pretrained=False, **kwargs):
     model_kwargs = dict(
         patch_size=16,  # 16 because the pre-trained model has 16
         embed_dim=384,
@@ -159,7 +159,7 @@ def debenedetti2020light_xcit_s_cifar100_linf(pretrained=False, **kwargs):
         eta=1.0,
         tokens_norm=True,
         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_s_cifar100_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_s12_cifar100_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -169,7 +169,7 @@ def debenedetti2020light_xcit_s_cifar100_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_m_cifar10_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_m12_cifar10_linf(pretrained=False, **kwargs):
     model_kwargs = dict(
         patch_size=16,  # 16 because the pre-trained model has 16
         embed_dim=512,
@@ -178,7 +178,7 @@ def debenedetti2020light_xcit_m_cifar10_linf(pretrained=False, **kwargs):
         eta=1.0,
         tokens_norm=True,
         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_m_cifar10_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_m12_cifar10_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -188,7 +188,7 @@ def debenedetti2020light_xcit_m_cifar10_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_m_cifar100_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_m12_cifar100_linf(pretrained=False, **kwargs):
     model_kwargs = dict(
         patch_size=16,  # 16 because the pre-trained model has 16
         embed_dim=512,
@@ -197,7 +197,7 @@ def debenedetti2020light_xcit_m_cifar100_linf(pretrained=False, **kwargs):
         eta=1.0,
         tokens_norm=True,
         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_m_cifar100_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_m12_cifar100_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -207,7 +207,7 @@ def debenedetti2020light_xcit_m_cifar100_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_l_cifar10_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_l12_cifar10_linf(pretrained=False, **kwargs):
     model_kwargs = dict(
         patch_size=16,  # 16 because the pre-trained model has 16
         embed_dim=768,
@@ -216,7 +216,7 @@ def debenedetti2020light_xcit_l_cifar10_linf(pretrained=False, **kwargs):
         eta=1.0,
         tokens_norm=True,
         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_l_cifar10_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_l12_cifar10_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
@@ -226,7 +226,7 @@ def debenedetti2020light_xcit_l_cifar10_linf(pretrained=False, **kwargs):
 
 
 @register_model
-def debenedetti2020light_xcit_l_cifar100_linf(pretrained=False, **kwargs):
+def debenedetti2022light_xcit_l12_cifar100_linf(pretrained=False, **kwargs):
     model_kwargs = dict(
         patch_size=16,  # 16 because the pre-trained model has 16
         embed_dim=768,
@@ -235,7 +235,7 @@ def debenedetti2020light_xcit_l_cifar100_linf(pretrained=False, **kwargs):
         eta=1.0,
         tokens_norm=True,
         **kwargs)
-    model = xcit._create_xcit('debenedetti2020light_xcit_l_cifar100_linf',
+    model = xcit._create_xcit('debenedetti2022light_xcit_l12_cifar100_linf',
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
