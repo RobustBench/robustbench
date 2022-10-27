@@ -1,9 +1,10 @@
-from typing import Callable, Union
+import math
 import os
 from pathlib import Path
-from typing import Callable, Dict, Optional, Sequence, Set, Tuple
+from typing import Callable, Dict, Optional, Sequence, Set, Tuple, Union
 
 import numpy as np
+import timm
 import torch
 import torch.utils.data as data
 import torchvision.datasets as datasets
@@ -30,27 +31,46 @@ PREPROCESSINGS = {
 }
 
 
+def get_timm_model_preprocessing(model_name: str) -> Callable:
+    model = timm.create_model(model_name)
+    interpolation = model.default_cfg['interpolation']
+    crop_pct = model.default_cfg['crop_pct']
+    img_size = model.default_cfg['input_size'][1]
+    scale_size = int(math.floor(img_size / crop_pct))
+    return transforms.Compose([
+        transforms.Resize(
+            scale_size,
+            interpolation=transforms.InterpolationMode(interpolation)),
+        transforms.CenterCrop(img_size),
+        transforms.ToTensor()
+    ])
+
+
 def get_preprocessing(
         dataset: BenchmarkDataset, threat_model: ThreatModel,
         model_name: Optional[str],
         preprocessing: Optional[Union[str, Callable]]) -> Callable:
+    # If preprocessing is already as a function, then return it
     if isinstance(preprocessing, Callable):
         return preprocessing
-
-    if dataset == BenchmarkDataset.imagenet:
-        if model_name is not None and model_name in all_models[dataset][
-                threat_model]:
-            prepr = all_models[dataset][threat_model][model_name][
-                'preprocessing']
-        elif preprocessing is not None:
-            prepr = preprocessing
-        else:
-            raise Exception(
-                "Preprocessing should be specified if the model is not already in the model zoo"
-            )
-    else:
-        prepr = None
-
+    # If preprocessing is already specified as a string, then fetch it and return it
+    if preprocessing is not None:
+        return PREPROCESSINGS[preprocessing]
+    # If the dataset is not imagenet, then the only needed preprocessing is ToTensor
+    if dataset != BenchmarkDataset.imagenet:
+        return PREPROCESSINGS[None]
+    # At this point the model name should be specified
+    if model_name is None:
+        raise Exception(
+            "Preprocessing should be specified if the model is not already in the model zoo"
+        )
+    # See if the model is a timm model, if this is so, then use the custom function
+    lower_model_name = model_name.lower().replace('-', '_')
+    timm_model_name = f"{lower_model_name}_{dataset.value.lower()}_{threat_model.value.lower()}"
+    if timm.is_model(timm_model_name):
+        return get_timm_model_preprocessing(timm_model_name)
+    # Or directly fetch the preprocessing for the model specified in the dictionary
+    prepr = all_models[dataset][threat_model][model_name]['preprocessing']
     return PREPROCESSINGS[prepr]
 
 
@@ -144,8 +164,8 @@ CORRUPTIONS = ("shot_noise", "motion_blur", "snow", "pixelate",
                "zoom_blur", "frost", "glass_blur", "impulse_noise", "contrast",
                "jpeg_compression", "elastic_transform")
 
-CORRUPTIONS_3DCC = ('near_focus', 'far_focus', 'bit_error', 'color_quant', 
-                    'flash', 'fog_3d', 'h265_abr', 'h265_crf', 'iso_noise', 
+CORRUPTIONS_3DCC = ('near_focus', 'far_focus', 'bit_error', 'color_quant',
+                    'flash', 'fog_3d', 'h265_abr', 'h265_crf', 'iso_noise',
                     'low_light', 'xy_motion_blur', 'z_motion_blur')
 
 ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
@@ -179,7 +199,8 @@ def load_cifar100c(
         data_dir: str = './data',
         shuffle: bool = False,
         corruptions: Sequence[str] = CORRUPTIONS,
-        _: Callable = PREPROCESSINGS[None]) -> Tuple[torch.Tensor, torch.Tensor]:
+        _: Callable = PREPROCESSINGS[None]
+) -> Tuple[torch.Tensor, torch.Tensor]:
     return load_corruptions_cifar(BenchmarkDataset.cifar_100, n_examples,
                                   severity, data_dir, corruptions, shuffle)
 

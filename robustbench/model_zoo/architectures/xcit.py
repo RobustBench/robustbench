@@ -92,7 +92,6 @@ def debenedetti2022light_xcit_s12_imagenet_linf(pretrained=False, **kwargs):
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
-    model = normalize_timm_model(model)
     return model
 
 
@@ -109,7 +108,6 @@ def debenedetti2022light_xcit_m12_imagenet_linf(pretrained=False, **kwargs):
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
-    model = normalize_timm_model(model)
     return model
 
 
@@ -126,7 +124,6 @@ def debenedetti2022light_xcit_l12_imagenet_linf(pretrained=False, **kwargs):
                               pretrained=pretrained,
                               **model_kwargs)
     assert isinstance(model, xcit.XCiT)
-    model = normalize_timm_model(model)
     return model
 
 
