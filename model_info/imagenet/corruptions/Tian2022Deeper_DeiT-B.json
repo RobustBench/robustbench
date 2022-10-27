@@ -1,0 +1,17 @@
+{
+  "link": "https://arxiv.org/abs/2204.12143",
+  "name": "Deeper Insights into the Robustness of ViTs towards Common Corruptions",
+  "authors": "Rui Tian, Zuxuan Wu, Qi Dai, Han Hu, Yu-Gang Jiang",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "arXiv, Apr 2022",
+  "architecture": "DeiT Base",
+  "eps": "4/255",
+  "clean_acc": "80.32",
+  "reported": "",
+  "corruptions_acc_2d": "62.88",
+  "corruptions_acc_3d": "64.32",
+  "corruptions_mce_2d": "",
+  "corruptions_mce_3d": ""
+}
