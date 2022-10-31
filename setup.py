@@ -5,7 +5,7 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 setuptools.setup(
     name="robustbench",
-    version="1.0",
+    version="1.1",
     author="Francesco Croce, Maksym Andriushchenko, Vikash Sehwag, Edoardo Debenedetti",
     author_email="adversarial.benchmark@gmail.com",
     description="This package provides the data for RobustBench together with the model zoo.",
