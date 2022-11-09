@@ -118,7 +118,6 @@ def load_model(model_name: str,
 
     lower_model_name = model_name.lower().replace('-', '_')
     timm_model_name = f"{lower_model_name}_{dataset_.value.lower()}_{threat_model_.value.lower()}"
-    
     if timm.is_model(timm_model_name):
         return timm.create_model(timm_model_name,
                                  num_classes=DATASET_CLASSES[dataset_],
