@@ -1,21 +1,21 @@
 from timm.models import xcit
 from timm.models.registry import register_model
 
-from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD, CIFAR100_MEAN, CIFAR100_STD
-
 from .utils_architectures import normalize_timm_model
 
+CIFAR10_MEAN = (0.4914, 0.4822, 0.4465)
+CIFAR10_STD = (0.2471, 0.2435, 0.2616)
+
+CIFAR100_MEAN = (0.5071, 0.4867, 0.4408)
+CIFAR100_STD = (0.2675, 0.2565, 0.2761)
+
 default_cfgs = {
-    'debenedetti2022light_xcit_s12_imagenet_linf':
-    xcit._cfg(
-        url=
-        "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-s-imagenet-linf.pth.tar"
-    ),
     'debenedetti2022light_xcit_s12_cifar10_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-s-cifar10-linf.pth.tar",
         input_size=(3, 32, 32),
+        num_classes=10,
         mean=CIFAR10_MEAN,
         std=CIFAR10_STD),
     'debenedetti2022light_xcit_s12_cifar100_linf':
@@ -23,13 +23,20 @@ default_cfgs = {
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-s-cifar100-linf.pth.tar",
         input_size=(3, 32, 32),
+        num_classes=100,
         mean=CIFAR100_MEAN,
         std=CIFAR100_STD),
+    'debenedetti2022light_xcit_s12_imagenet_linf':
+    xcit._cfg(
+        url=
+        "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-s-imagenet-linf.pth.tar"
+    ),
     'debenedetti2022light_xcit_m12_cifar10_linf':
     xcit._cfg(
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-m-cifar10-linf.pth.tar",
         input_size=(3, 32, 32),
+        num_classes=10,
         mean=CIFAR10_MEAN,
         std=CIFAR10_STD),
     'debenedetti2022light_xcit_m12_cifar100_linf':
@@ -37,6 +44,7 @@ default_cfgs = {
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-m-cifar100-linf.pth.tar",
         input_size=(3, 32, 32),
+        num_classes=100,
         mean=CIFAR100_MEAN,
         std=CIFAR100_STD),
     'debenedetti2022light_xcit_m12_imagenet_linf':
@@ -49,6 +57,7 @@ default_cfgs = {
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-l-cifar10-linf.pth.tar",
         input_size=(3, 32, 32),
+        num_classes=10,
         mean=CIFAR10_MEAN,
         std=CIFAR10_STD),
     'debenedetti2022light_xcit_l12_cifar100_linf':
@@ -56,6 +65,7 @@ default_cfgs = {
         url=
         "https://github.com/RobustBench/robustbench/releases/download/v1.1/debenedetti2022light-xcit-l-cifar100-linf.pth.tar",
         input_size=(3, 32, 32),
+        num_classes=100,
         mean=CIFAR100_MEAN,
         std=CIFAR100_STD),
     'debenedetti2022light_xcit_l12_imagenet_linf':

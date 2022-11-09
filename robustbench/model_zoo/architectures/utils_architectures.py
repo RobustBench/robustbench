@@ -34,5 +34,5 @@ M = TypeVar('M', bound=nn.Module)
 def normalize_timm_model(model: M) -> M:
     return normalize_model(
         model,
-        model.default_cfg['mean'],  # type: ignore
-        model.default_cfg['std'])  # type: ignore
+        mean=model.default_cfg['mean'],  # type: ignore
+        std=model.default_cfg['std'])  # type: ignore
