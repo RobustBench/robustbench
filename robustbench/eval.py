@@ -11,7 +11,7 @@ from autoattack import AutoAttack
 from torch import nn
 from tqdm import tqdm
 
-from robustbench.data import CORRUPTIONS, get_preprocessing, load_clean_dataset, \
+from robustbench.data import CORRUPTIONS_DICT, get_preprocessing, load_clean_dataset, \
     CORRUPTION_DATASET_LOADERS
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 from robustbench.utils import clean_accuracy, load_model, parse_args, update_json
@@ -26,6 +26,7 @@ def benchmark(
     to_disk: bool = False,
     model_name: Optional[str] = None,
     data_dir: str = "./data",
+    corruptions_data_dir: Optional[str] = None,
     device: Optional[Union[torch.device, Sequence[torch.device]]] = None,
     batch_size: int = 32,
     eps: Optional[float] = None,
@@ -70,14 +71,18 @@ def benchmark(
 
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
+    if dataset_ == BenchmarkDataset.imagenet_3d:
+        clean_dataset = BenchmarkDataset.imagenet
+    else:
+        clean_dataset = dataset_
 
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    prepr = get_preprocessing(dataset_, threat_model_, model_name,
+    prepr = get_preprocessing(clean_dataset, threat_model_, model_name,
                               preprocessing)
 
-    clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
+    clean_x_test, clean_y_test = load_clean_dataset(clean_dataset, n_examples,
                                                     data_dir, prepr)
 
     accuracy = clean_accuracy(model,
@@ -107,12 +112,14 @@ def benchmark(
                                       batch_size=batch_size,
                                       device=device)
     elif threat_model_ == ThreatModel.corruptions:
-        corruptions = CORRUPTIONS
+        corruptions = CORRUPTIONS_DICT[dataset_]
         print(f"Evaluating over {len(corruptions)} corruptions")
         # Save into a dict to make a Pandas DF with nested index
-        adv_accuracy = corruptions_evaluation(batch_size, data_dir, dataset_,
-                                              device, model, n_examples,
-                                              to_disk, prepr, model_name)
+        corruptions_data_dir = corruptions_data_dir or data_dir
+        adv_accuracy = corruptions_evaluation(batch_size, corruptions_data_dir,
+                                              dataset_, device, model,
+                                              n_examples, to_disk, prepr,
+                                              model_name)
     else:
         raise NotImplementedError
     print(f'Adversarial accuracy: {adv_accuracy:.2%}')
@@ -122,7 +129,7 @@ def benchmark(
             raise ValueError(
                 "If `to_disk` is True, `model_name` should be specified.")
 
-        update_json(dataset_, threat_model_, model_name, accuracy,
+        update_json(clean_dataset, threat_model_, model_name, accuracy,
                     adv_accuracy, eps)
 
     return accuracy, adv_accuracy
@@ -136,7 +143,7 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
         raise ValueError(
             "If `to_disk` is True, `model_name` should be specified.")
 
-    corruptions = CORRUPTIONS
+    corruptions = CORRUPTIONS_DICT[dataset]
     model_results_dict: Dict[Tuple[str, int], float] = {}
     for corruption in tqdm(corruptions):
         for severity in range(1, 6):
@@ -167,9 +174,16 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
         return adv_accuracy
 
     # Save disaggregated results on disk
+    if dataset == BenchmarkDataset.imagenet:
+        unagg_res_file = "unaggregated_results_2d.csv"
+    elif dataset == BenchmarkDataset.imagenet_3d:
+        unagg_res_file = "unaggregated_results_3d.csv"
+    else:
+        unagg_res_file = "unaggregated_results.csv"
+
     existing_results_path = Path(
-        "model_info"
-    ) / dataset.value / "corruptions" / "unaggregated_results.csv"
+        "model_info") / dataset.value / "corruptions" / unagg_res_file
+
     if not existing_results_path.parent.exists():
         existing_results_path.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -181,8 +195,10 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
             existing_results.columns.levels[1].astype(int)
         ])
         full_results = pd.concat([existing_results, model_results])
+
     except FileNotFoundError:
         full_results = model_results
+
     full_results.to_csv(existing_results_path)
 
     return adv_accuracy
@@ -194,9 +210,13 @@ def main(args: Namespace) -> None:
     np.random.seed(args.seed)
     random.seed(args.seed)
 
+    if args.dataset == "imagenet_3d":
+        clean_dataset = "imagenet"
+    else:
+        clean_dataset = args.dataset
     model = load_model(args.model_name,
                        model_dir=args.model_dir,
-                       dataset=args.dataset,
+                       dataset=clean_dataset,
                        threat_model=args.threat_model)
 
     model.eval()
@@ -209,6 +229,7 @@ def main(args: Namespace) -> None:
               to_disk=args.to_disk,
               model_name=args.model_name,
               data_dir=args.data_dir,
+              corruptions_data_dir=args.corruptions_data_dir,
               device=device,
               batch_size=args.batch_size,
               eps=args.eps)

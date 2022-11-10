@@ -9,6 +9,7 @@ import torch
 import torch.utils.data as data
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+from torch import nn
 from torch.utils.data import Dataset
 
 from robustbench.model_zoo import model_dicts as all_models
@@ -33,6 +34,9 @@ PREPROCESSINGS = {
 
 def get_timm_model_preprocessing(model_name: str) -> Callable:
     model = timm.create_model(model_name)
+    if isinstance(model, nn.Sequential):
+        # Normalization has been applied, take the inner model to get the other info
+        model = model.model
     interpolation = model.default_cfg['interpolation']
     crop_pct = model.default_cfg['crop_pct']
     img_size = model.default_cfg['input_size'][1]
@@ -167,6 +171,13 @@ CORRUPTIONS = ("shot_noise", "motion_blur", "snow", "pixelate",
 CORRUPTIONS_3DCC = ('near_focus', 'far_focus', 'bit_error', 'color_quant',
                     'flash', 'fog_3d', 'h265_abr', 'h265_crf', 'iso_noise',
                     'low_light', 'xy_motion_blur', 'z_motion_blur')
+
+CORRUPTIONS_DICT: Dict[BenchmarkDataset, Tuple[str, ...]] = {
+    BenchmarkDataset.cifar_10: CORRUPTIONS,
+    BenchmarkDataset.cifar_100: CORRUPTIONS,
+    BenchmarkDataset.imagenet: CORRUPTIONS,
+    BenchmarkDataset.imagenet_3d: CORRUPTIONS_3DCC
+}
 
 ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
     BenchmarkDataset.cifar_10: ("2535967", {"CIFAR-10-C.tar"}),

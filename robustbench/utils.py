@@ -512,6 +512,10 @@ def parse_args():
                         type=str,
                         default='./data',
                         help='where to store downloaded datasets')
+    parser.add_argument('--corruptions_data_dir',
+                        type=str,
+                        default='',
+                        help='where the corrupted data are stored')
     parser.add_argument('--model_dir',
                         type=str,
                         default='./models',
