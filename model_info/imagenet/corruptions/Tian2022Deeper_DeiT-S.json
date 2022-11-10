@@ -12,6 +12,6 @@
   "reported": "",
   "corruptions_acc_2d": "55.67",
   "corruptions_acc_3d": "59.34",
-  "corruptions_mce_2d": "",
-  "corruptions_mce_3d": ""
+  "corruptions_mce_2d": "56.19",
+  "corruptions_mce_3d": "56.80"
 }
