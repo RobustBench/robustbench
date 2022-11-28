@@ -57,7 +57,7 @@ def get_preprocessing(
     if preprocessing is not None:
         return PREPROCESSINGS[preprocessing]
     # If the dataset is not imagenet, then the only needed preprocessing is ToTensor
-    if dataset != BenchmarkDataset.imagenet:
+    if dataset not in [BenchmarkDataset.imagenet, BenchmarkDataset.imagenet_3d]:
         return PREPROCESSINGS[None]
     # At this point the model name should be specified
     if model_name is None:
