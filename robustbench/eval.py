@@ -31,7 +31,8 @@ def benchmark(
     eps: Optional[float] = None,
     log_path: Optional[str] = None,
     preprocessing: Optional[Union[str,
-                                  Callable]] = None) -> Tuple[float, float]:
+                                  Callable]] = None,
+    aa_state_path: Optional[Path] = None) -> Tuple[float, float]:
     """Benchmarks the given model(s).
 
     It is possible to benchmark on 3 different threat models, and to save the results on disk. In
@@ -53,6 +54,8 @@ def benchmark(
     corruptions threat model.
     :param preprocessing: The preprocessing that should be used for ImageNet benchmarking. Should be
     specified if `dataset` is `imageget`.
+    :param aa_state_path: The path where the AA state will be saved and from where should be
+    loaded if it already exists. If `None` no state will be used.
 
     :return: A Tuple with the clean accuracy and the accuracy in the given threat model.
     """
@@ -100,7 +103,8 @@ def benchmark(
                                log_path=log_path)
         x_adv = adversary.run_standard_evaluation(clean_x_test,
                                                   clean_y_test,
-                                                  bs=batch_size)
+                                                  bs=batch_size,
+                                                  state_path=aa_state_path)
         adv_accuracy = clean_accuracy(model,
                                       x_adv,
                                       clean_y_test,
