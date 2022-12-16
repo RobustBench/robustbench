@@ -8,6 +8,7 @@ import pandas as pd
 import torch
 import random
 from autoattack import AutoAttack
+from autoattack.state import EvaluationState
 from torch import nn
 from tqdm import tqdm
 
@@ -105,11 +106,17 @@ def benchmark(
                                                   clean_y_test,
                                                   bs=batch_size,
                                                   state_path=aa_state_path)
-        adv_accuracy = clean_accuracy(model,
-                                      x_adv,
-                                      clean_y_test,
-                                      batch_size=batch_size,
-                                      device=device)
+        if aa_state_path is None:
+            adv_accuracy = clean_accuracy(model,
+                                        x_adv,
+                                        clean_y_test,
+                                        batch_size=batch_size,
+                                        device=device)
+        else:
+            aa_state = EvaluationState.from_disk(aa_state_path)
+            assert aa_state.robust_flags is not None
+            adv_accuracy = aa_state.robust_flags.mean().item()
+    
     elif threat_model_ == ThreatModel.corruptions:
         corruptions = CORRUPTIONS
         print(f"Evaluating over {len(corruptions)} corruptions")
