@@ -8,6 +8,7 @@ import pandas as pd
 import torch
 import random
 from autoattack import AutoAttack
+from autoattack.state import EvaluationState
 from torch import nn
 from tqdm import tqdm
 
@@ -31,7 +32,8 @@ def benchmark(
     eps: Optional[float] = None,
     log_path: Optional[str] = None,
     preprocessing: Optional[Union[str,
-                                  Callable]] = None) -> Tuple[float, float]:
+                                  Callable]] = None,
+    aa_state_path: Optional[Path] = None) -> Tuple[float, float]:
     """Benchmarks the given model(s).
 
     It is possible to benchmark on 3 different threat models, and to save the results on disk. In
@@ -53,6 +55,8 @@ def benchmark(
     corruptions threat model.
     :param preprocessing: The preprocessing that should be used for ImageNet benchmarking. Should be
     specified if `dataset` is `imageget`.
+    :param aa_state_path: The path where the AA state will be saved and from where should be
+    loaded if it already exists. If `None` no state will be used.
 
     :return: A Tuple with the clean accuracy and the accuracy in the given threat model.
     """
@@ -100,12 +104,19 @@ def benchmark(
                                log_path=log_path)
         x_adv = adversary.run_standard_evaluation(clean_x_test,
                                                   clean_y_test,
-                                                  bs=batch_size)
-        adv_accuracy = clean_accuracy(model,
-                                      x_adv,
-                                      clean_y_test,
-                                      batch_size=batch_size,
-                                      device=device)
+                                                  bs=batch_size,
+                                                  state_path=aa_state_path)
+        if aa_state_path is None:
+            adv_accuracy = clean_accuracy(model,
+                                        x_adv,
+                                        clean_y_test,
+                                        batch_size=batch_size,
+                                        device=device)
+        else:
+            aa_state = EvaluationState.from_disk(aa_state_path)
+            assert aa_state.robust_flags is not None
+            adv_accuracy = aa_state.robust_flags.mean().item()
+    
     elif threat_model_ == ThreatModel.corruptions:
         corruptions = CORRUPTIONS
         print(f"Evaluating over {len(corruptions)} corruptions")
