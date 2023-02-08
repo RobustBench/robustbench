@@ -441,6 +441,13 @@ linf = OrderedDict([
         'gdrive_id':
         None
     }),
+    ('Cui2020Learnable_34_10_LBGAT9_eps_8_255', {
+        'model':
+        lambda: WideResNet(
+            depth=34, widen_factor=10, num_classes=100, sub_block1=False),
+        'gdrive_id':
+        '1TrUAN9opXBQa24WCTVtQTY-RkXK_3dmA'
+    }),
 ])
 
 common_corruptions = OrderedDict([
