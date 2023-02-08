@@ -822,7 +822,7 @@ linf = OrderedDict(
         }),
         ('Huang2022Revisiting_WRN-A4', {
             'model': lambda: robust_resnet.get_model('WRN-A4'),
-            'gdrive_id': '1z62E3FoiyLQwm1G5-jOFJu7kzmvHmfHh'
+            'gdrive_id': '1okHk4XPgunmqHG3alXfVF84qRwlu6Oqe'
         }),
     ])
 
