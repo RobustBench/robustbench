@@ -1,0 +1,15 @@
+{
+  "link": "https://arxiv.org/abs/2212.11005",
+  "name": "Revisiting Residual Networks for Adversarial Robustness: An Architectural Perspective",
+  "authors": "Shihua Huang, Zhichao Lu, Kalyanmoy Deb, Vishnu Naresh Boddeti",
+  "additional_data": true,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "arXiv, Dec. 2022",
+  "architecture": "WideResNet-A4",
+  "eps": "8/255",
+  "clean_acc": "91.58",
+  "reported": "65.79",
+  "autoattack_acc": "65.79",
+  "unreliable": false
+}

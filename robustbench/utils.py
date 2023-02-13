@@ -208,7 +208,8 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
         "Augustin2020Adversarial_34_10_extra", "Diffenderfer2021Winning_LRR",
         "Diffenderfer2021Winning_LRR_CARD_Deck",
         "Diffenderfer2021Winning_Binary",
-        "Diffenderfer2021Winning_Binary_CARD_Deck"
+        "Diffenderfer2021Winning_Binary_CARD_Deck",
+        "Huang2022Revisiting_WRN-A4",
     }
 
     failure_messages = [

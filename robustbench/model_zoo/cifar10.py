@@ -19,6 +19,7 @@ from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreA
 from robustbench.model_zoo.architectures.paf_wide_resnet import pssilu_wrn_28_10
 from robustbench.model_zoo.architectures.sodef_layers import rebuffi_sodef
 from robustbench.model_zoo.architectures import xcit
+from robustbench.model_zoo.architectures import robust_resnet
 
 
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
@@ -818,6 +819,10 @@ linf = OrderedDict(
                 'debenedetti2020light_xcit_l_cifar10_linf', pretrained=True)),
             'gdrive_id':
             None
+        }),
+        ('Huang2022Revisiting_WRN-A4', {
+            'model': lambda: robust_resnet.get_model('WRN-A4'),
+            'gdrive_id': '1okHk4XPgunmqHG3alXfVF84qRwlu6Oqe'
         }),
     ])
 
