@@ -990,7 +990,7 @@ l2 = OrderedDict([
                              mean=CIFAR10_MEAN,
                              std=CIFAR10_STD),
         'gdrive_id':
-        ''
+        '101UyURyte05tJLA9VFRBN6UDLyn-0sJw'
     }),
 ])
 

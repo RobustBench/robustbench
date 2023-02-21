@@ -453,7 +453,7 @@ linf = OrderedDict([
         lambda: DMWideResNet(num_classes=100,
                              depth=28,
                              width=10,
-                             activation_fn=Swish,
+                             activation_fn=nn.SiLU,
                              mean=CIFAR100_MEAN,
                              std=CIFAR100_STD),
         'gdrive_id':
