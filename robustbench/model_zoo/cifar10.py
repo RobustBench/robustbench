@@ -824,6 +824,28 @@ linf = OrderedDict(
             'model': lambda: robust_resnet.get_model('WRN-A4'),
             'gdrive_id': '1okHk4XPgunmqHG3alXfVF84qRwlu6Oqe'
         }),
+        ('Wang2023Better_WRN-28-10', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=28,
+                                 width=10,
+                                 activation_fn=nn.SiLU,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id':
+            '1-6MYKJdECDVGaWjj6GgqvaT95BGKhUvI'
+        }),
+        ('Wang2023Better_WRN-70-16', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=70,
+                                 width=16,
+                                 activation_fn=nn.SiLU,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id':
+            '1-RF7ZSS-PAh6bfQcuqx4lh9bc9BUGnap'
+        }),
     ])
 
 l2 = OrderedDict([
@@ -947,6 +969,28 @@ l2 = OrderedDict([
                                std=CIFAR10_STD),
         'gdrive_id':
         '1VWrStAYy5CrUR18sjcpq_LKLpeqgUaoQ'
+    }),
+    ('Wang2023Better_WRN-28-10', {
+        'model':
+        lambda: DMWideResNet(num_classes=10,
+                             depth=28,
+                             width=10,
+                             activation_fn=nn.SiLU,
+                             mean=CIFAR10_MEAN,
+                             std=CIFAR10_STD),
+        'gdrive_id':
+        '1-fwKiJXEqHHUngt8wKsNnHuD4vAPvPXC'
+    }),
+    ('Wang2023Better_WRN-70-16', {
+        'model':
+        lambda: DMWideResNet(num_classes=10,
+                             depth=70,
+                             width=16,
+                             activation_fn=nn.SiLU,
+                             mean=CIFAR10_MEAN,
+                             std=CIFAR10_STD),
+        'gdrive_id':
+        ''
     }),
 ])
 
