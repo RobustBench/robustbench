@@ -1,0 +1,16 @@
+{
+  "link": "https://arxiv.org/abs/2302.04638",
+  "name": "Better Diffusion Models Further Improve Adversarial Training",
+  "authors": "Zekai Wang, Tianyu Pang, Chao Du, Min Lin, Weiwei Liu, Shuicheng Yan",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "arXiv, Feb 2023",
+  "architecture": "WideResNet-28-10",
+  "eps": "0.5",
+  "clean_acc": "95.16",
+  "reported": "83.63",
+  "autoattack_acc": "83.63",
+  "footnote": "It uses additional 50M synthetic images in training.",
+  "unreliable": false
+}
