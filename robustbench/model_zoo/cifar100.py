@@ -448,6 +448,28 @@ linf = OrderedDict([
         'gdrive_id':
         '1TrUAN9opXBQa24WCTVtQTY-RkXK_3dmA'
     }),
+    ('Wang2023Better_WRN-28-10', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=28,
+                             width=10,
+                             activation_fn=nn.SiLU,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        '1-jOu3wKWyw0XnBCXDGR32xn8Bw9GTJgh'
+    }),
+    ('Wang2023Better_WRN-70-16', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=70,
+                             width=16,
+                             activation_fn=nn.SiLU,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        '1-yYcT73GP13c0y9HrgtpyB3NAfkGKgjY'
+    }),
 ])
 
 common_corruptions = OrderedDict([
