@@ -9,8 +9,8 @@
   "architecture": "WideResNet-70-16",
   "eps": "0.5",
   "clean_acc": "95.54",
-  "reported": "84.86",
-  "autoattack_acc": "84.86",
+  "reported": "84.97",
+  "autoattack_acc": "84.97",
   "footnote": "It uses additional 50M synthetic images in training.",
   "unreliable": false
 }
