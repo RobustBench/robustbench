@@ -160,8 +160,15 @@ def load_model(model_name: str,
             state_dict = rm_substr_from_state_dict(state_dict, 'model.')
 
         if dataset_ == BenchmarkDataset.imagenet:
-            # so far all models need input normalization, which is added as extra layer
-            state_dict = add_substr_to_state_dict(state_dict, 'model.')
+            # Some models need input normalization, which is added as extra layer.
+            if model_name not in [
+                'Singh2023Revisiting_ConvNeXt-T-ConvStem',
+                'Singh2023Revisiting_ViT-B-ConvStem',
+                'Singh2023Revisiting_ConvNeXt-S-ConvStem',
+                'Singh2023Revisiting_ConvNeXt-B-ConvStem',
+                'Singh2023Revisiting_ConvNeXt-L-ConvStem',
+                ]:
+                state_dict = add_substr_to_state_dict(state_dict, 'model.')
 
         model = _safe_load_state_dict(model, model_name, state_dict, dataset_)
 

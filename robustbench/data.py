@@ -28,6 +28,14 @@ PREPROCESSINGS = {
                         transforms.ToTensor()]),
     None:
     transforms.Compose([transforms.ToTensor()]),
+    'BicubicRes256Crop224':
+    transforms.Compose([
+        transforms.Resize(
+            256,
+            interpolation=transforms.InterpolationMode("bicubic")),
+        transforms.CenterCrop(224),
+        transforms.ToTensor()
+    ])
 }
 
 
