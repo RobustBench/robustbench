@@ -38,7 +38,7 @@ def generate_leaderboard(dataset: Union[str, BenchmarkDataset],
     If the model is robust to common corruptions, then the "autoattack_acc" field should be
     "corruptions_acc".
 
-    :param dataset: The dataset of the wanted leaderboard. example: "cifar_10"
+    :param dataset: The dataset of the wanted leaderboard. example: "cifar10"
     :param threat_model: The threat model of the wanted leaderboard. example: "Linf"
     :param models_folder: The base folder of the model jsons (e.g. our "model_info" folder).
 
