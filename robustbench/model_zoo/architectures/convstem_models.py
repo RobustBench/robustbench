@@ -16,7 +16,7 @@ from robustbench.model_zoo.architectures.utils_architectures import normalize_mo
 
 
 IMAGENET_MEAN = [c * 1. for c in (0.485, 0.456, 0.406)]
-IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)] 
+IMAGENET_STD = [c * 1. for c in (0.229, 0.224, 0.225)]
 
 
 class LayerNorm(nn.Module):
