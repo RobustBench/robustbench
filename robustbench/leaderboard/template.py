@@ -84,7 +84,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dataset",
         type=str,
-        default="cifar_10",
+        default="cifar10",
         help="The dataset of the desired leaderboard."
     )
     parser.add_argument(
