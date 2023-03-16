@@ -1,0 +1,15 @@
+{
+  "link": "https://arxiv.org/abs/2302.14301",
+  "name": "A Comprehensive Study on Robustness of Image Classification Models: Benchmarking and Rethinking",
+  "authors": "Chang Liu, Yinpeng Dong, Wenzhao Xiang, Xiao Yang, Hang Su, Jun Zhu, Yuefeng Chen, Yuan He, Hui Xue, Shibao Zheng",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "arXiv, Feb 2023",
+  "architecture": "ConvNeXt-L",
+  "eps": "4/255",
+  "clean_acc": "77.18",
+  "reported": "56.44",
+  "autoattack_acc": "56.44",
+  "unreliable": false
+}
