@@ -6,6 +6,7 @@ from torchvision import models as pt_models
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.utils_architectures import normalize_model
 from robustbench.model_zoo.architectures import xcit
+from robustbench.model_zoo.architectures.convstem_models import get_convstem_models
 
 
 mu = (0.485, 0.456, 0.406)
@@ -61,6 +62,36 @@ linf = OrderedDict(
                 'debenedetti2020light_xcit_l_imagenet_linf', pretrained=True)),
             'gdrive_id':
             None
+        }),
+        ('Singh2023Revisiting_ViT-S-ConvStem', {
+            'model': lambda: get_convstem_models('vit_s_cvst'),
+            'gdrive_id': '1-1sUYXnj6bDXacIKI3KKqn4rlkmL-ZI2',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Singh2023Revisiting_ViT-B-ConvStem', {
+            'model': lambda: get_convstem_models('vit_b_cvst'),
+            'gdrive_id': '1-JBbfi_eH3tKMXObvPPHprrZae0RiQGT',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Singh2023Revisiting_ConvNeXt-T-ConvStem', {
+            'model': lambda: get_convstem_models('convnext_t_cvst'),
+            'gdrive_id': '1-FjtOF6LJ3-bf4VezsmWwncCxYSx-USP',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Singh2023Revisiting_ConvNeXt-S-ConvStem', {
+            'model': lambda: get_convstem_models('convnext_s_cvst'),
+            'gdrive_id': '1-ZrMYajCCnrtV4oT0wa3qJJoQy1nUSnL',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Singh2023Revisiting_ConvNeXt-B-ConvStem', {
+            'model': lambda: get_convstem_models('convnext_b_cvst'),
+            'gdrive_id': '1-lE-waaVvfL7lgBrydmZIM9UJimmHnVe',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Singh2023Revisiting_ConvNeXt-L-ConvStem', {
+            'model': lambda: get_convstem_models('convnext_l_cvst'),
+            'gdrive_id': '10-YOVdM2EQjHemSi9x2H44qKRSOXVQmh',
+            'preprocessing': 'BicubicRes256Crop224'
         }),
     ])
 
