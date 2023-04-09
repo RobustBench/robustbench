@@ -18,6 +18,7 @@ from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 
 ACC_FIELDS = {
     ThreatModel.corruptions: "corruptions_acc",
+    ThreatModel.corruptions_3d: "corruptions_acc_3d",
     ThreatModel.L2: ("external", "autoattack_acc"),
     ThreatModel.Linf: ("external", "autoattack_acc")
 }
@@ -106,7 +107,6 @@ def load_model(model_name: str,
 
     :return: A ready-to-used trained model.
     """
-
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     if norm is None:
         threat_model_: ThreatModel = ThreatModel(threat_model)
@@ -468,6 +468,7 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
                            clean_acc=accuracy,
                            **acc_field_kwarg)
 
+    import ipdb;ipdb.set_trace()
     with open(json_path, "w") as f:
         f.write(json.dumps(dataclasses.asdict(model_info), indent=2))
 
@@ -486,6 +487,7 @@ class ModelInfo:
     clean_acc: Optional[float] = None
     reported: Optional[float] = None
     corruptions_acc: Optional[str] = None
+    corruptions_acc_3d: Optional[str] = None
     autoattack_acc: Optional[str] = None
     footnote: Optional[str] = None
 
@@ -520,6 +522,10 @@ def parse_args():
                         type=str,
                         default='./data',
                         help='where to store downloaded datasets')
+    parser.add_argument('--corruptions_data_dir',
+                        type=str,
+                        default='',
+                        help='where the corrupted data are stored')
     parser.add_argument('--model_dir',
                         type=str,
                         default='./models',
