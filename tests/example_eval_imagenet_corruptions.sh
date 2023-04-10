@@ -14,6 +14,3 @@ do
     python -m robustbench.eval --n_ex=5000 --dataset=imagenet --threat_model=corruptions_3d --model_name=$model_name --data_dir=/tmldata1/andriush/imagenet --corruptions_data_dir=/tmldata1/andriush/data/3DCommonCorruptions/ --batch_size=256 --to_disk=True 
 done
 
-
-# TODO: push as a pull request (based on Edoardo's https://github.com/RobustBench/robustbench/pull/111 and https://github.com/RobustBench/robustbench/compare/master...tian2022deeper); mention that Res224 is now by default in eval.py.
-
