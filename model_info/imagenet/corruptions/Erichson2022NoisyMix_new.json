@@ -7,11 +7,12 @@
   "dataset": "imagenet",
   "venue": "arXiv, Feb 2022",
   "architecture": "ResNet-50",
-  "eps": null,
-  "clean_acc": "77.14",
+  "eps": 0.03137254901960784,
+  "clean_acc": "76.9",
   "reported": "52.25",
-  "corruptions_acc_2d": "52.25",
-  "corruptions_acc_3d": "53.10",
-  "corruptions_mce_2d": "60.70",
-  "corruptions_mce_3d": "62.33"
+  "footnote": "Better tuned model.",
+  "corruptions_acc_3d": "56.1",
+  "corruptions_mce_3d": "61.27",
+  "corruptions_acc": "53.28",
+  "corruptions_mce": "59.43"
 }

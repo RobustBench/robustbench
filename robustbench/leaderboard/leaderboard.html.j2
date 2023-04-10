@@ -26,8 +26,16 @@
         {% endif %}
         {% if threat_model == "corruptions" %}
         <th class="aa">
-            Robust <br/>
-            accuracy
+            Robust<br/>
+            accuracy<br/>
+            (IN-C)
+        </th>
+        {% endif %}
+        {% if threat_model == "corruptions" and dataset == 'imagenet' %}
+        <th class="aa_3d">
+            Robust<br/>
+            accuracy<br/>
+            (IN-3DCC)
         </th>
         {% endif %}
         <th class="extra-data">Extra <br/>data</th>
@@ -50,10 +58,13 @@
         </td>
         <td class="catd">{{ model.clean_acc }}%</td>
         <td class="aatd">{{ model[acc_field] }}%</td>
-        {% if threat_model != "corruptions" %}
+        {%- if threat_model != "corruptions" %}
         <td class="aa-extd">{{ model.external if model.external is defined and model.external else model[acc_field]}}%</td>
         <td class="flagsd">{{ "Unknown" if model.unreliable is not defined else ("<div class=\"flagsd-emoji\">&#9745;</div>" if model.unreliable else "<div class=\"flagsd-emoji\">&#215;</div>") }}</td>
         {% endif %}
+        {% if threat_model == "corruptions" and dataset == 'imagenet' -%}
+        <td class="aatd_3d">{{ model['corruptions_acc_3d'] }}%</td>
+        {%- endif %}
         <td class="datatd">{{ "&#9745;" if model.additional_data else "&#215;" }}</td>
         <td class="archtd">{{ model.architecture }}</td>
         <td class="venuetd">{{ model.venue }}</td>

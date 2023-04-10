@@ -75,18 +75,14 @@ def benchmark(
 
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     threat_model_: ThreatModel = ThreatModel(threat_model)
-    if dataset_ == BenchmarkDataset.imagenet_3d:
-        clean_dataset = BenchmarkDataset.imagenet
-    else:
-        clean_dataset = dataset_
 
     device = device or torch.device("cpu")
     model = model.to(device)
 
-    prepr = get_preprocessing(clean_dataset, threat_model_, model_name,
+    prepr = get_preprocessing(dataset_, threat_model_, model_name,
                               preprocessing)
 
-    clean_x_test, clean_y_test = load_clean_dataset(clean_dataset, n_examples,
+    clean_x_test, clean_y_test = load_clean_dataset(dataset_, n_examples,
                                                     data_dir, prepr)
 
     accuracy = clean_accuracy(model,
@@ -96,6 +92,7 @@ def benchmark(
                               device=device)
     print(f'Clean accuracy: {accuracy:.2%}')
 
+    extra_metrics = {}  # dict to store corruptions_mce for corruptions threat models
     if threat_model_ in {ThreatModel.Linf, ThreatModel.L2}:
         if eps is None:
             raise ValueError(
@@ -122,18 +119,19 @@ def benchmark(
             assert aa_state.robust_flags is not None
             adv_accuracy = aa_state.robust_flags.mean().item()
     
-    elif threat_model_ == ThreatModel.corruptions:
-        corruptions = CORRUPTIONS_DICT[dataset_]
+    elif threat_model_ in [ThreatModel.corruptions, ThreatModel.corruptions_3d]:
+        corruptions = CORRUPTIONS_DICT[dataset_][threat_model_]
         print(f"Evaluating over {len(corruptions)} corruptions")
         # Exceptionally, for corruptions (2d and 3d) we use only resizing to 224x224
         prepr = get_preprocessing(dataset_, threat_model_, model_name, 
                                   'Res224')
         # Save into a dict to make a Pandas DF with nested index        
         corruptions_data_dir = corruptions_data_dir or data_dir
-        adv_accuracy = corruptions_evaluation(batch_size, corruptions_data_dir,
-                                              dataset_, device, model,
-                                              n_examples, to_disk, prepr,
-                                              model_name)
+        adv_accuracy, adv_mce = corruptions_evaluation(
+            batch_size, corruptions_data_dir, dataset_, threat_model_, 
+            device, model, n_examples, to_disk, prepr, model_name)
+    
+        extra_metrics['corruptions_mce'] = adv_mce
     else:
         raise NotImplementedError
     print(f'Adversarial accuracy: {adv_accuracy:.2%}')
@@ -144,24 +142,24 @@ def benchmark(
                 "If `to_disk` is True, `model_name` should be specified.")
 
         update_json(dataset_, threat_model_, model_name, accuracy,
-                    adv_accuracy, eps)
+                    adv_accuracy, eps, extra_metrics)
 
     return accuracy, adv_accuracy
 
 
 def corruptions_evaluation(batch_size: int, data_dir: str,
-                           dataset: BenchmarkDataset, device: torch.device,
-                           model: nn.Module, n_examples: int, to_disk: bool,
-                           prepr: str, model_name: Optional[str]) -> float:
+                           dataset: BenchmarkDataset, threat_model: ThreatModel, 
+                           device: torch.device, model: nn.Module, n_examples: int, 
+                           to_disk: bool, prepr: str, model_name: Optional[str]) -> float:
     if to_disk and model_name is None:
         raise ValueError(
             "If `to_disk` is True, `model_name` should be specified.")
 
-    corruptions = CORRUPTIONS_DICT[dataset]
+    corruptions = CORRUPTIONS_DICT[dataset][threat_model]
     model_results_dict: Dict[Tuple[str, int], float] = {}
     for corruption in tqdm(corruptions):
         for severity in range(1, 6):
-            x_corrupt, y_corrupt = CORRUPTION_DATASET_LOADERS[dataset](
+            x_corrupt, y_corrupt = CORRUPTION_DATASET_LOADERS[dataset][threat_model](
                 n_examples,
                 severity,
                 data_dir,
@@ -184,22 +182,13 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
     model_results = pd.DataFrame(model_results_dict, index=[model_name])
     adv_accuracy = model_results.values.mean()
 
-    if not to_disk:
-        return adv_accuracy
-
     # Save disaggregated results on disk
-    if dataset == BenchmarkDataset.imagenet:
-        dataset_path = dataset.value 
-        unagg_res_file = "unaggregated_results_2d.csv"
-    elif dataset == BenchmarkDataset.imagenet_3d:
-        dataset_path = "imagenet"
+    if threat_model == ThreatModel.corruptions_3d:
         unagg_res_file = "unaggregated_results_3d.csv"
     else:
-        dataset_path = dataset.value 
         unagg_res_file = "unaggregated_results.csv"
 
-    existing_results_path = Path(
-        "model_info") / dataset_path / "corruptions" / unagg_res_file
+    existing_results_path = Path("model_info") / dataset.value / 'corruptions' / unagg_res_file
     
     if not existing_results_path.parent.exists():
         existing_results_path.parent.mkdir(parents=True, exist_ok=True)
@@ -214,9 +203,17 @@ def corruptions_evaluation(batch_size: int, data_dir: str,
         full_results = pd.concat([existing_results, model_results])
     except FileNotFoundError:
         full_results = model_results
-    full_results.to_csv(existing_results_path)
 
-    return adv_accuracy
+    if to_disk:
+        full_results.to_csv(existing_results_path)
+
+    adv_mce = 0
+    alexnet_accs_corruption = full_results.loc['AlexNet']
+    for corruption in corruptions:
+        mce_corruption = (1 - model_results[corruption]) / (1 - alexnet_accs_corruption[corruption]).mean()
+        adv_mce += mce_corruption.values.mean() / len(corruptions)
+
+    return adv_accuracy, adv_mce
 
 
 def main(args: Namespace) -> None:
@@ -225,14 +222,9 @@ def main(args: Namespace) -> None:
     np.random.seed(args.seed)
     random.seed(args.seed)
 
-    if args.dataset == "imagenet_3d":
-        clean_dataset = "imagenet"
-    else:
-        clean_dataset = args.dataset
-
     model = load_model(args.model_name,
                        model_dir=args.model_dir,
-                       dataset=clean_dataset,
+                       dataset=args.dataset,
                        threat_model=args.threat_model)
 
     model.eval()

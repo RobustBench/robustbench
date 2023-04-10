@@ -144,20 +144,20 @@ common_corruptions = OrderedDict(
         ('AlexNet', {
             'model': (lambda: timm.create_model(
                 'alexnet', pretrained=True)),
-            'gdrive_id':
-            None,
+            'gdrive_id': None,
+            'preprocessing': 'Res256Crop224'
         }),
         ('Tian2022Deeper_DeiT-S', {
             'model': (lambda: timm.create_model(
                 'tian2022deeper_deit_s_imagenet_corruptions', pretrained=True)),
-            'gdrive_id':
-            None,
+            'gdrive_id': None,
+            'preprocessing': 'Res256Crop224'
         }),
         ('Tian2022Deeper_DeiT-B', {
             'model': (lambda: timm.create_model(
                 'tian2022deeper_deit_b_imagenet_corruptions', pretrained=True)),
-            'gdrive_id':
-            None,
+            'gdrive_id': None,
+            'preprocessing': 'Res256Crop224'
         }),
     ])
 

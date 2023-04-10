@@ -6,13 +6,13 @@
   "number_forward_passes": 1,
   "dataset": "imagenet",
   "venue": "NeurIPS 2012",
-  "architecture": null,
+  "architecture": "AlexNet",
   "eps": 0.03137254901960784,
-  "clean_acc": 0.5538,
+  "clean_acc": "56.24",
   "reported": null,
-  "corruptions_acc_2d": "21.12",
-  "corruptions_acc_3d": "28.41",
-  "corruptions_mce_2d": "100.00",
-  "corruptions_mce_3d": "100.00",
-  "footnote": null
+  "corruptions_acc_3d": "28.47",
+  "corruptions_mce_3d": "100.0",
+  "footnote": null,
+  "corruptions_acc": "21.12",
+  "corruptions_mce": "100.0"
 }
