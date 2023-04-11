@@ -93,6 +93,30 @@ linf = OrderedDict(
             'gdrive_id': '10-YOVdM2EQjHemSi9x2H44qKRSOXVQmh',
             'preprocessing': 'BicubicRes256Crop224'
         }),
+        ('Liu2023Comprehensive_ConvNeXt-B', {
+            'model': lambda: normalize_model(
+                timm.create_model('convnext_base', pretrained=False), mu, sigma),
+            'gdrive_id': '10-nSm-qUftvfKXHeOAakBQl8rxm-jCbk',
+            'preprocessing': 'BicubicRes256Crop224',
+        }),
+        ('Liu2023Comprehensive_ConvNeXt-L', {
+            'model': lambda: normalize_model(
+                timm.create_model('convnext_large', pretrained=False), mu, sigma),
+            'gdrive_id': '1dIPLNfdQtAnqZrKPyuy3_zDI-FVgJ2FH',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Liu2023Comprehensive_Swin-B', {
+            'model': lambda: normalize_model(timm.create_model(
+                'swin_base_patch4_window7_224', pretrained=False), mu, sigma),
+            'gdrive_id': '1-4mtxQCkThJUVdS3wvQ6NnmMZuySqR3c',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Liu2023Comprehensive_Swin-L', {
+            'model': lambda: normalize_model(timm.create_model(
+            'swin_large_patch4_window7_224', pretrained=False), mu, sigma),
+            'gdrive_id': '1-57sQfcrsDsslfDR18nRD7FnpQmsSBk7',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
     ])
 
 common_corruptions = OrderedDict(
