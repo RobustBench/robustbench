@@ -846,6 +846,17 @@ linf = OrderedDict(
             'gdrive_id':
             '1-RF7ZSS-PAh6bfQcuqx4lh9bc9BUGnap'
         }),
+        ('Xu2023Exploring_WRN-28-10', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=28,
+                                 width=10,
+                                 activation_fn=nn.SiLU,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id':
+            '1wMvrjxpLPCuPiAGtkvu76ZJuNuMfuhEv'
+        }),
     ])
 
 l2 = OrderedDict([
