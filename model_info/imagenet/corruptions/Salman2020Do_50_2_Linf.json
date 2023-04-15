@@ -7,7 +7,7 @@
   "dataset": "imagenet",
   "venue": "NeurIPS 2020",
   "architecture": "WideResNet-50-2",
-  "eps": 0.03137254901960784,
+  "eps": null,
   "clean_acc": "68.64",
   "reported": "",
   "corruptions_acc_3d": "41.86",

@@ -7,7 +7,7 @@
   "dataset": "imagenet",
   "venue": "ICCV 2021",
   "architecture": "ResNet-50",
-  "eps": 0.03137254901960784,
+  "eps": null,
   "clean_acc": "76.86",
   "reported": "",
   "corruptions_acc_3d": "56.51",

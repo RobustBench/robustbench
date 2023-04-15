@@ -7,7 +7,7 @@
   "dataset": "imagenet",
   "venue": "N/A",
   "architecture": "ResNet-50",
-  "eps": 0.03137254901960784,
+  "eps": null,
   "clean_acc": "76.72",
   "reported": "",
   "corruptions_acc_3d": "47.12",

@@ -7,7 +7,7 @@
   "dataset": "imagenet",
   "venue": "NeurIPS 2012",
   "architecture": "AlexNet",
-  "eps": 0.03137254901960784,
+  "eps": null,
   "clean_acc": "56.24",
   "reported": null,
   "corruptions_acc_3d": "28.47",

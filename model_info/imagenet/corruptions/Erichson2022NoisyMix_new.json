@@ -7,7 +7,7 @@
   "dataset": "imagenet",
   "venue": "arXiv, Feb 2022",
   "architecture": "ResNet-50",
-  "eps": 0.03137254901960784,
+  "eps": null,
   "clean_acc": "76.9",
   "reported": "52.25",
   "footnote": "Better tuned model.",

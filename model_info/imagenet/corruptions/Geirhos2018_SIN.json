@@ -7,7 +7,7 @@
   "dataset": "imagenet",
   "venue": "ICLR 2019",
   "architecture": "ResNet-50",
-  "eps": 0.03137254901960784,
+  "eps": null,
   "clean_acc": "60.08",
   "reported": "",
   "corruptions_acc_3d": "40.46",
