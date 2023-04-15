@@ -18,6 +18,7 @@ from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
 
 ACC_FIELDS = {
     ThreatModel.corruptions: "corruptions_acc",
+    ThreatModel.corruptions_3d: "corruptions_acc_3d",
     ThreatModel.L2: ("external", "autoattack_acc"),
     ThreatModel.Linf: ("external", "autoattack_acc")
 }
@@ -27,7 +28,6 @@ DATASET_CLASSES = {
     BenchmarkDataset.cifar_10: 10,
     BenchmarkDataset.cifar_100: 100,
     BenchmarkDataset.imagenet: 1000,
-    BenchmarkDataset.imagenet_3d: 1000,
 }
 
 
@@ -106,9 +106,11 @@ def load_model(model_name: str,
 
     :return: A ready-to-used trained model.
     """
-
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     if norm is None:
+        # since there is only `corruptions` folder for models in the Model Zoo
+        threat_model = threat_model.replace('_3d', '')
+            
         threat_model_: ThreatModel = ThreatModel(threat_model)
     else:
         threat_model_ = ThreatModel(norm)
@@ -450,10 +452,11 @@ def get_leaderboard_latex(
 
 def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
                 model_name: str, accuracy: float, adv_accuracy: float,
-                eps: Optional[float]) -> None:
+                eps: Optional[float], extra_metrics: dict = {}) -> None:
+    threat_model_path = threat_model.value if threat_model != ThreatModel.corruptions_3d else 'corruptions'
     json_path = Path(
         "model_info"
-    ) / dataset.value / threat_model.value / f"{model_name}.json"
+    ) / dataset.value / threat_model_path / f"{model_name}.json"
     if not json_path.parent.exists():
         json_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -461,15 +464,29 @@ def update_json(dataset: BenchmarkDataset, threat_model: ThreatModel,
     if isinstance(acc_field, tuple):
         acc_field = acc_field[-1]
 
-    acc_field_kwarg = {acc_field: adv_accuracy}
+    acc_field_kwarg = {acc_field: str(round(adv_accuracy * 100, 2))}
+
+    if threat_model == ThreatModel.corruptions:
+        acc_field_kwarg['corruptions_mce'] = str(round(extra_metrics['corruptions_mce'] * 100, 2)) 
+    if threat_model == ThreatModel.corruptions_3d:
+        acc_field_kwarg['corruptions_mce_3d'] = str(round(extra_metrics['corruptions_mce'] * 100, 2))
 
     model_info = ModelInfo(dataset=dataset.value,
                            eps=eps,
-                           clean_acc=accuracy,
+                           clean_acc=str(round(accuracy * 100, 2)),
                            **acc_field_kwarg)
 
-    with open(json_path, "w") as f:
-        f.write(json.dumps(dataclasses.asdict(model_info), indent=2))
+    if os.path.exists(json_path):
+        with open(json_path, "r") as f:
+            # f = open(json_path, "r")
+            existing_json_dict = json.load(f)
+            # then update only values which are not None
+            existing_json_dict.update({k: v for k, v in dataclasses.asdict(model_info).items() if v is not None})
+            with open(json_path, "w") as f:
+                f.write(json.dumps(existing_json_dict, indent=2))
+    else:
+        with open(json_path, "w") as f:
+            f.write(json.dumps(dataclasses.asdict(model_info), indent=2))
 
 
 @dataclasses.dataclass
@@ -486,6 +503,9 @@ class ModelInfo:
     clean_acc: Optional[float] = None
     reported: Optional[float] = None
     corruptions_acc: Optional[str] = None
+    corruptions_acc_3d: Optional[str] = None
+    corruptions_mce: Optional[str] = None
+    corruptions_mce_3d: Optional[str] = None
     autoattack_acc: Optional[str] = None
     footnote: Optional[str] = None
 
@@ -520,6 +540,10 @@ def parse_args():
                         type=str,
                         default='./data',
                         help='where to store downloaded datasets')
+    parser.add_argument('--corruptions_data_dir',
+                        type=str,
+                        default='',
+                        help='where the corrupted data are stored')
     parser.add_argument('--model_dir',
                         type=str,
                         default='./models',

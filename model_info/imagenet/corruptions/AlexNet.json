@@ -1,0 +1,18 @@
+{
+  "link": "https://papers.nips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html",
+  "name": "ImageNet Classification with Deep Convolutional Neural Networks",
+  "authors": "Alex Krizhevsky, Ilya Sutskever, Geoffrey E. Hinton",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "NeurIPS 2012",
+  "architecture": "AlexNet",
+  "eps": null,
+  "clean_acc": "56.24",
+  "reported": null,
+  "corruptions_acc_3d": "28.47",
+  "corruptions_mce_3d": "100.0",
+  "footnote": null,
+  "corruptions_acc": "21.12",
+  "corruptions_mce": "100.0"
+}

@@ -8,11 +8,11 @@
   "venue": "ICLR 2019",
   "architecture": "ResNet-50",
   "eps": null,
-  "clean_acc": "60.24",
+  "clean_acc": "60.08",
   "reported": "",
-  "corruptions_acc_2d": "39.53",
-  "corruptions_acc_3d": "37.80",
-  "corruptions_mce_2d": "77.14",
-  "corruptions_mce_3d": "83.33",
-  "footnote": "Model A: trained on Stylized ImageNet."
+  "corruptions_acc_3d": "40.46",
+  "corruptions_mce_3d": "84.1",
+  "footnote": "Model A: trained on Stylized ImageNet.",
+  "corruptions_acc": "39.92",
+  "corruptions_mce": "76.67"
 }

@@ -8,10 +8,10 @@
   "venue": "ICLR 2020",
   "architecture": "ResNet-50",
   "eps": null,
-  "clean_acc": "76.98",
+  "clean_acc": "77.34",
   "reported": "",
-  "corruptions_acc_2d": "48.31",
-  "corruptions_acc_2d": "51.35",
-  "corruptions_acc_2d": "65.33",
-  "corruptions_acc_2d": "64.51"
+  "corruptions_acc": "49.33",
+  "corruptions_mce": "64.17",
+  "corruptions_acc_3d": "53.48",
+  "corruptions_mce_3d": "64.64"
 }

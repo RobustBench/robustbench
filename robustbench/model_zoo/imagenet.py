@@ -5,9 +5,8 @@ from torchvision import models as pt_models
 
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.utils_architectures import normalize_model
-from robustbench.model_zoo.architectures import xcit
+from robustbench.model_zoo.architectures import alexnet, xcit, deit  # needed to register models
 from robustbench.model_zoo.architectures.convstem_models import get_convstem_models
-
 
 mu = (0.485, 0.456, 0.406)
 sigma = (0.229, 0.224, 0.225)
@@ -121,6 +120,16 @@ linf = OrderedDict(
 
 common_corruptions = OrderedDict(
     [
+        ('Erichson2022NoisyMix', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '1wFsiB5h4Fgv6HqOkI_1jR1SZOB_eNK9r',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Erichson2022NoisyMix_new', {
+            'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
+            'gdrive_id': '1Na79fzPZ0Azg01h6kGn1Xu5NoWOElSuG',
+            'preprocessing': 'Res256Crop224'
+        }),
         ('Geirhos2018_SIN', {
             'model': lambda: normalize_model(pt_models.resnet50(), mu, sigma),
             'gdrive_id': '1hLgeY_rQIaOT4R-t_KyOqPNkczfaedgs',
@@ -154,6 +163,24 @@ common_corruptions = OrderedDict(
         ('Standard_R50', {
             'model': lambda: normalize_model(pt_models.resnet50(pretrained=True), mu, sigma),
             'gdrive_id': '',
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('AlexNet', {
+            'model': (lambda: timm.create_model(
+                'alexnet', pretrained=True)),
+            'gdrive_id': None,
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Tian2022Deeper_DeiT-S', {
+            'model': (lambda: timm.create_model(
+                'tian2022deeper_deit_s_imagenet_corruptions', pretrained=True)),
+            'gdrive_id': None,
+            'preprocessing': 'Res256Crop224'
+        }),
+        ('Tian2022Deeper_DeiT-B', {
+            'model': (lambda: timm.create_model(
+                'tian2022deeper_deit_b_imagenet_corruptions', pretrained=True)),
+            'gdrive_id': None,
             'preprocessing': 'Res256Crop224'
         }),
     ])

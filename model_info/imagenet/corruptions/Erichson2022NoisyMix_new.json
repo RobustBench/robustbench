@@ -8,11 +8,11 @@
   "venue": "arXiv, Feb 2022",
   "architecture": "ResNet-50",
   "eps": null,
-  "clean_acc": "76.98",
+  "clean_acc": "76.9",
   "reported": "52.25",
-  "footnote": "Basic model.",
-  "corruptions_acc_3d": "55.79",
-  "corruptions_mce_3d": "61.67",
-  "corruptions_acc": "52.47",
-  "corruptions_mce": "60.46"
+  "footnote": "Better tuned model.",
+  "corruptions_acc_3d": "56.1",
+  "corruptions_mce_3d": "61.27",
+  "corruptions_acc": "53.28",
+  "corruptions_mce": "59.43"
 }

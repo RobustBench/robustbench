@@ -10,6 +10,7 @@ import torch.utils.data as data
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset
+from torch import nn
 
 from robustbench.model_zoo import model_dicts as all_models
 from robustbench.model_zoo.enums import BenchmarkDataset, ThreatModel
@@ -28,6 +29,11 @@ PREPROCESSINGS = {
                         transforms.ToTensor()]),
     None:
     transforms.Compose([transforms.ToTensor()]),
+    'Res224':
+    transforms.Compose([
+        transforms.Resize(224),
+        transforms.ToTensor()
+    ]),
     'BicubicRes256Crop224':
     transforms.Compose([
         transforms.Resize(
@@ -41,6 +47,9 @@ PREPROCESSINGS = {
 
 def get_timm_model_preprocessing(model_name: str) -> Callable:
     model = timm.create_model(model_name)
+    if isinstance(model, nn.Sequential):
+        # Normalization has been applied, take the inner model to get the other info
+        model = model.model
     interpolation = model.default_cfg['interpolation']
     crop_pct = model.default_cfg['crop_pct']
     img_size = model.default_cfg['input_size'][1]
@@ -65,7 +74,7 @@ def get_preprocessing(
     if preprocessing is not None:
         return PREPROCESSINGS[preprocessing]
     # If the dataset is not imagenet, then the only needed preprocessing is ToTensor
-    if dataset not in [BenchmarkDataset.imagenet, BenchmarkDataset.imagenet_3d]:
+    if dataset != BenchmarkDataset.imagenet:
         return PREPROCESSINGS[None]
     # At this point the model name should be specified
     if model_name is None:
@@ -78,6 +87,9 @@ def get_preprocessing(
     if timm.is_model(timm_model_name):
         return get_timm_model_preprocessing(timm_model_name)
     # Or directly fetch the preprocessing for the model specified in the dictionary
+    
+    # since there is only `corruptions` folder for models in the Model Zoo
+    threat_model = ThreatModel(threat_model.value.replace('_3d', ''))
     prepr = all_models[dataset][threat_model][model_name]['preprocessing']
     return PREPROCESSINGS[prepr]
 
@@ -176,16 +188,23 @@ CORRUPTIONS_3DCC = ('near_focus', 'far_focus', 'bit_error', 'color_quant',
                     'flash', 'fog_3d', 'h265_abr', 'h265_crf', 'iso_noise',
                     'low_light', 'xy_motion_blur', 'z_motion_blur')
 
+CORRUPTIONS_DICT: Dict[BenchmarkDataset, Tuple[str, ...]] = {
+    BenchmarkDataset.cifar_10: {ThreatModel.corruptions: CORRUPTIONS},
+    BenchmarkDataset.cifar_100: {ThreatModel.corruptions: CORRUPTIONS},
+    BenchmarkDataset.imagenet: {ThreatModel.corruptions: CORRUPTIONS, 
+                                ThreatModel.corruptions_3d: CORRUPTIONS_3DCC}
+}
+
 ZENODO_CORRUPTIONS_LINKS: Dict[BenchmarkDataset, Tuple[str, Set[str]]] = {
     BenchmarkDataset.cifar_10: ("2535967", {"CIFAR-10-C.tar"}),
     BenchmarkDataset.cifar_100: ("3555552", {"CIFAR-100-C.tar"})
 }
 
 CORRUPTIONS_DIR_NAMES: Dict[BenchmarkDataset, str] = {
-    BenchmarkDataset.cifar_10: "CIFAR-10-C",
-    BenchmarkDataset.cifar_100: "CIFAR-100-C",
-    BenchmarkDataset.imagenet: "ImageNet-C",
-    BenchmarkDataset.imagenet_3d: "ImageNet-3DCC"
+    BenchmarkDataset.cifar_10: {ThreatModel.corruptions: "CIFAR-10-C"},
+    BenchmarkDataset.cifar_100: {ThreatModel.corruptions: "CIFAR-100-C"},
+    BenchmarkDataset.imagenet: {ThreatModel.corruptions: "ImageNet-C", 
+                                ThreatModel.corruptions_3d: "ImageNet-3DCC"}
 }
 
 
@@ -233,7 +252,7 @@ def load_imagenetc(
     #  at once -- perhaps this is a cleaner solution)
 
     data_folder_path = Path(data_dir) / CORRUPTIONS_DIR_NAMES[
-        BenchmarkDataset.imagenet] / corruptions[0] / str(severity)
+        BenchmarkDataset.imagenet][ThreatModel.corruptions] / corruptions[0] / str(severity)
     imagenet = CustomImageFolder(data_folder_path, prepr)
     test_loader = data.DataLoader(imagenet,
                                   batch_size=n_examples,
@@ -265,7 +284,7 @@ def load_imagenet3dcc(
     #  at once -- perhaps this is a cleaner solution)
 
     data_folder_path = Path(data_dir) / CORRUPTIONS_DIR_NAMES[
-        BenchmarkDataset.imagenet_3d] / corruptions[0] / str(severity)
+        BenchmarkDataset.imagenet][ThreatModel.corruptions_3d] / corruptions[0] / str(severity)
     imagenet = CustomImageFolder(data_folder_path, prepr)
     test_loader = data.DataLoader(imagenet,
                                   batch_size=n_examples,
@@ -280,10 +299,10 @@ def load_imagenet3dcc(
 CorruptDatasetLoader = Callable[[int, int, str, bool, Sequence[str], Callable],
                                 Tuple[torch.Tensor, torch.Tensor]]
 CORRUPTION_DATASET_LOADERS: Dict[BenchmarkDataset, CorruptDatasetLoader] = {
-    BenchmarkDataset.cifar_10: load_cifar10c,
-    BenchmarkDataset.cifar_100: load_cifar100c,
-    BenchmarkDataset.imagenet: load_imagenetc,
-    BenchmarkDataset.imagenet_3d: load_imagenet3dcc,
+    BenchmarkDataset.cifar_10: {ThreatModel.corruptions: load_cifar10c},
+    BenchmarkDataset.cifar_100: {ThreatModel.corruptions: load_cifar100c},
+    BenchmarkDataset.imagenet: {ThreatModel.corruptions: load_imagenetc, 
+                                ThreatModel.corruptions_3d: load_imagenet3dcc}
 }
 
 
