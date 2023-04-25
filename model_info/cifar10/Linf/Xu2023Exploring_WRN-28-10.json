@@ -1,0 +1,16 @@
+{
+  "link": "https://arxiv.org/abs/2302.03015",
+  "name": "Exploring and Exploiting Decision Boundary Dynamics for Adversarial Robustness",
+  "authors": "Yuancheng Xu, Yanchao Sun, Micah Goldblum, Tom Goldstein, Furong Huang",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "ICLR 2023",
+  "architecture": "WideResNet-28-10",
+  "eps": "8/255",
+  "clean_acc": "93.69",
+  "reported": "63.89",
+  "autoattack_acc": "63.89",
+  "footnote": "It uses additional 10M synthetic images in training.",
+  "unreliable": false
+}
