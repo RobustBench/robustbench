@@ -1,11 +1,11 @@
 {
-  "link": "https://artofrobust.github.io/short_paper/31.pdf",
+  "link": "https://arxiv.org/abs/2210.15318",
   "name": "Efficient and Effective Augmentation Strategy for Adversarial Training",
   "authors": "Sravanti Addepalli, Samyak Jain, Venkatesh Babu Radhakrishnan",
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar100",
-  "venue": "CVPRW 2022",
+  "venue": "NeurIPS 2022",
   "architecture": "ResNet-18",
   "eps": "8/255",
   "clean_acc": "65.45",

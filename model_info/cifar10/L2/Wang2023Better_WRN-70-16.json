@@ -5,7 +5,7 @@
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "cifar10",
-  "venue": "arXiv, Feb 2023",
+  "venue": "ICML 2023",
   "architecture": "WideResNet-70-16",
   "eps": "0.5",
   "clean_acc": "95.54",
