@@ -190,10 +190,29 @@ def load_model(model_name: str,
             except KeyError:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
-            model.models[i] = _safe_load_state_dict(model.models[i],
-                                                    model_name, state_dict,
-                                                    dataset_)
-            model.models[i].eval()
+            if not model_name.startswith('Bai2023Improving'):
+                model.models[i] = _safe_load_state_dict(model.models[i],
+                                                        model_name, state_dict,
+                                                        dataset_)
+                model.models[i].eval()
+            else:
+                # TODO: make it cleaner.
+                if i < 2:
+                    #if 'model' in state_dict.keys():
+                    #    state_dict = rm_substr_from_state_dict(state_dict['model'], 'module.')
+                    model.comp_model.models[i] = _safe_load_state_dict(
+                        model.comp_model.models[i], model_name, state_dict, dataset_)
+                    model.comp_model.models[i].eval()
+                else:
+                    model.comp_model.policy_net = _safe_load_state_dict(
+                        model.comp_model.policy_net, model_name, state_dict['model'], dataset_)
+                    '''if "bn.running_mean" in state_dict["model"].keys():
+                        state_dict["bn"] = OrderedDict()
+                        for key in ["running_mean", "running_var", "num_batches_tracked"]:
+                            state_dict["bn"][key] = state_dict["model"][f"bn.{key}"]
+                            del state_dict["model"][f"bn.{key}"]'''
+                    model.comp_model.bn = _safe_load_state_dict(
+                        model.comp_model.bn, model_name, state_dict['bn'], dataset_)
 
         return model.eval()
 

@@ -13,6 +13,7 @@ from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreActResNet
 from robustbench.model_zoo.architectures import xcit
+from robustbench.model_zoo.architectures.comp_model import get_composite_model
 
 
 class Chen2020EfficientNet(WideResNet):
@@ -469,6 +470,20 @@ linf = OrderedDict([
                              std=CIFAR100_STD),
         'gdrive_id':
         '1-yYcT73GP13c0y9HrgtpyB3NAfkGKgjY'
+    }),
+    ('Bai2023Improving_edm', {
+        'model': lambda: get_composite_model('edm'),
+        'gdrive_id': [
+            '12Z63xr4bQwdIvR2w8xvpUnXG1fnUpy5B',
+            '1-yYcT73GP13c0y9HrgtpyB3NAfkGKgjY',
+            '1--8Jd82Q9ZLlVS_6c1iPrBxqy9sbdAkx']
+    }),
+    ('Bai2023Improving_trades', {
+        'model': lambda: get_composite_model('trades'),
+        'gdrive_id': [
+            '12Z63xr4bQwdIvR2w8xvpUnXG1fnUpy5B',
+            '1LQBdwO2b391mg7VKcP6I0HIOpC6O83gn',
+            '1-0Sffx4gCIydJc16n1H0k6FYE4kHRnGm']
     }),
 ])
 
