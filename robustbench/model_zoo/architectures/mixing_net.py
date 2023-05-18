@@ -32,7 +32,7 @@ class PreActBlock(nn.Module):
 class MixingNetV3(nn.Module):
     def __init__(self, forward_settings, nmodels=2):
         super().__init__()
-        print("Initializing MixingNet V3.")
+        #print("Initializing MixingNet V3.")
         self.nmodels = nmodels
 
         self.ind_planes = [None for _ in range(self.nmodels)]
@@ -80,7 +80,7 @@ class MixingNetV3(nn.Module):
 class MixingNetV4(MixingNetV3):
     def __init__(self, forward_settings, nmodels=2):
         super().__init__(forward_settings, nmodels)
-        print("Initializing MixingNet V4.")
+        #print("Initializing MixingNet V4.")
 
         # Add 1x1 conv to reduce the number of channels
         in_1x1 = (self.ind_planes[0][0] + self.ind_planes[1][0]) * 2

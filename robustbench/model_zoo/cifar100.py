@@ -472,14 +472,14 @@ linf = OrderedDict([
         '1-yYcT73GP13c0y9HrgtpyB3NAfkGKgjY'
     }),
     ('Bai2023Improving_edm', {
-        'model': lambda: get_composite_model('edm'),
+        'model': lambda: get_composite_model('edm'),  # TODO: check device calls.
         'gdrive_id': [
             '12Z63xr4bQwdIvR2w8xvpUnXG1fnUpy5B',
             '1-yYcT73GP13c0y9HrgtpyB3NAfkGKgjY',
             '1--8Jd82Q9ZLlVS_6c1iPrBxqy9sbdAkx']
     }),
     ('Bai2023Improving_trades', {
-        'model': lambda: get_composite_model('trades'),
+        'model': lambda: get_composite_model('trades'),  # TODO: check device calls.
         'gdrive_id': [
             '12Z63xr4bQwdIvR2w8xvpUnXG1fnUpy5B',
             '1LQBdwO2b391mg7VKcP6I0HIOpC6O83gn',
