@@ -1,0 +1,16 @@
+{
+  "link": "https://arxiv.org/abs/2301.12554",
+  "name": "Improving the Accuracy-Robustness Trade-off of Classifiers via Adaptive Smoothing",
+  "authors": "Yatong Bai, Brendon G Anderson, Aerin Kim, Somayeh Sojoudi",
+  "additional_data": true,
+  "number_forward_passes": 2,
+  "dataset": "cifar100",
+  "venue": "arXiv, Jan 2023",
+  "architecture": "ResNet-152 + WideResNet-70-16 + mixing network",
+  "eps": "8/255",
+  "clean_acc": "80.18",
+  "reported": "35.15",
+  "autoattack_acc": "35.15",
+  "footnote": "It uses an ensemble of networks.",
+  "unreliable": false
+}

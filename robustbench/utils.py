@@ -192,10 +192,22 @@ def load_model(model_name: str,
             except KeyError:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
-            model.models[i] = _safe_load_state_dict(model.models[i],
-                                                    model_name, state_dict,
-                                                    dataset_)
-            model.models[i].eval()
+            if not model_name.startswith('Bai2023Improving'):
+                model.models[i] = _safe_load_state_dict(model.models[i],
+                                                        model_name, state_dict,
+                                                        dataset_)
+                model.models[i].eval()
+            else:
+                # TODO: make it cleaner.
+                if i < 2:
+                    model.comp_model.models[i] = _safe_load_state_dict(
+                        model.comp_model.models[i], model_name, state_dict, dataset_)
+                    model.comp_model.models[i].eval()
+                else:
+                    model.comp_model.policy_net = _safe_load_state_dict(
+                        model.comp_model.policy_net, model_name, state_dict['model'], dataset_)
+                    model.comp_model.bn = _safe_load_state_dict(
+                        model.comp_model.bn, model_name, state_dict['bn'], dataset_)
 
         return model.eval()
 
