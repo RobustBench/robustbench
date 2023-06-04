@@ -1,0 +1,15 @@
+{
+  "link": "https://arxiv.org/abs/2305.13948",
+  "name": "Decoupled Kullback-Leibler Divergence Loss",
+  "authors": "Jiequan Cui, Zhuotao Tian, Zhisheng Zhong, Xiaojuan Qi, Bei Yu, Hanwang Zhang",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "arXiv, May 2023",
+  "architecture": "WideResNet-34-10",
+  "eps": "8/255",
+  "clean_acc": "85.31",
+  "reported": "57.09",
+  "autoattack_acc": "57.09",
+  "unreliable": false
+}
