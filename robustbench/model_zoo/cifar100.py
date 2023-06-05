@@ -503,6 +503,13 @@ linf = OrderedDict([
         'gdrive_id':
         '1-7GbBqZRaHLFA-kYqcnWl9Q0Ohpicq07'
     }),
+    ('Cui2023Decoupled_WRN-34-10_autoaug', {
+        'model':
+        lambda: WideResNet(
+            depth=34, widen_factor=10, num_classes=100, sub_block1=False),
+        'gdrive_id':
+        '18hjcLa1V3JTNUOshafLvw1ncxL2gu50M'
+    }),
 ])
 
 common_corruptions = OrderedDict([
