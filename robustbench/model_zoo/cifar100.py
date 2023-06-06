@@ -485,6 +485,31 @@ linf = OrderedDict([
             '1LQBdwO2b391mg7VKcP6I0HIOpC6O83gn',
             '1-0Sffx4gCIydJc16n1H0k6FYE4kHRnGm']
     }),
+    ('Cui2023Decoupled_WRN-28-10', {
+        'model':
+        lambda: DMWideResNet(num_classes=100,
+                             depth=28,
+                             width=10,
+                             activation_fn=nn.SiLU,
+                             mean=CIFAR100_MEAN,
+                             std=CIFAR100_STD),
+        'gdrive_id':
+        '15BwWdWbNfoarTEWWugicOVkTjh3nXH36'
+    }),
+    ('Cui2023Decoupled_WRN-34-10', {
+        'model':
+        lambda: WideResNet(
+            depth=34, widen_factor=10, num_classes=100, sub_block1=False),
+        'gdrive_id':
+        '1-7GbBqZRaHLFA-kYqcnWl9Q0Ohpicq07'
+    }),
+    ('Cui2023Decoupled_WRN-34-10_autoaug', {
+        'model':
+        lambda: WideResNet(
+            depth=34, widen_factor=10, num_classes=100, sub_block1=False),
+        'gdrive_id':
+        '18hjcLa1V3JTNUOshafLvw1ncxL2gu50M'
+    }),
 ])
 
 common_corruptions = OrderedDict([

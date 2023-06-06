@@ -857,6 +857,23 @@ linf = OrderedDict(
             'gdrive_id':
             '1k1uJI13ft0h0dfzuEihVpBvjBXwFRH2o'
         }),
+        ('Cui2023Decoupled_WRN-28-10', {
+            'model':
+            lambda: DMWideResNet(num_classes=10,
+                                 depth=28,
+                                 width=10,
+                                 activation_fn=nn.SiLU,
+                                 mean=CIFAR10_MEAN,
+                                 std=CIFAR10_STD),
+            'gdrive_id':
+            '1-AaTrYt23WJFR22hXgBd-i6kjpsz6Hf2'
+        }),
+        ('Cui2023Decoupled_WRN-34-10', {
+            'model':
+            lambda: WideResNet(depth=34, widen_factor=10, sub_block1=False),
+            'gdrive_id':
+            '1-ArD-TugRXUbH3VtM9qnzvby6NvdXNUN'
+        }),
     ])
 
 l2 = OrderedDict([
