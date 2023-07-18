@@ -320,7 +320,7 @@ def load_corruptions_cifar(
         os.makedirs(data_dir)
 
     data_dir = Path(data_dir)
-    data_root_dir = data_dir / CORRUPTIONS_DIR_NAMES[dataset]
+    data_root_dir = data_dir / CORRUPTIONS_DIR_NAMES[dataset][ThreatModel.corruptions]
 
     if not data_root_dir.exists():
         zenodo_download(*ZENODO_CORRUPTIONS_LINKS[dataset], save_dir=data_dir)
