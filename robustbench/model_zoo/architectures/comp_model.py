@@ -35,8 +35,9 @@ class CompositeModel(nn.Module):
                 activation_fn=nn.SiLU if 'silu' in rob_model_type else dm_rn.Swish,
                 depth=70,
                 width=16,
-                mean=dm_rn.CIFAR100_MEAN,
-                std=dm_rn.CIFAR100_STD))
+                mean=dm_rn.CIFAR100_MEAN if num_classes == 100 else dm_rn.CIFAR10_MEAN,
+                std=dm_rn.CIFAR100_STD if num_classes == 100 else dm_rn.CIFAR10_STD,
+                ))
 
         for model in self.models:
             model.eval()
@@ -265,7 +266,7 @@ class CompositeModelWrapper(nn.Module):
         return self.train(mode=False, scale_alpha=scale_alpha)
 
 
-def get_composite_model(model_name):
+def get_composite_model(model_name, dataset='cifar100'):
 
     forward_settings = {
         "std_model_type": 'rn152',
@@ -276,22 +277,29 @@ def get_composite_model(model_name):
         "policy_graph": True,  # False if no mixing network
         "pn_version": 4,
         "parallel": False,
-        "num_classes": 100,
+        "num_classes": 100 if dataset == 'cifar100' else 10,
     }
 
     comp_model = CompositeModel(forward_settings)
 
     # Set output mean and std div. Only applies when the policy network is active.
-    if model_name == "edm":  # EDM
+    if dataset == 'cifar100' and model_name == "edm":  # EDM
         comp_model.set_gamma_scale_bias(gamma_scale=2., gamma_bias=1.3)
         comp_model.set_alpha_scale_bias(alpha_scale=.15, alpha_bias=.84)
-    elif model_name == "trades":  # TRADES
+        # Set base model logit scale
+        comp_model.set_base_model_scale(std_scale=2., rob_scale=1.)
+    elif dataset == 'cifar100' and model_name == "trades":  # TRADES
         comp_model.set_gamma_scale_bias(gamma_scale=2., gamma_bias=1.)
         comp_model.set_alpha_scale_bias(alpha_scale=.1, alpha_bias=.815)
+        # Set base model logit scale
+        comp_model.set_base_model_scale(std_scale=2., rob_scale=1.)
+    elif dataset == 'cifar10' and model_name == 'edm':
+        comp_model.set_gamma_value(gamma=3.)
+        comp_model.set_gamma_scale_bias(gamma_scale=2., gamma_bias=1.05)
+        comp_model.set_alpha_scale_bias(alpha_scale=.04, alpha_bias=.96)
+        comp_model.set_base_model_scale(std_scale=1.2, rob_scale=.3)
     else:
         raise ValueError(f"Unknown model name: {model_name}.")
-    # Set base model logit scale
-    comp_model.set_base_model_scale(std_scale=2., rob_scale=1.)
 
     return CompositeModelWrapper(comp_model, parallel=False)
 

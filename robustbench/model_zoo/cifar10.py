@@ -20,6 +20,7 @@ from robustbench.model_zoo.architectures.paf_wide_resnet import pssilu_wrn_28_10
 from robustbench.model_zoo.architectures.sodef_layers import rebuffi_sodef
 from robustbench.model_zoo.architectures import xcit
 from robustbench.model_zoo.architectures import robust_resnet
+from robustbench.model_zoo.architectures.comp_model import get_composite_model
 
 
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
@@ -873,6 +874,13 @@ linf = OrderedDict(
             lambda: WideResNet(depth=34, widen_factor=10, sub_block1=False),
             'gdrive_id':
             '1-ArD-TugRXUbH3VtM9qnzvby6NvdXNUN'
+        }),
+        ('Bai2023Improving_edm', {
+        'model': lambda: get_composite_model('edm', 'cifar10'),  # TODO: check device calls.
+        'gdrive_id': [
+            '1-5EwY_5tQZudo9idwXiUGr3P4OUUGaQN',
+            '1-RF7ZSS-PAh6bfQcuqx4lh9bc9BUGnap',
+            '1-7oV7QDgz8McvhbaCj6Owx3Rz3daiPrT']
         }),
     ])
 
