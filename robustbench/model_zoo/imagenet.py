@@ -7,6 +7,7 @@ from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.utils_architectures import normalize_model
 from robustbench.model_zoo.architectures import xcit
 from robustbench.model_zoo.architectures.convstem_models import get_convstem_models
+from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
 
 
 mu = (0.485, 0.456, 0.406)
@@ -117,6 +118,11 @@ linf = OrderedDict(
             'gdrive_id': '1-57sQfcrsDsslfDR18nRD7FnpQmsSBk7',
             'preprocessing': 'BicubicRes256Crop224'
         }),
+        ('Peng2023Robust', {
+            'model': lambda: get_robustarch_model('ra_wrn101_2'),  # TODO: check device calls.
+            'gdrive_id': '1-GpZ9Du83mBTN61Ytx9z_ZQSyIc1kYop',
+            'preprocessing': 'Res256Crop224',
+        })
     ])
 
 common_corruptions = OrderedDict(

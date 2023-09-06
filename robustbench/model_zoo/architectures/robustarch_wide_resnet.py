@@ -18,8 +18,12 @@ from torchvision.ops.misc import Conv2dNormActivation, SqueezeExcitation
 
 from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR10_MEAN, CIFAR10_STD
 
+
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
+
+INPLACE_ACTIVATIONS = [nn.ReLU]
+NORMALIZATIONS = [nn.BatchNorm2d, nn.InstanceNorm2d, nn.GroupNorm, nn.LayerNorm]
 
 
 def normalize_fn(tensor, mean, std):
@@ -265,20 +269,6 @@ class NormalizedWideResNet(nn.Module):
         out = F.avg_pool2d(out, 8)
         out = out.view(-1, self.num_channels)
         return self.logits(out)
-
-
-from typing import Any, Callable, Dict, Optional, Tuple
-from torch import Tensor
-import math
-import torch
-import torch.nn as nn
-from collections import OrderedDict
-from torchvision.ops.misc import Conv2dNormActivation, SqueezeExcitation
-from advertorch.utils import NormalizeByChannelMeanStd
-from robustarch.utils import PSiLU, PSSiLU
-
-INPLACE_ACTIVATIONS = [nn.ReLU]
-NORMALIZATIONS = [nn.BatchNorm2d, nn.InstanceNorm2d, nn.GroupNorm, nn.LayerNorm]
 
 
 class NormActivationConv(torch.nn.Sequential):
@@ -849,6 +839,7 @@ if __name__ == "__main__":
         print(model(x.cuda()).shape)
 
     model = get_model("ra_wrn101_2")
+    #print(model.state_dict().keys())
     model.cuda()
     x = torch.rand([10, 3, 224, 224])
     with torch.no_grad():
