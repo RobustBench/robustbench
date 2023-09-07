@@ -1,0 +1,15 @@
+{
+  "link": "https://arxiv.org/abs/2308.16258",
+  "name": "Robust Principles: Architectural Design Principles for Adversarially Robust CNNs",
+  "authors": "ShengYun Peng, Weilin Xu, Cory Cornelius, Matthew Hull, Kevin Li, Rahul Duggal, Mansi Phute, Jason Martin, and Duen Horng Chau",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "BMVC 2023",
+  "architecture": "RaWideResNet-101-2",
+  "eps": "4/255",
+  "clean_acc": "73.44",
+  "reported": "48.94",
+  "autoattack_acc": "48.94",
+  "unreliable": false
+}
