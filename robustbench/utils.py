@@ -30,6 +30,8 @@ DATASET_CLASSES = {
     BenchmarkDataset.imagenet: 1000,
 }
 
+CANNED_USER_AGENT="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"  # NOQA
+
 
 def download_gdrive(gdrive_id, fname_save):
     """ source: https://stackoverflow.com/questions/38511444/python-download-files-from-google-drive-using-url """
@@ -54,6 +56,11 @@ def download_gdrive(gdrive_id, fname_save):
 
     url_base = "https://docs.google.com/uc?export=download&confirm=t"
     session = requests.Session()
+
+    # Fix from https://github.com/wkentaro/gdown/pull/294.
+    session.headers.update(
+        {"User-Agent": CANNED_USER_AGENT}
+    )
 
     response = session.get(url_base, params={'id': gdrive_id}, stream=True)
     token = get_confirm_token(response)
