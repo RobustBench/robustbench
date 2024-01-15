@@ -76,7 +76,7 @@ default_cfgs = {
 }
 
 
-def adapt_model_patches(model: xcit.XCiT, new_patch_size: int):
+def adapt_model_patches(model: xcit.Xcit, new_patch_size: int):
     to_divide = model.patch_embed.patch_size / new_patch_size
     assert int(
         to_divide
@@ -101,7 +101,7 @@ def debenedetti2022light_xcit_s12_imagenet_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_s12_imagenet_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     return model
 
 
@@ -117,7 +117,7 @@ def debenedetti2022light_xcit_m12_imagenet_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_m12_imagenet_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     return model
 
 
@@ -133,7 +133,7 @@ def debenedetti2022light_xcit_l12_imagenet_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_l12_imagenet_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     return model
 
 
@@ -150,7 +150,7 @@ def debenedetti2022light_xcit_s12_cifar10_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_s12_cifar10_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     model = adapt_model_patches(model, 4)
     model = normalize_timm_model(model)
     return model
@@ -169,7 +169,7 @@ def debenedetti2022light_xcit_s12_cifar100_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_s12_cifar100_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     model = adapt_model_patches(model, 4)
     model = normalize_timm_model(model)
     return model
@@ -188,7 +188,7 @@ def debenedetti2022light_xcit_m12_cifar10_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_m12_cifar10_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     model = adapt_model_patches(model, 4)
     model = normalize_timm_model(model)
     return model
@@ -207,7 +207,7 @@ def debenedetti2022light_xcit_m12_cifar100_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_m12_cifar100_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     model = adapt_model_patches(model, 4)
     model = normalize_timm_model(model)
     return model
@@ -226,7 +226,7 @@ def debenedetti2022light_xcit_l12_cifar10_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_l12_cifar10_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     model = adapt_model_patches(model, 4)
     model = normalize_timm_model(model)
     return model
@@ -245,7 +245,7 @@ def debenedetti2022light_xcit_l12_cifar100_linf(pretrained=False, **kwargs):
     model = xcit._create_xcit('debenedetti2022light_xcit_l12_cifar100_linf',
                               pretrained=pretrained,
                               **model_kwargs)
-    assert isinstance(model, xcit.XCiT)
+    assert isinstance(model, xcit.Xcit)
     model = adapt_model_patches(model, 4)
     model = normalize_timm_model(model)
     return model
