@@ -77,7 +77,8 @@ def zenodo_download(record_id: str, filenames_to_download: Set[str],
                 "The hash of the downloaded file does not match"
                 " the expected one.")
         print("Download finished, extracting...")
+        format = file["type"] if "type" in file.keys() else file["key"].split('.')[-1]
         shutil.unpack_archive(filename,
                               extract_dir=save_dir,
-                              format=file["type"])
+                              format=format)
         print("Downloaded and extracted.")
