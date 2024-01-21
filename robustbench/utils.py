@@ -176,7 +176,7 @@ def load_model(model_name: str,
                 ]:
                 try:
                     from timm.models.swin_transformer import checkpoint_filter_fn
-                    state_dict = checkpoint_filter_fn(state_dict, model)
+                    state_dict = checkpoint_filter_fn(state_dict, model.model)
                 except:
                     pass
 
