@@ -169,6 +169,17 @@ def load_model(model_name: str,
             state_dict = rm_substr_from_state_dict(state_dict, 'model.')
 
         if dataset_ == BenchmarkDataset.imagenet:
+            # Adapt checkpoint to the model defition in newer versions of timm.
+            if model_name in [
+                'Liu2023Comprehensive_Swin-B',
+                'Liu2023Comprehensive_Swin-L',
+                ]:
+                try:
+                    from timm.models.swin_transformer import checkpoint_filter_fn
+                    state_dict = checkpoint_filter_fn(state_dict, model.model)
+                except:
+                    pass
+
             # Some models need input normalization, which is added as extra layer.
             if model_name not in [
                 'Singh2023Revisiting_ConvNeXt-T-ConvStem',
