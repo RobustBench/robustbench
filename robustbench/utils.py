@@ -79,6 +79,8 @@ def download_gdrive(gdrive_id, fname_save):
 def download_gdrive_new(gdrive_id, fname_save):
     """Download checkpoints with gdown, see https://github.com/wkentaro/gdown."""
     
+    if isinstance(fname_save, Path):
+        fname_save = str(fname_save)
     print(f'Downloading {fname_save} (gdrive_id={gdrive_id}).')
     gdown.download(id=gdrive_id, output=fname_save)
 
