@@ -80,7 +80,7 @@ def download_gdrive_new(gdrive_id, fname_save):
     """Download checkpoints with gdown, see https://github.com/wkentaro/gdown."""
     
     print(f'Downloading {fname_save} (gdrive_id={gdrive_id}).')
-    gdown.dowload(id=gdrive_id, output=fname_save)
+    gdown.download(id=gdrive_id, output=fname_save)
 
 
 def rm_substr_from_state_dict(state_dict, substr):
