@@ -78,8 +78,9 @@ def download_gdrive(gdrive_id, fname_save):
 
 def download_gdrive_new(gdrive_id, fname_save):
     """Download checkpoints with gdown, see https://github.com/wkentaro/gdown."""
-
-    return gdown.dowload(id=gdrive_id, output=fname_save)
+    
+    print(f'Downloading {fname_save} (gdrive_id={gdrive_id}).')
+    gdown.dowload(id=gdrive_id, output=fname_save)
 
 
 def rm_substr_from_state_dict(state_dict, substr):
@@ -159,10 +160,7 @@ def load_model(model_name: str,
         if not os.path.exists(model_dir_):
             os.makedirs(model_dir_)
         if not os.path.isfile(model_path):
-            try:
-                download_gdrive(models[model_name]['gdrive_id'], model_path)
-            except:
-                download_gdrive_new(models[model_name]['gdrive_id'], model_path)
+            download_gdrive_new(models[model_name]['gdrive_id'], model_path)
         checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
 
         if 'Kireev2021Effectiveness' in model_name or model_name == 'Andriushchenko2020Understanding':
@@ -212,10 +210,7 @@ def load_model(model_name: str,
             os.makedirs(model_dir_)
         for i, gid in enumerate(models[model_name]['gdrive_id']):
             if not os.path.isfile('{}_m{}.pt'.format(model_path, i)):
-                try:
-                    download_gdrive(gid, '{}_m{}.pt'.format(model_path, i))
-                except:
-                    download_gdrive_new(gid, '{}_m{}.pt'.format(model_path, i))
+                download_gdrive_new(gid, '{}_m{}.pt'.format(model_path, i))
             checkpoint = torch.load('{}_m{}.pt'.format(model_path, i),
                                     map_location=torch.device('cpu'))
             try:
