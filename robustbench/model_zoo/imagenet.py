@@ -129,7 +129,12 @@ linf = OrderedDict(
                 '1-2CwsRuMZXr99PeU2Z7-iFjl_86uIR-Y',
                 '1-57sQfcrsDsslfDR18nRD7FnpQmsSBk7'],
             'preprocessing': 'BicubicRes256Crop224'
-    }),
+        }),
+        ('Chen2024Data_RN-50', {
+            'model': pt_models.wide_resnet50_2,
+            'gdrive_id': '1-PBlZVILAKFQ7mF8srKjdkTKJZAr61Uf',
+            'preprocessing': 'Res256Crop224',
+        }),
     ])
 
 common_corruptions = OrderedDict(

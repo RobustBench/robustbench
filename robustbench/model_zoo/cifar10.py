@@ -894,6 +894,14 @@ linf = OrderedDict(
             '1-5EwY_5tQZudo9idwXiUGr3P4OUUGaQN',
             '1-6M8KHZdPmgqYkBSkdZQ2fLwp86ZQ9VU']
         }),
+        ('Chen2024Data_WRN_34_10', {
+            'model': lambda: WideResNet(depth=34, widen_factor=10),
+            'gdrive_id': '1-AzyMQaoUuwxec6O_Yri5OVtVqnNgR4R',
+        }),
+        ('Chen2024Data_WRN_34_20', {
+            'model': lambda: WideResNet(depth=34, widen_factor=20),
+            'gdrive_id': '1-IbKAGtp79tAEm59N0i8QMvMZ3nxSD2-',
+        }),
     ])
 
 l2 = OrderedDict([

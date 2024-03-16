@@ -517,6 +517,10 @@ linf = OrderedDict([
         '1V7utaY3SyU65o6ivjidG1-wO5wAVF517',
         '1-yYcT73GP13c0y9HrgtpyB3NAfkGKgjY']
     }),
+    ('Chen2024Data_WRN_34_10', {
+        'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
+        'gdrive_id': '1-N5a0Z9o-8-oIrF4_EaVFVOOPI5-D-H2',
+    }),
 ])
 
 common_corruptions = OrderedDict([

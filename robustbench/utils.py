@@ -198,6 +198,7 @@ def load_model(model_name: str,
                 'Singh2023Revisiting_ConvNeXt-B-ConvStem',
                 'Singh2023Revisiting_ConvNeXt-L-ConvStem',
                 'Peng2023Robust',
+                'Chen2024Data_RN-50',
                 ]:
                 state_dict = add_substr_to_state_dict(state_dict, 'model.')
 
