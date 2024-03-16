@@ -1,0 +1,51 @@
+cifar10:
+  Peng2023Robust:
+    gelu:
+      default_beta: 98.5
+      98.5:
+        s: 5.0
+        c: -1.1
+        p: 4.0
+        alpha: 0.9987500602493457
+    none:
+      default_beta: 95.0
+      100.0:
+        alpha: 1
+      95.0:
+        alpha: 0.9570535356459247
+      0.0:
+        alpha: 0
+cifar100:
+  Wang2023Better_WRN-70-16:
+    gelu:
+      default_beta: 98.5
+      98.5:
+        s: 0.6115753843212784
+        c: -2.142857142857143
+        p: 3.571428571428571
+        alpha: 0.9860300534207915
+    none:
+      default_beta: 93.5
+      100.0:
+        alpha: 1
+      93.5:
+        alpha: 0.9706995384302841
+      0.0:
+        alpha: 0
+imagenet:
+  Liu2023Comprehensive_Swin-L:
+    gelu:
+      default_beta: 99.0
+      99.0:
+        s: 0.023535468936502525
+        c: -0.2857142857142858
+        p: 2.7142857142857144
+        alpha: 0.9971266414518896
+    none:
+      default_beta: 95.0
+      100.0:
+        alpha: 1
+      95.0:
+        alpha: 0.90683792395046
+      0.0:
+        alpha: 0

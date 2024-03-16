@@ -4,9 +4,18 @@ import torch.nn.functional as F
 
 from typing import List
 import numpy as np
+import yaml
+import os
+import timm
 
-from robustbench.model_zoo.architectures.mixing_net import MixingNetV3, MixingNetV4
-from robustbench.model_zoo.architectures import bit_rn, dm_rn
+from robustbench.model_zoo.architectures.mixing_net import MixingNetV3, MixingNetV4, \
+    NonLinMixedClassifier
+from robustbench.model_zoo.architectures import bit_rn, dm_rn, bit_rn_v2, convnext_v2
+from robustbench.model_zoo.architectures.output_maps import HardMaxMap, LNClampPowerScaleMap
+from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
+from robustbench.model_zoo.architectures.dm_wide_resnet import CIFAR100_MEAN, CIFAR100_STD, \
+    DMWideResNet
+from robustbench.model_zoo.architectures.utils_architectures import normalize_model
 
 
 class CompositeModel(nn.Module):
@@ -304,11 +313,79 @@ def get_composite_model(model_name, dataset='cifar100'):
     return CompositeModelWrapper(comp_model, parallel=False)
 
 
+# Adapted from
+# https://github.com/Bai-YT/MixedNUTS/blob/main/robustbench_impl/utils/model_utils.py.
+def get_nonlin_mixed_classifier(dataset_name):
+    """ This function is used to build the mixed classifier for RobustBench. """
+
+    std_model_arch, rob_model_name, num_classes = {
+        'cifar10': ('rn152', 'Peng2023Robust', 10),
+        'cifar100': ('rn152', 'Wang2023Better_WRN-70-16', 100),
+        'imagenet': ('convnext_v2-l_224', 'Liu2023Comprehensive_Swin-L', 1000),
+    }[dataset_name]
+
+    # Default transformation hyperparameters
+    config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'optimal_spca.yaml')
+    with open(config_file, 'r') as file:
+        dflt_dic = yaml.safe_load(file)[dataset_name][rob_model_name]
+
+    beta_diffable = dflt_dic['none']['default_beta']
+    alpha_diffable = dflt_dic['none'][beta_diffable]['alpha']
+    std_map = HardMaxMap()
+    beta = dflt_dic['gelu']['default_beta']
+    nonlin_spca = dflt_dic['gelu'][beta]
+    rob_map = LNClampPowerScaleMap(
+        scale=nonlin_spca['s'], power=nonlin_spca['p'], clamp_bias=nonlin_spca['c'], ln_k=250
+    )
+    alpha = nonlin_spca['alpha']
+    forward_settings = {
+        "std_model_arch": std_model_arch,
+        "rob_model_name": rob_model_name,
+        "std_map": std_map,
+        "rob_map": rob_map,
+        "alpha": alpha,
+        "alpha_diffable": alpha_diffable,
+        "parallel": False
+    }
+
+    # Load robust base model
+    if rob_model_name == 'Peng2023Robust':
+        rob_model = get_robustarch_model('ra_wrn70_16')
+    elif rob_model_name == 'Wang2023Better_WRN-70-16':
+        rob_model = DMWideResNet(
+            num_classes=100, depth=70, width=16, activation_fn=nn.SiLU,
+            mean=CIFAR100_MEAN, std=CIFAR100_STD)
+    elif rob_model_name == 'Liu2023Comprehensive_Swin-L':
+        mu = (0.485, 0.456, 0.406)
+        sigma = (0.229, 0.224, 0.225)
+        rob_model = normalize_model(timm.create_model(
+            'swin_large_patch4_window7_224', pretrained=False), mu, sigma)
+
+    # Load standard base model
+    if std_model_arch == 'convnext_v2-l_224':
+        # Load ConvNext V2 model
+        assert num_classes == 1000
+        std_model = convnext_v2.convnextv2_large(num_classes=num_classes)
+    elif std_model_arch == 'rn152':
+        # Load BiT ResNet model
+        std_model = bit_rn_v2.KNOWN_MODELS["BiT-M-R152x2"](
+            head_size=num_classes, zero_head=False, return_features=False)
+    else:
+        raise ValueError(f"Unknown standard model architecture: {std_model_arch}")
+
+    # Mixed classifier
+    mix_model = NonLinMixedClassifier(std_model, rob_model, forward_settings)
+
+    return mix_model
+
+
 if __name__ == '__main__':
 
-    model = get_composite_model('edm')
-    model.cuda()
-    x = torch.rand([10, 3, 32, 32])
+    #model = get_composite_model('edm')
+    model = get_nonlin_mixed_classifier('imagenet')
+    device = 'cuda:6'
+    model.to(device)
+    x = torch.rand([10, 3, 224, 224], device=device)
     with torch.no_grad():
-        print(model(x.cuda()).shape)
+        print(model(x).shape)
 

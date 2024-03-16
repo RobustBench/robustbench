@@ -13,7 +13,8 @@ from robustbench.model_zoo.architectures.wide_resnet import WideResNet
 from robustbench.model_zoo.enums import ThreatModel
 from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreActResNet
 from robustbench.model_zoo.architectures import xcit
-from robustbench.model_zoo.architectures.comp_model import get_composite_model
+from robustbench.model_zoo.architectures.comp_model import get_composite_model, \
+    get_nonlin_mixed_classifier
 
 
 class Chen2020EfficientNet(WideResNet):
@@ -509,6 +510,12 @@ linf = OrderedDict([
             depth=34, widen_factor=10, num_classes=100, sub_block1=False),
         'gdrive_id':
         '18hjcLa1V3JTNUOshafLvw1ncxL2gu50M'
+    }),
+    ('Bai2024MixedNUTS', {
+        'model': lambda: get_nonlin_mixed_classifier('cifar100'),  # TODO: check device calls.
+        'gdrive_id': [
+        '1V7utaY3SyU65o6ivjidG1-wO5wAVF517',
+        '1-yYcT73GP13c0y9HrgtpyB3NAfkGKgjY']
     }),
 ])
 

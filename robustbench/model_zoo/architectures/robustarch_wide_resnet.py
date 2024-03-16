@@ -257,9 +257,9 @@ class NormalizedWideResNet(nn.Module):
         if self.padding > 0:
             x = F.pad(x, (self.padding,) * 4)
         if x.is_cuda:
-            if self.mean_cuda is None:
-                self.mean_cuda = self.mean.cuda()
-                self.std_cuda = self.std.cuda()
+            #if self.mean_cuda is None
+            self.mean_cuda = self.mean.to(x.device)  # TODO: improve this.
+            self.std_cuda = self.std.to(x.device)
             out = (x - self.mean_cuda) / self.std_cuda
         else:
             out = (x - self.mean) / self.std

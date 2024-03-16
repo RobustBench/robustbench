@@ -20,7 +20,8 @@ from robustbench.model_zoo.architectures.paf_wide_resnet import pssilu_wrn_28_10
 from robustbench.model_zoo.architectures.sodef_layers import rebuffi_sodef
 from robustbench.model_zoo.architectures import xcit
 from robustbench.model_zoo.architectures import robust_resnet
-from robustbench.model_zoo.architectures.comp_model import get_composite_model
+from robustbench.model_zoo.architectures.comp_model import get_composite_model, \
+    get_nonlin_mixed_classifier
 from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
 
 
@@ -886,7 +887,13 @@ linf = OrderedDict(
         ('Peng2023Robust', {
             'model': lambda: get_robustarch_model('ra_wrn70_16'),  # TODO: check device calls.
             'gdrive_id': '1-6M8KHZdPmgqYkBSkdZQ2fLwp86ZQ9VU'
-        })
+        }),
+        ('Bai2024MixedNUTS', {
+            'model': lambda: get_nonlin_mixed_classifier('cifar10'),  # TODO: check device calls.
+            'gdrive_id': [
+            '1-5EwY_5tQZudo9idwXiUGr3P4OUUGaQN',
+            '1-6M8KHZdPmgqYkBSkdZQ2fLwp86ZQ9VU']
+        }),
     ])
 
 l2 = OrderedDict([
