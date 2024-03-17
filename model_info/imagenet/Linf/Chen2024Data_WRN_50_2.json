@@ -1,0 +1,16 @@
+{
+  "link": "https://doi.org/10.1016/j.patcog.2024.110394",
+  "name": "Data filtering for efficient adversarial training",
+  "authors": "Erh-Chung Chen, Che-Rung Lee",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "Pattern Recognition 2024",
+  "architecture": "WideResNet-50-2",
+  "eps": "4/255",
+  "clean_acc": "68.76",
+  "reported": "41.92",
+  "footnote": "",
+  "autoattack_acc": "41.92",
+  "unreliable": false
+}
