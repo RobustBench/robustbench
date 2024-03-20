@@ -131,7 +131,7 @@ linf = OrderedDict(
                 '1-57sQfcrsDsslfDR18nRD7FnpQmsSBk7'],
             'preprocessing': 'BicubicRes256Crop224'
         }),
-        ('Chen2024Data_WRN-50-2', {
+        ('Chen2024Data_WRN_50_2', {
             'model': lambda: pt_models.resnet50(width_per_group=64 * 2),
             'gdrive_id': '1-PBlZVILAKFQ7mF8srKjdkTKJZAr61Uf',
             'preprocessing': 'Res256Crop224',

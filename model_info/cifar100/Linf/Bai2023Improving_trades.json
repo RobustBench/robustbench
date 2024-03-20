@@ -5,7 +5,7 @@
   "additional_data": true,
   "number_forward_passes": 2,
   "dataset": "cifar100",
-  "venue": "arXiv, Jan 2023",
+  "venue": "SIMODS 2024",
   "architecture": "ResNet-152 + WideResNet-70-16 + mixing network",
   "eps": "8/255",
   "clean_acc": "80.18",
