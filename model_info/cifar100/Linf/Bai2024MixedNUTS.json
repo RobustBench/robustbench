@@ -1,0 +1,17 @@
+{
+  "link": "https://arxiv.org/abs/2402.02263",
+  "name": "MixedNUTS: Training-Free Accuracy-Robustness Balance via Nonlinearly Mixed Classifiers",
+  "authors": "Yatong Bai, Mo Zhou, Vishal M. Patel, Somayeh Sojoudi",
+  "additional_data": true,
+  "number_forward_passes": 2,
+  "dataset": "cifar100",
+  "venue": "arXiv, Feb 2024",
+  "architecture": "ResNet-152 + WideResNet-70-16",
+  "eps": "8/255",
+  "clean_acc": "83.08",
+  "reported": "41.80",
+  "autoattack_acc": "41.91",
+  "external": "41.80",
+  "footnote": "It uses an ensemble of networks. The robust base classifier uses 50M synthetic images. 41.80% robust accuracy is due to the original evaluation (Adaptive AutoAttack)",
+  "unreliable": false
+}

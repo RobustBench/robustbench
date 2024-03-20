@@ -20,6 +20,7 @@ setuptools.setup(
         'autoattack @ git+https://github.com/fra31/auto-attack.git@a39220048b3c9f2cca9a4d3a54604793c68eca7e#egg=autoattack',
         'timm>=0.6.7',
         'gdown==5.1.0',
+        'pyyaml',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

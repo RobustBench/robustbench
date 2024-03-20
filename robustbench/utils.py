@@ -198,6 +198,7 @@ def load_model(model_name: str,
                 'Singh2023Revisiting_ConvNeXt-B-ConvStem',
                 'Singh2023Revisiting_ConvNeXt-L-ConvStem',
                 'Peng2023Robust',
+                'Chen2024Data_WRN-50-2',
                 ]:
                 state_dict = add_substr_to_state_dict(state_dict, 'model.')
 
@@ -221,12 +222,7 @@ def load_model(model_name: str,
             except KeyError:
                 state_dict = rm_substr_from_state_dict(checkpoint, 'module.')
 
-            if not model_name.startswith('Bai2023Improving'):
-                model.models[i] = _safe_load_state_dict(model.models[i],
-                                                        model_name, state_dict,
-                                                        dataset_)
-                model.models[i].eval()
-            else:
+            if model_name.startswith('Bai2023Improving'):
                 # TODO: make it cleaner.
                 if i < 2:
                     model.comp_model.models[i] = _safe_load_state_dict(
@@ -237,6 +233,24 @@ def load_model(model_name: str,
                         model.comp_model.policy_net, model_name, state_dict['model'], dataset_)
                     model.comp_model.bn = _safe_load_state_dict(
                         model.comp_model.bn, model_name, state_dict['bn'], dataset_)
+            elif model_name.startswith('Bai2024MixedNUTS'):
+                if i == 0:
+                    model.std_model = _safe_load_state_dict(
+                        model.std_model, model_name, state_dict, dataset_)
+                elif i == 1:
+                    if dataset_ == BenchmarkDataset.imagenet:
+                        from timm.models.swin_transformer import checkpoint_filter_fn
+                        state_dict = checkpoint_filter_fn(state_dict, model.rob_model.model)
+                        state_dict = add_substr_to_state_dict(state_dict, 'model.')
+                    model.rob_model = _safe_load_state_dict(
+                        model.rob_model, model_name, state_dict, dataset_)
+                else:
+                    raise ValueError('Unexpected checkpoint.')
+            else:
+                model.models[i] = _safe_load_state_dict(model.models[i],
+                                                        model_name, state_dict,
+                                                        dataset_)
+                model.models[i].eval()
 
         return model.eval()
 
@@ -260,18 +274,22 @@ def _safe_load_state_dict(model: nn.Module, model_name: str,
         "Diffenderfer2021Winning_Binary",
         "Diffenderfer2021Winning_Binary_CARD_Deck",
         "Huang2022Revisiting_WRN-A4",
+        "Bai2024MixedNUTS",
     }
 
     failure_messages = [
         'Missing key(s) in state_dict: "mu", "sigma".',
         'Unexpected key(s) in state_dict: "model_preact_hl1.1.weight"',
         'Missing key(s) in state_dict: "normalize.mean", "normalize.std"',
-        'Unexpected key(s) in state_dict: "conv1.scores"'
+        'Unexpected key(s) in state_dict: "conv1.scores"',
+        'Missing key(s) in state_dict: "mean", "std".',
     ]
 
     try:
         model.load_state_dict(state_dict, strict=True)
     except RuntimeError as e:
+        #with open('./log_new_models.txt', 'a') as f:
+        #    f.write(str(e))
         if (model_name in known_failing_models
                 or dataset_ == BenchmarkDataset.imagenet) and any(
                     [msg in str(e) for msg in failure_messages]):

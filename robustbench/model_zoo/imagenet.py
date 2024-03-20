@@ -8,6 +8,8 @@ from robustbench.model_zoo.architectures.utils_architectures import normalize_mo
 from robustbench.model_zoo.architectures import alexnet, xcit, deit  # needed to register models
 from robustbench.model_zoo.architectures.convstem_models import get_convstem_models
 from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
+from robustbench.model_zoo.architectures.comp_model import get_nonlin_mixed_classifier
+
 
 mu = (0.485, 0.456, 0.406)
 sigma = (0.229, 0.224, 0.225)
@@ -113,7 +115,7 @@ linf = OrderedDict(
         }),
         ('Liu2023Comprehensive_Swin-L', {
             'model': lambda: normalize_model(timm.create_model(
-            'swin_large_patch4_window7_224', pretrained=False), mu, sigma),
+                'swin_large_patch4_window7_224', pretrained=False), mu, sigma),
             'gdrive_id': '1-57sQfcrsDsslfDR18nRD7FnpQmsSBk7',
             'preprocessing': 'BicubicRes256Crop224'
         }),
@@ -121,7 +123,19 @@ linf = OrderedDict(
             'model': lambda: get_robustarch_model('ra_wrn101_2'),  # TODO: check device calls.
             'gdrive_id': '1-GpZ9Du83mBTN61Ytx9z_ZQSyIc1kYop',
             'preprocessing': 'Res256Crop224',
-        })
+        }),
+        ('Bai2024MixedNUTS', {
+            'model': lambda: get_nonlin_mixed_classifier('imagenet'),  # TODO: check device calls.
+            'gdrive_id': [
+                '1-2CwsRuMZXr99PeU2Z7-iFjl_86uIR-Y',
+                '1-57sQfcrsDsslfDR18nRD7FnpQmsSBk7'],
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Chen2024Data_WRN_50_2', {
+            'model': lambda: pt_models.resnet50(width_per_group=64 * 2),
+            'gdrive_id': '1-PBlZVILAKFQ7mF8srKjdkTKJZAr61Uf',
+            'preprocessing': 'Res256Crop224',
+        }),
     ])
 
 common_corruptions = OrderedDict(

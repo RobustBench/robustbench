@@ -5,7 +5,7 @@
   "additional_data": false,
   "number_forward_passes": 1,
   "dataset": "imagenet",
-  "venue": "arXiv, Mar 2023",
+  "venue": "NeurIPS 2023",
   "architecture": "ConvNeXt-S + ConvStem",
   "eps": "4/255",
   "clean_acc": "74.10",
