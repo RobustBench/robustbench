@@ -126,8 +126,7 @@ def load_model(model_name: str,
     dataset_: BenchmarkDataset = BenchmarkDataset(dataset)
     if norm is None:
         # since there is only `corruptions` folder for models in the Model Zoo
-        threat_model = threat_model.replace('_3d', '')
-            
+        threat_model = ThreatModel(threat_model).value.replace('_3d', '')
         threat_model_: ThreatModel = ThreatModel(threat_model)
     else:
         threat_model_ = ThreatModel(norm)
