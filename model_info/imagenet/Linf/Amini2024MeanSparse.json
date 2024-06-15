@@ -1,0 +1,16 @@
+{
+  "link": "https://arxiv.org/pdf/2406.05927",
+  "name": "MeanSparse: Post-Training Robustness Enhancement Through Mean-Centered Feature Sparsification",
+  "authors": "Sajjad Amini, Mohammadreza Teymoorianfard, Shiqing Ma, Amir Houmansadr",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "arXiv, Jun 2024",
+  "architecture": "meansparse_ConvNeXt-L",
+  "eps": "4/255",
+  "clean_acc": "77.96",
+  "reported": "59.64",
+  "autoattack_acc": "59.64",
+  "footnote": "It adds the MeanSparse operator to the adversarially trained models.",
+  "unreliable": false
+}

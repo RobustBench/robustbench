@@ -9,6 +9,7 @@ from robustbench.model_zoo.architectures import alexnet, xcit, deit  # needed to
 from robustbench.model_zoo.architectures.convstem_models import get_convstem_models
 from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
 from robustbench.model_zoo.architectures.comp_model import get_nonlin_mixed_classifier
+from robustbench.model_zoo.architectures.sparsified_model import get_sparse_model
 
 
 mu = (0.485, 0.456, 0.406)
@@ -136,6 +137,11 @@ linf = OrderedDict(
             'gdrive_id': '1-PBlZVILAKFQ7mF8srKjdkTKJZAr61Uf',
             'preprocessing': 'Res256Crop224',
         }),
+        ('Amini2024MeanSparse', {
+            'model': lambda: get_sparse_model(normalize_model(timm.create_model('convnext_large', pretrained=False), mu, sigma), dataset='imagenet'),
+            'gdrive_id': '1gSoCzLACu9hyJ_Pv33OLmRKIpY-XuU9C',
+            'preprocessing': 'BicubicRes256Crop224',
+        })
     ])
 
 common_corruptions = OrderedDict(
