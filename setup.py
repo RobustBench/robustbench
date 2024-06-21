@@ -18,7 +18,7 @@ setuptools.setup(
         'requests>=2.25.0', 'numpy>=1.19.4', 'Jinja2~=3.1.2', 'tqdm>=4.56.1',
         'pandas>=1.3.5',
         'autoattack @ git+https://github.com/fra31/auto-attack.git@a39220048b3c9f2cca9a4d3a54604793c68eca7e#egg=autoattack',
-        'timm>=0.6.7',
+        'timm>=0.9.0',
         'gdown==5.1.0',
         'pyyaml',
     ],
