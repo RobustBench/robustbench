@@ -139,16 +139,14 @@ linf = OrderedDict(
         }),
         ('Mo2022When_Swin-B', {
             'model': lambda: normalize_model(timm.create_model(
-                'swin_base_patch4_window7_224_in22k', pretrained=False,
-                patch_size=4, window_size=7, embed_dim=128, depths=(2, 2, 18, 2),
-                num_heads=(4, 8, 16, 32), num_classes=1000), mu, sigma),
+                'swin_base_patch4_window7_224', pretrained=False,
+                ), mu, sigma),
             'gdrive_id': '1-SXi4Z2X6Zo_j8EO4slJcBMXNej8fKUd',
             'preprocessing': 'Res224',
         }),
         ('Mo2022When_ViT-B', {
             'model': lambda: normalize_model(timm.create_model(
-                'vit_base_patch16_224_in21k', pretrained=False,
-                patch_size=16, embed_dim=768, depth=12, num_heads=12, num_classes=1000,
+                'vit_base_patch16_224', pretrained=False,
                 ), mu, sigma),
             'gdrive_id': '1-dUFdvDBflqMsMLjZv3wlPJTm-Jm7net',
             'preprocessing': 'Res224',
