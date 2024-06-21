@@ -23,6 +23,7 @@ from robustbench.model_zoo.architectures import robust_resnet
 from robustbench.model_zoo.architectures.comp_model import get_composite_model, \
     get_nonlin_mixed_classifier
 from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
+from robustbench.model_zoo.architectures.sparsified_model import get_sparse_model
 
 
 class Hendrycks2020AugMixResNeXtNet(CifarResNeXt):
@@ -901,6 +902,11 @@ linf = OrderedDict(
         ('Chen2024Data_WRN_34_20', {
             'model': lambda: WideResNet(depth=34, widen_factor=20),
             'gdrive_id': '1-IbKAGtp79tAEm59N0i8QMvMZ3nxSD2-',
+        }),
+        ('Amini2024MeanSparse', {
+            'model': lambda: get_sparse_model(
+                get_robustarch_model('ra_wrn70_16'), dataset='cifar-10'),  # TODO: check device calls.
+            'gdrive_id': '1-4XSB3Ir-pn5gnEJ4TbUdkwBclIay8-q',
         }),
     ])
 
