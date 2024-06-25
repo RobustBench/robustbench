@@ -1,0 +1,15 @@
+{
+  "link": "https://arxiv.org/abs/2210.07540",
+  "name": "When Adversarial Training Meets Vision Transformers: Recipes from Training to Architecture",
+  "authors": "Yichuan Mo, Dongxian Wu, Yifei Wang, Yiwen Guo, Yisen Wang",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "NeurIPS 2022",
+  "architecture": "ViT-B",
+  "eps": "4/255",
+  "clean_acc": "68.38",
+  "reported": "34.40",
+  "autoattack_acc": "34.40",
+  "unreliable": false
+}
