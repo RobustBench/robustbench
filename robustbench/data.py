@@ -31,7 +31,7 @@ PREPROCESSINGS = {
     transforms.Compose([transforms.ToTensor()]),
     'Res224':
     transforms.Compose([
-        transforms.Resize(224),
+        transforms.Resize([224, 224]),
         transforms.ToTensor()
     ]),
     'BicubicRes256Crop224':

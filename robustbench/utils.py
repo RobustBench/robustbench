@@ -182,6 +182,7 @@ def load_model(model_name: str,
             if model_name in [
                 'Liu2023Comprehensive_Swin-B',
                 'Liu2023Comprehensive_Swin-L',
+                'Mo2022When_Swin-B',
                 ]:
                 try:
                     from timm.models.swin_transformer import checkpoint_filter_fn
@@ -197,7 +198,7 @@ def load_model(model_name: str,
                 'Singh2023Revisiting_ConvNeXt-B-ConvStem',
                 'Singh2023Revisiting_ConvNeXt-L-ConvStem',
                 'Peng2023Robust',
-                'Chen2024Data_WRN-50-2',
+                'Chen2024Data_WRN_50_2',
                 ]:
                 state_dict = add_substr_to_state_dict(state_dict, 'model.')
 

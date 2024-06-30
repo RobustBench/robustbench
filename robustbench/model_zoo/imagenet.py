@@ -9,6 +9,7 @@ from robustbench.model_zoo.architectures import alexnet, xcit, deit  # needed to
 from robustbench.model_zoo.architectures.convstem_models import get_convstem_models
 from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
 from robustbench.model_zoo.architectures.comp_model import get_nonlin_mixed_classifier
+from robustbench.model_zoo.architectures.sparsified_model import get_sparse_model
 
 
 mu = (0.485, 0.456, 0.406)
@@ -135,6 +136,27 @@ linf = OrderedDict(
             'model': lambda: pt_models.resnet50(width_per_group=64 * 2),
             'gdrive_id': '1-PBlZVILAKFQ7mF8srKjdkTKJZAr61Uf',
             'preprocessing': 'Res256Crop224',
+        }),
+        ('Mo2022When_Swin-B', {
+            'model': lambda: normalize_model(timm.create_model(
+                'swin_base_patch4_window7_224', pretrained=False,
+                ), mu, sigma),
+            'gdrive_id': '1-SXi4Z2X6Zo_j8EO4slJcBMXNej8fKUd',
+            'preprocessing': 'Res224',
+        }),
+        ('Mo2022When_ViT-B', {
+            'model': lambda: normalize_model(timm.create_model(
+                'vit_base_patch16_224', pretrained=False,
+                ), mu, sigma),
+            'gdrive_id': '1-dUFdvDBflqMsMLjZv3wlPJTm-Jm7net',
+            'preprocessing': 'Res224',
+        }),
+        ('Amini2024MeanSparse', {
+            'model': lambda: get_sparse_model(
+                normalize_model(timm.create_model('convnext_large', pretrained=False),
+                mu, sigma), dataset='imagenet'),
+            'gdrive_id': '1-LUMPqauSx68bPmZFIuklFoJ6NmBhu7A',
+            'preprocessing': 'BicubicRes256Crop224',
         }),
     ])
 

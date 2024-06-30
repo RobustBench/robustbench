@@ -1,0 +1,16 @@
+{
+  "link": "https://arxiv.org/abs/2404.09349",
+  "name": "Adversarial Robustness Limits via Scaling-Law and Human-Alignment Studies",
+  "authors": "Brian Bartoldson, James Diffenderfer, Konstantinos Parasyris, Bhavya Kailkhura",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "ICML 2024",
+  "architecture": "WideResNet-94-16",
+  "eps": "8/255",
+  "clean_acc": "93.68",
+  "reported": "73.71",
+  "autoattack_acc": "73.71",
+  "footnote": "It uses additional 300M synthetic images in training.",
+  "unreliable": false
+}
