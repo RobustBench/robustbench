@@ -151,11 +151,16 @@ linf = OrderedDict(
             'gdrive_id': '1-dUFdvDBflqMsMLjZv3wlPJTm-Jm7net',
             'preprocessing': 'Res224',
         }),
-        ('Amini2024MeanSparse', {
+        ('Amini2024MeanSparse_ConvNeXt-L', {
             'model': lambda: get_sparse_model(
                 normalize_model(timm.create_model('convnext_large', pretrained=False),
-                mu, sigma), dataset='imagenet'),
-            'gdrive_id': '1-LUMPqauSx68bPmZFIuklFoJ6NmBhu7A',
+                mu, sigma), dataset='imagenet-Linf'),
+            'gdrive_id': '1vkM6KZLB1bVzYZ51VuHyDJzprUKnf4JP',
+            'preprocessing': 'BicubicRes256Crop224',
+        }),
+        ('Amini2024MeanSparse_S-Swin_L', {
+            'model': lambda: get_sparse_model('swin-l', dataset='imagenet-Linf'),
+            'gdrive_id': '1H__qJwmfX9Gl4-v6o-6WQXy9Gkson-4H',
             'preprocessing': 'BicubicRes256Crop224',
         }),
     ])
