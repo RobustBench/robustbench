@@ -502,7 +502,7 @@ linf = OrderedDict([
         lambda: WideResNet(
             depth=34, widen_factor=10, num_classes=100, sub_block1=False),
         'gdrive_id':
-        '1-7GbBqZRaHLFA-kYqcnWl9Q0Ohpicq07'
+        '1whziIioVu5SGI1fBKyc331IfG_1MgenN'  # '1-7GbBqZRaHLFA-kYqcnWl9Q0Ohpicq07'
     }),
     ('Cui2023Decoupled_WRN-34-10_autoaug', {
         'model':
