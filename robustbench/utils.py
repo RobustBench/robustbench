@@ -183,6 +183,8 @@ def load_model(model_name: str,
                 'Liu2023Comprehensive_Swin-B',
                 'Liu2023Comprehensive_Swin-L',
                 'Mo2022When_Swin-B',
+                'RodriguezMunoz2024Characterizing_Swin-B',
+                'RodriguezMunoz2024Characterizing_Swin-L',
                 ]:
                 try:
                     from timm.models.swin_transformer import checkpoint_filter_fn

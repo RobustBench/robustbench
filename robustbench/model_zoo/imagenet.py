@@ -151,12 +151,29 @@ linf = OrderedDict(
             'gdrive_id': '1-dUFdvDBflqMsMLjZv3wlPJTm-Jm7net',
             'preprocessing': 'Res224',
         }),
-        ('Amini2024MeanSparse', {
+        ('Amini2024MeanSparse_ConvNeXt-L', {
             'model': lambda: get_sparse_model(
                 normalize_model(timm.create_model('convnext_large', pretrained=False),
-                mu, sigma), dataset='imagenet'),
+                mu, sigma), dataset='imagenet-Linf'),
             'gdrive_id': '1-LUMPqauSx68bPmZFIuklFoJ6NmBhu7A',
             'preprocessing': 'BicubicRes256Crop224',
+        }),
+        ('Amini2024MeanSparse_Swin-L', {
+            'model': lambda: get_sparse_model('swin-l', dataset='imagenet-Linf'),
+            'gdrive_id': '1-KmvrDXd_kcJS-TcNmtHP5NInQ5I4lgS',
+            'preprocessing': 'BicubicRes256Crop224',
+        }),
+        ('RodriguezMunoz2024Characterizing_Swin-B', {
+            'model': lambda: normalize_model(timm.create_model(
+                'swin_base_patch4_window7_224', pretrained=False), mu, sigma),
+            'gdrive_id': '1-BSUjoFXx3PP-TfeE5fjbofO2lLyUf56',  # '1-9h_4PImbQM3XhKBcnqTh4PHxz9rM6vr',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('RodriguezMunoz2024Characterizing_Swin-L', {
+            'model': lambda: normalize_model(timm.create_model(
+                'swin_large_patch4_window7_224', pretrained=False), mu, sigma),
+            'gdrive_id': '1-Dc9WhPU2wv4OMskLo1U57n5O8VbpNXv',  # '1-DoJoTiPynr39AFNsEyhOej4rKPL3xqT'
+            'preprocessing': 'BicubicRes256Crop224'
         }),
     ])
 

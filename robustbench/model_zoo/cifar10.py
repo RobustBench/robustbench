@@ -903,10 +903,20 @@ linf = OrderedDict(
             'model': lambda: WideResNet(depth=34, widen_factor=20),
             'gdrive_id': '1-IbKAGtp79tAEm59N0i8QMvMZ3nxSD2-',
         }),
-        ('Amini2024MeanSparse', {
+        # ('Amini2024MeanSparse', {
+        #     'model': lambda: get_sparse_model(
+        #         get_robustarch_model('ra_wrn70_16'), dataset='cifar-10'),  # TODO: check device calls.
+        #     'gdrive_id': '1-4XSB3Ir-pn5gnEJ4TbUdkwBclIay8-q',
+        # }),
+        ('Amini2024MeanSparse_Ra_WRN_70_16', {
             'model': lambda: get_sparse_model(
-                get_robustarch_model('ra_wrn70_16'), dataset='cifar-10'),  # TODO: check device calls.
-            'gdrive_id': '1-4XSB3Ir-pn5gnEJ4TbUdkwBclIay8-q',
+                'ra_wrn_70_16', dataset='cifar-10-Linf'),  # TODO: check device calls.
+            'gdrive_id': '1-JdK480cLUrVCaNKCSBsmy7y59kGYF19',
+        }),
+        ('Amini2024MeanSparse_S-WRN-94-16', {
+            'model': lambda: get_sparse_model(
+                'wrn_94_16', dataset='cifar-10-Linf'),  # TODO: check device calls.
+            'gdrive_id': '1-GoAnBP6K6uwAzJbe4liOSfN_sZVYTln',
         }),
         ('Bartoldson2024Adversarial_WRN-94-16', {
             'model':
@@ -1075,6 +1085,11 @@ l2 = OrderedDict([
                              std=CIFAR10_STD),
         'gdrive_id':
         '101UyURyte05tJLA9VFRBN6UDLyn-0sJw'
+    }),
+    ('Amini2024MeanSparse_S-WRN-70-16', {
+        'model': lambda: get_sparse_model(
+            'wrn_70_16', dataset='cifar-10-L2'),  # TODO: check device calls.
+        'gdrive_id': '1kBtoDnMwbVmsFl4YxlDhuJpRiE-gCKvI', #'1-IxGA3BI1nK5iMkgXbSoaDZF5c7vhe8b',
     }),
 ])
 
