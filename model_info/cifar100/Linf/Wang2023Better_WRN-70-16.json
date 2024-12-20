@@ -11,6 +11,7 @@
   "clean_acc": "75.22",
   "reported": "42.67",
   "autoattack_acc": "42.67",
-  "footnote": "It uses additional 50M synthetic images in training.",
+  "external": "42.66",
+  "footnote": "It uses additional 50M synthetic images in training. 42.66% robust accuracy is given by MALT (Melamed et al., 2024).",
   "unreliable": false
 }
