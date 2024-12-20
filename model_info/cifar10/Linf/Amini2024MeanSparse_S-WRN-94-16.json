@@ -1,0 +1,17 @@
+{
+  "link": "https://arxiv.org/abs/2406.05927",
+  "name": "MeanSparse: Post-Training Robustness Enhancement Through Mean-Centered Feature Sparsification",
+  "authors": "Sajjad Amini, Mohammadreza Teymoorianfard, Shiqing Ma, Amir Houmansadr",
+  "additional_data": true,
+  "number_forward_passes": 1,
+  "dataset": "cifar10",
+  "venue": "arXiv, Jun 2024",
+  "architecture": "MeanSparse WideResNet-94-16",
+  "eps": "8/255",
+  "clean_acc": "93.60",
+  "reported": "75.28",
+  "autoattack_acc": "75.28",
+  "external": "73.10",
+  "footnote": "It adds the MeanSparse operator to the adversarially trained model Bartoldson2024Adversarial_WRN-94-16. 73.10% robust accuracy is due to APGD (both versions) with BPDA.",
+  "unreliable": false
+}
