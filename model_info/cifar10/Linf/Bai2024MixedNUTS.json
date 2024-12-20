@@ -5,7 +5,7 @@
   "additional_data": true,
   "number_forward_passes": 2,
   "dataset": "cifar10",
-  "venue": "arXiv, Feb 2024",
+  "venue": "TMLR, Aug 2024",
   "architecture": "ResNet-152 + WideResNet-70-16",
   "eps": "8/255",
   "clean_acc": "95.19",
