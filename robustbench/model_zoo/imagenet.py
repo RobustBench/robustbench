@@ -10,6 +10,7 @@ from robustbench.model_zoo.architectures.convstem_models import get_convstem_mod
 from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
 from robustbench.model_zoo.architectures.comp_model import get_nonlin_mixed_classifier
 from robustbench.model_zoo.architectures.sparsified_model import get_sparse_model
+from robustbench.model_zoo.architectures.MIMIR_swin_transformer import build_swin_base, build_swin_large
 
 
 mu = (0.485, 0.456, 0.406)
@@ -173,6 +174,16 @@ linf = OrderedDict(
             'model': lambda: normalize_model(timm.create_model(
                 'swin_large_patch4_window7_224', pretrained=False), mu, sigma),
             'gdrive_id': '1-Dc9WhPU2wv4OMskLo1U57n5O8VbpNXv',  # '1-DoJoTiPynr39AFNsEyhOej4rKPL3xqT'
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Xu2024MIMIR_Swin-B', {
+            'model': build_swin_base,
+            'gdrive_id': '1CkuhAOvqB8Ma1WYsJJ4qDiyVld28pqpx',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Xu2024MIMIR_Swin-L', {
+            'model': build_swin_large,
+            'gdrive_id': '1-1VIAy1Qn4KX6whAIeKZqWL4wkSEdba4',
             'preprocessing': 'BicubicRes256Crop224'
         }),
     ])
