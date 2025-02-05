@@ -10,6 +10,7 @@ from robustbench.model_zoo.architectures.convstem_models import get_convstem_mod
 from robustbench.model_zoo.architectures.robustarch_wide_resnet import get_model as get_robustarch_model
 from robustbench.model_zoo.architectures.comp_model import get_nonlin_mixed_classifier
 from robustbench.model_zoo.architectures.sparsified_model import get_sparse_model
+from robustbench.model_zoo.architectures.MIMIR_swin_transformer import build_swin_base, build_swin_large
 
 
 mu = (0.485, 0.456, 0.406)
@@ -151,12 +152,39 @@ linf = OrderedDict(
             'gdrive_id': '1-dUFdvDBflqMsMLjZv3wlPJTm-Jm7net',
             'preprocessing': 'Res224',
         }),
-        ('Amini2024MeanSparse', {
+        ('Amini2024MeanSparse_ConvNeXt-L', {
             'model': lambda: get_sparse_model(
                 normalize_model(timm.create_model('convnext_large', pretrained=False),
-                mu, sigma), dataset='imagenet'),
+                mu, sigma), dataset='imagenet-Linf'),
             'gdrive_id': '1-LUMPqauSx68bPmZFIuklFoJ6NmBhu7A',
             'preprocessing': 'BicubicRes256Crop224',
+        }),
+        ('Amini2024MeanSparse_Swin-L', {
+            'model': lambda: get_sparse_model('swin-l', dataset='imagenet-Linf'),
+            'gdrive_id': '1-KmvrDXd_kcJS-TcNmtHP5NInQ5I4lgS',
+            'preprocessing': 'BicubicRes256Crop224',
+        }),
+        ('RodriguezMunoz2024Characterizing_Swin-B', {
+            'model': lambda: normalize_model(timm.create_model(
+                'swin_base_patch4_window7_224', pretrained=False), mu, sigma),
+            'gdrive_id': '1-BSUjoFXx3PP-TfeE5fjbofO2lLyUf56',  # '1-9h_4PImbQM3XhKBcnqTh4PHxz9rM6vr',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('RodriguezMunoz2024Characterizing_Swin-L', {
+            'model': lambda: normalize_model(timm.create_model(
+                'swin_large_patch4_window7_224', pretrained=False), mu, sigma),
+            'gdrive_id': '1-Dc9WhPU2wv4OMskLo1U57n5O8VbpNXv',  # '1-DoJoTiPynr39AFNsEyhOej4rKPL3xqT'
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Xu2024MIMIR_Swin-B', {
+            'model': build_swin_base,
+            'gdrive_id': '1CkuhAOvqB8Ma1WYsJJ4qDiyVld28pqpx',
+            'preprocessing': 'BicubicRes256Crop224'
+        }),
+        ('Xu2024MIMIR_Swin-L', {
+            'model': build_swin_large,
+            'gdrive_id': '1-1VIAy1Qn4KX6whAIeKZqWL4wkSEdba4',
+            'preprocessing': 'BicubicRes256Crop224'
         }),
     ])
 

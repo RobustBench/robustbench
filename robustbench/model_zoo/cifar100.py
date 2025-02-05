@@ -15,6 +15,7 @@ from robustbench.model_zoo.architectures.CARD_resnet import LRR_ResNet, WidePreA
 from robustbench.model_zoo.architectures import xcit
 from robustbench.model_zoo.architectures.comp_model import get_composite_model, \
     get_nonlin_mixed_classifier
+from robustbench.model_zoo.architectures.sparsified_model import get_sparse_model
 
 
 class Chen2020EfficientNet(WideResNet):
@@ -520,6 +521,10 @@ linf = OrderedDict([
     ('Chen2024Data_WRN_34_10', {
         'model': lambda: WideResNet(depth=34, widen_factor=10, num_classes=100),
         'gdrive_id': '1-N5a0Z9o-8-oIrF4_EaVFVOOPI5-D-H2',
+    }),
+    ('Amini2024MeanSparse_S-WRN-70-16', {
+        'model': lambda: get_sparse_model('wrn_70_16', dataset='cifar-100-Linf'),  # TODO: check device calls.
+        'gdrive_id': '1-JaGaVHX3nBiXhDmZSB6WgD2xzbeO2wD',
     }),
 ])
 

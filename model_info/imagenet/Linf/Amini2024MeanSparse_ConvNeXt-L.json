@@ -8,9 +8,10 @@
   "venue": "arXiv, Jun 2024",
   "architecture": "MeanSparse ConvNeXt-L",
   "eps": "4/255",
-  "clean_acc": "77.96",
+  "clean_acc": "77.92",
   "reported": "59.64",
   "autoattack_acc": "59.64",
-  "footnote": "It adds the MeanSparse operator to the adversarially trained models.",
+  "external": "58.22",
+  "footnote": "It adds the MeanSparse operator to the adversarially trained models Liu2023Comprehensive_ConvNeXt-L. 58.22% robust accuracy is due to APGD (both versions) with BPDA.",
   "unreliable": false
 }

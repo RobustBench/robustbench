@@ -1,0 +1,15 @@
+{
+  "link": "https://arxiv.org/abs/2312.04960",
+  "name": "MIMIR: Masked Image Modeling for Mutual Information-based Adversarial Robustness",
+  "authors": "Xiaoyun Xu, Shujian Yu, Zhuoran Liu, Stjepan Picek",
+  "additional_data": false,
+  "number_forward_passes": 1,
+  "dataset": "imagenet",
+  "venue": "arXiv, Dec 2023",
+  "architecture": "Swin-L",
+  "eps": "4/255",
+  "clean_acc": "78.62",
+  "reported": "59.68",
+  "autoattack_acc": "59.68",
+  "unreliable": false
+}
