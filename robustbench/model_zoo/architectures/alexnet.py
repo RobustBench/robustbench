@@ -1,7 +1,6 @@
 from typing import Optional, Tuple
 from timm.data import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
-from timm.models.helpers import build_model_with_cfg
-from timm.models.registry import register_model
+from timm.models import build_model_with_cfg, register_model
 from torchvision.models.alexnet import AlexNet
 
 from .utils_architectures import normalize_timm_model
@@ -53,4 +52,3 @@ def alexnet_imagenet_corruptions(pretrained=False, **kwargs):
     assert isinstance(model, TimmAlexNet)
     model = normalize_timm_model(model)
     return model
-
