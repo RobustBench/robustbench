@@ -9,7 +9,7 @@
 import torch
 import torch.nn as nn
 import torch.utils.checkpoint as checkpoint
-from timm.models.layers import DropPath, to_2tuple, trunc_normal_
+from timm.layers import DropPath, to_2tuple, trunc_normal_
 from functools import partial
 
 
@@ -631,4 +631,3 @@ def build_swin_large():
         use_checkpoint=False,
         norm_layer=partial(nn.LayerNorm, eps=1e-6))
     return model
-

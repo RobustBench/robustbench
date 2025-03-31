@@ -1,5 +1,5 @@
 from timm.models import deit
-from timm.models.registry import register_model
+from timm.models import register_model
 
 from .utils_architectures import normalize_timm_model
 
@@ -47,4 +47,3 @@ def tian2022deeper_deit_b_imagenet_corruptions(pretrained=False,
     assert isinstance(model, deit.VisionTransformer)
     model = normalize_timm_model(model)
     return model
-

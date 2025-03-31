@@ -1,5 +1,5 @@
 from timm.models import xcit
-from timm.models.registry import register_model
+from timm.models import register_model
 
 from .utils_architectures import normalize_timm_model
 

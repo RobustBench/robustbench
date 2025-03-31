@@ -8,13 +8,13 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from timm.models.layers import trunc_normal_, DropPath
+from timm.layers import trunc_normal_, DropPath
 
 
 class LayerNorm(nn.Module):
-    """ LayerNorm that supports two data formats: channels_last (default) or channels_first. 
-    The ordering of the dimensions in the inputs. channels_last corresponds to inputs with 
-    shape (batch_size, height, width, channels) while channels_first corresponds to inputs 
+    """ LayerNorm that supports two data formats: channels_last (default) or channels_first.
+    The ordering of the dimensions in the inputs. channels_last corresponds to inputs with
+    shape (batch_size, height, width, channels) while channels_first corresponds to inputs
     with shape (batch_size, channels, height, width).
     """
     def __init__(self, normalized_shape, eps=1e-6, data_format="channels_last"):
@@ -24,9 +24,9 @@ class LayerNorm(nn.Module):
         self.eps = eps
         self.data_format = data_format
         if self.data_format not in ["channels_last", "channels_first"]:
-            raise NotImplementedError 
+            raise NotImplementedError
         self.normalized_shape = (normalized_shape, )
-    
+
     def forward(self, x):
         if self.data_format == "channels_last":
             return F.layer_norm(x, self.normalized_shape, self.weight, self.bias, self.eps)
@@ -54,7 +54,7 @@ class GRN(nn.Module):
 
 class Block(nn.Module):
     """ ConvNeXtV2 Block.
-    
+
     Args:
         dim (int): Number of input channels.
         drop_path (float): Stochastic depth rate. Default: 0.0
@@ -84,7 +84,7 @@ class Block(nn.Module):
 
 class ConvNeXtV2(nn.Module):
     """ ConvNeXt V2
-        
+
     Args:
         in_chans (int): Number of input image channels. Default: 3
         num_classes (int): Number of classes for classification head. Default: 1000
@@ -94,7 +94,7 @@ class ConvNeXtV2(nn.Module):
         head_init_scale (float): Init scaling value for classifier weights and biases. Default: 1.
     """
     def __init__(
-        self, in_chans=3, num_classes=1000, depths=[3, 3, 9, 3], dims=[96, 192, 384, 768], 
+        self, in_chans=3, num_classes=1000, depths=[3, 3, 9, 3], dims=[96, 192, 384, 768],
         drop_path_rate=0., head_init_scale=1.
     ):
         super().__init__()
@@ -120,7 +120,7 @@ class ConvNeXtV2(nn.Module):
 
         # Four feature resolution stages, each consisting of multiple residual blocks
         self.stages = nn.ModuleList()
-        dp_rates=[x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))] 
+        dp_rates=[x.item() for x in torch.linspace(0, drop_path_rate, sum(depths))]
         cur = 0
         for i in range(4):
             stage = nn.Sequential(
