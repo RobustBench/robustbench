@@ -1,7 +1,7 @@
 """
 This file is based on the code from https://github.com/pytorch/vision/blob/master/torchvision/datasets/folder.py.
 """
-import pkg_resources
+from importlib.resources import files, as_file
 
 from torchvision.datasets.vision import VisionDataset
 
@@ -17,8 +17,10 @@ import sys
 
 
 def make_custom_dataset(root, path_imgs, class_to_idx):
-    with open(pkg_resources.resource_filename(__name__, path_imgs), 'r') as f:
-        fnames = f.readlines()
+    resource = files(__package__) / path_imgs
+    with as_file(resource) as file_path:
+        with open(file_path, 'r') as f:
+            fnames = f.readlines()
     images = [(os.path.join(root,
                             c.split('\n')[0]), class_to_idx[c.split('/')[0]])
               for c in fnames]
