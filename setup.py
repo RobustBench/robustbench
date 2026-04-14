@@ -19,7 +19,7 @@ setuptools.setup(
         'pandas>=1.3.5',
         'autoattack @ git+https://github.com/fra31/auto-attack.git@a39220048b3c9f2cca9a4d3a54604793c68eca7e#egg=autoattack',
         'timm>=1.0.9',
-        'gdown==5.1.0',
+        'gdown==5.2.2',
         'pyyaml',
     ],
     classifiers=[
