@@ -103,13 +103,16 @@ Now let's try to load CIFAR-10 and some quite robust CIFAR-10 models from
 `eps=8/255`:
 
 ```python
+import torch
 from robustbench.data import load_cifar10
 
 x_test, y_test = load_cifar10(n_examples=50)
 
 from robustbench.utils import load_model
 
-model = load_model(model_name='Carmon2019Unlabeled', dataset='cifar10', threat_model='Linf')
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+model = load_model(model_name='Carmon2019Unlabeled', dataset='cifar10', threat_model='Linf').to(device)
 ```
 
 Let's try to evaluate the robustness of this model. We can use any favourite library for this. For example, [FoolBox](https://github.com/bethgelab/foolbox)
@@ -119,7 +122,7 @@ implements many different attacks. We can start from a simple PGD attack:
 import foolbox as fb
 fmodel = fb.PyTorchModel(model, bounds=(0, 1))
 
-_, advs, success = fb.attacks.LinfPGD()(fmodel, x_test.to('cuda:0'), y_test.to('cuda:0'), epsilons=[8/255])
+_, advs, success = fb.attacks.LinfPGD()(fmodel, x_test.to(device), y_test.to(device), epsilons=[8/255])
 print('Robust accuracy: {:.1%}'.format(1 - success.float().mean()))
 ```
 ```
@@ -131,7 +134,7 @@ Let's try to evaluate its robustness with a cheap version [AutoAttack](https://a
 ```python
 # autoattack is installed as a dependency of robustbench so there is not need to install it separately
 from autoattack import AutoAttack
-adversary = AutoAttack(model, norm='Linf', eps=8/255, version='custom', attacks_to_run=['apgd-ce', 'apgd-dlr'])
+adversary = AutoAttack(model, norm='Linf', eps=8/255, version='custom', attacks_to_run=['apgd-ce', 'apgd-dlr'], device=device)
 adversary.apgd.n_restarts = 1
 x_adv = adversary.run_standard_evaluation(x_test, y_test)
 ```
@@ -145,7 +148,7 @@ x_adv = adversary.run_standard_evaluation(x_test, y_test)
 >>> robust accuracy: 52.00%
 ```
 Note that for our standardized evaluation of Linf-robustness we use the *full* version of AutoAttack which is slower but 
-more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255)`).
+more accurate (for that just use `adversary = AutoAttack(model, norm='Linf', eps=8/255, device=device)`).
 
 What about other types of perturbations? Is Lp-robustness useful there? We can evaluate the available models on more general perturbations. 
 For example, let's take images corrupted by fog perturbations from CIFAR-10-C with the highest level of severity (5). 
@@ -160,8 +163,8 @@ x_test, y_test = load_cifar10c(n_examples=1000, corruptions=corruptions, severit
 
 for model_name in ['Standard', 'Engstrom2019Robustness', 'Rice2020Overfitting',
                    'Carmon2019Unlabeled']:
- model = load_model(model_name, dataset='cifar10', threat_model='Linf')
- acc = clean_accuracy(model, x_test, y_test)
+ model = load_model(model_name, dataset='cifar10', threat_model='Linf').to(device)
+ acc = clean_accuracy(model, x_test, y_test, device=device)
  print(f'Model: {model_name}, CIFAR-10-C accuracy: {acc:.1%}')
 ``` 
 ```
