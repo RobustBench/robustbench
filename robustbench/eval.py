@@ -117,7 +117,13 @@ def benchmark(
         else:
             aa_state = EvaluationState.from_disk(aa_state_path)
             assert aa_state.robust_flags is not None
-            adv_accuracy = aa_state.robust_flags.mean().item()
+            # `from_disk` rebuilds `robust_flags` as a torch.bool tensor, on
+            # which `.mean()` raises a RuntimeError, so cast to float first.
+            # `aa_state.robust_accuracy` would cast too, but it also compares
+            # `attacks_to_run` and `run_attacks`, which `from_disk` (in the
+            # pinned autoattack version) does not restore to sets, making the
+            # property raise a TypeError on any state loaded from disk.
+            adv_accuracy = aa_state.robust_flags.float().mean().item()
     
     elif threat_model_ in [ThreatModel.corruptions, ThreatModel.corruptions_3d]:
         corruptions = CORRUPTIONS_DICT[dataset_][threat_model_]
